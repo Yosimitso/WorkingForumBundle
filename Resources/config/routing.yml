@@ -1,0 +1,20 @@
+forum:
+    path:     /forum
+    defaults: { _controller: YosimitsoWorkingForumBundle:Forum:index }
+subforum:
+    path: /forum/view/{subforum_slug}
+    defaults: { _controller: YosimitsoWorkingForumBundle:Forum:subforum }
+
+topic:
+    path: /forum/view/{subforum_slug}/{topic_slug}
+    defaults: { _controller: YosimitsoWorkingForumBundle:Topic:index }
+
+new_topic:
+    path: /forum/newtopic/{subforum_slug}
+    defaults: { _controller: YosimitsoWorkingForumBundle:Topic:new }
+lock_topic:
+    path: /forum/locked/{subforum_slug}/{topic_slug}
+    defaults: { _controller: YosimitsoWorkingForumBundle:Topic:lock }
+resolve_topic:
+    path: /forum/resolved/{subforum_slug}/{topic_slug}
+    defaults: { _controller: YosimitsoWorkingForumBundle:Topic:resolve }

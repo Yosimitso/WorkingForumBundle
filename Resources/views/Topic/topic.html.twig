@@ -1,0 +1,154 @@
+{# empty Twig template #}
+{% extends '::base.html.twig' %}
+{% block body %}
+    {% include '::header.html.twig' %}
+    {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
+{% trans_default_domain 'front' %}
+
+
+
+<script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
+<script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
+<script src="{{ asset('bundles/yosimitsoworkingforum/markdown/locale/bootstrap-markdown.fr.js') }}"></script>
+<script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/twitter.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}" type="text/css" media="all" />
+
+<script type="text/javascript" >
+   $(document).ready(function() {
+      
+
+
+     $(".textarea_post").markdown({
+         language:'{{ app.request.locale }}',
+   onPreview: function(e) {
+ 
+    var converter = new Showdown.converter({ extensions: ['twitter'] });
+    
+    var html  = converter.makeHtml(nl2br(e.getContent()));
+   return html;
+   }
+     });
+     
+ 
+        });
+   function nl2br (str, is_xhtml) {
+    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+}
+
+</script>
+
+ 
+            <div id="forum_content">
+                {% if app.session.flashbag.has('success') %}
+                <div class="alert-success">
+                    <ul>
+                  {% for flashMessage in app.session.flashbag.get('success') %}
+                      <li>{{ flashMessage }}</li>
+                  {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+               {% if app.session.flashbag.has('error') %}
+                <div class="alert-error">
+                    <ul>
+                  {% for flashMessage in app.session.flashbag.get('error') %}
+                      <li>{{ flashMessage }}</li>
+                  {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            
+       
+<div class="breadcrumb">
+     <a href="{{ path('forum')}}">Forum</a> &rarr; <a href="{{ path('forum') }}">{{subforum.forum.name}}</a> &rarr; <a href="{{ path('subforum',{ 'subforum_slug' : subforum.slug }) }}">{{subforum.name }}</a> &rarr; {{ topic.label }}
+</div>
+ 
+     {# LOCK #}
+{% if topic.locked %}
+    <p>
+<a class="button button-grey">
+  <span class="locked"></span>{{ 'forum.topic_locked' | trans() }}  
+</a>
+    </p>
+    {% else %}
+          {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+              <p><a class="button" href="#new_post">{{ 'forum.reply' | trans }}</a></p> {# TOPIC NON LOCKE ON PEUT REPONDRE #}
+           {% endif %}
+     {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
+         <p><a class="button" href="{{ path('lock_topic',{'subforum_slug' : subforum.slug, 'topic_slug' : topic.slug}) }}"> {# ADMIN ET MODO PEUVENT LOCKER #}
+     {{ 'forum.lock' | trans }}
+         </a></p>
+            {% endif %}
+ {% endif %}
+ 
+ 
+ {% if topic.resolved %}
+     <div class="alert-success"><ul><li><span class="tick"></span>{{ 'forum.topic_resolved' | trans }}</li></ul></div> 
+ {% else %}
+     {% if app.user %}
+    {% if (topic.authorId == app.user.id) or (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
+ <p><a class="button" href="{{ path('resolve_topic',{'subforum_slug' : subforum.slug, 'topic_slug' : topic.slug}) }}">{{ 'forum.now_resolved' | trans }}</a></p>
+    {% endif %}
+  {% endif %}
+     {% endif %}
+<div class="topic">
+    <h1>{{ topic.label }}</h1>
+    <h2>{{ topic.sublabel }}</h2>
+    
+    {% for post in post_list %}
+    <div class="post">
+     <div class="post-left">
+       <img class="cadre-img" width="80px" src="
+          {% if post.user.avatarUrl %}
+          {{ asset('bundles/yosimitsouser/'~post.user.avatarUrl) }}
+          {% else %}
+           {{ asset('bundles/yosimitsouser/images/avatar/default.png') }}   
+          {% endif %}
+          
+          " /> 
+       <p class="username">{{ post.user.username }}</p>
+       <p class="message">{{ post.user.nbPost }} {{ 'forum.nbPost' | trans }}</p>
+       <p class="message">{{ ('user.'~post.user.roles.0) | trans }}</p>
+     </div>   
+      <div class="post-right">
+          <p class="date">{{ post.cdate | date(date_format) }}</p>
+          {{ post.content | markdown }}    
+      </div> 
+      <div class="clear"></div>
+    </div>    
+    {% endfor %}
+     {{ knp_pagination_render(post_list) }}
+    {% if not topic.locked %}
+          {% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+           <div class="new_post">
+        <p class="post_a_message">{{ 'forum.no_message_login' | trans }}</p>
+         </div> 
+         {% else %}
+    <div class="new_post" id="new_post">
+        <p class="post_a_message">{{ 'forum.post_a_message' | trans }}</p>
+       
+        
+    {{ form_start(form) }}
+      
+    
+    <p>{{ form_widget(form.content) }}</p>
+    {{form_rest(form) }}
+    <p><input type="submit" value="{{ 'forum.submit_post' | trans }}" class="button width100"/></p>
+    {{ form_end(form) }}
+    </div>
+        {% endif %}
+    {% else %}
+       
+         <div class="new_post">
+        <p class="post_a_message">{{ 'forum.no_message_locked' | trans }}</p>
+         </div>
+       
+            
+         {% endif %}
+    
+</div>
+  
+            </div>
+{% endblock %}

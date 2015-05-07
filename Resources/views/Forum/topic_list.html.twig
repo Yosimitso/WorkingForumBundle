@@ -1,0 +1,71 @@
+{# empty Twig template #}
+{% extends '::base.html.twig' %}
+{% block body %}
+    {% include '::header.html.twig' %}
+    {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
+{% trans_default_domain 'front' %}
+{% if app.session.flashbag.has('success') %}
+                <div class="alert-success">
+                    <ul>
+                  {% for flashMessage in app.session.flashbag.get('success') %}
+                      <li>{{ flashMessage }}</li>
+                  {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+               {% if app.session.flashbag.has('error') %}
+                <div class="alert-error">
+                    <ul>
+                  {% for flashMessage in app.session.flashbag.get('error') %}
+                      <li>{{ flashMessage }}</li>
+                  {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+             <div id="forum_content">
+<div class="breadcrumb">
+    <a href="{{ path('forum')}}">Forum</a> &rarr; {{subforum.forum.name}}
+</div>
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+ <div class="new_topic_button">
+    <a class="button add" href="{{ path('new_topic', {'subforum_slug' : subforum.slug}) }}"><span class="add-plus"></span>{{ ('forum.new_topic' | trans) }}</a>
+    </div>
+    {% endif %}
+<div id="forum">
+    <div class="forum">
+    <h1>{{ subforum.name }}</h1>
+   
+<table class="topic_list">
+    {# <thead>
+        <tr>
+            <th>{{ 'forum.topic' | trans }}</th>
+            <th>{{ 'forum.author' | trans }}</th>
+            <th>{{ 'forum.replies' | trans }}
+    </thead> #}
+    {% for topic in topic_list %}
+        <tr>
+            <td>
+                {% if topic.locked %}
+                <img src="{{ asset('bundles/yosimitsoworkingforum/images/lock.png') }}" width="24" style="vertical-align:bottom" />
+                
+                {% endif %}
+                <a href="{{ path( 'topic', {'subforum_slug' : subforum.slug, 'topic_slug' : topic.slug}) }}">{{ topic.label }}</a>  
+                
+             
+                <br /><span class="sublabel">{{ topic.sublabel }}</span></td>
+            <td>{{ 'forum.by' | trans }} {{ topic.author.username}}<br />{{ topic.cdate | date(date_format)}}</td>
+            <td>{{ topic.nbReplies}} {{ 'forum.nbPost' | trans }}</td>
+            
+            
+        
+        
+        
+    {% endfor %}
+    
+
+</table>
+    </div>
+</div>
+    {{ knp_pagination_render(topic_list) }}
+             </div>
+{% endblock %}

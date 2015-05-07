@@ -1,0 +1,39 @@
+{
+  "name": "upndown",
+  "description": "HTML to Markdown converter",
+  "version": "0.0.8",
+  "keywords": [
+    "markdown",
+    "html",
+    "html2markdown",
+    "htmltomarkdown"
+  ],
+  "maintainers": [
+    {
+      "name": "Net Gusto",
+      "email": "contact@netgusto.com",
+      "web": "http://netgusto.com"
+    }
+  ],
+  "dependencies": {
+    "htmlparser-jresig": "1.0.3",
+    "jsdom": "0.10.3",
+    "mocha": "1.18.2",
+    "should": ">= 0.0.1"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha"
+  },
+  "repository": [
+    {
+      "type": "git",
+      "url": "https://github.com/netgusto/upndown.git"
+    }
+  ],
+  "licenses": [
+    {
+      "name": "The MIT License (MIT)",
+      "url": "https://github.com/netgusto/upndown/blob/master/LICENSE"
+    }
+  ]
+}

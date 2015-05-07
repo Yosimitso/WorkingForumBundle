@@ -1,0 +1,26 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+    {% include '::header.html.twig' %}
+    {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
+{% trans_default_domain 'front' %}
+ <div id="forum_content">
+<div class="breadcrumb">Forum</div>
+    <div id="forum">
+{% for forum in list_forum %}
+  
+    <div class="forum">
+        <h1>{{ forum.name }}</h1>
+         <table class="subforum">
+    {% for subforum in forum.subForum %}
+       <tr>
+           <td class="sub_name"><a href="{{ path('subforum', {'subforum_slug' : subforum.slug }) }}">{{ subforum.name }}</a></td>
+           <td class="sub_stat">{{ subforum.nbTopic }} {{ 'forum.nbTopic' | trans }}<br />{{ subforum.nbPost }} {{ 'forum.nbPost' | trans }}</td>
+           <td class="sub_lastreply">{{ 'forum.last_reply_date' |trans }}<br />{{ subforum.lastReplyDate | date('d/m/Y H:i:s') }}
+       </tr>
+        {% endfor %}
+         </table>
+    {% endfor %}
+</div> 
+    </div>
+{% endblock %}
+ 

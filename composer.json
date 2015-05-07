@@ -1,0 +1,30 @@
+{
+    "name" : "yosimitso/workingforumbundle",
+    "description" : "A Symfony2 forum bundle",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "Charly Martins",
+        "email" : "contact@charlymartins.fr"
+    }],
+    "keywords" : [
+        "symfony forum bundle"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+    },
+    "autoload" : {
+        "psr-0" : {
+            "Yosimitso\\WorkingForumBundle" : ""
+        }
+    },
+    "target-dir" : "Yosimitso/WorkingForumBundle",
+    "repositories" : [{
+    }],
+    "extra" : {
+    "branch-alias" : {
+            "dev-master" : "1"
+        }
+    }
+}

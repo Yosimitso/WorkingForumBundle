@@ -4,15 +4,21 @@ WorkingForumBundle
 A forum bundle for Symfony 2, easy to use and fully fonctionnal
 This bundle work with your user bundle with no extra configuration (which can extended FOSUserBundle)
 
+Demo
+-------------
+Coming soon
+
 
 Functionnalities
 ------------------
 - Forum with subforum
-- Moderator role
-- Post form using markdown with instant preview
-- Topic locking
-- Topic marked as 'resolved'
+- Use a moderator role as ROLE_MODERATOR (and default admin roles)
+- Post editor using markdown with instant preview
+- Enable topic locking
+- Enable marking topic as 'resolved'
 - Automatic breadcrumb
+- Messages counting (user, forum, suforum) with last replies
+- Automatic pagination
 
 
 Setup
@@ -22,7 +28,9 @@ Add to your composer.json, section 'require'
 ````json
 "require" : {
         [...]
-        "yosimitso/workingforumbundle" : "dev-master"
+        "yosimitso/workingforumbundle" : "dev-master",
+        "knplabs/knp-paginator-bundle": "2.4.*@dev",
+        "knplabs/knp-markdown-bundle": "~1.3"
     },
     "repositories" : [{
         "type" : "vcs",
@@ -42,10 +50,14 @@ yosimitso_forum:
 ```    
 Add to your translation file
 
-
-Demo
--------------
-Coming soon
+Your User Entity need these properties with getter and setter :
+````php
+       /**
+     * @var integer
+     * @ORM\Column(name="nb_post", type="integer")
+     */
+	 protected $nbPost;
+```
 
 Todo
 -----------

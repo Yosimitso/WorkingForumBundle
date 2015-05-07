@@ -22,11 +22,11 @@ Add to your composer.json, section 'require'
 ````json
 "require" : {
         [...]
-        "yosimitso/demobundle" : "dev-master"
+        "yosimitso/workingforumbundle" : "dev-master"
     },
     "repositories" : [{
         "type" : "vcs",
-        "url" : "https://github.com/Yosimitso/DemoBundle.git"
+        "url" : "https://github.com/Yosimitso/WorkingForumBundle.git"
     }],
 ```
 

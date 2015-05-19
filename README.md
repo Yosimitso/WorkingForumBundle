@@ -15,10 +15,11 @@ Functionnalities
 - Use a moderator role as ROLE_MODERATOR (and default admin roles)
 - Post editor using markdown with instant preview
 - Enable topic locking
+- Support multi language
 - Enable marking topic as 'resolved'
 - Automatic breadcrumb
 - Messages counting (user, forum, suforum) with last replies
-- Automatic pagination
+- Automatic pagination on topic list and topic
 
 
 Setup
@@ -48,7 +49,7 @@ yosimitso_forum:
     post_per_page: 5
     date_format: 'd/m/Y H:i:s'
 ```    
-Add to your translation file
+You can override the translations files
 
 Your User Entity need these properties with getter and setter :
 ````php
@@ -57,6 +58,18 @@ Your User Entity need these properties with getter and setter :
      * @ORM\Column(name="nb_post", type="integer")
      */
 	 protected $nbPost;
+ /**   
+         * @var string
+         * @ORM\Column(name="avatar_url", type="string",nullable=true)
+         */
+   
+        protected $avatarUrl;
+ /**   
+         * @var string
+         * @ORM\Column(name="username", type="string",nullable=true)
+         */
+   
+        protected $username;
 ```
 
 Todo

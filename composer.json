@@ -24,11 +24,6 @@
         }
     },
     "target-dir" : "Yosimitso/WorkingForumBundle",
-    "repositories" : [{
-    }],
-    "extra" : {
-    "branch-alias" : {
-            "dev-master" : "1"
-        }
-    }
+    "minimum-stability": "dev"
+   
 }

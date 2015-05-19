@@ -243,3 +243,10 @@
 .forum a:hover {
   color: #2a6496; 
 }
+
+.empty_forum {
+    text-align:center;
+    font-style: italic;
+    font-size:14px;
+    padding:20px;
+}

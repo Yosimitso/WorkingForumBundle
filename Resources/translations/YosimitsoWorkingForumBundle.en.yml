@@ -1,0 +1,31 @@
+forum:
+    nbTopic: topics
+    nbPost: posts
+    topic: Topic
+    sublabel: Topic's description
+    author: Author
+    replies: Replies
+    by: By
+    post: post
+    post_a_message: Post a reply
+    submit_post: Post !
+    new_topic: New topic
+    into_forum: into the forum
+    create_topic : Create the topic
+    last_reply_date: Last reply the
+    lock: Lock
+    no_message_locked: This topic is locked, you cannot post anymore
+    no_message_login: You have to be logged in to post a message
+    topic_locked: Topic locked
+    locked: Locked
+    reply: Reply
+    resolved: Resolved
+    now_resolved: My topic is resolved
+    topic_resolved: This topic is resolved
+    empty_forum: No message
+    user:
+        ROLE_SUPER_ADMIN: Admin
+        ROLE_USER: User
+pagination:
+    previous: Previous
+    next: Next

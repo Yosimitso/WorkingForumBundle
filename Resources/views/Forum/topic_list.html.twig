@@ -3,7 +3,7 @@
 {% block body %}
     {% include '::header.html.twig' %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
-{% trans_default_domain 'front' %}
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 {% if app.session.flashbag.has('success') %}
                 <div class="alert-success">
                     <ul>
@@ -42,6 +42,7 @@
             <th>{{ 'forum.author' | trans }}</th>
             <th>{{ 'forum.replies' | trans }}
     </thead> #}
+    {% if topic_list is not empty %}
     {% for topic in topic_list %}
         <tr>
             <td>
@@ -61,9 +62,13 @@
         
         
     {% endfor %}
-    
+    </table>
+    {% else %}
+    </table>
+    <div class="empty_forum">{{ 'forum.empty_forum' | trans }}</div>
+    {% endif %}    
 
-</table>
+
     </div>
 </div>
     {{ knp_pagination_render(topic_list) }}

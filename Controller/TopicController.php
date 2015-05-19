@@ -24,6 +24,7 @@ class TopicController extends Controller
     $topic = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Topic')->findOneBySlug($topic_slug);
     $post_query = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Post')->findByTopicId($topic->getId());
     $subforum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
+	
     
      $paginator  = $this->get('knp_paginator');
         $post_list = $paginator->paginate(
@@ -43,6 +44,9 @@ class TopicController extends Controller
         //\Doctrine\Common\Util\Debug::dump($topic);
         //var_dump($topic->getId());
        // exit();
+	  
+	   
+	   
         $published = 1;
         $topic->addNbReplies(1)
                ->setLastReplyDate(new \DateTime);
@@ -53,8 +57,10 @@ class TopicController extends Controller
                 ->setUser($user);
          $my_post->setTopic($topic);
          
-         $subforum->setNbTopic($subforum->getNbTopic()+1);
+   
          $subforum->setNbPost($subforum->getNbPost()+1);
+		 $subforum->setLastReplyDate(new \DateTime);
+		
       
         $user->addNbPost(1);
        $em->persist($user);
@@ -119,11 +125,15 @@ class TopicController extends Controller
                 ->setContent(nl2br($my_post->getContent()))
                 ->setUser($user);
         $my_post->setTopic($my_topic);
+		
+		 $subforum->setNbPost($subforum->getNbPost()+1);
+		 $subforum->setLastReplyDate(new \DateTime);
       
         $user->addNbPost(1);
        $em->persist($user);
        $em->persist($my_topic);
-       
+       $em->persist($subforum);
+	   
        $em->flush();
        
        $my_topic->setSlug($my_topic->getId().'-'.$this->clean($my_topic->getLabel()));

@@ -3,7 +3,7 @@
 {% block body %}
     {% include '::header.html.twig' %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
-{% trans_default_domain 'front' %}
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 
 
 
@@ -110,7 +110,7 @@
           " /> 
        <p class="username">{{ post.user.username }}</p>
        <p class="message">{{ post.user.nbPost }} {{ 'forum.nbPost' | trans }}</p>
-       <p class="message">{{ ('user.'~post.user.roles.0) | trans }}</p>
+       <p class="message">{{ ('forum.user.'~post.user.roles.0) | trans }}</p>
      </div>   
       <div class="post-right">
           <p class="date">{{ post.cdate | date(date_format) }}</p>

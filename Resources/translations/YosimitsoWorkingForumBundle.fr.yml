@@ -1,0 +1,31 @@
+forum:
+    nbTopic: sujets
+    nbPost: messages
+    topic: Sujet
+    sublabel: Description du sujet
+    author: Auteur
+    replies: Réponses
+    by: Par
+    post: message
+    post_a_message: Poster une réponse
+    submit_post: Poster !
+    new_topic: Nouveau sujet
+    into_forum: dans le forum
+    create_topic : Créez le sujet
+    last_reply_date: Dernier message le
+    lock: Verrouiller
+    no_message_locked: Ce sujet a été verrouillé, vous ne pouvez pas poster de nouveaux messages
+    no_message_login: Vous devez être connecté pour pouvoir poster un message
+    topic_locked: Sujet verrouillé
+    locked: Verrouillé
+    reply: Répondre
+    resolved: Résolu
+    now_resolved: Mon sujet est résolu
+    topic_resolved: Ce sujet est résolu
+    empty_forum: Aucun message
+    user:
+        ROLE_SUPER_ADMIN: Admin
+        ROLE_USER: Utilisateur
+pagination:
+    previous: Précédent
+    next: Suivant

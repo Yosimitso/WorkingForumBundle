@@ -25,7 +25,7 @@
             "Yosimitso\\WorkingForumBundle" : ""
         }
     },
-    "target-dir" : "",
+    "target-dir" : "Yosimitso/WorkingForumBundle",
     "minimum-stability": "dev"
    
 }

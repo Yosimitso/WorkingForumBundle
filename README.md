@@ -35,11 +35,7 @@ Add to your composer.json, section 'require'
         "yosimitso/workingforumbundle" : "dev-master",
         "knplabs/knp-paginator-bundle": "2.4.*@dev",
         "knplabs/knp-markdown-bundle": "~1.3"
-    },
-    "repositories" : [{
-        "type" : "vcs",
-        "url" : "https://github.com/Yosimitso/WorkingForumBundle.git"
-    }],
+    }
 ```
 
 
@@ -114,11 +110,7 @@ Ajoutez à votre composer.json, section 'require'
         "yosimitso/workingforumbundle" : "dev-master",
         "knplabs/knp-paginator-bundle": "2.4.*@dev",
         "knplabs/knp-markdown-bundle": "~1.3"
-    },
-    "repositories" : [{
-        "type" : "vcs",
-        "url" : "https://github.com/Yosimitso/WorkingForumBundle.git"
-    }],
+    }
 ```
 
 Enregistrez le bundle dans votre AppKernel

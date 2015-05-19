@@ -1,1 +1,0 @@
-![Net Gusto](http://netgusto.com/img/logo-netgusto.com)

@@ -1,1 +1,0 @@
-Test **double asterisks** test.

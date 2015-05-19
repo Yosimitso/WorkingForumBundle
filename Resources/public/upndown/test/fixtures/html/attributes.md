@@ -1,1 +1,0 @@
-<amount><bottle something="yes">'</bottle></amount>

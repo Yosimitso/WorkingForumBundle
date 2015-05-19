@@ -1,3 +1,0 @@
-Poetry  
-in  
-motion

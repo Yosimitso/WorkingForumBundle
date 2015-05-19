@@ -1,1 +1,0 @@
-This is [Net Gusto](http://netgusto.com/ "Title") inline link.

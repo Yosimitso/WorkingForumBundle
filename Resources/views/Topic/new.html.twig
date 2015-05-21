@@ -37,7 +37,7 @@
 
  <div id="forum_content">
 <div class="breadcrumb">
- <a href="{{ path('forum')}}">Forum</a> &rarr; <a href="{{ path('forum') }}">{{subforum.forum.name}}</a> &rarr; <a href="{{ path('subforum',{ 'subforum_slug' : subforum.slug }) }}">{{subforum.name }}</a> &rarr; {{ 'forum.new_topic' | trans }}
+ <a href="{{ path('workingforum_forum')}}">Forum</a> &rarr; <a href="{{ path('workingforum_forum') }}">{{subforum.forum.name}}</a> &rarr; <a href="{{ path('workingforum_subforum',{ 'subforum_slug' : subforum.slug }) }}">{{subforum.name }}</a> &rarr; {{ 'forum.new_topic' | trans }}
 </div>
 <div class="new_topic">
 

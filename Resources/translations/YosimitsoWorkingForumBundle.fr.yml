@@ -29,3 +29,9 @@ forum:
 pagination:
     previous: Précédent
     next: Suivant
+admin:
+    forum_name: Nom du forum
+    list_subforum: Liste des sous-forums
+    admin_area: Administration du forum
+    new_subforum: Nouveau sous-forum
+    submit: Enregistrer

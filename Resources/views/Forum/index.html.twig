@@ -6,6 +6,9 @@
  <div id="forum_content">
 <div class="breadcrumb">Forum</div>
     <div id="forum">
+        {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
+            <p><a class="button" href="{{ path('workingforum_admin') }}">{{ 'forum.admin_access' | trans }}</a></p>
+            {% endif %}
 {% for forum in list_forum %}
   
     <div class="forum">
@@ -13,8 +16,8 @@
          <table class="subforum">
     {% for subforum in forum.subForum %}
        <tr>
-           <td class="sub_name"><a href="{{ path('subforum', {'subforum_slug' : subforum.slug }) }}">{{ subforum.name }}</a></td>
-           <td class="sub_stat">{{ subforum.nbTopic }} {{ 'forum.nbTopic' | trans }}<br />{{ subforum.nbPost }} {{ 'forum.nbPost' | trans }}</td>
+           <td class="sub_name"><a href="{{ path('workingforum_subforum', {'subforum_slug' : subforum.slug }) }}">{{ subforum.name }}</a></td>
+           <td class="sub_stat">{{ subforum.nbTopic | number_format }} {{ 'forum.nbTopic' | trans }}<br />{{ subforum.nbPost | number_format }} {{ 'forum.nbPost' | trans }}</td>
            <td class="sub_lastreply">{{ 'forum.last_reply_date' |trans }}<br />{{ subforum.lastReplyDate | date('d/m/Y H:i:s') }}
        </tr>
         {% endfor %}

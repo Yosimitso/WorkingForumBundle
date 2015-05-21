@@ -24,11 +24,11 @@
             {% endif %}
              <div id="forum_content">
 <div class="breadcrumb">
-    <a href="{{ path('forum')}}">Forum</a> &rarr; {{subforum.forum.name}}
+    <a href="{{ path('workingforum_forum')}}">Forum</a> &rarr; {{subforum.forum.name}}
 </div>
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
  <div class="new_topic_button">
-    <a class="button add" href="{{ path('new_topic', {'subforum_slug' : subforum.slug}) }}"><span class="add-plus"></span>{{ ('forum.new_topic' | trans) }}</a>
+    <a class="button add" href="{{ path('workingforum_new_topic', {'subforum_slug' : subforum.slug}) }}"><span class="add-plus"></span>{{ ('forum.new_topic' | trans) }}</a>
     </div>
     {% endif %}
 <div id="forum">
@@ -50,12 +50,13 @@
                 <img src="{{ asset('bundles/yosimitsoworkingforum/images/lock.png') }}" width="24" style="vertical-align:bottom" />
                 
                 {% endif %}
-                <a href="{{ path( 'topic', {'subforum_slug' : subforum.slug, 'topic_slug' : topic.slug}) }}">{{ topic.label }}</a>  
+                <a href="{{ path( 'workingforum_topic', {'subforum_slug' : subforum.slug, 'topic_slug' : topic.slug}) }}">{{ topic.label }}</a>  
                 
              
                 <br /><span class="sublabel">{{ topic.sublabel }}</span></td>
-            <td>{{ 'forum.by' | trans }} {{ topic.author.username}}<br />{{ topic.cdate | date(date_format)}}</td>
             <td>{{ topic.nbReplies}} {{ 'forum.nbPost' | trans }}</td>
+            <td>{{ 'forum.by' | trans }} {{ topic.author.username}}<br />{{ topic.cdate | date(date_format)}}</td>
+            
             
             
         

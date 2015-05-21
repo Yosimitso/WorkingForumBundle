@@ -37,7 +37,7 @@ class Forum
     
     
     /**
-   * @ORM\OneToMany(targetEntity="Yosimitso\WorkingForumBundle\Entity\Subforum", mappedBy="forum", cascade={"persist"})
+   * @ORM\OneToMany(targetEntity="Yosimitso\WorkingForumBundle\Entity\Subforum", mappedBy="forum", cascade={"persist","remove"})
    
      * @var arrayCollection
      *

@@ -15,14 +15,14 @@ class ForumController extends Controller
                 ));
     }
     
-    public function subforumAction($subforum_slug,$page = 1, Request $request)
+    public function subforumAction($subforum_slug,Request $request,$page = 1)
     {
         if ($page <= 0)
         {
             $page = 1;
         }
         $subforum = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
-       $list_subforum_query = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Topic')->findBySubforumId($subforum->getId());
+       $list_subforum_query = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Topic')->findBySubforum($subforum->getId());
       
         $date_format = $this->container->getParameter( 'yosimitso_forum.date_format' );
        $paginator  = $this->get('knp_paginator');

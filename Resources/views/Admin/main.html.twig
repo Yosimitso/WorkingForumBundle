@@ -22,12 +22,34 @@
                     </ul>
                 </div>
             {% endif %}
+               <h1>{{ 'admin.admin_workingforum' | trans }}</h1>
 <div id="forum_admin">
-    <ul>
+ 
+    <div class="forum_block_admin">
+        <div class="forum_block_title">{{ 'admin.manage_forum' | trans }}</div>
+        <div class="forum_content">
+    <ul style="list-style: inside decimal;">
     {% for forum in list_forum %}
         <li><a href="{{ path('workingforum_admin_forum_edit', { 'id' : forum.id }) }}">{{ forum.name }}</a></li>   
    {% endfor %}
     </ul>
+        </div>
+    </div>
+     <div class="forum_block_admin">
+        <div class="forum_block_title">{{ 'admin.manage_settings' | trans }}</div>
+        <div class="forum_content">
+            {{ form_start(form_settings) }}
+    <ul>
+        {% for setting in form_settings %}
+            
+            <li>{{ form_widget(setting) }} {{ form_label(setting)}}</li>
+        {% endfor %}
+    </ul>
+     <input type="submit" class="button button-small" value="{{ 'admin.submit' |trans }}" />
+     {{ form_end(form_settings) }}
+     </div>
+     </div>
+    <div class="clear"></div>
 </div>
 </div>
 {% endblock %}

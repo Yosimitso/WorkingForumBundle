@@ -23,6 +23,7 @@ forum:
     now_resolved: Mon sujet est résolu
     topic_resolved: Ce sujet est résolu
     empty_forum: Aucun message
+    admin_access: Accès à l'administration
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: Utilisateur
@@ -30,8 +31,15 @@ pagination:
     previous: Précédent
     next: Suivant
 admin:
+    admin_workingforum: Administration de WorkingForum
     forum_name: Nom du forum
     list_subforum: Liste des sous-forums
     admin_area: Administration du forum
     new_subforum: Nouveau sous-forum
     submit: Enregistrer
+    manage_forum: Gestion des forums
+    manage_settings: Réglages
+    delete_subforum: Souhaitez vous supprimer ce sous forum ? Cette action est irréversible après l'enregistrement
+setting:
+    allow_anonymous_read: Autoriser les utilisateurs non enregistrés à lire
+    allow_moderator_delete_topic: Autoriser les modérateurs à supprimer des sujets

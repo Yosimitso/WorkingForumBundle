@@ -21,12 +21,7 @@ class Post
      */
     private $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="topic_id", type="integer")
-     */
-    private $topicId;
+    
 
      /**
     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Topic", inversedBy="post")
@@ -99,29 +94,7 @@ class Post
         return $this->id;
     }
 
-    /**
-     * Set topicId
-     *
-     * @param integer $topicId
-     * @return Post
-     */
-    public function setTopicId($topicId)
-    {
-        $this->topicId = $topicId;
-    
-        return $this;
-    }
-
-    /**
-     * Get topicId
-     *
-     * @return integer 
-     */
-    public function getTopicId()
-    {
-        return $this->topicId;
-    }
-
+   
     /**
      * Set content
      *

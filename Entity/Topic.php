@@ -30,23 +30,11 @@ class Topic
      */
     private $subforum;
     
-     /**
-     * @var integer
-     *
-     * @ORM\Column(name="subforum_id", type="integer")
-     */
-    
-    private $subforumId;
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="author_id", type="integer")
-     */
-    private $authorId;
+ 
+  
     
      /**
-    * @ORM\ManyToOne(targetEntity="Yosimitso\UserBundle\Entity\User")
+    * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
      *  @ORM\JoinColumn(name="author_id",referencedColumnName="id",nullable=false)
      * @var arrayCollection
      */
@@ -149,29 +137,7 @@ class Topic
         return $this->subforum;
     }
 
-    /**
-     * Set authorId
-     *
-     * @param integer $authorId
-     * @return Topic
-     */
-    public function setAuthorId($authorId)
-    {
-        $this->authorId = $authorId;
-    
-        return $this;
-    }
-
-    /**
-     * Get authorId
-     *
-     * @return integer 
-     */
-    public function getAuthorId()
-    {
-        return $this->authorId;
-    }
-
+  
     /**
      * Set cdate
      *
@@ -293,30 +259,7 @@ class Topic
         return $this->locked;
     }
     
-     /**
-     * Set subforumId
-      *
-     *
-     * @param integer $subforumId
-     * @return Topic
-     */
-    public function setSubforumId($subforumId)
-    {
-        $this->subforumId = $subforumId;
-    
-        return $this;
-    }
-
-    /**
-     * Get subforumId
-     *
-     * @return integer 
-     */
-    public function getSubforumId()
-    {
-        return $this->subforumId;
-    }
-    
+  
     /**
      * Set label
      *

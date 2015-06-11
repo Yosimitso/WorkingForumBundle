@@ -269,6 +269,7 @@ padding-right: 10px;
 padding-top: 20px;
 text-align: center;
 width: 100%; 
+text-align:left;
 }
 
 #forum_admin label, #forum_admin .label {
@@ -276,6 +277,11 @@ font-size:20px;
 color:grey;
 font-family: "Lucida Grande",Arial;
 margin-top: 20px;
+}
+
+#forum_admin .forum_block_admin label {
+  font-size:12px;  
+  color: black;
 }
 
 #forum_admin input[type="text"], #forum_admin input[type="email"], #forum_admin input[type="password"], #forum_admin select  {
@@ -287,8 +293,14 @@ margin-top: 20px;
   width: 300px;
 }
 
+.forum_block_admin .forum_content {
+    padding:10px;
+}
+
 #forum_admin ul {
-    list-style:decimal;
+    list-style:inside none;
+
+   
 }
 
 #forum_content h1 {
@@ -304,3 +316,35 @@ background-color:#188D40;
 /*background-size:100%;*/
 font-weight:normal;
 }
+
+.forum_block_admin {
+  border: 1px solid silver;
+  max-width: 500px;
+  min-width: 300px;
+  font-family:"Arial";
+  margin-left: 20px;
+  float:left;
+}
+
+.forum_block_admin a {
+  color: inherit;
+  text-decoration:inherit;
+}
+
+.forum_block_admin ul {
+    margin: 10px 0;
+}
+
+.forum_block_title {
+    background-color: #3fa757;
+    color: white;
+    font-family: Roboto,"Lucida Grande";
+    font-size: 20px;
+    padding:5px;
+    text-align:center;
+}
+
+.clear {
+    clear:both;
+}
+

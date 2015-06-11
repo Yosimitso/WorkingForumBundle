@@ -22,7 +22,7 @@ class TopicController extends Controller
     {
          $em = $this->getDoctrine()->getManager();
     $topic = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Topic')->findOneBySlug($topic_slug);
-    $post_query = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Post')->findByTopicId($topic->getId());
+    $post_query = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Post')->findByTopic($topic->getId());
     $subforum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
 	
     

@@ -5,12 +5,12 @@ namespace Yosimitso\WorkingForumBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Forum
+ * Setting
  *
- * @ORM\Table(name="forum_forum")
- * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Entity\ForumRepository")
+ * @ORM\Table(name="forum_setting")
+ * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Entity\SettingRepository")
  */
-class Forum
+class Setting
 {
     /**
      * @var integer
@@ -27,28 +27,23 @@ class Forum
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
-    
-     /**
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string", length=255)
+     * @ORM\Column(name="value", type="string", length=255)
      */
-    private $slug;
-    
+    private $value;
     
     /**
-   * @ORM\OneToMany(targetEntity="Yosimitso\WorkingForumBundle\Entity\Subforum", mappedBy="forum", cascade={"persist","remove"}, orphanRemoval=true)
-   
-     * @var arrayCollection
+     * @var string
      *
+     * @ORM\Column(name="type", type="string", length=255)
      */
-    private $subForum;
-    
-    public function removeSubForum($subForum)
-    {
-        $this->subForum->remove($subForum);
-        $subForum->setForum(null);
-    }
+    private $type;
+
+
+
     /**
      * Get id
      *
@@ -63,7 +58,7 @@ class Forum
      * Set name
      *
      * @param string $name
-     * @return Forum
+     * @return Setting
      */
     public function setName($name)
     {
@@ -81,38 +76,51 @@ class Forum
     {
         return $this->name;
     }
-    
-    public function getSubforum()
-    {
-        return $this->subForum;
-    }
-    
-    public function addSubForum(\Yosimitso\WorkingForumBundle\Entity\Subforum $subforum)
-    {
-        $this->subforum[] = $subforum; 
-    }
-    
-     /**
-     * Set slug
+
+    /**
+     * Set value
      *
-     * @param string $slug
-     * @return Forum
+     * @param string $value
+     * @return Setting
      */
-    public function setSlug($slug)
+    public function setValue($value)
     {
-        $this->slug = $slug;
-   
+        $this->value = $value;
+    
         return $this;
     }
 
     /**
-     * Get slug
+     * Get value
      *
      * @return string 
      */
-    public function getSlug()
+    public function getValue()
     {
-        return $this->slug;
+        return $this->value;
     }
     
+    
+     /**
+     * Set type
+     *
+     * @param string $type
+     * @return Setting
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 }

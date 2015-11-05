@@ -122,9 +122,9 @@ yosimitso_forum:
     post_per_page: 5
     date_format: 'd/m/Y H:i:s'
 ```    
-You can override the translations files
+Vous pouvez surcharger les fichiers de traductions
 
-Your User Entity need these properties with getter and setter :
+Votre entité Utilisateur à besoin de ces propriétés avec getter et setter
 ````php
        /**
      * @var integer
@@ -147,5 +147,5 @@ Your User Entity need these properties with getter and setter :
 
 Todo
 -----------
-- Removing post by a moderator
+- Suppression d'un topic par un modérateur
 

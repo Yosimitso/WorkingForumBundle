@@ -40,10 +40,13 @@ Add to your composer.json, section 'require'
 
 
 Register the bundles in your AppKernel
+````php
+new Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle()
+```
 Add to your app/config.yml
 
 ````yml
-yosimitso_forum:
+yosimitso_working_forum:
     topic_per_page: 10
     post_per_page: 5
     date_format: 'd/m/Y H:i:s'
@@ -113,11 +116,14 @@ Ajoutez à votre composer.json, section 'require'
     }
 ```
 
-Enregistrez le bundle dans votre AppKernel
+Ajoutez le bundle dans votre AppKernel
+````php
+new Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle()
+```
 Ajoutez à votre app/config.yml
 
 ````yml
-yosimitso_forum:
+yosimitso_working_forum:
     topic_per_page: 10
     post_per_page: 5
     date_format: 'd/m/Y H:i:s'

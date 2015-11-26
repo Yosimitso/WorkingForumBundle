@@ -50,7 +50,12 @@ yosimitso_working_forum:
     topic_per_page: 10
     post_per_page: 5
     date_format: 'd/m/Y H:i:s'
-```    
+```
+Add to you app/config.yml into 'orm' key :
+````yml
+ resolve_target_entities:
+            Yosimitso\WorkingForumBundle\Entity\User: You\YourUserBundle\Entity\YourUser
+```
 You can override the translations files
 
 Your User Entity need these properties with getter and setter :
@@ -127,7 +132,13 @@ yosimitso_working_forum:
     topic_per_page: 10
     post_per_page: 5
     date_format: 'd/m/Y H:i:s'
-```    
+```   
+Ajouter à votre app/config.yml dans la clé 'orm' :
+````yml
+ resolve_target_entities:
+            Yosimitso\WorkingForumBundle\Entity\User: You\YourUserBundle\Entity\YourUser
+```
+
 Vous pouvez surcharger les fichiers de traductions
 
 Votre entité Utilisateur à besoin de ces propriétés avec getter et setter

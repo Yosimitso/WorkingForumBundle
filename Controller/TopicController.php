@@ -75,7 +75,7 @@ class TopicController extends Controller
         $this->get('session')->getFlashBag()->add(
             'success',
             'Votre message a bien été posté');
-        return $this->redirect($this->generateUrl('topic',['subforum_slug' => $subforum_slug, 'topic_slug' => $topic_slug]));
+        return $this->redirect($this->generateUrl('working_forumtopic',['subforum_slug' => $subforum_slug, 'topic_slug' => $topic_slug]));
     }
     
      
@@ -145,7 +145,7 @@ class TopicController extends Controller
         $this->get('session')->getFlashBag()->add(
             'success',
             'Votre sujet a bien été crée');
-        return $this->redirect($this->generateUrl('subforum',['subforum_slug' => $subforum_slug]));
+        return $this->redirect($this->generateUrl('workingforum_subforum',['subforum_slug' => $subforum_slug]));
        
     }
     
@@ -187,7 +187,7 @@ class TopicController extends Controller
             'Le sujet a été verrouillé');
             
             
-            return $this->redirect($this->generateUrl('topic',array('topic_slug' => $topic_slug, 'subforum_slug' => $subforum_slug)));
+            return $this->redirect($this->generateUrl('workingforum_topic',array('topic_slug' => $topic_slug, 'subforum_slug' => $subforum_slug)));
             
             
         }
@@ -211,7 +211,7 @@ class TopicController extends Controller
             'Le sujet est résolu, merci pour votre retour');
             
             
-            return $this->redirect($this->generateUrl('topic',array('topic_slug' => $topic_slug, 'subforum_slug' => $subforum_slug)));
+            return $this->redirect($this->generateUrl('workingforum_topic',array('topic_slug' => $topic_slug, 'subforum_slug' => $subforum_slug)));
         }
 }
 

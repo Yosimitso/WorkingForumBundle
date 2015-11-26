@@ -52,7 +52,7 @@ class Post
     private $userId;
     
      /**
-    * @ORM\ManyToOne(targetEntity="Yosimitso\UserBundle\Entity\User")
+    * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\User")
      *  @ORM\JoinColumn(name="user_id",referencedColumnName="id",nullable=true)
      * @var arrayCollection
      */

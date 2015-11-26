@@ -34,7 +34,7 @@ class Topic
   
     
      /**
-    * @ORM\ManyToOne(targetEntity="Yosimitso\UserBundle\Entity\User")
+    * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\User")
      *  @ORM\JoinColumn(name="author_id",referencedColumnName="id",nullable=false)
      * @var arrayCollection
      */

@@ -30,9 +30,9 @@ class TopicController extends Controller
         $post_list = $paginator->paginate(
         $post_query,
         $request->query->get('page', 1)/*page number*/,
-        $this->container->getParameter( 'yosimitso_forum.post_per_page' ) /*limit per page*/
+        $this->container->getParameter( 'yosimitso_working_forum.post_per_page' ) /*limit per page*/
     );
-   $date_format = $this->container->getParameter( 'yosimitso_forum.date_format' );
+   $date_format = $this->container->getParameter( 'yosimitso_working_forum.date_format' );
    $user = $this->getUser();
     
     $my_post = new Post;

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Subforum
  *
- * @ORM\Table(name="forum_subforum")
+ * @ORM\Table(name="workingforum_subforum")
  * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Entity\SubforumRepository")
  */
 class Subforum

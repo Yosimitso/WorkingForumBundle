@@ -34,9 +34,9 @@ class YosimitsoWorkingForumExtension extends Extension
         }
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
-         $container->setParameter('yosimitso_forum.topic_per_page', $config['topic_per_page']);
-         $container->setParameter('yosimitso_forum.post_per_page', $config['post_per_page']);
-         $container->setParameter('yosimitso_forum.date_format', $config['date_format']);
+         $container->setParameter('yosimitso_working_forum.topic_per_page', $config['topic_per_page']);
+         $container->setParameter('yosimitso_working_forum.post_per_page', $config['post_per_page']);
+         $container->setParameter('yosimitso_working_forum.date_format', $config['date_format']);
          
     }
 }

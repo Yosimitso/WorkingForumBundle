@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Post
  *
- * @ORM\Table(name="forum_post")
+ * @ORM\Table(name="workingforum_post")
  * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Entity\PostRepository")
  */
 class Post

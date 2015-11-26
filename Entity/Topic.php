@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Topic
  *
- * @ORM\Table(name="forum_topic")
+ * @ORM\Table(name="workingforum_topic")
  * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Entity\TopicRepository")
  */
 class Topic
@@ -34,7 +34,7 @@ class Topic
   
     
      /**
-    * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
+    * @ORM\ManyToOne(targetEntity="Yosimitso\UserBundle\Entity\User")
      *  @ORM\JoinColumn(name="author_id",referencedColumnName="id",nullable=false)
      * @var arrayCollection
      */

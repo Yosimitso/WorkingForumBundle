@@ -18,7 +18,13 @@
        <tr>
            <td class="sub_name"><a href="{{ path('workingforum_subforum', {'subforum_slug' : subforum.slug }) }}">{{ subforum.name }}</a></td>
            <td class="sub_stat">{{ subforum.nbTopic | number_format }} {{ 'forum.nbTopic' | trans }}<br />{{ subforum.nbPost | number_format }} {{ 'forum.nbPost' | trans }}</td>
-           <td class="sub_lastreply">{{ 'forum.last_reply_date' |trans }}<br />{{ subforum.lastReplyDate | date('d/m/Y H:i:s') }}
+           <td class="sub_lastreply">
+               {% if subforum.nbPost > 0 %}
+               {{ 'forum.last_reply_date' |trans }}
+               <br />
+               {{ subforum.lastReplyDate | date('d/m/Y H:i:s') }}
+               {% endif %}
+               </td>
        </tr>
         {% endfor %}
          </table>

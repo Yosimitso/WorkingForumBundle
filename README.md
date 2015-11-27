@@ -21,7 +21,7 @@ Functionnalities
 - Support multi language
 - Enable marking topic as 'resolved'
 - Automatic breadcrumb
-- Messages counting (user, forum, suforum) with last replies
+- Messages counting (user, forum, subforum) with last replies
 - Automatic pagination on topic list and topic
 
 
@@ -77,6 +77,78 @@ Your User Entity need these properties with getter and setter :
          */
    
         protected $username;
+		 /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Set nbPost
+     *
+     * @param integer $nbPost
+     *
+     * @return User
+     */
+    public function setNbPost($nbPost)
+    {
+        $this->nbPost = $nbPost;
+
+        return $this;
+    }
+
+    /**
+     * Get nbPost
+     *
+     * @return integer
+     */
+    public function getNbPost()
+    {
+        return $this->nbPost;
+    }
+
+    /**
+     * Set avatarUrl
+     *
+     * @param string $avatarUrl
+     *
+     * @return User
+     */
+    public function setAvatarUrl($avatarUrl)
+    {
+        $this->avatarUrl = $avatarUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get avatarUrl
+     *
+     * @return string
+     */
+    public function getAvatarUrl()
+    {
+        return $this->avatarUrl;
+    }
+
 ```
 
 Todo
@@ -87,7 +159,7 @@ FRANCAIS
 ==================
 ** EN DEVELOPEMENT **
 Un bundle pour forum pour Symfony 2, simple a mettre en place et pleinement fonctionnel
-Ce bundle utilise votre bundle utilisateur (qui peut hérité de FOSUserBundle)
+Ce bundle utilise votre bundle utilisateur (qui peut hériter de FOSUserBundle)
 
 
 Demo
@@ -105,7 +177,7 @@ Fonctionnalités
 - Les topics peuvent être marqués comme résolus
 - Breadcrumb (fil d'Arianne) automatique
 - Compteur de messages (utilisateur, forum, suforum) avec dernières réponses
-- Pagination automatique sur la liste des topic, et les messages des topicq
+- Pagination automatique sur la liste des topic, et les messages des topics
 
 
 Installation
@@ -160,6 +232,78 @@ Votre entité Utilisateur à besoin de ces propriétés avec getter et setter
          */
    
         protected $username;
+		 /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Set nbPost
+     *
+     * @param integer $nbPost
+     *
+     * @return User
+     */
+    public function setNbPost($nbPost)
+    {
+        $this->nbPost = $nbPost;
+
+        return $this;
+    }
+
+    /**
+     * Get nbPost
+     *
+     * @return integer
+     */
+    public function getNbPost()
+    {
+        return $this->nbPost;
+    }
+
+    /**
+     * Set avatarUrl
+     *
+     * @param string $avatarUrl
+     *
+     * @return User
+     */
+    public function setAvatarUrl($avatarUrl)
+    {
+        $this->avatarUrl = $avatarUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get avatarUrl
+     *
+     * @return string
+     */
+    public function getAvatarUrl()
+    {
+        return $this->avatarUrl;
+    }
+
 ```
 
 Todo

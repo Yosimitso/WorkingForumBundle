@@ -23,9 +23,26 @@ forum:
     now_resolved: My topic is resolved
     topic_resolved: This topic is resolved
     empty_forum: No message
+    admin_access: Administration
+    no_subforum: No subforum
+    need_authentication: You must be registered to post
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: User
 pagination:
     previous: Previous
     next: Next
+
+admin:
+    admin_workingforum: Administration of WorkingForum
+    forum_name: Forum's name
+    list_subforum: Subforums' list
+    admin_area: Forum's administration
+    new_subforum: New subforum
+    submit: Submit
+    manage_forum: Manage forums
+    manage_settings: Settings
+    delete_subforum: Are you sure you want to delete this subforum ? This operation is irreversible
+setting:
+    allow_anonymous_read: Allow anonymous users to read
+    allow_moderator_delete_topic: Allow moderators to delete topics

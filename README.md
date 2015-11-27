@@ -50,6 +50,16 @@ yosimitso_working_forum:
     topic_per_page: 10
     post_per_page: 5
     date_format: 'd/m/Y H:i:s'
+knp_paginator:
+    page_range: 1                      # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: sort          # sort field query parameter name
+        sort_direction_name: direction # sort direction query parameter name
+        distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        pagination: YosimitsoWorkingForumBundle:Common:slidePagination.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
 ```
 Add to you app/config.yml into 'orm' key :
 ````yml
@@ -154,6 +164,8 @@ Your User Entity need these properties with getter and setter :
 Todo
 -----------
 - Removing post by a moderator
+- Allow anonymous users to create thread if set in the forums' configuration
+- Forbide anonymous users to read if set in the forums' configuration
 
 FRANCAIS
 ==================
@@ -204,6 +216,17 @@ yosimitso_working_forum:
     topic_per_page: 10
     post_per_page: 5
     date_format: 'd/m/Y H:i:s'
+	
+knp_paginator:
+    page_range: 1                      # default page range used in pagination control
+    default_options:
+        page_name: page                # page query parameter name
+        sort_field_name: sort          # sort field query parameter name
+        sort_direction_name: direction # sort direction query parameter name
+        distinct: true                 # ensure distinct results, useful when ORM queries are using GROUP BY statements
+    template:
+        pagination: YosimitsoWorkingForumBundle:Common:slidePagination.html.twig     # sliding pagination controls template
+        sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
 ```   
 Ajouter à votre app/config.yml dans la clé 'orm' :
 ````yml
@@ -309,4 +332,6 @@ Votre entité Utilisateur à besoin de ces propriétés avec getter et setter
 Todo
 -----------
 - Suppression d'un topic par un modérateur
+- Autoriser ou non les utilisateurs anonyme à créer des sujets selon la configuration du forum
+- Interdire les utilisateurs anonymes à lire les forums selon la configuration du forum
 

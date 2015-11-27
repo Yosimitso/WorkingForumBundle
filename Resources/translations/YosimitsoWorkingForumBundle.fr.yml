@@ -24,6 +24,8 @@ forum:
     topic_resolved: Ce sujet est résolu
     empty_forum: Aucun message
     admin_access: Accès à l'administration
+    no_subforum: Aucun sous-forum
+    need_authentication: Vous devez être enregistré pour créer un sujet
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: Utilisateur

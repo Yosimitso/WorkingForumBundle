@@ -26,6 +26,8 @@
  <div class="new_topic_button">
     <a class="button add" href="{{ path('workingforum_new_topic', {'subforum_slug' : subforum.slug}) }}"><span class="add-plus"></span>{{ ('forum.new_topic' | trans) }}</a>
     </div>
+    {% else %}
+        <p>{{ 'forum.need_authentication' | trans }}</p>   
     {% endif %}
 <div id="forum">
     <div class="forum">

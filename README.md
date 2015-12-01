@@ -41,7 +41,9 @@ Add to your composer.json, section 'require'
 
 Register the bundles in your AppKernel
 ````php
-new Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle()
+  new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+  new Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle(),
+  new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
 ```
 Add to your app/config.yml
 
@@ -207,7 +209,10 @@ Ajoutez à votre composer.json, section 'require'
 
 Ajoutez le bundle dans votre AppKernel
 ````php
-new Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle()
+  new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+  new Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle(),
+  new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
+
 ```
 Ajoutez à votre app/config.yml
 

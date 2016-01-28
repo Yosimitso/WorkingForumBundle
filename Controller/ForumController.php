@@ -22,20 +22,20 @@ class ForumController extends Controller
             $page = 1;
         }
         $subforum = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
-       $list_subforum_query = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Topic')->findBySubforum($subforum->getId());
+       $list_subforum_query = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')->findBySubforum($subforum->getId(),['pin' => 'DESC', 'lastReplyDate' => 'DESC']);
       
         $date_format = $this->container->getParameter( 'yosimitso_working_forum.date_format' );
        $paginator  = $this->get('knp_paginator');
         $list_subforum = $paginator->paginate(
         $list_subforum_query,
         $request->query->get('page', 1)/*page number*/,
-        $this->container->getParameter( 'yosimitso_working_forum.topic_per_page' ) /*limit per page*/
+        $this->container->getParameter( 'yosimitso_working_forum.thread_per_page' ) /*limit per page*/
     );
         
         
-        return $this->render('YosimitsoWorkingForumBundle:Forum:topic_list.html.twig',array(
+        return $this->render('YosimitsoWorkingForumBundle:Forum:thread_list.html.twig',array(
             'subforum' => $subforum,
-            'topic_list' => $list_subforum,
+            'thread_list' => $list_subforum,
             'date_format' => $date_format
                 ));
     }

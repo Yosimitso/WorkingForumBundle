@@ -18,8 +18,8 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('yosimitso_forum');
-        $rootNode->children()->scalarNode('topic_per_page')
+        $rootNode = $treeBuilder->root('yosimitso_working_forum');
+        $rootNode->children()->scalarNode('thread_per_page')
                                         ->isRequired()
                                         ->cannotBeEmpty()
                                         ->end()
@@ -30,6 +30,12 @@ class Configuration implements ConfigurationInterface
                              ->scalarNode('date_format')
                                         ->isRequired()
                                         ->cannotBeEmpty()
+                                        ->end()
+                             ->booleanNode('allow_anonymous_read')
+                                        ->isRequired()
+                                        ->end()
+                             ->booleanNode('allow_moderator_delete_thread')
+                                        ->isRequired()
                                         ->end()
                                         ->end();
         

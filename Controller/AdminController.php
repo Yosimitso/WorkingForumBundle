@@ -3,70 +3,89 @@
 namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Yosimitso\WorkingForumBundle\Entity\Post;
-use Yosimitso\WorkingForumBundle\Entity\Forum;
-use Yosimitso\WorkingForumBundle\Entity\Topic;
 use Yosimitso\WorkingForumBundle\Form\AdminForumType;
-use Yosimitso\WorkingForumBundle\Form\ManageForumType;
 use Symfony\Component\HttpFoundation\Request;
+use Yosimitso\WorkingForumBundle\Entity\Setting;
+
 
 class AdminController extends Controller
 {
     public function indexAction(Request $request)
     {
+        if (!$this->get('security.context')->isGranted('ROLE_ADMIN') )
+        {
+            throw new \Exception('You are not authorized to do this');
+        }
         $em = $this->getDoctrine()->getManager();
         $list_forum = $em->getRepository('YosimitsoWorkingForumBundle:Forum')->findAll();
         //$manage_forum = new ManageForumType;
       
          // $form = $this->createForm(new AdminForum);
-       $settings = $em->getRepository('YosimitsoWorkingForumBundle:Setting')->findAll();
+     //  $settings = $em->getRepository('YosimitsoWorkingForumBundle:Setting')->findAll();
        $form_settings_builder = $this->createFormBuilder();
        
-      /* $list_settings = [
-                    0 => ['name' => 'allow_anonymous_read', 'value' => 1, 'type' => 'bool']
-                        ];*/
-       
-       foreach ($settings as $setting)
+       $settings = ['allow_anonymous_read' => ['type' =>'boolean', 'value' => false],
+                    'allow_moderator_delete_thread' => ['type' =>'boolean', 'value' => false]
+                    ];
+
+       foreach ($settings as $index => $setting)
        {
-           if ($setting->getType() == 'bool')
+           $setting['value'] = $this->container->getParameter('yosimitso_working_forum.'.$index);
+           if ($setting['type'] == 'boolean')
            {
-               $attr = ['autocomplete' => 'off'];
-               if ($setting->getValue())
+               $attr = ['autocomplete' => 'off', 'disabled' => 'disabled'];
+               if ($setting['value'])
                {
                    $attr['checked'] = 'checked';
                }
                
                
-           $form_settings_builder->add($setting->getName(),'checkbox',['required' => false, 'label' => 'setting.'.$setting->getName(), 'translation_domain' => 'YosimitsoWorkingForumBundle', 'attr' => $attr ]);
+           $form_settings_builder->add($index,'checkbox',['required' => false, 'label' => 'setting.'.$index, 'translation_domain' => 'YosimitsoWorkingForumBundle', 'attr' => $attr ]);
            }
        }
       $form_settings = $form_settings_builder->getForm();
-      
+      /*
       $form_settings->handleRequest($request);
       
       if ($form_settings->isSubmitted())
       {
            $post_settings  = $request->request->all()['form'];
-      foreach ($settings as $setting)
+      foreach ($settings as $index => $setting)
       {
-          if ($setting->getType() == 'bool')
+          if ($setting['type'] == 'boolean')
           {
-              if (array_key_exists($setting->getName(), $post_settings))
+              if (array_key_exists($index, $post_settings))
               {
-                   $setting->setValue(1);
+                   $setting['value'] = true;
               }
                 else
               {
                     
-                    $setting->setValue(0); 
+                    $setting['value'] = false;
               }
-           $em->persist($setting);
+         
           }
          
       }
-      $em->flush();
+     
       return $this->redirect($this->generateUrl('workingforum_admin'));
       }
+      /*
+      use Symfony\Component\Yaml\Dumper; //I'm includng the yml dumper. Then :
+$ymlDump = array( 'parameters' => array( 
+   'quicksign.active' => 'On', 
+   'quicksign.start.off' => $startOff, 
+   'quicksign.end.off' => $endOff ), 
+ );
+$dumper = new Dumper(); 
+$yaml = $dumper->dump($ymlDump);
+$path = WEB_DIRECTORY . '/../app/config/parameters.sig.yml'; 
+file_put_contents($path, $yaml);*/
+      
+      
+      
+      
+      
       /*
       if ($form_settings->isValid())
       {
@@ -78,8 +97,14 @@ class AdminController extends Controller
                 ]);
     }
     
+    
+    
     public function editAction(Request $request,$id)
     {
+            if (!$this->get('security.context')->isGranted('ROLE_ADMIN') )
+        {
+            throw new \Exception('You are not authorized to do this');
+        }
         $em = $this->getDoctrine()->getManager();
         $forum = $em->getRepository('YosimitsoWorkingForumBundle:Forum')->find($id);
         
@@ -107,4 +132,6 @@ class AdminController extends Controller
                 'form' => $form->createView()
                 ]);
     }
+    
+   
 }

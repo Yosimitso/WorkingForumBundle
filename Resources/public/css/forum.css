@@ -6,7 +6,11 @@
 .forum {
  background-color:#EBF0F3;
  font-family:Roboto;
- 
+ border-bottom: 0.5px solid silver;
+}
+
+.empty {
+    font-style: italic;
 }
 
 .forum h1 {
@@ -46,7 +50,7 @@
 }
 
 
-.topic_list
+.thread_list
 {
     margin:5px;
     background-color:white;
@@ -56,34 +60,34 @@
     border-collapse: collapse;
 }
 
-.topic_list td {
+.thread_list td {
      border-bottom:1px solid #f3f3f3;
      padding:10px;
      text-align:left;
 }
 
-.topic_list .label {
+.thread_list .label {
     width:40%;
 }
 
-.topic_list .sublabel {
+.thread_list .sublabel {
     font-size:12px;
     color:grey;
 }
 
-.topic_list th {
+.thread_list th {
     text-align:left;
     background-color: #A9A9A9;
     color: white;
 }
 
-.topic
+.thread
 {
    
     padding-bottom:60px;
 }
 
-.topic h1 {
+.thread h1 {
   background-color: #3fa757;
   color: white;
   font-size: 18px;
@@ -92,7 +96,7 @@
   margin-bottom:0;
 }
 
-.topic h2 {
+.thread h2 {
     font-size: 14px;
     color:grey;
     padding: 5px;
@@ -168,7 +172,7 @@
   font-family: Arial;
 }
 
-#forum_content .new_topic .textarea_post {
+#forum_content .new_thread .textarea_post {
     width:929px;
 }
 
@@ -180,6 +184,7 @@
      margin:0 0 10px 10px;
      font-family: 'Helvetica Neue',Helvetica,Arial;
      font-size:14px;
+     box-shadow: 1px 1px 3px #888;
    
 }
 
@@ -194,7 +199,7 @@
 .breadcrumb a:hover {
  color:#2a6496;   
 }
-.topic_list a {
+.thread_list a {
   color: inherit;
   text-decoration: inherit;
 }
@@ -204,16 +209,16 @@
   text-decoration: inherit;
 }
 
-.new_topic_button {
+.new_thread_button {
     margin:5px 0 10px 5px;
     
 }
 
-.new_topic {
+.new_thread {
     background-color:white;
 }
 
-.new_topic h1 {
+.new_thread h1 {
      background-color: #3fa757;
   color: white;
   font-size: 18px;
@@ -222,19 +227,19 @@
   margin-bottom:0;
 }
 
-.new_topic .content {
+.new_thread .content {
   margin: 10px auto;
   width: 50%;
   text-align: center;
   padding-bottom:60px;
 }
 
-.new_topic .content p {
+.new_thread .content p {
     margin-bottom:10px;
 }
 
 
-.new_topic input[type="text"], .new_topic input[type="email"], .new_topic input[type="password"], .new_topic select  {
+.new_thread input[type="text"], .new_thread input[type="email"], .new_thread input[type="password"], .new_thread select  {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
     border: 1px solid #d8d8d8;
   border-radius: 3px;
@@ -346,5 +351,14 @@ font-weight:normal;
 
 .clear {
     clear:both;
+}
+
+.pin td {
+    background-color: #afddaf;
+    
+}
+
+.pinText {
+    font-weight:bold;
 }
 

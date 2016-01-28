@@ -5,19 +5,19 @@ workingforum_subforum:
     path: /view/{subforum_slug}
     defaults: { _controller: YosimitsoWorkingForumBundle:Forum:subforum }
 
-workingforum_topic:
-    path: /view/{subforum_slug}/{topic_slug}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Topic:index }
+workingforum_thread:
+    path: /view/{subforum_slug}/{thread_slug}
+    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:index }
 
-workingforum_new_topic:
-    path: /newtopic/{subforum_slug}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Topic:new }
-workingforum_lock_topic:
-    path: /locked/{subforum_slug}/{topic_slug}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Topic:lock }
-workingforum_resolve_topic:
-    path: /resolved/{subforum_slug}/{topic_slug}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Topic:resolve }
+workingforum_new_thread:
+    path: /newthread/{subforum_slug}
+    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:new }
+workingforum_lock_thread:
+    path: /locked/{subforum_slug}/{thread_slug}
+    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:lock }
+workingforum_resolve_thread:
+    path: /resolved/{subforum_slug}/{thread_slug}
+    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:resolve }
 workingforum_admin:
     path: /admin
     defaults: { _controller: YosimitsoWorkingForumBundle:Admin:index }
@@ -26,3 +26,6 @@ workingforum_admin_forum_edit:
     path: /admin/edit/{id}
     defaults: {_controller: YosimitsoWorkingForumBundle:Admin:edit }
 
+workingforum_admin_install_settings:
+    path: /admin/install-settings
+    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:installSettings }

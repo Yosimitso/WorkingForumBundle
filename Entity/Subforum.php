@@ -53,12 +53,12 @@ class Subforum
      /**
      * 
      * @var integer
-     * @ORM\Column(name="nb_topic", type="integer", nullable=true)
+     * @ORM\Column(name="nb_thread", type="integer", nullable=true)
      * 
      */
     
     
-    private $nbTopic;
+    private $nbThread;
     
     
       /**
@@ -133,13 +133,13 @@ class Subforum
         $this->description = $description;
     }
     
-     public function getNbTopic() {
-        return $this->nbTopic;
+     public function getNbThread() {
+        return $this->nbThread;
     }
     
-    public function setNbTopic($nb_topic)
+    public function setNbThread($nb_thread)
     {
-        $this->nbTopic = $nb_topic;
+        $this->nbThread = $nb_thread;
     }
     
      public function getNbPost() {

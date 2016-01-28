@@ -12,11 +12,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class SubforumRepository extends EntityRepository
 {
-      public function getListTopic($subforumId,$start = 0, $limit = 1)
+      public function getListThread($subforumId,$start = 0, $limit = 1)
     {
         $queryBuilder = $this->_em->createQueryBuilder()
                 ->select('a')
-                 ->from('YosimitsoWorkingForumBundle:Topic','a')
+                 ->from('YosimitsoWorkingForumBundle:Thread','a')
                 ->where('a.subforumId = :subforumId')
                 ->setParameter('subforumId', $subforumId)
                 ->orderBy('a.lastReplyDate','desc')

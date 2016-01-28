@@ -1,0 +1,80 @@
+{# empty Twig template #}
+{% extends '::base.html.twig' %}
+{% block body %}
+    {% include '::header.html.twig' %}
+    {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+{% if app.session.flashbag.has('success') %}
+                <div class="alert-success">
+                    <ul>
+                  {% for flashMessage in app.session.flashbag.get('success') %}
+                      <li>{{ flashMessage }}</li>
+                  {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+               {% if app.session.flashbag.has('error') %}
+                <div class="alert-error">
+                    <ul>
+                  {% for flashMessage in app.session.flashbag.get('error') %}
+                      <li>{{ flashMessage }}</li>
+                  {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+             <div id="forum_content">
+<div class="breadcrumb">
+    <a href="{{ path('workingforum_forum')}}">Forum</a> &rarr; {{subforum.forum.name}}
+</div>
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+ <div class="new_thread_button">
+    <a class="button add" href="{{ path('workingforum_new_thread', {'subforum_slug' : subforum.slug}) }}"><span class="add-plus"></span>{{ ('forum.new_thread' | trans) }}</a>
+    </div>
+    {% endif %}
+<div id="forum">
+    <div class="forum">
+    <h1>{{ subforum.name }}</h1>
+   
+<table class="thread_list">
+    {# <thead>
+        <tr>
+            <th>{{ 'forum.thread' | trans }}</th>
+            <th>{{ 'forum.author' | trans }}</th>
+            <th>{{ 'forum.replies' | trans }}
+    </thead> #}
+    {% if thread_list is not empty %}
+    {% for thread in thread_list %}
+        <tr {% if thread.pin %} class="pin"{% endif %}>
+            <td>
+                {% if thread.locked %}
+                <img src="{{ asset('bundles/yosimitsoworkingforum/images/lock.png') }}" width="24" style="vertical-align:bottom" />
+                
+                {% endif %}
+                {% if thread.pin %}
+                    <span class="pinText">{{ 'forum.pin' | trans }} : </span>   
+                {% endif %}    
+                <a href="{{ path( 'workingforum_thread', {'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ thread.label }}</a>  
+                
+             
+                <br /><span class="sublabel">{{ thread.sublabel }}</span></td>
+            <td>{{ thread.nbReplies}} {{ 'forum.nbPost' | trans }}</td>
+            <td>{{ 'forum.by' | trans }} {{ thread.author.username}}<br />{{ thread.cdate | date(date_format)}}</td>
+            
+            
+            
+        
+        
+        
+    {% endfor %}
+    </table>
+    {% else %}
+    </table>
+    <div class="empty_forum">{{ 'forum.empty_forum' | trans }}</div>
+    {% endif %}    
+
+
+    </div>
+</div>
+    {{ knp_pagination_render(thread_list) }}
+             </div>
+{% endblock %}

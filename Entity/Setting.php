@@ -53,6 +53,19 @@ class Setting
     {
         return $this->id;
     }
+    
+     /**
+     * Set nid
+     *
+     * @param integer $id
+     * @return Setting
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    
+        return $this;
+    }
 
     /**
      * Set name

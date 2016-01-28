@@ -1,7 +1,7 @@
 forum:
-    nbTopic: sujets
+    nbThread: sujets
     nbPost: messages
-    topic: Sujet
+    thread: Sujet
     sublabel: Description du sujet
     author: Auteur
     replies: Réponses
@@ -9,23 +9,23 @@ forum:
     post: message
     post_a_message: Poster une réponse
     submit_post: Poster !
-    new_topic: Nouveau sujet
+    new_thread: Nouveau sujet
     into_forum: dans le forum
-    create_topic : Créez le sujet
+    create_thread : Créez le sujet
     last_reply_date: Dernier message le
     lock: Verrouiller
     no_message_locked: Ce sujet a été verrouillé, vous ne pouvez pas poster de nouveaux messages
     no_message_login: Vous devez être connecté pour pouvoir poster un message
-    topic_locked: Sujet verrouillé
+    thread_locked: Sujet verrouillé
     locked: Verrouillé
     reply: Répondre
     resolved: Résolu
     now_resolved: Mon sujet est résolu
-    topic_resolved: Ce sujet est résolu
+    thread_resolved: Ce sujet est résolu
     empty_forum: Aucun message
     admin_access: Accès à l'administration
     no_subforum: Aucun sous-forum
-    need_authentication: Vous devez être enregistré pour créer un sujet
+    pin: Epinglé
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: Utilisateur
@@ -42,6 +42,7 @@ admin:
     manage_forum: Gestion des forums
     manage_settings: Réglages
     delete_subforum: Souhaitez vous supprimer ce sous forum ? Cette action est irréversible après l'enregistrement
+    install_settings: Installation des règlages
 setting:
     allow_anonymous_read: Autoriser les utilisateurs non enregistrés à lire
-    allow_moderator_delete_topic: Autoriser les modérateurs à supprimer des sujets
+    allow_moderator_delete_thread: Autoriser les modérateurs à supprimer des sujets

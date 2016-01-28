@@ -24,34 +24,12 @@
             {% endif %}
                <h1>{{ 'admin.admin_workingforum' | trans }}</h1>
 <div id="forum_admin">
- 
-    <div class="forum_block_admin">
-        <div class="forum_block_title">{{ 'admin.manage_forum' | trans }}</div>
-        <div class="forum_content">
-    <ul style="list-style: inside decimal;">
-    {% for forum in list_forum %}
-        <li><a href="{{ path('workingforum_admin_forum_edit', { 'id' : forum.id }) }}">{{ forum.name }}</a></li>   
-   {% endfor %}
-    </ul>
-        </div>
-    </div>
-     <div class="forum_block_admin">
-        <div class="forum_block_title">{{ 'admin.manage_settings' | trans }}</div>
-        <div class="forum_content">
-            {{ form_start(form_settings) }}
-    <ul>
-        {% for setting in form_settings %}
-            {% if form_label(setting) != 'Token' %}
-            <li>{{ form_widget(setting) }} {{ form_label(setting)}}</li>
-            {% endif %}
-        {% endfor %}
-    </ul>
-   
-     {{ form_rest(form_settings) }}
-     {{ form_end(form_settings) }}
-     </div>
-     </div>
-    <div class="clear"></div>
+      <div class="forum_block_title">{{ 'admin.install_settings' |trans }}</div>
+    {% for msg in msg %}
+        <p>{{ msg }}</p>
+      {% endfor %}
+      
+      <p><a href="{{ path('workingforum_admin') }}">Back to admin panel</a></p>
 </div>
-</div>
-{% endblock %}
+
+    {% endblock %}

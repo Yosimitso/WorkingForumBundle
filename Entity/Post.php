@@ -24,11 +24,11 @@ class Post
     
 
      /**
-    * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Topic", inversedBy="post")
-     *  @ORM\JoinColumn(name="topic_id",referencedColumnName="id",nullable=true)
+    * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Thread", inversedBy="post")
+     *  @ORM\JoinColumn(name="thread_id",referencedColumnName="id",nullable=true)
      * @var arrayCollection
      */
-    private $topic;
+    private $thread;
     
     /**
      * @var string
@@ -75,13 +75,13 @@ class Post
         $this->user = $user;
     }
     
-     public function getTopic() {
-        return $this->topic;
+     public function getThread() {
+        return $this->thread;
     }
     
-    public function setTopic(\Yosimitso\WorkingForumBundle\Entity\Topic $topic)
+    public function setThread(\Yosimitso\WorkingForumBundle\Entity\Thread $thread)
     {
-        $this->topic = $topic;
+        $this->thread = $thread;
     }
 
     /**

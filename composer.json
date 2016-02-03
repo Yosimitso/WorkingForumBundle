@@ -21,10 +21,10 @@
 
     "require": {
 
-        "php": ">=5.4.0",
+        "php": "~5.4.0"
 		"knplabs/knp-paginator-bundle": "2.4.*@dev",
 		"knplabs/knp-markdown-bundle": "~1.3",
-		"ornj/markdown-bundle": "dev-master"
+		"ornj/markdown-bundle": "dev-master",
 
     },
 

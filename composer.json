@@ -1,0 +1,38 @@
+{
+    "name": "yosimitso/workingforumbundle",
+
+    "description": "A full Symfony2 forum system",
+
+    "keywords": ["forum", "symfony"],
+
+    "license": "MIT",
+
+    "authors": [
+
+        {
+
+            "name": "Yosimitso",
+
+            "email": "yosimitso@gmail.com"
+
+        }
+
+    ],
+
+    "require": {
+
+        "php": ">=5.4.0"
+
+    },
+
+    "autoload": {
+
+        "psr-0": {
+
+            "Fk": "src/"
+
+        }
+
+    }
+
+}

@@ -30,7 +30,7 @@
 
         "psr-0": {
 
-            "Fk": "src/"
+            "Yosimitso\\WorkingForumBundle\\YosimitsoWorkingForumBundle": ""
 
         }
 

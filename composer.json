@@ -32,7 +32,14 @@
 
             "Yosimitso\\WorkingForumBundle\\YosimitsoWorkingForumBundle": ""
 
+        },
+		"psr-4": {
+
+            "Yosimitso\\WorkingForumBundle\\YosimitsoWorkingForumBundle\\": ""
+
         }
+		
+		
 
     }
 

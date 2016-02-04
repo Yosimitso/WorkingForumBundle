@@ -1,0 +1,46 @@
+{
+    "name": "yosimitso/workingforumbundle",
+
+    "description": "A full Symfony2 forum system",
+
+    "keywords": ["forum", "symfony"],
+
+    "license": "MIT",
+
+    "authors": [
+
+        {
+
+            "name": "Yosimitso",
+
+            "email": "yosimitso@gmail.com"
+
+        }
+
+    ],
+
+    "require": {
+		"knplabs/knp-paginator-bundle": "2.4.*@dev",
+		"knplabs/knp-markdown-bundle": "~1.3",
+		"ornj/markdown-bundle": "dev-master"
+
+    },
+
+    "autoload": {
+
+        "psr-0": {
+
+            "Yosimitso\\WorkingForumBundle\\YosimitsoWorkingForumBundle": ""
+
+        },
+		"psr-4": {
+
+            "Yosimitso\\WorkingForumBundle\\YosimitsoWorkingForumBundle\\": ""
+
+        }
+		
+		
+
+    }
+
+}

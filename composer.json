@@ -3,7 +3,7 @@
     "description": "A full Symfony 2 system",
     "type": "symfony2-bundle",
     "require": {
-        "knplabs/knp-paginator-bundle": "^2.5",
+        "knplabs/knp-paginator-bundle": "~2.4",
         "knplabs/knp-markdown-bundle": "^1.4",
         "ornj/markdown-bundle": "dev-master",
         "yosimitso/workingforumbundle": "dev-master"

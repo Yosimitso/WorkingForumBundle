@@ -16,12 +16,6 @@
     ],
     "minimum-stability": "dev",
 	 "autoload": {
-
-        "psr-0": {
-
-            "Yosimitso\\WorkingForumBundle\\YosimitsoWorkingForumBundle": ""
-
-        },
 		"psr-4": {
 
             "Yosimitso\\WorkingForumBundle\\YosimitsoWorkingForumBundle\\": ""

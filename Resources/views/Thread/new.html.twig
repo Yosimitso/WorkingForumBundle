@@ -1,7 +1,8 @@
-{# empty Twig template #}
-{% block body %}
+{% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
+{% block forum %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+<script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
 <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
 <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
 <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/locale/bootstrap-markdown.fr.js') }}"></script>
@@ -10,11 +11,11 @@
 <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}" type="text/css" media="all" />
 
 <script type="text/javascript" >
-   $(document).ready(function() {
+   jQuery(document).ready(function() {
       
 
 
-     $(".textarea_post").markdown({
+     jQuery(".textarea_post").markdown({
          language:'{{ app.request.locale }}',
    onPreview: function(e) {
  

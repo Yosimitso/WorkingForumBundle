@@ -94,7 +94,7 @@ class Thread
     
      /**
      * @var string
-     * @ORM\Column(name="slug", type="string", nullable=false)
+     * @ORM\Column(name="slug", type="string", nullable=true)
      */
     
     private $slug;
@@ -322,7 +322,7 @@ class Thread
      * @param  $author
      * @return Thread
      */
-    public function setAuthor(\Yosimitso\UserBundle\Entity\User $author)
+    public function setAuthor($author)
     {
         $this->author = $author;
     

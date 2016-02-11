@@ -71,7 +71,7 @@ class ThreadController extends Controller
         $this->get('session')->getFlashBag()->add(
             'success',
             'Votre message a bien été posté');
-        return $this->redirect($this->generateUrl('working_forumthread',['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug]));
+        return $this->redirect($this->generateUrl('workingforum_thread',['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug]));
     }
     
      
@@ -123,6 +123,7 @@ class ThreadController extends Controller
         $my_post->setThread($my_thread);
 		
 		 $subforum->setNbPost($subforum->getNbPost()+1);
+                 $subforum->setNbThread($subforum->getNbThread()+1);
 		 $subforum->setLastReplyDate(new \DateTime);
       
         $user->addNbPost(1);
@@ -133,6 +134,7 @@ class ThreadController extends Controller
        $em->flush();
        
        $my_thread->setSlug($my_thread->getId().'-'.$this->clean($my_thread->getLabel()));
+       
        $my_post->setThread($my_thread);
        $em->persist($my_post);
        $em->persist($my_thread);

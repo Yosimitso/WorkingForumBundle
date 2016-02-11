@@ -1,3 +1,8 @@
+@font-face {
+font-family: Roboto;
+src: url(./fonts/roboto-regular.ttf);
+}
+
 #forum
 {
     padding-bottom:60px;
@@ -129,6 +134,13 @@
     border-radius: 3px;
 }
 
+.post .post-admin {
+float:left;
+padding:10px;
+border-radius: 3px;
+background-color: #d1be75;
+}
+
 .post-left p {
     margin:0;
 }
@@ -167,7 +179,7 @@
 
 #forum_content .textarea_post {
   height: 300px;
-  width: 678px;
+  width: 698px;
   padding:10px;
   font-family: Arial;
 }
@@ -202,6 +214,7 @@
 .thread_list a {
   color: inherit;
   text-decoration: inherit;
+  font-family:Roboto, Arial;
 }
 
 .sub_name a {
@@ -383,4 +396,80 @@ font-weight:normal;
   
   background:url('../images/plus.png') left no-repeat;
   padding-left:25px;
+}
+
+.alert-error, .alert-success {
+background-color: #F7B5B5;
+padding:15px;
+margin-left:10%;
+margin-top:20px;
+margin-bottom:10px;
+width:70%;
+border-radius:5px;
+border: 1px solid #FC3838;
+text-align:left;
+/*text-transform:uppercase;*/
+color :red;
+font-size:14px;
+}
+
+
+.alert-success {
+color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+.alert-success hr {
+  border-top-color: #c9e2b3;
+}
+.alert-success li .alert-link {
+  color: #2b542c;
+}
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+.alert-info hr {
+  border-top-color: #a6e1ec;
+}
+.alert-info li .alert-link {
+  color: #245269;
+}
+.alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+.alert-warning hr {
+  border-top-color: #f7e1b5;
+}
+.alert-warning li .alert-link {
+  color: #66512c;
+}
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+.alert-danger hr {
+  border-top-color: #e4b9c0;
+}
+.alert-danger li .alert-link {
+  color: #843534;
+}
+
+.md-header.btn-toolbar {
+  width: 690px;
+}
+
+#new_post .md-editor > .md-preview {
+  background: #fff none repeat scroll 0 0;
+  border-bottom: 1px dashed #ddd;
+  border-top: 1px dashed #ddd;
+  min-height: 10px;
+  overflow: auto;
+  padding: 10px;
+  text-align: left;
 }

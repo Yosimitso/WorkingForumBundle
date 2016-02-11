@@ -1,5 +1,5 @@
-{# empty Twig template #}
-{% block body %}
+{% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
+{% block forum %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 {% if app.session.flashbag.has('success') %}
@@ -43,7 +43,7 @@
     {% if thread_list is not empty %}
     {% for thread in thread_list %}
         <tr {% if thread.pin %} class="pin"{% endif %}>
-            <td>
+            <td class="sub_name">
                 {% if thread.locked %}
                 <img src="{{ asset('bundles/yosimitsoworkingforum/images/lock.png') }}" width="24" style="vertical-align:bottom" />
                 
@@ -55,8 +55,8 @@
                 
              
                 <br /><span class="sublabel">{{ thread.sublabel }}</span></td>
-            <td>{{ thread.nbReplies}} {{ 'forum.nbPost' | trans }}</td>
-            <td>{{ 'forum.by' | trans }} {{ thread.author.username}}<br />{{ thread.cdate | date(date_format)}}</td>
+            <td class="sub_stat">{{ thread.nbReplies}} {{ 'forum.nbPost' | trans }}</td>
+            <td class="sub_lastreply">{{'forum.last_reply_date' | trans }}<br />{{ thread.cdate | date(date_format)}} {{ 'forum.by' | trans }} {{ thread.author.username}}</td>
             
             
             

@@ -1,6 +1,5 @@
-<html>
-    <body>
-{% block body %}
+{% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
+{% block forum %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
  <div id="forum_content">
@@ -33,5 +32,4 @@
     </div>
  </div>
 {% endblock %}
-</body>
-</html>
+

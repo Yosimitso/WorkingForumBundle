@@ -1,10 +1,10 @@
-
-{% block body %}
+{% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
+{% block forum %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 
 
-
+<script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
 <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
 <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
 <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/locale/bootstrap-markdown.fr.js') }}"></script>
@@ -99,10 +99,10 @@
     <div class="post">
      <div class="post-left">
        <img class="cadre-img" width="80px" src="
-          {% if post.user.avatarUrl %}
-          {{ asset('bundles/yosimitsouser/'~post.user.avatarUrl) }}
+          {% if post.user.avatarUrl is not empty %}
+          {{ asset('bundles/yosimitsoworkingforum/'~post.user.avatarUrl) }}
           {% else %}
-           {{ asset('bundles/yosimitsouser/images/avatar/default.png') }}   
+           {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}   
           {% endif %}
           
           " /> 

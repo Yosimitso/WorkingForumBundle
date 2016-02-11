@@ -70,7 +70,7 @@ class Post
         return $this->user;
     }
     
-    public function setUser(\Yosimitso\UserBundle\Entity\User $user)
+    public function setUser($user)
     {
         $this->user = $user;
     }

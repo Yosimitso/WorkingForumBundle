@@ -32,3 +32,18 @@ forum:
 pagination:
     previous: Previous
     next: Next
+    
+admin:
+    admin_workingforum: Administration of WorkingForum
+    forum_name: Forum's name
+    list_subforum: Subforums list
+    admin_area: Administration
+    new_subforum: Add subforum
+    submit: Save
+    manage_forum: Manage forums
+    manage_settings: Settings
+    delete_subforum: Are you sure to delete this subforum ? There is no rollback possible after confirmation
+    install_settings: Settings installations
+setting:
+    allow_anonymous_read: Allow anonymous users to read
+    allow_moderator_delete_thread: Allow moderators to delete threads

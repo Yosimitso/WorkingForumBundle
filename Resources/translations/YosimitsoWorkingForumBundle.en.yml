@@ -22,6 +22,7 @@ forum:
     resolved: Resolved
     now_resolved: My thread is resolved
     thread_resolved: This thread is resolved
+    admin_access: Administration
     empty_forum: No message
     no_subforum: No subforum
     pin: Pin

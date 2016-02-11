@@ -145,7 +145,7 @@ class ThreadController extends Controller
        
     }
     
-        return $this->render('YosimitsoWorkingForumBundle:T:new.html.twig',array(
+        return $this->render('YosimitsoWorkingForumBundle:Thread:new.html.twig',array(
             'subforum' => $subforum,
             'form' => $form->createView()
                 ));

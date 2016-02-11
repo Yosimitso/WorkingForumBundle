@@ -1,7 +1,5 @@
 {# empty Twig template #}
-{% extends '::base.html.twig' %}
 {% block body %}
-    {% include '::header.html.twig' %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
@@ -41,7 +39,7 @@
 </div>
 <div class="new_thread">
 
-       <h1>{{ ('forum.new_thread' | trans) }} {{ ('forum.into_forum' | trans) }} {{subforum.name }}</h1>    
+    <h1>{{ ('forum.new_thread' | trans) }} {{ ('forum.into_forum' | trans) }} <em>{{subforum.name }}</em></h1>    
     <div class="content">
    {% if form_errors(form) %}
                   <div class="alert-error">

@@ -362,3 +362,25 @@ font-weight:normal;
     font-weight:bold;
 }
 
+.button {
+  background-color: #00a547;
+  background-image: linear-gradient(to bottom, #44e567 0px, #00a547 100%);
+  border-color: #00a547;
+  border-radius: 2px;
+  border-width: 1px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset;
+  color: #fff;
+  cursor: pointer;
+  font-family: Arial,Tahoma,sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 5px;
+  text-decoration: none;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+.add-plus {
+  
+  background:url('../images/plus.png') left no-repeat;
+  padding-left:25px;
+}

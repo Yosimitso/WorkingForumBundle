@@ -50,7 +50,7 @@ class ThreadController extends Controller
        // exit();
         $my_post->setCdate(new \DateTime)
                 ->setPublished($published)
-                ->setContent(preg_replace('#(\[rn])|(\r\n)|(\n\r)#', ' <br />', $my_post->getContent()))
+                ->setContent(preg_replace('#(\[rn])|(\r\n)|(\n\r)#', ' <br /> ', $my_post->getContent()))
                 ->setUser($user);
          $my_post->setThread($thread);
          
@@ -119,7 +119,7 @@ class ThreadController extends Controller
         $em->persist($my_thread);
         $my_post->setCdate(new \DateTime)
                 ->setPublished($published)
-                ->setContent(preg_replace('#(\[rn])|(\r\n)|(\n\r)#', ' <br />', $my_post->getContent()))
+                ->setContent(preg_replace('#(\[rn])|(\r\n)|(\n\r)#', ' <br /> ', $my_post->getContent()))
                 ->setUser($user);
         $my_post->setThread($my_thread);
 		
@@ -170,7 +170,7 @@ class ThreadController extends Controller
         function lockAction($subforum_slug,$thread_slug)
         {
             $em = $this->getDoctrine()->getManager();
-            $thread = $em->getRepository('CharlyForumBundle:Thread')->findOneBySlug($thread_slug);
+            $thread = $em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
             if (is_null($thread))
             {
                 throw new Exception("Thread can't be found", 500, "");

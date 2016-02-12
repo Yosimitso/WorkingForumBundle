@@ -26,6 +26,7 @@ forum:
     empty_forum: No message
     no_subforum: No subforum
     pin: Pin
+    wrote: wrote
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: User

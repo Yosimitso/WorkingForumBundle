@@ -151,6 +151,7 @@ background-color: #d1be75;
 }
 .post .post-right {
     margin-left:150px;
+    word-wrap: break-word;
 }
 
 .post-left .username {
@@ -539,5 +540,10 @@ color: #3c763d;
 
 .center {
   margin: 0 auto;
+}
+
+.quote-img {
+    width:16px;
+    margin-left:5px;
 }
 

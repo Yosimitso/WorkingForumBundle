@@ -26,6 +26,7 @@ forum:
     admin_access: Accès à l'administration
     no_subforum: Aucun sous-forum
     pin: Epinglé
+    wrote: à écrit
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: Utilisateur

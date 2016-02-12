@@ -13,11 +13,11 @@
 <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}" type="text/css" media="all" />
 
 <script type="text/javascript" >
-   $(document).ready(function() {
+   jQuery(document).ready(function() {
       
 
 
-     $(".textarea_post").markdown({
+     jQuery(".textarea_post").markdown({
          language:'{{ app.request.locale }}',
    onPreview: function(e) {
  
@@ -108,7 +108,7 @@
           " /> 
        <p class="username">{{ post.user.username }}</p>
        <p class="message">{{ post.user.nbPost }} {{ 'forum.nbPost' | trans }}</p>
-       <p class="message">{{ ('forum.user.'~post.user.roles.0) | trans }}</p>
+       <p class="message">{% if post.user.roles.0 is defined %} {{ (('forum.user.'~post.user.roles.0) | trans) }} {% else %} {{ ('forum.user.ROLE_USER' | trans) }}{% endif %}</p>
      </div>   
       <div class="post-right">
           <p class="date">{{ post.cdate | date(date_format) }}</p>

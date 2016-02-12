@@ -46,10 +46,11 @@ class ThreadController extends Controller
         $published = 1;
         $thread->addNbReplies(1)
                ->setLastReplyDate(new \DateTime);
-        
+        //var_dump($my_post->getContent());
+       // exit();
         $my_post->setCdate(new \DateTime)
                 ->setPublished($published)
-                ->setContent(nl2br($my_post->getContent()))
+                ->setContent(preg_replace('#(\[rn])|(\r\n)|(\n\r)#', ' <br />', $my_post->getContent()))
                 ->setUser($user);
          $my_post->setThread($thread);
          
@@ -118,7 +119,7 @@ class ThreadController extends Controller
         $em->persist($my_thread);
         $my_post->setCdate(new \DateTime)
                 ->setPublished($published)
-                ->setContent(nl2br($my_post->getContent()))
+                ->setContent(preg_replace('#(\[rn])|(\r\n)|(\n\r)#', ' <br />', $my_post->getContent()))
                 ->setUser($user);
         $my_post->setThread($my_thread);
 		

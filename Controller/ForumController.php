@@ -17,11 +17,17 @@ class ForumController extends Controller
     
     public function subforumAction($subforum_slug,Request $request,$page = 1)
     {
+         $allow_anonymous = $this->container->getParameter( 'yosimitso_working_forum.allow_anonymous_read' );
+         $user = $this->getUser();
+          $subforum = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
+         if ($user !== null)
+         {
+             $forbidden = false;
         if ($page <= 0)
         {
             $page = 1;
         }
-        $subforum = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
+       
        $list_subforum_query = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')->findBySubforum($subforum->getId(),['pin' => 'DESC', 'lastReplyDate' => 'DESC']);
       
         $date_format = $this->container->getParameter( 'yosimitso_working_forum.date_format' );
@@ -32,11 +38,17 @@ class ForumController extends Controller
         $this->container->getParameter( 'yosimitso_working_forum.thread_per_page' ) /*limit per page*/
     );
         
-        
+         }
+         else
+         {
+             $forbidden = true;
+             $list_subforum = $date_format = null;
+         }
         return $this->render('YosimitsoWorkingForumBundle:Forum:thread_list.html.twig',array(
             'subforum' => $subforum,
             'thread_list' => $list_subforum,
-            'date_format' => $date_format
+            'date_format' => $date_format,
+            'forbidden' => $forbidden
                 ));
     }
 }

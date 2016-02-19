@@ -27,6 +27,7 @@ forum:
     no_subforum: Aucun sous-forum
     pin: Epinglé
     wrote: à écrit
+    must_be_logged: Vous devez être connecté pour voir ce forum
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: Utilisateur
@@ -44,6 +45,7 @@ admin:
     manage_settings: Réglages
     delete_subforum: Souhaitez vous supprimer ce sous forum ? Cette action est irréversible après l'enregistrement
     install_settings: Installation des règlages
+    add: Ajouter
 setting:
     allow_anonymous_read: Autoriser les utilisateurs non enregistrés à lire
     allow_moderator_delete_thread: Autoriser les modérateurs à supprimer des sujets

@@ -25,6 +25,10 @@ workingforum_admin:
 workingforum_admin_forum_edit:
     path: /admin/edit/{id}
     defaults: {_controller: YosimitsoWorkingForumBundle:Admin:edit }
+    
+workingforum_admin_forum_add:
+    path: /admin/add
+    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:add }
 
 workingforum_admin_install_settings:
     path: /admin/install-settings

@@ -27,6 +27,7 @@ forum:
     no_subforum: No subforum
     pin: Pin
     wrote: wrote
+    must_be_logged: You have to be logged in to view this forum
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: User
@@ -45,6 +46,7 @@ admin:
     manage_settings: Settings
     delete_subforum: Are you sure to delete this subforum ? There is no rollback possible after confirmation
     install_settings: Settings installations
+    add: Add
 setting:
     allow_anonymous_read: Allow anonymous users to read
     allow_moderator_delete_thread: Allow moderators to delete threads

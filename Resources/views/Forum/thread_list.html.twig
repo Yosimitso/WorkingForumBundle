@@ -24,6 +24,12 @@
 <div class="breadcrumb">
     <a href="{{ path('workingforum_forum')}}">Forum</a> &rarr; {{subforum.forum.name}}
 </div>
+ {% if forbidden is defined and forbidden %}
+     <div class="forum">
+     <div class="empty_forum">{{ 'forum.must_be_logged' | trans }}</div>
+     </div>
+ {% else %}    
+    
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
  <div class="new_thread_button">
     <a class="button add" href="{{ path('workingforum_new_thread', {'subforum_slug' : subforum.slug}) }}"><span class="add-plus"></span>{{ ('forum.new_thread' | trans) }}</a>
@@ -74,5 +80,8 @@
     </div>
 </div>
     {{ knp_pagination_render(thread_list) }}
+    
+    {% endif %}
              </div>
+    
 {% endblock %}

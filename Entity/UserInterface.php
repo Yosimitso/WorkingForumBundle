@@ -9,5 +9,12 @@ interface UserInterface
     /**
      * @return string
      */
-    public function getName();
+    public function getUsername();
+    public function getAvatarUrl();
+    public function getNbPost();
+    
+     public function setAvatarUrl($avatar_url);
+     public function setNbPost($nbPost);
+     public function addNbPost($nb);
+     
 }

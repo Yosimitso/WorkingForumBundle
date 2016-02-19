@@ -9,7 +9,7 @@ This bundle work with your user bundle with no extra configuration (which can ex
 
 Demo
 -------------
-Try it here - http://www.charlymartins.fr/demoworkingforum/web/
+Coming soon
 
 
 Functionnalities
@@ -23,6 +23,7 @@ Functionnalities
 - Automatic breadcrumb
 - Messages counting (user, forum, subforum) with last replies
 - Automatic pagination on thread list and thread
+- Allow or not the anonymous to read forums
 
 
 Setup
@@ -49,8 +50,8 @@ Add to your app/config.yml
 
 ````yml
 yosimitso_working_forum:
-    thread_per_page: 10
-    post_per_page: 5
+    thread_per_page: 50
+    post_per_page: 10
     date_format: 'd/m/Y H:i:s'
 knp_paginator:
     page_range: 1                      # default page range used in pagination control
@@ -70,96 +71,13 @@ Add to you app/config.yml into 'orm' key :
 ```
 You can override the translations files
 
-Your User Entity need these properties with getter and setter :
+Your User Entity needs to extends : \Yosimitso\WorkingForumBundle\Entity\User
+Example :
 ````php
-       /**
-     * @var integer
-     * @ORM\Column(name="nb_post", type="integer")
-     */
-	 protected $nbPost;
- /**   
-         * @var string
-         * @ORM\Column(name="avatar_url", type="string",nullable=true)
-         */
-   
-        protected $avatarUrl;
- /**   
-         * @var string
-         * @ORM\Column(name="username", type="string",nullable=true)
-         */
-   
-        protected $username;
-		 /**
-     * Set username
-     *
-     * @param string $username
-     *
-     * @return User
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * Get username
-     *
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * Set nbPost
-     *
-     * @param integer $nbPost
-     *
-     * @return User
-     */
-    public function setNbPost($nbPost)
-    {
-        $this->nbPost = $nbPost;
-
-        return $this;
-    }
-
-    /**
-     * Get nbPost
-     *
-     * @return integer
-     */
-    public function getNbPost()
-    {
-        return $this->nbPost;
-    }
-
-    /**
-     * Set avatarUrl
-     *
-     * @param string $avatarUrl
-     *
-     * @return User
-     */
-    public function setAvatarUrl($avatarUrl)
-    {
-        $this->avatarUrl = $avatarUrl;
-
-        return $this;
-    }
-
-    /**
-     * Get avatarUrl
-     *
-     * @return string
-     */
-    public function getAvatarUrl()
-    {
-        return $this->avatarUrl;
-    }
+   class User extends \Yosimitso\WorkingForumBundle\Entity\User
+{
+    // YOUR ENTITY
+}
 
 ```
 
@@ -167,7 +85,6 @@ Todo
 -----------
 - Removing post by a moderator
 - Allow anonymous users to create thread if set in the forums' configuration
-- Forbide anonymous users to read if set in the forums' configuration
 
 FRANCAIS
 ==================
@@ -178,7 +95,7 @@ Ce bundle utilise votre bundle utilisateur (qui peut hériter de FOSUserBundle)
 
 Demo
 -------------
-Essayez le ici - http://www.charlymartins.fr/demoworkingforum/web/
+Bientôt
 
 
 Fonctionnalités
@@ -192,6 +109,7 @@ Fonctionnalités
 - Breadcrumb (fil d'Arianne) automatique
 - Compteur de messages (utilisateur, forum, suforum) avec dernières réponses
 - Pagination automatique sur la liste des thread, et les messages des threads
+- Autoriser ou non les anonymes à lire les forums
 
 
 Installation
@@ -218,8 +136,8 @@ Ajoutez à votre app/config.yml
 
 ````yml
 yosimitso_working_forum:
-    thread_per_page: 10
-    post_per_page: 5
+    thread_per_page: 50
+    post_per_page: 10
     date_format: 'd/m/Y H:i:s'
 	
 knp_paginator:
@@ -241,96 +159,13 @@ Ajouter à votre app/config.yml dans la clé 'orm' :
 
 Vous pouvez surcharger les fichiers de traductions
 
-Votre entité Utilisateur à besoin de ces propriétés avec getter et setter
+Votre entité Utilisateur à besoin d'"extends" : \Yosimitso\WorkingForumBundle\Entity\User
+Exemple :
 ````php
-       /**
-     * @var integer
-     * @ORM\Column(name="nb_post", type="integer")
-     */
-	 protected $nbPost;
- /**   
-         * @var string
-         * @ORM\Column(name="avatar_url", type="string",nullable=true)
-         */
-   
-        protected $avatarUrl;
- /**   
-         * @var string
-         * @ORM\Column(name="username", type="string",nullable=true)
-         */
-   
-        protected $username;
-		 /**
-     * Set username
-     *
-     * @param string $username
-     *
-     * @return User
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * Get username
-     *
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * Set nbPost
-     *
-     * @param integer $nbPost
-     *
-     * @return User
-     */
-    public function setNbPost($nbPost)
-    {
-        $this->nbPost = $nbPost;
-
-        return $this;
-    }
-
-    /**
-     * Get nbPost
-     *
-     * @return integer
-     */
-    public function getNbPost()
-    {
-        return $this->nbPost;
-    }
-
-    /**
-     * Set avatarUrl
-     *
-     * @param string $avatarUrl
-     *
-     * @return User
-     */
-    public function setAvatarUrl($avatarUrl)
-    {
-        $this->avatarUrl = $avatarUrl;
-
-        return $this;
-    }
-
-    /**
-     * Get avatarUrl
-     *
-     * @return string
-     */
-    public function getAvatarUrl()
-    {
-        return $this->avatarUrl;
-    }
+   class User extends \Yosimitso\WorkingForumBundle\Entity\User
+{
+    // VOTRE ENTITE
+}
 
 ```
 
@@ -338,4 +173,3 @@ Todo
 -----------
 - Suppression d'un thread par un modérateur
 - Autoriser ou non les utilisateurs anonyme à créer des sujets selon la configuration du forum
-- Interdire les utilisateurs anonymes à lire les forums selon la configuration du forum

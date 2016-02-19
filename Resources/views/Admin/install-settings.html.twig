@@ -1,7 +1,7 @@
-{% extends '::base.html.twig' %}
-{% block body %}
-    {% include '::header.html.twig' %}
+{% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
+{% block forum %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 <div id="forum_content">
     {% if app.session.flashbag.has('success') %}

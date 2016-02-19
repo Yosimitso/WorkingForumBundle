@@ -9,7 +9,7 @@ src: url(./fonts/roboto-regular.ttf);
 }
 
 .forum {
- background-color:#EBF0F3;
+ background-color:white;
  font-family:Roboto;
  border-bottom: 0.5px solid silver;
 }
@@ -287,7 +287,7 @@ padding-left: 10px;
 padding-right: 10px;
 padding-top: 20px;
 text-align: center;
-width: 100%; 
+
 text-align:left;
 }
 
@@ -331,6 +331,7 @@ font-size:28px;
 padding: 5px 0 5px 0;
 color:white;
 background-color:#188D40;
+margin-bottom:0;
 //background-image: url('../images/back_green2.png');
 /*background-size:100%;*/
 font-weight:normal;
@@ -391,6 +392,10 @@ font-weight:normal;
   padding: 5px;
   text-decoration: none;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+a.button  {
+    color:white;
 }
 
 .button:hover {
@@ -500,7 +505,7 @@ color: #3c763d;
   border-radius: 5px;
   font-family: Roboto,"Helvetica Neue";
   margin: 10px auto;
-  max-width: 300px;
+  max-width: 800px;
   min-height: 20px;
   min-width: 100px;
   padding: 5px;
@@ -545,5 +550,11 @@ color: #3c763d;
 .quote-img {
     width:16px;
     margin-left:5px;
+}
+
+.button-center {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
 }
 

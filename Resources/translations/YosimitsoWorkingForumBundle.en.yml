@@ -50,3 +50,9 @@ admin:
 setting:
     allow_anonymous_read: Allow anonymous users to read
     allow_moderator_delete_thread: Allow moderators to delete threads
+message:
+    saved: Successfully saved
+    posted: Post saved
+    threadCreated: Your thread has been created
+    threadLocked: The thread has been successfully locked
+    threadResolved: The thread is now solved, thanks for your feedback 

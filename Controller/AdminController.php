@@ -84,7 +84,7 @@ class AdminController extends Controller
             
               $this->get('session')->getFlashBag()->add(
             'success',
-            'Enregistrement effectué');
+           $this->get('translator')->trans('message.saved','YosimitsoWorkingForumBundle'));
             return $this->redirect($this->generateUrl('workingforum_admin'));
             
         }
@@ -119,7 +119,7 @@ class AdminController extends Controller
             
               $this->get('session')->getFlashBag()->add(
             'success',
-            'Enregistrement effectué');
+            $this->get('translator')->trans('message.saved','YosimitsoWorkingForumBundle'));
             return $this->redirect($this->generateUrl('workingforum_admin'));     
         }
         

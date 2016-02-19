@@ -49,3 +49,9 @@ admin:
 setting:
     allow_anonymous_read: Autoriser les utilisateurs non enregistrés à lire
     allow_moderator_delete_thread: Autoriser les modérateurs à supprimer des sujets
+message:
+    saved: Enregistrement effectués
+    posted: Message posté
+    threadCreated: Votre sujet a été crée
+    threadLocked: Le sujet a été verrouillé avec succès
+    threadResolved: Le sujet est résolu, merci pour votre retour

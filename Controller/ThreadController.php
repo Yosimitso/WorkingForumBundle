@@ -71,7 +71,7 @@ class ThreadController extends Controller
        
         $this->get('session')->getFlashBag()->add(
             'success',
-            'Votre message a bien été posté');
+            $this->get('translator')->trans('message.posted','YosimitsoWorkingForumBundle'));
         return $this->redirect($this->generateUrl('workingforum_thread',['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug]));
     }
     
@@ -143,7 +143,7 @@ class ThreadController extends Controller
        
         $this->get('session')->getFlashBag()->add(
             'success',
-            'Votre sujet a bien été crée');
+            $this->get('translator')->trans('message.threadCreated','YosimitsoWorkingForumBundle'));
         return $this->redirect($this->generateUrl('workingforum_subforum',['subforum_slug' => $subforum_slug]));
        
     }
@@ -183,7 +183,7 @@ class ThreadController extends Controller
             
             $this->get('session')->getFlashBag()->add(
             'success',
-            'Le sujet a été verrouillé');
+            $this->get('translator')->trans('message.threadLocked','YosimitsoWorkingForumBundle'));
             
             
             return $this->redirect($this->generateUrl('workingforum_thread',array('thread_slug' => $thread_slug, 'subforum_slug' => $subforum_slug)));
@@ -208,7 +208,7 @@ class ThreadController extends Controller
             
             $this->get('session')->getFlashBag()->add(
             'success',
-            'Le sujet est résolu, merci pour votre retour');
+             $this->get('translator')->trans('message.threadResolved','YosimitsoWorkingForumBundle'));
             
             
             return $this->redirect($this->generateUrl('workingforum_thread',array('thread_slug' => $thread_slug, 'subforum_slug' => $subforum_slug)));

@@ -31,6 +31,7 @@ forum:
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: Utilisateur
+    thanks_reporting: Merci d'avoir signalé !
 pagination:
     previous: Précédent
     next: Suivant
@@ -55,3 +56,4 @@ message:
     threadCreated: Votre sujet a été crée
     threadLocked: Le sujet a été verrouillé avec succès
     threadResolved: Le sujet est résolu, merci pour votre retour
+    banned: Désolé mais vous êtes banni

@@ -39,6 +39,34 @@
         jQuery('.textarea_post').val(jQuery('.textarea_post').val()+'> '+jQuery('#user'+userId).html()+' {{ 'forum.wrote' | trans}} :\n'+jQuery('#post'+messageId+' > p').html()+"\n");
         jQuery('.textarea_post').focus()
     }
+    
+    function report(url)
+    {
+        
+        
+            jQuery.ajax({
+           
+		   type: "GET", 
+		   url: url,
+		   crossDomain: false,
+		   dataType: 'json',
+                   async: false,
+		   success: function(verif){
+                       if (verif == 'true')
+                       {
+                        alert('{{'forum.thanks_reporting' | trans }}');
+                       }
+                       else
+                       {
+                        
+                       }
+                   }
+        });          
+                
+                
+                
+           
+    }
 
 </script>
 
@@ -116,8 +144,8 @@
        <p class="message">{% if post.user.roles.0 is defined %} {{ (('forum.user.'~post.user.roles.0) | trans) }} {% else %} {{ ('forum.user.ROLE_USER' | trans) }}{% endif %}</p>
      </div>   
       <div class="post-right">
-          <p class="date">{{ post.cdate | date(date_format) }} <a href="#" onclick="quote({{ post.id}},{{post.user.id}}); return false;"><img src="{{asset('bundles/yosimitsoworkingforum/images/quote.png')}}" class="quote-img"></a></p>
-          <div id="post{{ post.id}}">{{ post.content | markdown }}</div>    
+          <p class="date">{{ post.cdate | date(date_format) }} <a href="#" onclick="quote({{ post.id}},{{post.user.id}}); return false;"><img src="{{asset('bundles/yosimitsoworkingforum/images/quote.png')}}" class="quote-img"></a><a href="#" onclick="report('{{ path('workingforum_report_post', {'post_id' : post.id}) }}')"><img src="{{asset('bundles/yosimitsoworkingforum/images/exclamation.png')}}" class="quote-img"></a></p>
+          <div id="post{{ post.id}}">{{ post.content |replace({'\n':'<br />'}) | markdown}}</div>    
       </div> 
       <div class="clear"></div>
     </div>    

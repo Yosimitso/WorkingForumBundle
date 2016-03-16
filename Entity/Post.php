@@ -65,6 +65,16 @@ class Post
      */
     private $cdate;
 
+    /** var string
+     * 
+     * @ORM\Column(name="ip", type="string")
+     */
+    private $ip; // FOR SECURITY REASON
+    
+    public function __construct()
+    {
+        $this->ip = htmlentities($_SERVER["REMOTE_ADDR"]);
+    }
     
     public function getUser() {
         return $this->user;
@@ -185,5 +195,28 @@ class Post
     public function getCdate()
     {
         return $this->cdate;
+    }
+    
+     /**
+     * Set cdate
+     *
+     * @param string $ip
+     * @return Post
+     */
+    public function setIp($ip)
+    {
+        $this->ip = $ip;
+    
+        return $this;
+    }
+
+    /**
+     * Get ip
+     *
+     * @return string
+     */
+    public function getIp()
+    {
+        return $this->ip;
     }
 }

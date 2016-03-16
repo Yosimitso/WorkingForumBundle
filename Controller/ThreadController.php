@@ -5,9 +5,11 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
+use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ThreadController extends Controller
 {
@@ -39,6 +41,17 @@ class ThreadController extends Controller
     $form = $this->createForm(new PostType, $my_post);
     $form->handleRequest($request);
     
+    if ($form->isSubmitted())
+    {
+    
+             if ($user->getBanned()) // USER IS BANNED
+            {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('message.banned',[],'YosimitsoWorkingForumBundle'));
+            return $this->redirect($this->generateUrl('workingforum',[]));
+            }
+    
     if ($form->isValid())
     {
 
@@ -50,7 +63,8 @@ class ThreadController extends Controller
        // exit();
         $my_post->setCdate(new \DateTime)
                 ->setPublished($published)
-                ->setContent(preg_replace('#(\[rn])|(\r\n)|(\n\r)#', ' <br /> ', $my_post->getContent()))
+                //->setContent(preg_replace('#(\[rn])|(\r\n)|(\n\r)#', ' <br /> ', $my_post->getContent()))
+                ->setContent($my_post->getContent())
                 ->setUser($user);
          $my_post->setThread($thread);
          
@@ -71,10 +85,10 @@ class ThreadController extends Controller
        
         $this->get('session')->getFlashBag()->add(
             'success',
-            $this->get('translator')->trans('message.posted','YosimitsoWorkingForumBundle'));
+            $this->get('translator')->trans('message.posted',[],'YosimitsoWorkingForumBundle'));
         return $this->redirect($this->generateUrl('workingforum_thread',['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug]));
     }
-    
+    }
      
         return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',array(
             'subforum' => $subforum,
@@ -105,6 +119,15 @@ class ThreadController extends Controller
     $form = $this->createForm(new ThreadType, $my_thread);
     $form->handleRequest($request);
     
+    if ($user->getBanned())
+    {
+         $this->get('session')->getFlashBag()->add(
+            'error',
+            $this->get('translator')->trans('message.banned','YosimitsoWorkingForumBundle'));
+        return $this->redirect($this->generateUrl('workingforum',[]));
+    }
+    
+    
     if ($form->isValid() && $user)
     {
         $published = 1;
@@ -119,7 +142,8 @@ class ThreadController extends Controller
         $em->persist($my_thread);
         $my_post->setCdate(new \DateTime)
                 ->setPublished($published)
-                ->setContent(preg_replace('#(\[rn])|(\r\n)|(\n\r)#', ' <br /> ', $my_post->getContent()))
+                //->setContent(preg_replace('#(\[rn])|(\r\n)|(\n\r)#', ' <br /> ', $my_post->getContent()))
+                ->setContent( $my_post->getContent())
                 ->setUser($user);
         $my_post->setThread($my_thread);
 		
@@ -143,7 +167,7 @@ class ThreadController extends Controller
        
         $this->get('session')->getFlashBag()->add(
             'success',
-            $this->get('translator')->trans('message.threadCreated','YosimitsoWorkingForumBundle'));
+            $this->get('translator')->trans('message.threadCreated',[],'YosimitsoWorkingForumBundle'));
         return $this->redirect($this->generateUrl('workingforum_subforum',['subforum_slug' => $subforum_slug]));
        
     }
@@ -183,7 +207,7 @@ class ThreadController extends Controller
             
             $this->get('session')->getFlashBag()->add(
             'success',
-            $this->get('translator')->trans('message.threadLocked','YosimitsoWorkingForumBundle'));
+            $this->get('translator')->trans('message.threadLocked',[],'YosimitsoWorkingForumBundle'));
             
             
             return $this->redirect($this->generateUrl('workingforum_thread',array('thread_slug' => $thread_slug, 'subforum_slug' => $subforum_slug)));
@@ -208,10 +232,44 @@ class ThreadController extends Controller
             
             $this->get('session')->getFlashBag()->add(
             'success',
-             $this->get('translator')->trans('message.threadResolved','YosimitsoWorkingForumBundle'));
+             $this->get('translator')->trans('message.threadResolved',[],'YosimitsoWorkingForumBundle'));
             
             
             return $this->redirect($this->generateUrl('workingforum_thread',array('thread_slug' => $thread_slug, 'subforum_slug' => $subforum_slug)));
+        }
+        
+        function reportAction($post_id)
+        {
+          
+            $em = $this->getDoctrine()->getManager();
+            $user = $this->getUser();
+            $check_already = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneBy(['user' => $user->getId(), 'post' => $post_id]);
+            
+            if (is_null($check_already)) // THE USER HASN'T BEN REPORTED
+            {
+                $post = $em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($post_id);
+                if (!is_null($post))
+                { 
+                    $report = new PostReport;
+                    $report->setPost($post)
+                         ->setUser($user);
+                    $em->persist($report);
+                    $em->flush();
+                    return new Response(json_encode('true'),200);   
+                }
+                else
+                {
+                   return new Response(json_encode('false'),500);   
+                }
+            }
+            else // ALREADY WARNED BUT THAT'S OK, THANKS ANYWAY
+            {
+              return new Response(json_encode('true'),200);  
+            }
+                    
+            
+            
+             
         }
 }
 

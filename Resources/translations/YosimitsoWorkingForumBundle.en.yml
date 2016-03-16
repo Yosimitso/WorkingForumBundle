@@ -31,6 +31,7 @@ forum:
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: User
+    thanks_reporting: Thanks for reporting !
 pagination:
     previous: Previous
     next: Next
@@ -55,4 +56,5 @@ message:
     posted: Post saved
     threadCreated: Your thread has been created
     threadLocked: The thread has been successfully locked
-    threadResolved: The thread is now solved, thanks for your feedback 
+    threadResolved: The thread is now solved, thanks for your feedback
+    banned: Sorry but you are banned

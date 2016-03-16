@@ -558,3 +558,7 @@ color: #3c763d;
   text-align: center;
 }
 
+.thread_list tr:nth-child(even) {
+  background-color: #e2e2e2;
+}
+

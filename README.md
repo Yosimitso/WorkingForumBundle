@@ -24,6 +24,8 @@ Functionnalities
 - Messages counting (user, forum, subforum) with last replies
 - Automatic pagination on thread list and thread
 - Allow or not the anonymous to read forums
+- Banning system
+- Database safety : no HTML stored, only markdown
 
 
 Setup
@@ -107,9 +109,11 @@ Fonctionnalités
 - Support le multilangage
 - Les threads peuvent être marqués comme résolus
 - Breadcrumb (fil d'Arianne) automatique
-- Compteur de messages (utilisateur, forum, suforum) avec dernières réponses
+- Compteur de messages (utilisateur, forum, sousforum) avec dernières réponses
 - Pagination automatique sur la liste des thread, et les messages des threads
 - Autoriser ou non les anonymes à lire les forums
+- Système de bannissement
+- Securité de la base de données : aucun HTML d'enregistré, uniquement du markdown
 
 
 Installation

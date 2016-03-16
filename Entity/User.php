@@ -20,6 +20,12 @@ abstract class User implements \Yosimitso\WorkingForumBundle\Entity\UserInterfac
      */
 	 protected $nbPost;
     
+      /**
+       * 
+       * @var boolean
+       *  @ORM\Column(name="banned", type="boolean", nullable=true)
+       */   
+         protected $banned;
     
  public function getUsername()
   {
@@ -39,6 +45,8 @@ abstract class User implements \Yosimitso\WorkingForumBundle\Entity\UserInterfac
         public function setAvatarUrl($avatar_url)
         {
             $this->avatarUrl = $avatar_url;
+            
+            return $this;
         }
      public function setNbPost($nbPost)
 	{
@@ -57,4 +65,16 @@ abstract class User implements \Yosimitso\WorkingForumBundle\Entity\UserInterfac
 	{
 	return $this->nbPost;
 	}
+        
+    public function getBanned()
+    {
+        return $this->banned;
+    }
+    
+    public function setBanned($banned)
+    {
+        $this->banned = $banned;
+        
+        return $this;
+    }
 }

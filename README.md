@@ -4,7 +4,7 @@ WorkingForumBundle
 ENGLISH
 =================
 A forum bundle for Symfony 2, easy to use and fully fonctionnal
-This bundle work with your user bundle with no extra configuration (which can extended FOSUserBundle)
+This bundle work with your user bundle with no extra configuration (which can extend FOSUserBundle)
 
 Demo
 -------------
@@ -14,7 +14,7 @@ Try it here - http://www.charlymartins.fr/demoworkingforum/web/
 Functionnalities
 ------------------
 - Forum with subforum
-- Use a moderator role as ROLE_MODERATOR (and default admin roles)
+- Moderator role as ROLE_MODERATOR (and default admin roles)
 - Post editor using markdown with instant preview
 - Enable thread locking
 - Support multi language

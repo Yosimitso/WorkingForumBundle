@@ -41,7 +41,7 @@ class SmileyTwigExtension extends \Twig_Extension
     }
     public function getListSmiley()
     {
-        return $this->listSmileys;
+        return $this->listSmiley;
     }
       public function getFilters()
     {
@@ -52,17 +52,11 @@ class SmileyTwigExtension extends \Twig_Extension
 
     public function smiley($text)
     {
-        $list = [
-            ':)' => 'smile.png',
-            ':smile:' => 'smile.png',
-            ';)' => 'wink.png',
-            ':wink:' => 'wink.png',
-            ':P' => '',
-            ':D' => '',
+       
             
-        ];
+
      
-        foreach ($list as $key => $value)
+        foreach ($this->listSmiley as $key => $value)
         {
             $list[$key] = '<img src="'.$this->container->get('request')->getBasePath().'/bundles/yosimitsoworkingforum/images/smiley/'.$value.'" />';
         }

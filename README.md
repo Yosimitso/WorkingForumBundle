@@ -3,7 +3,6 @@ WorkingForumBundle
 
 ENGLISH
 =================
-** STILL IN DEVELOPMENT **
 A forum bundle for Symfony 2, easy to use and fully fonctionnal
 This bundle work with your user bundle with no extra configuration (which can extended FOSUserBundle)
 
@@ -25,6 +24,8 @@ Functionnalities
 - Automatic pagination on thread list and thread
 - Allow or not the anonymous to read forums
 - Banning system
+- Reporting system
+- Smiley system
 - Database safety : no HTML stored, only markdown
 
 
@@ -90,7 +91,6 @@ Todo
 
 FRANCAIS
 ==================
-** EN DEVELOPEMENT **
 Un bundle pour forum pour Symfony 2, simple a mettre en place et pleinement fonctionnel
 Ce bundle utilise votre bundle utilisateur (qui peut hériter de FOSUserBundle)
 
@@ -113,6 +113,8 @@ Fonctionnalités
 - Pagination automatique sur la liste des thread, et les messages des threads
 - Autoriser ou non les anonymes à lire les forums
 - Système de bannissement
+- Système de signalement de messages
+- Prise en charge de smileys
 - Securité de la base de données : aucun HTML d'enregistré, uniquement du markdown
 
 

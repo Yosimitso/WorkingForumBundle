@@ -20,13 +20,16 @@ class ThreadController extends Controller
   * @param Request $request
   * Méthode pour afficher le thread et de poster un nouveau message
   */
+    
     public function indexAction($subforum_slug,$thread_slug, Request $request, $page = 1)
     {
          $em = $this->getDoctrine()->getManager();
     $thread = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')->findOneBySlug($thread_slug);
     $post_query = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Post')->findByThread($thread->getId());
     $subforum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
-	
+    
+    
+    $listSmiley = $this->get('yosimitso_workingforum_smiley')->getListSmiley();
     
      $paginator  = $this->get('knp_paginator');
         $post_list = $paginator->paginate(
@@ -59,18 +62,17 @@ class ThreadController extends Controller
         $published = 1;
         $thread->addNbReplies(1)
                ->setLastReplyDate(new \DateTime);
-        //var_dump($my_post->getContent());
-       // exit();
+       
         $my_post->setCdate(new \DateTime)
                 ->setPublished($published)
-                //->setContent(preg_replace('#(\[rn])|(\r\n)|(\n\r)#', ' <br /> ', $my_post->getContent()))
+
                 ->setContent($my_post->getContent())
                 ->setUser($user);
          $my_post->setThread($thread);
          
    
-         $subforum->setNbPost($subforum->getNbPost()+1);
-		 $subforum->setLastReplyDate(new \DateTime);
+         $subforum->setNbPost($subforum->getNbPost()+1); // UPDATE THREAD MESSAGE COUNTER
+         $subforum->setLastReplyDate(new \DateTime);
 		
       
         $user->addNbPost(1);
@@ -95,7 +97,8 @@ class ThreadController extends Controller
             'thread' => $thread,
             'post_list' => $post_list,
             'date_format' => $date_format,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'listSmiley' => $listSmiley
                 ));   
         
         

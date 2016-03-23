@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}" type="text/css" media="all" />
 <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}" type="text/css" media="all" />
 
-<script type="text/javascript" >
+<script>
    jQuery(document).ready(function() {
       
 
@@ -36,7 +36,7 @@
 
     function quote(messageId,userId)
     {
-        jQuery('.textarea_post').val(jQuery('.textarea_post').val()+'> '+jQuery('#user'+userId).html()+' {{ 'forum.wrote' | trans}} :\n'+jQuery('#post'+messageId+' > p').html()+"\n");
+        jQuery('.textarea_post').val(jQuery('.textarea_post').val()+'> '+jQuery('#user'+userId).html()+' {{ 'forum.wrote' | trans}} :\n'+jQuery('#post'+messageId+' > p').html()+"\n\n");
         jQuery('.textarea_post').focus()
     }
     
@@ -145,7 +145,7 @@
      </div>   
       <div class="post-right">
           <p class="date">{{ post.cdate | date(date_format) }} <a href="#" onclick="quote({{ post.id}},{{post.user.id}}); return false;"><img src="{{asset('bundles/yosimitsoworkingforum/images/quote.png')}}" class="quote-img"></a><a href="#" onclick="report('{{ path('workingforum_report_post', {'post_id' : post.id}) }}')"><img src="{{asset('bundles/yosimitsoworkingforum/images/exclamation.png')}}" class="quote-img"></a></p>
-          <div id="post{{ post.id}}">{{ post.content |replace({'\n':'<br />'}) | markdown}}</div>    
+          <div id="post{{ post.id}}">{{ post.content | striptags('<br /><br><p><pre><ul><ol><li><strong><em><h1><h2><h3><h4><h5><h6><code><blockquote><a><img>') | markdown | replace({'\n':'<br />'}) | smiley | raw }}</div>    
       </div> 
       <div class="clear"></div>
     </div>    
@@ -159,12 +159,25 @@
          {% else %}
     <div class="new_post" id="new_post">
         <p class="post_a_message">{{ 'forum.post_a_message' | trans }}</p>
-       
-        
+        <script>
+            function insertSmiley(code)
+            {
+                jQuery('.textarea_post').val(jQuery('.textarea_post').val()+code);
+                jQuery('.textarea_post').focus();
+            }
+            </script>
+        <div id="wf_smiley">
+            <ul>
+         {% for key,smiley in listSmiley %}
+             <li><a href="#" onclick="insertSmiley('{{key}}'); return false"><img src="{{ asset('bundles/yosimitsoworkingforum/images/smiley/'~smiley) }}" /></a></li>
+         {% endfor %}
+            </ul>
+            <div class="clear"></div>
+        </div>
     {{ form_start(form) }}
       
     
-    <p>{{ form_widget(form.content) }}</p>
+    <p >{{ form_widget(form.content) }}</p>
     {{form_rest(form) }}
     <p><input type="submit" value="{{ 'forum.submit_post' | trans }}" class="button width100"/></p>
     {{ form_end(form) }}

@@ -2,4 +2,9 @@ parameters:
 
 
 services:
+    yosimitso_workingforum_smiley:
+        class: Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension
+        tags:
+            -  { name: twig.extension }
+        arguments: ['@service_container']
 

@@ -106,14 +106,14 @@ class Post
 
    
     /**
-     * Set content
+     * Set content 
      *
      * @param string $content
      * @return Post
      */
     public function setContent($content)
     {
-        $this->content = $content;
+        $this->content =strip_tags($content,'<br /><br><p><pre><ul><ol><li><strong><em><h1><h2><h3><h4><h5><h6><code><blockquote><a><img>');
     
         return $this;
     }

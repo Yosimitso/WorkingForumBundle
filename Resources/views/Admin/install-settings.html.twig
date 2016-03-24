@@ -3,7 +3,7 @@
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
-<div id="forum_content">
+<div id="wf_forum_content">
     {% if app.session.flashbag.has('success') %}
                 <div class="alert-success">
                     <ul>
@@ -23,13 +23,14 @@
                 </div>
             {% endif %}
                <h1>{{ 'admin.admin_workingforum' | trans }}</h1>
-<div id="forum_admin">
-      <div class="forum_block_title">{{ 'admin.install_settings' |trans }}</div>
+<div id="wf_forum_admin">
+      <div class="wf_forum_block_title">{{ 'admin.install_settings' |trans }}</div>
     {% for msg in msg %}
         <p>{{ msg }}</p>
       {% endfor %}
       
       <p><a href="{{ path('workingforum_admin') }}">Back to admin panel</a></p>
+</div>
 </div>
 
     {% endblock %}

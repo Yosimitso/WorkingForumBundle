@@ -20,26 +20,26 @@
                     </ul>
                 </div>
             {% endif %}
-             <div id="forum_content">
-<div class="breadcrumb">
+             <div id="wf_forum_content">
+<div class="wf_breadcrumb">
     <a href="{{ path('workingforum_forum')}}">Forum</a> &rarr; {{subforum.forum.name}}
 </div>
  {% if forbidden is defined and forbidden %}
-     <div class="forum">
-     <div class="empty_forum">{{ 'forum.must_be_logged' | trans }}</div>
+     <div class="wf_forum">
+     <div class="wf_empty_forum">{{ 'forum.must_be_logged' | trans }}</div>
      </div>
  {% else %}    
     
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
- <div class="new_thread_button">
-    <a class="button add" href="{{ path('workingforum_new_thread', {'subforum_slug' : subforum.slug}) }}"><span class="add-plus"></span>{{ ('forum.new_thread' | trans) }}</a>
+ <div class="wf_new_thread_button">
+    <a class="wf_button wf_add" href="{{ path('workingforum_new_thread', {'subforum_slug' : subforum.slug}) }}"><span class="wf_add-plus"></span>{{ ('forum.new_thread' | trans) }}</a>
     </div>
     {% endif %}
-<div id="forum">
-    <div class="forum">
+<div id="wf_forum">
+    <div class="wf_forum">
     <h1>{{ subforum.name }}</h1>
    
-<table class="thread_list">
+<table class="wf_thread_list">
     {# <thead>
         <tr>
             <th>{{ 'forum.thread' | trans }}</th>
@@ -48,21 +48,24 @@
     </thead> #}
     {% if thread_list is not empty %}
     {% for thread in thread_list %}
-        <tr {% if thread.pin %} class="pin"{% endif %}>
-            <td class="sub_name">
+        <tr {% if thread.pin %} class="wf_pin" {% elseif thread.resolved  %} class="wf_resolved"{% endif %}>
+            <td class="wf_sub_name">
+                
                 {% if thread.locked %}
                 <img src="{{ asset('bundles/yosimitsoworkingforum/images/lock.png') }}" width="24" style="vertical-align:bottom" />
                 
                 {% endif %}
                 {% if thread.pin %}
-                    <span class="pinText">{{ 'forum.pin' | trans }} : </span>   
+                    <span class="wf_pinText"><img src="{{ asset('bundles/yosimitsoworkingforum/images/pin.png') }}" width="16"/>{#{{ 'forum.pin' | trans }} : #}</span> 
+                    {% elseif thread.resolved %}
+                     <span class="wf_pinText"><img src="{{ asset('bundles/yosimitsoworkingforum/images/tick.png') }}" width="16"/>{#{{ 'forum.resolved' | trans }} : #}</span>    
                 {% endif %}    
                 <a href="{{ path( 'workingforum_thread', {'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ thread.label }}</a>  
                 
              
-                <br /><span class="sublabel">{{ thread.sublabel }}</span></td>
-            <td class="sub_stat">{{ thread.nbReplies}} {{ 'forum.nbPost' | trans }}</td>
-            <td class="sub_lastreply">{{'forum.last_reply_date' | trans }}<br />{{ thread.cdate | date(date_format)}} {{ 'forum.by' | trans }} {{ thread.author.username}}</td>
+                <br /><span class="wf_sublabel">{{ thread.sublabel }}</span></td>
+            <td class="wf_sub_stat">{{ thread.nbReplies}} {{ 'forum.nbPost' | trans }}</td>
+            <td class="wf_sub_lastreply">{{'forum.last_reply_date' | trans }}<br />{{ thread.cdate | date(date_format)}} {{ 'forum.by' | trans }} {{ thread.author.username}}</td>
             
             
             
@@ -73,7 +76,7 @@
     </table>
     {% else %}
     </table>
-    <div class="empty_forum">{{ 'forum.empty_forum' | trans }}</div>
+    <div class="wf_empty_forum">{{ 'forum.empty_forum' | trans }}</div>
     {% endif %}    
 
 

@@ -2,7 +2,7 @@
 {% block forum %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
-<div id="forum_content">
+<div id="wf_forum_content">
     {% if app.session.flashbag.has('success') %}
                 <div class="alert-success">
                     <ul>
@@ -22,22 +22,22 @@
                 </div>
             {% endif %}
                <h1>{{ 'admin.admin_workingforum' | trans }}</h1>
-<div id="forum_admin">
+<div id="wf_forum_admin">
  
-    <div class="forum_block_admin">
-        <div class="forum_block_title">{{ 'admin.manage_forum' | trans }}</div>
-        <div class="forum_content">
+    <div class="wf_forum_block_admin">
+        <div class="wf_forum_block_title">{{ 'admin.manage_forum' | trans }}</div>
+        <div class="wf_forum_content">
     <ul style="list-style: inside decimal;">
     {% for forum in list_forum %}
         <li><a href="{{ path('workingforum_admin_forum_edit', { 'id' : forum.id }) }}">{{ forum.name }}</a></li>   
    {% endfor %}
     </ul>
-     <a class="button button-center" href="{{ path('workingforum_admin_forum_add') }}"><span class="add-plus"></span>{{ 'admin.add' | trans }}</a>
+     <a class="wf_button wf_button-center" href="{{ path('workingforum_admin_forum_add') }}"><span class="wf_add-plus"></span>{{ 'admin.add' | trans }}</a>
         </div>
     </div>
-     <div class="forum_block_admin">
-        <div class="forum_block_title">{{ 'admin.manage_settings' | trans }}</div>
-        <div class="forum_content">
+     <div class="wf_forum_block_admin">
+        <div class="wf_forum_block_title">{{ 'admin.manage_settings' | trans }}</div>
+        <div class="wf_forum_content">
             
     <ul>
         {% for setting in settings_render %}
@@ -49,7 +49,7 @@
    
      </div>
      </div>
-    <div class="clear"></div>
+    <div class="wf_clear"></div>
 </div>
 </div>
 {% endblock %}

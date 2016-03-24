@@ -3,19 +3,19 @@
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
-<div id="forum_content">
+<div id="wf_forum_content">
      <h1>{{ 'admin.admin_area' | trans }}</h1>
-<div id="forum_admin">
+<div id="wf_forum_admin">
    
     
    {{ form_start(form) }}
    <p>{{ form_label(form.name) }}</p>
    <p>{{ form_widget(form.name) }}</p>
-   <p class="label">{{ 'admin.list_subforum' | trans }}</p>
+   <p class="wf_label">{{ 'admin.list_subforum' | trans }}</p>
    
-   <ul id="list_subforum">
+   <ul id="wf_list_subforum">
    {% for subforum in form.subforum %}
-       <li id="sub_{{ loop.index-1 }}">{{ form_widget(subforum.name) }} <a href="#" onclick="deleteSubforum({{ loop.index-1 }})"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a></li>
+       <li id="wf_sub_{{ loop.index-1 }}">{{ form_widget(subforum.name) }} <a href="#" onclick="deleteSubforum({{ loop.index-1 }})"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a></li>
        {% endfor %}
    </ul>
    
@@ -29,19 +29,19 @@
           {
               return false;
           }
-           jQuery('#sub_'+index).remove();
+           jQuery('#wf_sub_'+index).remove();
            return true;
        }
        function NewSubforum() {
         
            var length = (jQuery('#list_subforum').children().length)+1;
-           var content = '<li id="sub_'+length+'"><input type="text" value="" required="required" name="yosimitso_workingforumbundle_forum[subforum]['+length+'][name]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a></li>';
+           var content = '<li id="wf_sub_'+length+'"><input type="text" value="" required="required" name="yosimitso_workingforumbundle_forum[subforum]['+length+'][name]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a></li>';
            jQuery('#list_subforum').append(content);
            return true;
        }
     </script>   
-   <a class="button" onclick="NewSubforum()"><span class="add-plus"></span>{{ 'admin.new_subforum' | trans }}</a>
-    <input type="submit" value="{{ 'admin.submit' |trans }}" class="button" />
+   <a class="wf_button" onclick="NewSubforum()"><span class="wf_add-plus"></span>{{ 'admin.new_subforum' | trans }}</a>
+    <input type="submit" value="{{ 'admin.submit' |trans }}" class="wf_button" />
    {{ form_end(form) }}
 </div>
 </div>

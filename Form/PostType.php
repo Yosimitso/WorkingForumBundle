@@ -15,7 +15,7 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content','textarea',array('translation_domain' => 'front','label' => 'forum.content', 'attr' => array('class' => 'textarea_post')))
+            ->add('content','textarea',['translation_domain' => 'YosimitsoWorkingForumBundle','label' => 'forum.content', 'attr' => array('class' => 'wf_textarea_post')])
        
             
             

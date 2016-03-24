@@ -23,10 +23,19 @@ class ThreadController extends Controller
     
     public function indexAction($subforum_slug,$thread_slug, Request $request, $page = 1)
     {
+         $allow_anonymous = $this->container->getParameter( 'yosimitso_working_forum.allow_anonymous_read' );
          $em = $this->getDoctrine()->getManager();
-    $thread = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')->findOneBySlug($thread_slug);
+          $subforum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
+          $thread = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')->findOneBySlug($thread_slug);
+          $user = $this->getUser();
+          $forbidden = false;
+          
+         if ($user !== null || $allow_anonymous)
+         {
+             $forbidden = false;
+    
     $post_query = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Post')->findByThread($thread->getId());
-    $subforum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
+   
     
     
     $listSmiley = $this->get('yosimitso_workingforum_smiley')->getListSmiley();
@@ -38,7 +47,7 @@ class ThreadController extends Controller
         $this->container->getParameter( 'yosimitso_working_forum.post_per_page' ) /*limit per page*/
     );
    $date_format = $this->container->getParameter( 'yosimitso_working_forum.date_format' );
-   $user = $this->getUser();
+   
     
     $my_post = new Post;
     $form = $this->createForm(new PostType, $my_post);
@@ -91,14 +100,25 @@ class ThreadController extends Controller
         return $this->redirect($this->generateUrl('workingforum_thread',['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug]));
     }
     }
-     
+    
+    
+    
+         }
+         else //USER NOT GRANTED TO SEE THE THREAD
+         {
+           $post_list = $date_format = $form = $listSmiley = null;
+            $forbidden = true;
+           
+            
+         }
         return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',array(
             'subforum' => $subforum,
             'thread' => $thread,
             'post_list' => $post_list,
             'date_format' => $date_format,
-            'form' => $form->createView(),
-            'listSmiley' => $listSmiley
+            'form' => (isset($form)) ? $form->createView() : null,
+            'listSmiley' => $listSmiley,
+            'forbidden' => $forbidden
                 ));   
         
         

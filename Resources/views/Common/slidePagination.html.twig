@@ -1,16 +1,16 @@
 
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 {% if pageCount > 1 %}
-<div class="pagination">
-    <div class="center">
+<div class="wf_pagination">
+    <div class="wf_center">
     <ul>
 
     {% if previous is defined %}
-        <li class="previous">
+        <li class="wf_previous">
             <a href="{{ path(route, query|merge({(pageParameterName): previous})) }}">&laquo;&nbsp;{{ 'pagination.previous' |trans }}</a>
         </li>
     {% else %}
-        <li class="disabled previous">
+        <li class="wf_disabled wf_previous">
             <span>&laquo;&nbsp;{{ 'pagination.previous' |trans }}</span>
         </li>
     {% endif %}
@@ -24,7 +24,7 @@
                 <a href="{{ path(route, query|merge({(pageParameterName): 2})) }}">2</a>
             </li>
         {% elseif startPage != 2 %}
-        <li class="disabled">
+        <li class="wf_disabled">
             <span>&hellip;</span>
         </li>
         {% endif %}
@@ -36,7 +36,7 @@
                 <a href="{{ path(route, query|merge({(pageParameterName): page})) }}">{{ page }}</a>
             </li>
         {% else %}
-            <li class="active">
+            <li class="wf_active">
                 <span>{{ page }}</span>
             </li>
         {% endif %}
@@ -46,7 +46,7 @@
     {% if pageCount > endPage %}
         {% if pageCount > (endPage + 1) %}
             {% if pageCount > (endPage + 2) %}
-                <li class="disabled">
+                <li class="wf_disabled">
                     <span>&hellip;</span>
                 </li>
             {% else %}
@@ -61,16 +61,16 @@
     {% endif %}
 
     {% if next is defined %}
-        <li class="next">
+        <li class="wf_next">
             <a href="{{ path(route, query|merge({(pageParameterName): next})) }}">{{ 'pagination.next' |trans }}&nbsp;&raquo;</a>
         </li>
     {% else %}
-        <li class="disabled next">
+        <li class="wf_disabled wf_next">
             <span>{{ 'pagination.next' |trans }}&nbsp;&raquo;</span>
         </li>
     {% endif %}
     </ul>
-    <div class="clear"></div>
+    <div class="wf_clear"></div>
 </div>
 </div>
 {% endif %}

@@ -23,7 +23,6 @@ Functionnalities
 - Messages counting (user, forum, subforum) with last replies
 - Automatic pagination on thread list and thread
 - Allow or not the anonymous to read forums
-- Banning system
 - Reporting system
 - Smiley system
 - Database safety : no HTML stored, only markdown
@@ -86,6 +85,9 @@ Example :
 
 Todo
 -----------
+- Improve quoting system
+- Search system
+- Complete banning system
 - Removing post by a moderator
 - Allow anonymous users to create thread if set in the forums' configuration
 

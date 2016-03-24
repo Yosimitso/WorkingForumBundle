@@ -20,7 +20,7 @@ class ForumController extends Controller
          $allow_anonymous = $this->container->getParameter( 'yosimitso_working_forum.allow_anonymous_read' );
          $user = $this->getUser();
           $subforum = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
-         if ($user !== null)
+         if ($user !== null || $allow_anonymous)
          {
              $forbidden = false;
         if ($page <= 0)
@@ -41,8 +41,10 @@ class ForumController extends Controller
          }
          else
          {
+           
              $forbidden = true;
              $list_subforum = $date_format = null;
+             
          }
         return $this->render('YosimitsoWorkingForumBundle:Forum:thread_list.html.twig',array(
             'subforum' => $subforum,

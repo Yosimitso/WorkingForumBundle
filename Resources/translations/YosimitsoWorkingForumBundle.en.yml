@@ -27,11 +27,13 @@ forum:
     no_subforum: No subforum
     pin: Pin
     wrote: wrote
-    must_be_logged: You have to be logged in to view this forum
+    must_be_logged: You have to be logged in to access this
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: User
     thanks_reporting: Thanks for reporting !
+    doPin: Pin
+    required: Required
 pagination:
     previous: Previous
     next: Next

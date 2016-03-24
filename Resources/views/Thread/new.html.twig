@@ -34,30 +34,31 @@
    
 </script>
 
- <div id="forum_content">
-<div class="breadcrumb">
+ <div id="wf_forum_content">
+<div class="wf_breadcrumb">
  <a href="{{ path('workingforum_forum')}}">Forum</a> &rarr; <a href="{{ path('workingforum_forum') }}">{{subforum.forum.name}}</a> &rarr; <a href="{{ path('workingforum_subforum',{ 'subforum_slug' : subforum.slug }) }}">{{subforum.name }}</a> &rarr; {{ 'forum.new_thread' | trans }}
 </div>
-<div class="new_thread">
+<div class="wf_new_thread">
 
     <h1>{{ ('forum.new_thread' | trans) }} {{ ('forum.into_forum' | trans) }} <em>{{subforum.name }}</em></h1>    
-    <div class="content">
+    <div class="wf_content">
    {% if form_errors(form) %}
                   <div class="alert-error">
                       {{form_errors(form) }}
                   </div>
           {% endif %}
     {{ form_start(form) }}
-    <p>{{ 'forum.thread' | trans }}</p>
+    <p>{{ form_label(form.label) }}</p>
     <p>{{ form_widget(form.label) }}</p>
     
-      <p>{{ 'forum.sublabel' | trans}}</p>
+      <p>{{ form_label(form.sublabel) }}</p>
     <p>{{ form_widget(form.sublabel) }}</p>
     
     {% for post in form.post %}
     <p>{{ form_widget(post.content) }}</p>
     {% endfor %}
-     <p><input type="submit" value="{{ 'forum.create_thread' | trans }}" class="button width50"/></p>
+    <p>{{ form_widget(form.pin) }} {{form_label(form.pin) }}</p>
+     <p><input type="submit" value="{{ 'forum.create_thread' | trans }}" class="wf_button wf_width50"/></p>
      {{ form_rest(form) }}
      {{ form_end(form) }}
     </div>   

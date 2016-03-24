@@ -16,9 +16,10 @@ class ThreadType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('label','text',array('translation_domain' => 'front','label' => 'forum.label', 'error_bubbling' => true))
-            ->add('sublabel','text',array('translation_domain' => 'front','label' => 'forum.sublabel', 'attr' => array(),'error_bubbling' => true))
-            ->add('post','collection',array('type' => new PostType(), 'allow_add' => false, 'error_bubbling' => true))
+            ->add('label','text',['translation_domain' => 'YosimitsoWorkingForumBundle','label' => 'forum.thread', 'error_bubbling' => true])
+            ->add('sublabel','text',['translation_domain' => 'YosimitsoWorkingForumBundle','label' => 'forum.sublabel','error_bubbling' => true])
+            ->add('post','collection',['type' => new PostType(), 'allow_add' => false, 'error_bubbling' => true])
+            ->add('pin','checkbox',['translation_domain' => 'YosimitsoWorkingForumBundle', 'label' => 'forum.doPin'])
             
             
         ;

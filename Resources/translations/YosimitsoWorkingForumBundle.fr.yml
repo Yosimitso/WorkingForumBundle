@@ -27,11 +27,13 @@ forum:
     no_subforum: Aucun sous-forum
     pin: Epinglé
     wrote: à écrit
-    must_be_logged: Vous devez être connecté pour voir ce forum
+    must_be_logged: Vous devez être connecté pour accèder à cette page
+    doPin: Epingler
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: Utilisateur
     thanks_reporting: Merci d'avoir signalé !
+    required: Requis
 pagination:
     previous: Précédent
     next: Suivant

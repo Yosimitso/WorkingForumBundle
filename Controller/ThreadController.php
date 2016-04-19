@@ -74,9 +74,10 @@ class ThreadController extends Controller
        
         $my_post->setCdate(new \DateTime)
                 ->setPublished($published)
-
                 ->setContent($my_post->getContent())
-                ->setUser($user);
+                ->setIp(htmlentities($_SERVER['REMOTE_ADDR']))
+                ->setUser($user)
+                ;
          $my_post->setThread($thread);
          
    

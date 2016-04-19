@@ -17,6 +17,9 @@ class AdminSubforumType extends AbstractType
         $builder
             
             ->add('name','text',['error_bubbling' => true, 'attr' => ['class' => 'form_subforum']])
+                ->add('nbThread','number',['disabled' => true,'attr' => ['style' => 'width:30px']])
+                ->add('nbPost','number',['disabled' => true,'attr' => ['style' => 'width:30px']])
+           
             
         ;
     }

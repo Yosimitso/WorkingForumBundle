@@ -34,6 +34,8 @@ forum:
         ROLE_USER: Utilisateur
     thanks_reporting: Merci d'avoir signalé !
     required: Requis
+    averagePostThread : Moyenne messages / sujets
+    search_forum: Rechercher
 pagination:
     previous: Précédent
     next: Suivant
@@ -49,6 +51,9 @@ admin:
     delete_subforum: Souhaitez vous supprimer ce sous forum ? Cette action est irréversible après l'enregistrement
     install_settings: Installation des règlages
     add: Ajouter
+    statistics: Statistiques
+    back_to_admin: Retour à l'admin.
+    back_to_forum: Retour au forum
 setting:
     allow_anonymous_read: Autoriser les utilisateurs non enregistrés à lire
     allow_moderator_delete_thread: Autoriser les modérateurs à supprimer des sujets
@@ -59,3 +64,6 @@ message:
     threadLocked: Le sujet a été verrouillé avec succès
     threadResolved: Le sujet est résolu, merci pour votre retour
     banned: Désolé mais vous êtes banni
+search:
+    results_for: Résultats pour "%keywords%"
+    no_result: Désolé, aucun résultat pour "%keywords%"

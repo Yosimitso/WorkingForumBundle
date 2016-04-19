@@ -23,8 +23,31 @@ class ThreadRepository extends EntityRepository
                 ->setMaxResults($limit)
                 ->getQuery();
         $query = $queryBuilder->getScalarResult();
-       // var_dump($query);
-       // exit();
+
+        return $query;
+    }
+    
+    public function search($start, $limit = 100,$keywords)
+    {
+        $keywords = explode(' ',$keywords);
+        $where = '';
+          foreach ($keywords as $word)
+        {
+            $where  .= "(a.label LIKE '%".$word."%' OR a.subLabel LIKE '%".$word."%') ";
+           
+        }         
+        
+      
+         $queryBuilder = $this->_em->createQueryBuilder()
+                ->select('a')
+                 ->from($this->_entityName,'a')
+                 ->where($where)
+                 ->setMaxResults($limit)
+                 ->getQuery();
+                 
+             /*   var_dump($queryBuilder);
+                 exit();*/
+          $query = $queryBuilder->getResult();
         return $query;
     }
 }

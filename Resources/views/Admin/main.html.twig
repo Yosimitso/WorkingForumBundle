@@ -23,7 +23,9 @@
             {% endif %}
                <h1>{{ 'admin.admin_workingforum' | trans }}</h1>
 <div id="wf_forum_admin">
- 
+  <p><a class="wf_button" href="{{ path('workingforum_forum') }}">
+        &larr; {{ 'admin.back_to_forum' |trans }}
+        </a></p>
     <div class="wf_forum_block_admin">
         <div class="wf_forum_block_title">{{ 'admin.manage_forum' | trans }}</div>
         <div class="wf_forum_content">

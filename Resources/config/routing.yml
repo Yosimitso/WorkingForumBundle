@@ -38,3 +38,7 @@ workingforum_admin_forum_add:
 workingforum_admin_install_settings:
     path: /admin/install-settings
     defaults: {_controller: YosimitsoWorkingForumBundle:Admin:installSettings }
+    
+workingforum_search:
+    path: /search
+    defaults: {_controller: YosimitsoWorkingForumBundle:Search:index }

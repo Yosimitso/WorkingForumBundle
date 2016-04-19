@@ -69,6 +69,13 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $forum = $em->getRepository('YosimitsoWorkingForumBundle:Forum')->find($id);
       
+        $statistics = ['nbThread' => 0, 'nbPost' => 0];
+        foreach ($forum->getSubforum() as $subforum)
+        {
+            $statistics['nbThread'] += $subforum->getNbThread();
+            $statistics['nbPost'] += $subforum->getNbPost();
+        }
+        $statistics['averagePostThread'] = $statistics['nbPost']/$statistics['nbThread'] ;
         $form = $this->createForm(New AdminForumType,$forum);
         
         $form->handleRequest($request);
@@ -84,13 +91,14 @@ class AdminController extends Controller
             
               $this->get('session')->getFlashBag()->add(
             'success',
-           $this->get('translator')->trans('message.saved','YosimitsoWorkingForumBundle'));
+           $this->get('translator')->trans('message.saved',[],'YosimitsoWorkingForumBundle'));
             return $this->redirect($this->generateUrl('workingforum_admin'));
             
         }
          return $this->render('YosimitsoWorkingForumBundle:Admin/Forum:form.html.twig',[
                 'forum' => $forum,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'statistics' => $statistics
                 ]);
     }
     

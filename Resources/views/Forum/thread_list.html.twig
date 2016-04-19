@@ -22,7 +22,12 @@
             {% endif %}
              <div id="wf_forum_content">
 <div class="wf_breadcrumb">
-    <a href="{{ path('workingforum_forum')}}">Forum</a> &rarr; {{subforum.forum.name}}
+    <a href="{{ path('workingforum_forum')}}">Forum</a>
+    {% if subforum is defined %}
+        &rarr; {{subforum.forum.name}}
+    {% else %}
+        &rarr; {{'forum.search_forum' |trans }}
+    {% endif %}
 </div>
  {% if forbidden is defined and forbidden %}
      <div class="wf_forum">
@@ -30,14 +35,20 @@
      </div>
  {% else %}    
     
-{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+{% if is_granted("IS_AUTHENTICATED_REMEMBERED") and subforum is defined%}
+    
+   
  <div class="wf_new_thread_button">
     <a class="wf_button wf_add" href="{{ path('workingforum_new_thread', {'subforum_slug' : subforum.slug}) }}"><span class="wf_add-plus"></span>{{ ('forum.new_thread' | trans) }}</a>
     </div>
     {% endif %}
 <div id="wf_forum">
     <div class="wf_forum">
+        {% if subforum is defined %}
     <h1>{{ subforum.name }}</h1>
+    {% else %}
+        <h1>{{ 'search.results_for' | trans({'%keywords%' : keywords}) }}</h1>
+    {% endif %}    
    
 <table class="wf_thread_list">
     {# <thead>
@@ -59,9 +70,10 @@
                     <span class="wf_pinText"><img src="{{ asset('bundles/yosimitsoworkingforum/images/pin.png') }}" width="16"/>{#{{ 'forum.pin' | trans }} : #}</span> 
                     {% elseif thread.resolved %}
                      <span class="wf_pinText"><img src="{{ asset('bundles/yosimitsoworkingforum/images/tick.png') }}" width="16"/>{#{{ 'forum.resolved' | trans }} : #}</span>    
-                {% endif %}    
-                <a href="{{ path( 'workingforum_thread', {'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ thread.label }}</a>  
-                
+                {% endif %}
+            
+                <a href="{{ path( 'workingforum_thread', {'subforum_slug' : thread.subforum.slug, 'thread_slug' : thread.slug}) }}">{{ thread.label }}</a>  
+               
              
                 <br /><span class="wf_sublabel">{{ thread.sublabel }}</span></td>
             <td class="wf_sub_stat">{{ thread.nbReplies}} {{ 'forum.nbPost' | trans }}</td>
@@ -76,7 +88,11 @@
     </table>
     {% else %}
     </table>
+    {% if subforum is defined %}
     <div class="wf_empty_forum">{{ 'forum.empty_forum' | trans }}</div>
+    {% else %}
+         <div class="wf_empty_forum">{{ 'search.no_result' | trans({'%keywords%' : keywords}) }}</div>
+    {% endif%}
     {% endif %}    
 
 

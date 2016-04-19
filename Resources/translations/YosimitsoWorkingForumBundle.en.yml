@@ -34,6 +34,8 @@ forum:
     thanks_reporting: Thanks for reporting !
     doPin: Pin
     required: Required
+    averagePostThread : Average posts / threads
+    search_forum: Search
 pagination:
     previous: Previous
     next: Next
@@ -50,6 +52,9 @@ admin:
     delete_subforum: Are you sure to delete this subforum ? There is no rollback possible after confirmation
     install_settings: Settings installations
     add: Add
+    statistics: Statistics
+    back_to_admin: Back to admin.
+    back_to_forum: Back to forum
 setting:
     allow_anonymous_read: Allow anonymous users to read
     allow_moderator_delete_thread: Allow moderators to delete threads
@@ -60,3 +65,7 @@ message:
     threadLocked: The thread has been successfully locked
     threadResolved: The thread is now solved, thanks for your feedback
     banned: Sorry but you are banned
+search:
+    results_for: Results for "%keywords%"
+    no_result: Sorry, no results for "%keywords%"
+    

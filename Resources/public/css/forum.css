@@ -283,8 +283,9 @@ padding-left: 10px;
 padding-right: 10px;
 padding-top: 20px;
 text-align: center;
-
+font-family:Roboto,"Lucida Grande",Arial;
 text-align:left;
+
 }
 
 #wf_forum_admin label, #wf_forum_admin .wf_label {
@@ -420,6 +421,12 @@ cursor:auto;
 .wf_add-plus {
   
   background:url('../images/plus.png') left no-repeat;
+  padding-left:25px;
+}
+
+.wf_search_icon {
+  
+  background:url('../images/search.png') left no-repeat;
   padding-left:25px;
 }
 
@@ -603,4 +610,13 @@ code {
 #wf_smiley ul {
     list-style: none;
     margin-bottom:0;
+}
+
+.wf_admin_left {
+    float:left;
+    width:50%;
+}
+
+#wf_search {
+    width:250px;
 }

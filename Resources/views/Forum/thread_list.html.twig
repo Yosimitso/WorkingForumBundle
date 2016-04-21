@@ -26,7 +26,7 @@
     {% if subforum is defined %}
         &rarr; {{subforum.forum.name}}
     {% else %}
-        &rarr; {{'forum.search_forum' |trans }}
+        &rarr; <a href="{{ path('workingforum_search') }}">{{'forum.search_forum' |trans }}</a>
     {% endif %}
 </div>
  {% if forbidden is defined and forbidden %}

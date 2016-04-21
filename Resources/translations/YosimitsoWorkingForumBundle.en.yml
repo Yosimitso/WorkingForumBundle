@@ -68,4 +68,6 @@ message:
 search:
     results_for: Results for "%keywords%"
     no_result: Sorry, no results for "%keywords%"
+    keywords: Keywords
+    search_in: Search in
     

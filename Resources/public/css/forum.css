@@ -618,5 +618,24 @@ code {
 }
 
 #wf_search {
-    width:250px;
+    padding:60px;
+     background-color:white;
+ font-family:Roboto;
+ border-bottom: 0.5px solid silver;
+ border-left:1px solid #188d40;
+}
+
+#wf_search input {
+    border: 1px solid #d8d8d8;
+border-radius: 3px;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
+font-size: 16px;
+height: 25px;
+width: 300px;
+}
+
+#wf_search select {
+        border: 1px solid #d8d8d8;
+border-radius: 3px;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
 }

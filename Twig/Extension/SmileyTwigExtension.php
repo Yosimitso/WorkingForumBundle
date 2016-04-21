@@ -7,7 +7,7 @@ class SmileyTwigExtension extends \Twig_Extension
 {
     
     private $container;
-    private $listSmileys;
+    private $listSmiley;
     public function __construct(Container $container) {
         $this->container = $container;
         $this->listSmiley = [
@@ -28,11 +28,17 @@ class SmileyTwigExtension extends \Twig_Extension
             ':shy:' => 'bashful.png',
             ':bored:' => 'bored.png',
             ':confused:' => 'confused.png',
-            ':love:' => 'heart.png',
+            ':heart:' => 'heart.png',
+            ':love:' => 'love.png',
             ':oh:' => 'oh.png',
             ':nerdy:' => 'nerdy.png',
             ':present:' => 'present.png',
-            ':sun:' => 'sun.png'
+            ':sun:' => 'sun.png',
+            ':sunglasses:' => 'sunglasses.png',
+            ':xd:' => 'xd.png',
+            ':football:' => 'football.png',
+            ':tennis:' => 'tennis.png',
+            ':basketball:' => 'basketball.png'
            
          
             

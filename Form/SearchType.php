@@ -28,7 +28,7 @@ class SearchType extends AbstractType
             }
                 
             ])
-            ->add('submit','submit')
+            ->add('submit','submit',['label' => 'forum.search_forum', 'translation_domain' => 'YosimitsoWorkingForumBundle','attr' => ['class' => 'wf_button']])
                 
                 ;
                    

@@ -18,7 +18,7 @@ class ThreadRepository extends EntityRepository
                 ->select('a')
                 ->addSelect('b')
                  ->from($this->_entityName,'a')
-                ->join('YosimitsoWorkingForumBundle:Post','b','WITH','a.id = b.threadId')
+                ->join('YosimitsoWorkingForumBundle:Post','b','WITH','a.id = b.thread')
                 ->orderBy('a.note','desc')
                 ->setMaxResults($limit)
                 ->getQuery();
@@ -33,7 +33,7 @@ class ThreadRepository extends EntityRepository
         $where = '';
           foreach ($keywords as $word)
         {
-            $where  .= "(a.label LIKE '%".$word."%' OR a.subLabel LIKE '%".$word."%') ";
+            $where  .= "(a.label LIKE '%".$word."%' OR a.subLabel LIKE '%".$word."%' OR b.content LIKE '%".$word."%') ";
            
         }         
         
@@ -41,6 +41,7 @@ class ThreadRepository extends EntityRepository
          $queryBuilder = $this->_em->createQueryBuilder()
                 ->select('a')
                  ->from($this->_entityName,'a')
+                 ->join('YosimitsoWorkingForumBundle:Post','b','WITH','a.id = b.thread')
                  ->where($where)
                  ->setMaxResults($limit)
                  ->getQuery();

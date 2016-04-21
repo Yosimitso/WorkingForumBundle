@@ -52,7 +52,7 @@ class SearchController extends Controller
         }
         
         
-        return $this->render('YosimitsoWorkingForumBundle:Search:index.html.twig',[
+        return $this->render('YosimitsoWorkingForumBundle:Search:search.html.twig',[
                 'listForum' => $listForum,
                 'form' => $form->createView()
                 ]);

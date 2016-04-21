@@ -1,0 +1,19 @@
+{% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
+{% block forum %}
+    {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+ <div id="wf_forum_content">
+     <div class="wf_breadcrumb"><a href="{{ path('workingforum_forum') }}">Forum</a></div>
+    <div id="wf_search">
+         {{ form_start(form) }}
+        <p>{{ form_label(form.keywords)}}</p>
+        <p>{{ form_widget(form.keywords) }}</p>
+        <p>{{ form_label(form.forum)}}</p>
+        <p>{{ form_widget(form.forum) }}</p>
+        <p>{{ form_widget(form.submit) }}</p>
+       
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+   </div>
+ </div>
+{% endblock %}

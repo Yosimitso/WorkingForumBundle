@@ -107,6 +107,29 @@
                 
            
     }
+    
+     function moderate(id)
+    {
+        
+            reason = prompt('{{ 'admin.report.why' | trans }}');
+            
+          
+                jQuery.ajax({
+           
+		   type: "POST", 
+		   url: '{{ path('workingforum_admin_report_action_moderate') }}',
+		   crossDomain: false,
+                   data: 'reason='+reason+'&postId='+id,
+		   dataType: 'json',
+                   async: false,
+		   success: function(res){
+                       if (res == 'ok')
+                       {
+                         jQuery('#wf_post'+id).html('<p class="wf_moderate">{{'forum.post_moderated' |trans }} '+reason+'</p>');
+                       }
+                   }
+        });  
+        }
 
 </script>
     
@@ -150,8 +173,19 @@
        <p class="wf_message">{% if post.user.roles.0 is defined %} {{ (('forum.user.'~post.user.roles.0) | trans) }} {% else %} {{ ('forum.user.ROLE_USER' | trans) }}{% endif %}</p>
      </div>   
       <div class="wf_post-right">
-          <p class="wf_date">{{ post.cdate | date(date_format) }} <a href="#" onclick="quote({{ post.id}},{{post.user.id}}); return false;"><img src="{{asset('bundles/yosimitsoworkingforum/images/quote.png')}}" class="wf_quote-img"></a><a href="#" onclick="report('{{ path('workingforum_report_post', {'post_id' : post.id}) }}')"><img src="{{asset('bundles/yosimitsoworkingforum/images/exclamation.png')}}" class="wf_quote-img"></a></p>
-          <div id="wf_post{{ post.id}}">{{ post.content | striptags('<br /><br><p><pre><ul><ol><li><strong><em><h1><h2><h3><h4><h5><h6><code><blockquote><a><img>') | markdown | replace({'\n':'<br />'}) | smiley | raw }}</div>    
+          <p class="wf_date">
+              {{ post.cdate | date(date_format) }} <a href="#" onclick="quote({{ post.id}},{{post.user.id}}); return false;"><img src="{{asset('bundles/yosimitsoworkingforum/images/quote.png')}}" class="wf_quote-img"></a>{% if post.moderateReason is empty %}<a href="#" onclick="report('{{ path('workingforum_report_post', {'post_id' : post.id}) }}'); return false;"><img src="{{asset('bundles/yosimitsoworkingforum/images/exclamation.png')}}" class="wf_quote-img"></a>{% endif %}
+            {% if ((is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR"))) and post.moderateReason is empty  %}
+            <a href="#" onclick="moderate({{ post.id }}); return false;"><img class="wf_quote-img" src="{{ asset('bundles/yosimitsoworkingforum/images/moderate.png') }}"></a>
+            {% endif %}
+          </p>
+          <div id="wf_post{{ post.id}}">
+              {% if post.moderateReason is empty %}
+              {{ post.content | striptags('<br /><br><p><pre><ul><ol><li><strong><em><h1><h2><h3><h4><h5><h6><code><blockquote><a><img>') | markdown | replace({'\n':'<br />'}) | smiley | raw }}
+              {% else %}
+                  <p class="wf_moderate">{{'forum.post_moderated' |trans }} {{ post.moderateReason }}</p>    
+              {% endif %}
+          </div>    
       </div> 
       <div class="wf_clear"></div>
     </div>    
@@ -175,7 +209,7 @@
         <div id="wf_smiley">
             <ul>
          {% for key,smiley in listSmiley %}
-             <li><a href="#" onclick="insertSmiley('{{key}}'); return false"><img src="{{ asset('bundles/yosimitsoworkingforum/images/smiley/'~smiley) }}" /></a></li>
+             <li><a href="#" onclick="insertSmiley('{{key}}'); return false;"><img src="{{ asset('bundles/yosimitsoworkingforum/images/smiley/'~smiley) }}" /></a></li>
          {% endfor %}
             </ul>
             <div class="wf_clear"></div>

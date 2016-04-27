@@ -71,6 +71,13 @@ class Post
      */
     private $ip; // FOR SECURITY REASON
     
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="moderateReason", type="text",nullable=true)
+     */
+    private $moderateReason;
+    
     public function __construct()
     {
         $this->ip = htmlentities($_SERVER["REMOTE_ADDR"]);
@@ -219,4 +226,28 @@ class Post
     {
         return $this->ip;
     }
+    
+     /**
+     * Set moderateReason 
+     *
+     * @param string $moderateReason 
+     * @return Post
+     */
+    public function setModerateReason ($moderateReason )
+    {
+        $this->moderateReason  =$moderateReason ;
+    
+        return $this;
+    }
+
+    /**
+     * Get moderateReason 
+     *
+     * @return string 
+     */
+    public function getModerateReason ()
+    {
+        return $this->moderateReason;
+    }
+
 }

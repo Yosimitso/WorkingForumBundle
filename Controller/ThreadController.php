@@ -268,8 +268,10 @@ class ThreadController extends Controller
             $em = $this->getDoctrine()->getManager();
             $user = $this->getUser();
             $check_already = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneBy(['user' => $user->getId(), 'post' => $post_id]);
+            $post = $em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($post_id);
             
-            if (is_null($check_already)) // THE USER HASN'T BEN REPORTED
+            
+            if (is_null($check_already) && empty($post->getModerateReason)) // THE POST HASN'T BEEN REPORTED AND NOT ALREADY MODERATED
             {
                 $post = $em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($post_id);
                 if (!is_null($post))

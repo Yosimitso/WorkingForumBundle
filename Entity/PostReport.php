@@ -42,7 +42,12 @@ class PostReport
      * @ORM\Column(name="cdate", type="datetime")
      */
     private $cdate;
-
+    
+    /**
+     * @var boolean
+     *  @ORM\Column(name="processed", type="boolean",nullable=true)
+     */  
+    private $processed;
     
     public function __construct()
     {
@@ -126,5 +131,28 @@ class PostReport
     public function getCdate()
     {
         return $this->cdate;
+    }
+    
+     /**
+     * Set processed
+     *
+     * @param boolean $processed
+     * @return PostReport
+     */
+    public function setProcessed($processed)
+    {
+        $this->processed = $processed;
+
+        return $this;
+    }
+
+    /**
+     * Get processed
+     *
+     * @return boolean
+     */
+    public function getProcessed()
+    {
+        return $this->processed;
     }
 }

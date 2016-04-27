@@ -9,6 +9,7 @@ interface UserInterface
     /**
      * @return string
      */
+    public function getId();
     public function getUsername();
     public function getAvatarUrl();
     public function getNbPost();

@@ -26,6 +26,7 @@ Functionnalities
 - Reporting system
 - Smiley system
 - Database safety : no HTML stored, only markdown
+- Search system
 
 
 Setup
@@ -118,6 +119,7 @@ Fonctionnalités
 - Système de signalement de messages
 - Prise en charge de smileys
 - Securité de la base de données : aucun HTML d'enregistré, uniquement du markdown
+- Système de recherche
 
 
 Installation

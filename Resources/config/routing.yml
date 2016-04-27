@@ -38,7 +38,17 @@ workingforum_admin_forum_add:
 workingforum_admin_install_settings:
     path: /admin/install-settings
     defaults: {_controller: YosimitsoWorkingForumBundle:Admin:installSettings }
+workingforum_admin_report:
+    path: /admin/report
+    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:report }
     
+workingforum_admin_report_action_moderate:
+    path: /admin/reportaction/moderate
+    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:reportActionModerate }
+    
+workingforum_admin_report_action_good:
+    path: /admin/reportaction/good
+    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:reportActionGood }
 workingforum_search:
     path: /search
     defaults: {_controller: YosimitsoWorkingForumBundle:Search:index }

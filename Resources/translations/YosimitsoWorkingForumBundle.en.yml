@@ -36,6 +36,10 @@ forum:
     required: Required
     averagePostThread : Average posts / threads
     search_forum: Search
+    new: new
+    content: content
+    date: date
+    post_moderated: "This post has been moderated for the following reason :"
 pagination:
     previous: Previous
     next: Next
@@ -55,6 +59,19 @@ admin:
     statistics: Statistics
     back_to_admin: Back to admin.
     back_to_forum: Back to forum
+    manage_users: Manage users
+    users_list: Users list
+    reported_messages: Reported messages
+    reported_by: Reported by
+    action: action
+    decision: "decision :"
+    nowModerated: This post is now hidden
+    report:
+        good: good
+        moderate: moderate
+        moderateAndBan: moderate and ban user
+        why: "Give a reason :"
+        
 setting:
     allow_anonymous_read: Allow anonymous users to read
     allow_moderator_delete_thread: Allow moderators to delete threads

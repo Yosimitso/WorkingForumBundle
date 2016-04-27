@@ -38,7 +38,9 @@ class SmileyTwigExtension extends \Twig_Extension
             ':xd:' => 'xd.png',
             ':football:' => 'football.png',
             ':tennis:' => 'tennis.png',
-            ':basketball:' => 'basketball.png'
+            ':basketball:' => 'basketball.png',
+            ':thumbup:' => 'thumbup.png',
+            ':thumbdown:' => 'thumbdown.png'
            
          
             

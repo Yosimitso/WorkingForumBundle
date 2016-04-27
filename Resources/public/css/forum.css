@@ -639,3 +639,31 @@ width: 300px;
 border-radius: 3px;
 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
 }
+
+.wf_admin_table {
+ width:100%;
+ border-collapse: collapse;
+}
+
+.wf_admin_table thead tr {
+    background-color: #188D40;
+}
+
+.wf_admin_table thead tr th {
+    padding: 10px;
+    color:white;
+    font-weight:normal;
+}
+
+.wf_admin_table  tbody tr:nth-child(odd) {
+ background-color: #E2E2E2;   
+}
+
+.wf_admin_table td {
+    font-family: Arial;
+    
+}
+
+.wf_moderate {
+    font-style: italic;
+}

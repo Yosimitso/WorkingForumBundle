@@ -5,8 +5,11 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Yosimitso\WorkingForumBundle\Form\AdminForumType;
 use Symfony\Component\HttpFoundation\Request;
-use Yosimitso\WorkingForumBundle\Entity\Setting;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Response;
+/**
+ * @Security("has_role('ROLE_ADMIN')")
+ */
 
 class AdminController extends Controller
 {
@@ -50,11 +53,14 @@ class AdminController extends Controller
            //$form_settings_builder->add($index,'checkbox',['required' => false, 'label' => 'setting.'.$index, 'translation_domain' => 'YosimitsoWorkingForumBundle', 'attr' => $attr ]);
            }
        
+           $newPostReported = count($em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findBy(['processed' => 0]));
+           
  
       
         return $this->render('YosimitsoWorkingForumBundle:Admin:main.html.twig',[
                 'list_forum' => $list_forum,
-                'settings_render' => $settings_render
+                'settings_render' => $settings_render,
+                'newPostReported' => $newPostReported
                 ]);
     }
     
@@ -135,6 +141,89 @@ class AdminController extends Controller
                 'forum' => $forum,
                 'form' => $form->createView()
                 ]);
+    }
+    
+    public function ReportAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $postReportList = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findBy([],['processed' => 'ASC','id' => 'ASC']);
+        $date_format = $this->container->getParameter( 'yosimitso_working_forum.date_format' );
+        return $this->render('YosimitsoWorkingForumBundle:Admin/Report:report.html.twig',[
+                 'postReportList' => $postReportList,
+                 'date_format' => $date_format
+                ]);
+    }
+    
+    public function ReportActionModerateAction(Request $request)
+    {
+         $em = $this->getDoctrine()->getManager();
+         $reason = htmlentities($request->request->get('reason'));
+         $id = (int) htmlentities($request->request->get('id'));
+         $postId = (int) htmlentities($request->request->get('postId'));
+         $banuser = (int) htmlentities($request->request->get('banuser'));
+           
+         if (empty($reason))
+         {
+           return new Response(json_encode('fail'),500);    
+         }
+      
+          $post = $em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($postId);
+          if (is_null($post))
+          {
+           return new Response(json_encode('fail'),500);   
+          }
+          $post->setModerateReason($reason);
+          $em->persist($post);
+         
+          if ($id)
+          {
+          $report = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneById($id);
+            if (is_null($report))
+          {
+           return new Response(json_encode('fail'),500);   
+          }
+          $report->setProcessed(1);
+          $em->persist($report);
+          }
+          
+          
+          if ($banuser)
+          {
+              $postUser = $em->getRepository('YosimitsoWorkingForumBundle:User')->findOneById($post->getUser()->getId());
+                if (is_null($postUser))
+                {
+                    return new Response(json_encode('fail'),500);   
+                }
+              $postUser->setBanned(1);
+              $em->persist($postUser);
+          }
+          $em->flush();
+          return new Response(json_encode('ok'),200);   
+       
+    }
+    
+    public function ReportActionGoodAction(Request $request)
+    {
+         $em = $this->getDoctrine()->getManager();
+         $id = (int) htmlentities($request->request->get('id'));
+         $postId = (int) htmlentities($request->request->get('postId'));
+           
+         if (empty($reason))
+         {
+           return new Response(json_encode('fail'),500);    
+         }
+      
+          $post = $em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($postId);
+          if (is_null($post))
+          {
+           return new Response(json_encode('fail'),500);   
+          }
+          $post->setModerateReason($reason);
+          $em->persist($post);
+          $em->flush();
+          
+          return new Response(json_encode('ok'),200);   
+       
     }
     
    

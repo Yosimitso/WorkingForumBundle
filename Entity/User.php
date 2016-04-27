@@ -7,6 +7,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 abstract class User implements \Yosimitso\WorkingForumBundle\Entity\UserInterface
 {
+            /**
+     * @var integer
+     */
+	 private $id;
+       /**   
+         * @var string
+         */
+      private $username;
     
        /**   
          * @var string

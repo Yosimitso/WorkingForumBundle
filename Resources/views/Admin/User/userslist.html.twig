@@ -1,0 +1,48 @@
+{% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
+{% block forum %}
+    {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+<div id="wf_forum_content">
+     <h1>{{ 'admin.admin_area' | trans }}</h1>
+<div id="wf_forum_admin">
+    <p><a class="wf_button" href="{{ path('workingforum_admin') }}">
+        &larr; {{ 'admin.back_to_admin' |trans }}
+        </a></p>
+        <table class="wf_admin_table">
+            <thead>
+            <th>ID</th>
+            <th></th>
+            <th>{{ 'forum.user.username' | trans }}</th>
+            <th>{{ 'forum.user.roles' | trans }}</th>
+            <th>{{ 'forum.nbPost' | trans |capitalize }}</th>
+            <th>{{ 'forum.user.banned' |trans }}</th>
+        </thead>
+        <tbody>
+            {% for aUser in usersList %}
+                <tr>
+                    <td>{{ aUser.id }}</td>
+                    <td>
+                           <img class="wf_cadre-img" width="80px" src="
+          {% if aUser.avatarUrl is not empty %}
+          {{ asset('bundles/yosimitsoworkingforum/'~aUser.avatarUrl) }}
+          {% else %}
+           {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}   
+          {% endif %}
+          
+          " /> 
+                    </td>    
+                    <td>{{ aUser.username }}</td>
+                    <td>
+                        {% for role in aUser.roles %}
+                            {% if loop.index > 1%}, {%endif%}
+                           {{ ('forum.user.'~role) | trans }}
+                        {% endfor %}    
+                    </td>
+                    <td>{{ aUser.nbPost }}</th>
+                    <td><input type="checkbox" disabled autocomplete="off" {% if aUser.banned %} checked {% endif %}/> </td>   
+                {% endfor %}
+        </tbody>
+        </table>
+ </div>
+</div>
+{% endblock %}

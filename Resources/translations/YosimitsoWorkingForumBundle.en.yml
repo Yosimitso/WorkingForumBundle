@@ -29,10 +29,12 @@ forum:
     wrote: wrote
     must_be_logged: You have to be logged in to access this
     user:
-        ROLE_SUPER_ADMIN: Admin
+        ROLE_SUPER_ADMIN: Super Admin
+        ROLE_ADMIN: Admin
         ROLE_USER: User
         username: Username
         banned: Banned
+        roles: Roles
     thanks_reporting: Thanks for reporting !
     doPin: Pin
     required: Required

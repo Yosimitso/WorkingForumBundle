@@ -653,6 +653,7 @@ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
     padding: 10px;
     color:white;
     font-weight:normal;
+    text-align: left;
 }
 
 .wf_admin_table  tbody tr:nth-child(odd) {
@@ -661,6 +662,7 @@ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
 
 .wf_admin_table td {
     font-family: Arial;
+    padding: 5px;
     
 }
 

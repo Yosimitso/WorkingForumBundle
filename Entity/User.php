@@ -51,15 +51,7 @@ abstract class User implements \Yosimitso\WorkingForumBundle\Entity\UserInterfac
             return $this->avatarUrl;
         }
       
-         public function getIp()
-        {
-            return $this->ip;
-        }
-        
-        public function setIp($ip)
-        {
-            $this->ip = $ip;
-        }
+
         public function setAvatarUrl($avatar_url)
         {
             $this->avatarUrl = $avatar_url;

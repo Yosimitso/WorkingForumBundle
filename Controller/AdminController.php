@@ -230,17 +230,10 @@ class AdminController extends Controller
     public function userListAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $userList = $em->getRepository('YosimitsoWorkingForumBundle:User')->findAll(); // BUG DOCTRINE
-       /* $userList = $em->createQueryBuilder()
-            ->select('a.id')
-            ->addSelect('a.username')
-            ->addSelect('a.nbPost')
-            ->addSelect('a.banned')
-            ->from('YosimitsoWorkingForumBundle:User','a')
-            ->getQuery()
-            ->getResult();*/
+        $usersList = $em->getRepository('YosimitsoWorkingForumBundle:User')->findAll(); 
+      
         return $this->render('YosimitsoWorkingForumBundle:Admin/User:userslist.html.twig',[
-                 'userList' => $userList
+                 'usersList' => $usersList
                 
                 ]);
         

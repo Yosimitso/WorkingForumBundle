@@ -10,11 +10,11 @@ abstract class User implements \Yosimitso\WorkingForumBundle\Entity\UserInterfac
             /**
      * @var integer
      */
-	 private $id;
+	 protected $id;
        /**   
          * @var string
          */
-      private $username;
+      protected $username;
     
        /**   
          * @var string
@@ -73,9 +73,9 @@ abstract class User implements \Yosimitso\WorkingForumBundle\Entity\UserInterfac
         return $this;
     }
     
-    public function addNbPost($nb)
+    public function addNbPost($nbPost)
     {
-        $this->nbPost += 1;
+        $this->nbPost += $nbPost;
         return $this;
     }
 	

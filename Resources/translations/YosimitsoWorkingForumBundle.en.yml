@@ -31,6 +31,8 @@ forum:
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_USER: User
+        username: Username
+        banned: Banned
     thanks_reporting: Thanks for reporting !
     doPin: Pin
     required: Required

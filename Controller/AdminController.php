@@ -52,10 +52,11 @@ class AdminController extends Controller
                   
            //$form_settings_builder->add($index,'checkbox',['required' => false, 'label' => 'setting.'.$index, 'translation_domain' => 'YosimitsoWorkingForumBundle', 'attr' => $attr ]);
            }
-       
-           $newPostReported = count($em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findBy(['processed' => 0]));
-           
- 
+        
+           $newPostReported = count($em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findBy(['processed' => null]));
+          /* echo '<pre>';
+           \Doctrine\Common\Util\Debug::dump($user);
+           echo '</pre>';*/
       
         return $this->render('YosimitsoWorkingForumBundle:Admin:main.html.twig',[
                 'list_forum' => $list_forum,
@@ -205,26 +206,47 @@ class AdminController extends Controller
     public function ReportActionGoodAction(Request $request)
     {
          $em = $this->getDoctrine()->getManager();
-         $id = (int) htmlentities($request->request->get('id'));
-         $postId = (int) htmlentities($request->request->get('postId'));
-           
-         if (empty($reason))
-         {
-           return new Response(json_encode('fail'),500);    
-         }
+         
+          $id = (int) htmlentities($request->request->get('id'));  
       
-          $post = $em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($postId);
-          if (is_null($post))
+      
+      
+          
+             if ($id)
+          {
+          $report = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneById($id);
+            if (is_null($report))
           {
            return new Response(json_encode('fail'),500);   
           }
-          $post->setModerateReason($reason);
-          $em->persist($post);
+          $report->setProcessed(1);
+          $em->persist($report);
+          }
           $em->flush();
-          
           return new Response(json_encode('ok'),200);   
        
     }
+    
+    public function userListAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $userList = $em->getRepository('YosimitsoWorkingForumBundle:User')->findAll(); // BUG DOCTRINE
+       /* $userList = $em->createQueryBuilder()
+            ->select('a.id')
+            ->addSelect('a.username')
+            ->addSelect('a.nbPost')
+            ->addSelect('a.banned')
+            ->from('YosimitsoWorkingForumBundle:User','a')
+            ->getQuery()
+            ->getResult();*/
+        return $this->render('YosimitsoWorkingForumBundle:Admin/User:userslist.html.twig',[
+                 'userList' => $userList
+                
+                ]);
+        
+    }
+            
+
     
    
 }

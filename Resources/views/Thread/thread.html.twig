@@ -77,7 +77,7 @@
     function quote(messageId,userId)
     {
         jQuery('.textarea_post').val(jQuery('.textarea_post').val()+'> '+jQuery('#user'+userId).html()+' {{ 'forum.wrote' | trans}} :\n'+jQuery('#post'+messageId+' > p').html()+"\n\n");
-        jQuery('.textarea_post').focus()
+        jQuery('.textarea_post').focus();
     }
     
     function report(url)
@@ -174,7 +174,12 @@
      </div>   
       <div class="wf_post-right">
           <p class="wf_date">
-              {{ post.cdate | date(date_format) }} <a href="#" onclick="quote({{ post.id}},{{post.user.id}}); return false;"><img src="{{asset('bundles/yosimitsoworkingforum/images/quote.png')}}" class="wf_quote-img"></a>{% if post.moderateReason is empty %}<a href="#" onclick="report('{{ path('workingforum_report_post', {'post_id' : post.id}) }}'); return false;"><img src="{{asset('bundles/yosimitsoworkingforum/images/exclamation.png')}}" class="wf_quote-img"></a>{% endif %}
+              {{ post.cdate | date(date_format) }}
+              
+              {% if post.moderateReason is empty %}
+                  <a href="#" onclick="report('{{ path('workingforum_report_post', {'post_id' : post.id}) }}'); return false;"><img src="{{asset('bundles/yosimitsoworkingforum/images/exclamation.png')}}" class="wf_quote-img"></a>
+                  <a href="#" onclick="quote({{ post.id}},{{post.user.id}}); return false;"><img src="{{asset('bundles/yosimitsoworkingforum/images/quote.png')}}" class="wf_quote-img"></a>
+              {% endif %}
             {% if ((is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR"))) and post.moderateReason is empty  %}
             <a href="#" onclick="moderate({{ post.id }}); return false;"><img class="wf_quote-img" src="{{ asset('bundles/yosimitsoworkingforum/images/moderate.png') }}"></a>
             {% endif %}

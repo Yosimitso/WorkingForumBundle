@@ -1,0 +1,29 @@
+{% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
+{% block forum %}
+    {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+<div id="wf_forum_content">
+     <h1>{{ 'admin.admin_area' | trans }}</h1>
+<div id="wf_forum_admin">
+    <p><a class="wf_button" href="{{ path('workingforum_admin') }}">
+        &larr; {{ 'admin.back_to_admin' |trans }}
+        </a></p>
+        <table>
+            <thead>
+            <th>#</th>
+            <th>{{ 'forum.user.username' | trans }}</th>
+            <th>{{ 'forum.nbPost' | trans }}</th>
+            <th>{{ 'forum.user.banned' |trans }}</th>
+        </thead>
+        <tbody>
+            {% for listUser in ListUsers %}
+                <tr>
+                    <td>{{ listUser.id }}</td>
+                    <td>{{ listUser.nbPost }}</th>
+                    <td><input type="checkbox" autocomplete="off" {% if listUser.banned %} checked {% endif %}/> </td>   
+                {% endfor %}
+        </tbody>
+        </table>
+ </div>
+</div>
+{% endblock %}

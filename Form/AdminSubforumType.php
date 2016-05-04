@@ -4,7 +4,9 @@ namespace Yosimitso\WorkingForumBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class AdminSubforumType extends AbstractType
 {
@@ -16,18 +18,18 @@ class AdminSubforumType extends AbstractType
     {
         $builder
             
-            ->add('name','text',['error_bubbling' => true, 'attr' => ['class' => 'form_subforum']])
-                ->add('nbThread','number',['disabled' => true,'attr' => ['style' => 'width:30px']])
-                ->add('nbPost','number',['disabled' => true,'attr' => ['style' => 'width:30px']])
+            ->add('name',TextType::class,['error_bubbling' => true, 'attr' => ['class' => 'form_subforum']])
+                ->add('nbThread',NumberType::class,['disabled' => true,'attr' => ['style' => 'width:30px']])
+                ->add('nbPost',NumberType::class,['disabled' => true,'attr' => ['style' => 'width:30px']])
            
             
         ;
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Subforum'
@@ -37,8 +39,9 @@ class AdminSubforumType extends AbstractType
     /**
      * @return string
      */
+    /*
     public function getName()
     {
         return 'yosimitso_workingforumbundle_subforum';
-    }
+    }*/
 }

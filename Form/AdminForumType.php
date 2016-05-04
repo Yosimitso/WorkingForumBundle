@@ -4,8 +4,10 @@ namespace Yosimitso\WorkingForumBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Yosimitso\WorkingForumBundle\Form\AdminSubforumType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class AdminForumType extends AbstractType
 {
@@ -16,15 +18,15 @@ class AdminForumType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name','text',[ 'label' => 'admin.forum_name', 'translation_domain' => 'YosimitsoWorkingForumBundle'])
-            ->add('subforum','collection',['type' => new AdminSubforumType(), 'allow_add' => true, 'allow_delete' => true])
+            ->add('name',TextType::class,[ 'label' => 'admin.forum_name', 'translation_domain' => 'YosimitsoWorkingForumBundle'])
+            ->add('subforum',CollectionType::class,['entry_type' => new AdminSubforumType(), 'allow_add' => true, 'allow_delete' => true])
         ;
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Forum'
@@ -34,8 +36,9 @@ class AdminForumType extends AbstractType
     /**
      * @return string
      */
+    /*
     public function getName()
     {
         return 'yosimitso_workingforumbundle_forum';
-    }
+    }*/
 }

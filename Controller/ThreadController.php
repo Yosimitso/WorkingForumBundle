@@ -50,7 +50,7 @@ class ThreadController extends Controller
    
     
     $my_post = new Post;
-    $form = $this->createForm(new PostType, $my_post);
+    $form = $this->createForm(PostType::class, $my_post);
     $form->handleRequest($request);
     
     if ($form->isSubmitted())
@@ -140,7 +140,7 @@ class ThreadController extends Controller
         $my_post = new Post;
         $my_thread->addPost($my_post);
         $user = $this->getUser();
-    $form = $this->createForm(new ThreadType, $my_thread);
+    $form = $this->createForm(ThreadType::class, $my_thread);
     $form->handleRequest($request);
     
     if ($user->getBanned())

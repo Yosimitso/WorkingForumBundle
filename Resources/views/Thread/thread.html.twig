@@ -142,7 +142,7 @@
     </p>
     {% else %}
           {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-              <p><a class="wf_button" href="#new_post">{{ 'forum.reply' | trans }}</a></p> {# thread NON LOCKE ON PEUT REPONDRE #}
+              <p><a class="wf_button" href="#wf_new_post">{{ 'forum.reply' | trans }}</a></p> {# thread NON LOCKE ON PEUT REPONDRE #}
            {% endif %}
      {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
          <p><a class="wf_button" href="{{ path('workingforum_lock_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}"> {# ADMIN ET MODO PEUVENT LOCKER #}

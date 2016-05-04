@@ -4,8 +4,9 @@ namespace Yosimitso\WorkingForumBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Yosimitso\WorkingForumBundle\Form\AdminForumType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ManageForumType extends AbstractType
 {
@@ -18,15 +19,15 @@ class ManageForumType extends AbstractType
         foreach ($list_forum as $forum)
         {
         $builder
-            ->add('forum','collection',['type' => new AdminForumType(), 'allow_add' => true, 'allow_delete' => true])
+            ->add('forum',CollectionType::class,['type' => new AdminForumType(), 'allow_add' => true, 'allow_delete' => true])
         ;
         }
     }
     
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => null
@@ -36,15 +37,13 @@ class ManageForumType extends AbstractType
     /**
      * @return string
      */
+    /*
     public function getName()
     {
         return 'yosimitso_workingforumbundle_forum';
     }
-    
-    public function addForum($forum)
-    {
-        
-    }
+    */
+  
 }
 
 

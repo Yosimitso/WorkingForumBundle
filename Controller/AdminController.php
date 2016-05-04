@@ -15,7 +15,7 @@ class AdminController extends Controller
 {
     public function indexAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('ROLE_ADMIN') )
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') )
         {
             throw new \Exception('You are not authorized to do this');
         }
@@ -69,7 +69,7 @@ class AdminController extends Controller
     
     public function editAction(Request $request,$id)
     {
-            if (!$this->get('security.context')->isGranted('ROLE_ADMIN') )
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') )
         {
             throw new \Exception('You are not authorized to do this');
         }
@@ -83,7 +83,7 @@ class AdminController extends Controller
             $statistics['nbPost'] += $subforum->getNbPost();
         }
         $statistics['averagePostThread'] = $statistics['nbPost']/$statistics['nbThread'] ;
-        $form = $this->createForm(New AdminForumType,$forum);
+        $form = $this->createForm(AdminForumType::class,$forum);
         
         $form->handleRequest($request);
         
@@ -111,7 +111,7 @@ class AdminController extends Controller
     
      public function addAction(Request $request)
     {
-            if (!$this->get('security.context')->isGranted('ROLE_ADMIN') )
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') )
         {
             throw new \Exception('You are not authorized to do this');
         }
@@ -119,7 +119,7 @@ class AdminController extends Controller
         $forum = new \Yosimitso\WorkingForumBundle\Entity\Forum;
        $forum->addSubForum(new \Yosimitso\WorkingForumBundle\Entity\Subforum);
 
-        $form = $this->createForm(New AdminForumType,$forum);
+        $form = $this->createForm(AdminForumType::class,$forum);
         
         $form->handleRequest($request);
         

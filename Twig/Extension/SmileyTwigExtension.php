@@ -1,15 +1,17 @@
 <?php
 
 namespace Yosimitso\WorkingForumBundle\Twig\Extension;
-
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class SmileyTwigExtension extends \Twig_Extension
 {
     
-    private $request;
+    private $basePath;
     private $listSmiley;
-    public function __construct($basePath) {
-        $this->basePath = $basePath;
+    public function __construct($request_stack) {
+        $request = $request_stack->getCurrentRequest();
+        $this->basePath = $request->getBasePath();
+        
         $this->listSmiley = [
             ':smile:' => 'smile.png',
             ':wink:' => 'wink.png',

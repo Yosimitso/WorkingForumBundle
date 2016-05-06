@@ -6,5 +6,5 @@ services:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension
         tags:
             -  { name: twig.extension }
-        arguments: ['%kernel.root_dir%']
+        arguments: ['@request_stack']
 

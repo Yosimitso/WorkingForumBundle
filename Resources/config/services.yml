@@ -6,5 +6,5 @@ services:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension
         tags:
             -  { name: twig.extension }
-        arguments: ['@service_container']
+        arguments: ['%kernel.root_dir%']
 

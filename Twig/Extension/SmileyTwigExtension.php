@@ -1,15 +1,15 @@
 <?php
 
 namespace Yosimitso\WorkingForumBundle\Twig\Extension;
-use Symfony\Component\DependencyInjection\ContainerInterface as Container;
+
 
 class SmileyTwigExtension extends \Twig_Extension
 {
     
-    private $container;
+    private $request;
     private $listSmiley;
-    public function __construct(Container $container) {
-        $this->container = $container;
+    public function __construct($basePath) {
+        $this->basePath = $basePath;
         $this->listSmiley = [
             ':smile:' => 'smile.png',
             ':wink:' => 'wink.png',
@@ -66,7 +66,7 @@ class SmileyTwigExtension extends \Twig_Extension
      
         foreach ($this->listSmiley as $key => $value)
         {
-            $list[$key] = '<img src="'.$this->container->get('request')->getBasePath().'/bundles/yosimitsoworkingforum/images/smiley/'.$value.'" />';
+            $list[$key] = '<img src="'.$this->basePath.'/bundles/yosimitsoworkingforum/images/smiley/'.$value.'" />';
         }
         return $this->strReplaceAssoc($list, $text);
     }

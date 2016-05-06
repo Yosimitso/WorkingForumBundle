@@ -119,7 +119,8 @@ class ThreadController extends Controller
             'date_format' => $date_format,
             'form' => (isset($form)) ? $form->createView() : null,
             'listSmiley' => $listSmiley,
-            'forbidden' => $forbidden
+            'forbidden' => $forbidden,
+            'request' => $request
                 ));   
         
         

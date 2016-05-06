@@ -58,7 +58,7 @@
 
 
      jQuery(".textarea_post").markdown({
-         language:'{{ app.request.locale }}',
+         language:'{{ request.locale }}',
    onPreview: function(e) {
  
     var converter = new Showdown.converter({ extensions: ['twitter'] });

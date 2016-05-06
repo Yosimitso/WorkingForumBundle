@@ -3,7 +3,7 @@ WorkingForumBundle
 
 ENGLISH
 =================
-A forum bundle for Symfony 2, easy to use and fully fonctionnal
+A forum bundle for Symfony 2 (>= 2.7) and Symfony 3, easy to use and fully fonctionnal
 This bundle work with your user bundle with no extra configuration (which can extend FOSUserBundle)
 
 Demo
@@ -94,7 +94,7 @@ Todo
 
 FRANCAIS
 ==================
-Un bundle pour forum pour Symfony 2, simple a mettre en place et pleinement fonctionnel
+Un bundle pour forum pour Symfony 2 (>= 2.7) et Symfony 3, simple a mettre en place et pleinement fonctionnel
 Ce bundle utilise votre bundle utilisateur (qui peut hériter de FOSUserBundle)
 
 

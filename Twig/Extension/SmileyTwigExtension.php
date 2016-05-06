@@ -10,7 +10,7 @@ class SmileyTwigExtension extends \Twig_Extension
     private $listSmiley;
     public function __construct(\Symfony\Component\HttpFoundation\RequestStack $request_stack) {
         $request = $request_stack->getCurrentRequest();
-        if (!is_object($request))
+        if (is_object($request))
         {
         $this->basePath = $request->getBasePath();
         }

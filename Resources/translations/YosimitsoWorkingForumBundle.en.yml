@@ -44,6 +44,7 @@ forum:
     content: content
     date: date
     post_moderated: "This post has been moderated for the following reason :"
+    has_written: has written
 pagination:
     previous: Previous
     next: Next

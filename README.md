@@ -27,11 +27,13 @@ Functionnalities
 - Smiley system
 - Database safety : no HTML stored, only markdown
 - Search system
+- Backend administration
+- Quoting system
 
 
 Setup
 ------------------
-This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for backend markdown rendering
+This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rendering
 Add to your composer.json, section 'require'
 ````json
 "require" : {
@@ -89,9 +91,6 @@ in your user entity. Then copy/paste the content of \Yosimitso\WorkingForumBundl
 
 Todo
 -----------
-- Improve quoting system
-- Search system
-- Complete banning system
 - Removing post by a moderator
 - Allow anonymous users to create thread if set in the forums' configuration
 
@@ -123,11 +122,12 @@ Fonctionnalités
 - Prise en charge de smileys
 - Securité de la base de données : aucun HTML d'enregistré, uniquement du markdown
 - Système de recherche
+- Système de citation
 
 
 Installation
 ------------------
-Ce bundle utilise KnpPaginatorBundle pour la pagination, KnpMarkdown pour le parsage du markdown dans le backend
+Ce bundle utilise KnpPaginatorBundle pour la pagination, KnpMarkdown pour le parsage du markdown
 Ajoutez à votre composer.json, section 'require'
 ````json
 "require" : {
@@ -138,7 +138,7 @@ Ajoutez à votre composer.json, section 'require'
     }
 ```
 
-Ajoutez le bundle dans votre AppKernel
+Ajoutez les bundles dans votre AppKernel
 ````php
   new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
   new Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle(),

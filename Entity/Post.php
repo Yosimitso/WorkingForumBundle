@@ -4,6 +4,7 @@ namespace Yosimitso\WorkingForumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * Post
  *
@@ -118,12 +119,18 @@ class Post
      * @param string $content
      * @return Post
      */
+    
+    
     public function setContent($content)
     {
-        $this->content =strip_tags($content,'<br /><br><p><pre><ul><ol><li><strong><em><h1><h2><h3><h4><h5><h6><code><blockquote><a><img>');
-    
+        $this->content =$content;
+        
+
+     
         return $this;
     }
+    
+ 
 
     /**
      * Get content

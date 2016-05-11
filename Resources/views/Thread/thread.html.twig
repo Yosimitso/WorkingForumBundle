@@ -47,7 +47,7 @@
  <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
 <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
 <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
-<script src="{{ asset('bundles/yosimitsoworkingforum/markdown/locale/bootstrap-markdown.en.js') }}"></script>
+{#<script src="{{ asset('bundles/yosimitsoworkingforum/markdown/locale/bootstrap-markdown.en.js') }}"></script>#}
 <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/twitter.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}" type="text/css" media="all" />
 <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}" type="text/css" media="all" />
@@ -57,7 +57,7 @@
       
 
 
-     jQuery(".textarea_post").markdown({
+     jQuery(".wf_textarea_post").markdown({
          language:'{{ request.locale }}',
    onPreview: function(e) {
  
@@ -74,10 +74,10 @@
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 }
 
-    function quote(messageId,userId)
+    function quote(postId)
     {
-        jQuery('.textarea_post').val(jQuery('.textarea_post').val()+'> '+jQuery('#user'+userId).html()+' {{ 'forum.wrote' | trans}} :\n'+jQuery('#post'+messageId+' > p').html()+"\n\n");
-        jQuery('.textarea_post').focus();
+        jQuery('.wf_textarea_post').val(jQuery('.wf_textarea_post').val()+"[quote="+postId+"]");
+        jQuery('.wf_textarea_post').focus();
     }
     
     function report(url)
@@ -186,7 +186,7 @@
           </p>
           <div id="wf_post{{ post.id}}">
               {% if post.moderateReason is empty %}
-              {{ post.content | striptags('<br /><br><p><pre><ul><ol><li><strong><em><h1><h2><h3><h4><h5><h6><code><blockquote><a><img>') | markdown | replace({'\n':'<br />'}) | smiley | raw }}
+              {{ post.content |  quote | markdown | replace({'\n':'<br />'})| smiley |  raw }}
               {% else %}
                   <p class="wf_moderate">{{'forum.post_moderated' |trans }} {{ post.moderateReason }}</p>    
               {% endif %}

@@ -37,8 +37,8 @@ Add to your composer.json, section 'require'
 "require" : {
         [...]
         "yosimitso/workingforumbundle" : "dev-master",
-        "knplabs/knp-paginator-bundle": "2.4.*@dev",
-        "knplabs/knp-markdown-bundle": "~1.3"
+        "knplabs/knp-paginator-bundle": "~2.5",
+        "knplabs/knp-markdown-bundle": "~1.5"
     }
 ```
 
@@ -56,6 +56,8 @@ yosimitso_working_forum:
     thread_per_page: 50
     post_per_page: 10
     date_format: 'd/m/Y H:i:s'
+    allow_anonymous_read: false
+    allow_moderator_delete_thread: false
 knp_paginator:
     page_range: 1                      # default page range used in pagination control
     default_options:
@@ -69,8 +71,8 @@ knp_paginator:
 ```
 Add to you app/config.yml into 'orm' key :
 ````yml
- resolve_target_entities:
-            Yosimitso\WorkingForumBundle\Entity\User: You\YourUserBundle\Entity\YourUser
+resolve_target_entities:
+    Yosimitso\WorkingForumBundle\Entity\User: You\YourUserBundle\Entity\YourUser
 ```
 You can override the translations files
 
@@ -81,8 +83,9 @@ Example :
 {
     // YOUR ENTITY
 }
-
 ```
+In case your user entity already extends an another bundle (like FOSUserBundle), implement the interface \Yosimitso\WorkingForumBundle\Entity\UserInterface
+in your user entity. Then copy/paste the content of \Yosimitso\WorkingForumBundle\Entity\User (attributes, getter, setter) into your user entity
 
 Todo
 -----------
@@ -130,8 +133,8 @@ Ajoutez à votre composer.json, section 'require'
 "require" : {
         [...]
         "yosimitso/workingforumbundle" : "dev-master",
-        "knplabs/knp-paginator-bundle": "2.4.*@dev",
-        "knplabs/knp-markdown-bundle": "~1.3"
+        "knplabs/knp-paginator-bundle": "~2.5",
+        "knplabs/knp-markdown-bundle": "~1.5"
     }
 ```
 
@@ -149,6 +152,8 @@ yosimitso_working_forum:
     thread_per_page: 50
     post_per_page: 10
     date_format: 'd/m/Y H:i:s'
+    allow_anonymous_read: false
+    allow_moderator_delete_thread: false
 	
 knp_paginator:
     page_range: 1                      # default page range used in pagination control
@@ -169,7 +174,7 @@ Ajouter à votre app/config.yml dans la clé 'orm' :
 
 Vous pouvez surcharger les fichiers de traductions
 
-Votre entité Utilisateur à besoin d'"extends" : \Yosimitso\WorkingForumBundle\Entity\User
+Votre entité utilisateur à besoin d'étendre : \Yosimitso\WorkingForumBundle\Entity\User
 Exemple :
 ````php
    class User extends \Yosimitso\WorkingForumBundle\Entity\User
@@ -178,6 +183,8 @@ Exemple :
 }
 
 ```
+Dans le cas où votre entité utilisateur étend déjà un autre de bundle (comme FOSUserBundle), implémenter l'interface \Yosimitso\WorkingForumBundle\Entity\UserInterface
+dans votre entité. Ensuite copier / coller le contenu de \Yosimitso\WorkingForumBundle\Entity\User (attributs, getter, setter) dans votre entité.
 
 Todo
 -----------

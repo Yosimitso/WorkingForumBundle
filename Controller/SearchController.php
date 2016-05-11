@@ -23,7 +23,7 @@ class SearchController extends Controller
         }*/
         
         $forbidden = false;
-        $form = $this->createForm(new SearchType);
+        $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
         //var_dump($form);
       //  exit();

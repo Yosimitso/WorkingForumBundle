@@ -46,9 +46,9 @@ class SearchType extends AbstractType
      **/
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Post'
-        ));
+        $resolver->setDefaults([]
+           
+        );
     }
 
     /**

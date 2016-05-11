@@ -6,7 +6,7 @@
         "knplabs/knp-paginator-bundle": "~2.4",
         "knplabs/knp-markdown-bundle": "^1.4",
         "ornj/markdown-bundle": "dev-master",
-		"symfony/framework-bundle": "~2.3|~3.0"
+		"symfony/framework-bundle": "~2.7"
     },
     "license": "MIT",
     "authors": [

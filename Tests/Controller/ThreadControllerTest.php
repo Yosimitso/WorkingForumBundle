@@ -2,15 +2,22 @@
 
 namespace Yosimitso\WorkingForumBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 
 class ThreadControllerTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 {
-    public function createThreadIndex()
+    public function testURLIndex()
     {
-      $thread = new Thread;
-      $this->assertEqual('lol',$thread->setSlug('lol'));
+        $client = static::createClient();
+        
+        $urlList = ['admin','newthread/subforum-test'];
+        
+        foreach ($urlList as $url)
+        {
+        $client->request('GET', 'demoworkingforum/web/app.php/'.$url);
+         $this->assertTrue(200 === $client->getResponse()->getStatusCode());
+        }
       
     }
 }

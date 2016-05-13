@@ -19,7 +19,7 @@ class AdminForumType extends AbstractType
     {
         $builder
             ->add('name',TextType::class,[ 'label' => 'admin.forum_name', 'translation_domain' => 'YosimitsoWorkingForumBundle'])
-            ->add('subforum',CollectionType::class,['entry_type' => new AdminSubforumType(), 'allow_add' => true, 'allow_delete' => true])
+            ->add('subforum',CollectionType::class,['entry_type' => \Yosimitso\WorkingForumBundle\Form\AdminSubforumType::class, 'allow_add' => true, 'allow_delete' => true])
         ;
     }
     

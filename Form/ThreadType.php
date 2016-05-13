@@ -21,7 +21,7 @@ class ThreadType extends AbstractType
         $builder
             ->add('label',TextType::class,['translation_domain' => 'YosimitsoWorkingForumBundle','label' => 'forum.thread', 'error_bubbling' => true])
             ->add('sublabel',TextType::class,['translation_domain' => 'YosimitsoWorkingForumBundle','label' => 'forum.sublabel','error_bubbling' => true])
-            ->add('post',CollectionType::class,['type' => new PostType(), 'allow_add' => false, 'error_bubbling' => true])
+            ->add('post',CollectionType::class,['entry_type' => \Yosimitso\WorkingForumBundle\Form\PostType::class, 'allow_add' => false, 'error_bubbling' => true])
             ->add('pin',CheckboxType::class,['translation_domain' => 'YosimitsoWorkingForumBundle', 'label' => 'forum.doPin'])
             
             
@@ -31,10 +31,11 @@ class ThreadType extends AbstractType
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Thread'
+
         ));
     }
 

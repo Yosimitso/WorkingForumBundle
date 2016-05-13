@@ -21,6 +21,9 @@ class ThreadController extends Controller
   * Méthode pour afficher le thread et de poster un nouveau message
   */
     
+    /*
+     * Display a thread, save a post
+     */
     public function indexAction($subforum_slug,$thread_slug, Request $request, $page = 1)
     {
          $allow_anonymous = $this->container->getParameter( 'yosimitso_working_forum.allow_anonymous_read' );
@@ -38,7 +41,7 @@ class ThreadController extends Controller
    
     
     
-    $listSmiley = $this->get('yosimitso_workingforum_smiley')->getListSmiley();
+    $listSmiley = $this->get('yosimitso_workingforum_smiley')->getListSmiley(); // Smileys available for markdown
     
      $paginator  = $this->get('knp_paginator');
         $post_list = $paginator->paginate(
@@ -50,13 +53,13 @@ class ThreadController extends Controller
    
     
     $my_post = new Post;
-    $form = $this->createForm(PostType::class, $my_post);
+    $form = $this->createForm(PostType::class, $my_post); // create form for posting
     $form->handleRequest($request);
     
     if ($form->isSubmitted())
     {
     
-             if ($user->getBanned()) // USER IS BANNED
+             if ($user->getBanned()) // USER IS BANNED CAN'T POST
             {
             $this->get('session')->getFlashBag()->add(
                 'error',
@@ -70,7 +73,7 @@ class ThreadController extends Controller
 	   
         $published = 1;
         $thread->addNbReplies(1)
-               ->setLastReplyDate(new \DateTime);
+               ->setLastReplyDate(new \DateTime); // Update thread statistic
        
         $my_post->setCdate(new \DateTime)
                 ->setPublished($published)
@@ -131,7 +134,7 @@ class ThreadController extends Controller
      * @param int $subforum_slug
      * @param Request $request
      * @return redirect
-     *  Création d'un nouveau thread
+     *  new thread
      */
     public function newAction($subforum_slug, Request $request) 
     {
@@ -141,6 +144,7 @@ class ThreadController extends Controller
         $my_post = new Post;
         $my_thread->addPost($my_post);
         $user = $this->getUser();
+    $listSmiley = $this->get('yosimitso_workingforum_smiley')->getListSmiley(); // Smileys available for markdown    
     $form = $this->createForm(ThreadType::class, $my_thread);
     $form->handleRequest($request);
     
@@ -153,7 +157,7 @@ class ThreadController extends Controller
     }
     
     
-    if ($form->isValid() && $user)
+    if ($form->isValid() && $user) 
     {
         $published = 1;
         $my_thread->addNbReplies(1)
@@ -167,8 +171,7 @@ class ThreadController extends Controller
         $em->persist($my_thread);
         $my_post->setCdate(new \DateTime)
                 ->setPublished($published)
-                //->setContent(preg_replace('#(\[rn])|(\r\n)|(\n\r)#', ' <br /> ', $my_post->getContent()))
-                ->setContent( $my_post->getContent())
+                ->setContent($my_post->getContent())
                 ->setUser($user);
         $my_post->setThread($my_thread);
 		
@@ -199,7 +202,9 @@ class ThreadController extends Controller
     
         return $this->render('YosimitsoWorkingForumBundle:Thread:new.html.twig',array(
             'subforum' => $subforum,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+             'listSmiley' => $listSmiley,
+            'request' => $request
                 ));
     }
     
@@ -216,6 +221,9 @@ class ThreadController extends Controller
 	));
 	return $str;
 }
+/*
+ * The thread is locked by a moderator or admin
+ */
         function lockAction($subforum_slug,$thread_slug)
         {
             $em = $this->getDoctrine()->getManager();
@@ -225,6 +233,13 @@ class ThreadController extends Controller
                 throw new Exception("Thread can't be found", 500, "");
                 
             }
+            
+               
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !$this->get('security.authorization_checker')->isGranted('ROLE_MODERATOR'))
+        {
+            throw new \Exception('You are not authorized to do this');
+        }
+            
             
             $thread->setLocked(true);
             $em->persist($thread);
@@ -240,16 +255,28 @@ class ThreadController extends Controller
             
         }
         
+  /*
+   * The thread is resolved
+   */
         function resolveAction ($subforum_slug,$thread_slug)
         {
             $em = $this->getDoctrine()->getManager();
             $thread = $em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
-            if (is_null($thread))
+            
+            $user = $this->getUser();
+            
+            if (is_null($thread) || is_null($user))
             {
-                throw new Exception("Thread can't be found",
+                throw new Exception("Error",
                         500, "");
                 
             }
+            
+            
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !$this->get('security.authorization_checker')->isGranted('ROLE_MODERATOR') || $user->getId() != $thread->getAuthor()->getId() ) // ONLY ADMIN MODERATOR OR THE THREAD'S AUTHOR CAN SET A THREAD AS RESOLVED
+        {
+            throw new \Exception('You are not authorized to do this');
+        }
             
             $thread->setResolved(true);
             $em->persist($thread);
@@ -263,6 +290,9 @@ class ThreadController extends Controller
             return $this->redirect($this->generateUrl('workingforum_thread',array('thread_slug' => $thread_slug, 'subforum_slug' => $subforum_slug)));
         }
         
+        /*
+         * Report a post to the admins
+         */
         function reportAction($post_id)
         {
           
@@ -272,7 +302,7 @@ class ThreadController extends Controller
             $post = $em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($post_id);
             
             
-            if (is_null($check_already) && empty($post->getModerateReason)) // THE POST HASN'T BEEN REPORTED AND NOT ALREADY MODERATED
+            if (is_null($check_already) && empty($post->getModerateReason) && !is_null($user)) // THE POST HASN'T BEEN REPORTED AND NOT ALREADY MODERATED
             {
                 $post = $em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($post_id);
                 if (!is_null($post))

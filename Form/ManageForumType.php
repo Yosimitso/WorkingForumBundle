@@ -19,7 +19,7 @@ class ManageForumType extends AbstractType
         foreach ($list_forum as $forum)
         {
         $builder
-            ->add('forum',CollectionType::class,['type' => new AdminForumType(), 'allow_add' => true, 'allow_delete' => true])
+            ->add('forum',CollectionType::class,['entry_type' => \Yosimitso\WorkingForumBundle\Form\AdminForumType::class, 'allow_add' => true, 'allow_delete' => true])
         ;
         }
     }

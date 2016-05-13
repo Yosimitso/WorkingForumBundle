@@ -45,6 +45,7 @@ forum:
     date: date
     post_moderated: "This post has been moderated for the following reason :"
     has_written: has written
+    confirm_report: Do you want to report this post ?
 pagination:
     previous: Previous
     next: Next

@@ -83,7 +83,10 @@
     function report(url)
     {
         
-        
+        if (!confirm("{{'forum.confirm_report' | trans }}"))
+        {
+            return false;
+        }
             jQuery.ajax({
            
 		   type: "GET", 
@@ -217,12 +220,13 @@
              <li><a href="#" onclick="insertSmiley('{{key}}'); return false;"><img src="{{ asset('bundles/yosimitsoworkingforum/images/smiley/'~smiley) }}" /></a></li>
          {% endfor %}
             </ul>
-            <div class="wf_clear"></div>
+         
         </div>
+            <div class="wf_clear"></div>
     {{ form_start(form) }}
       
     
-    <p >{{ form_widget(form.content) }}</p>
+    <p>{{ form_widget(form.content) }}</p>
     {{form_rest(form) }}
     <p><input type="submit" value="{{ 'forum.submit_post' | trans }}" class="wf_button wf_width100"/></p>
     {{ form_end(form) }}

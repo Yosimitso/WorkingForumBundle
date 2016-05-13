@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ForumController extends Controller
 {
+    /*
+     * Display homepage of forum with subforums
+     */
     public function indexAction()
     {
         $list_forum = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')->findAll();
@@ -15,6 +18,9 @@ class ForumController extends Controller
                 ));
     }
     
+    /*
+     * Display the thread list of a subforum
+     */
     public function subforumAction($subforum_slug,Request $request,$page = 1)
     {
          $allow_anonymous = $this->container->getParameter( 'yosimitso_working_forum.allow_anonymous_read' );

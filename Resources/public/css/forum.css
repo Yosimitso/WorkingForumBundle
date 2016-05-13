@@ -181,7 +181,10 @@ background-color: #d1be75;
 }
 
 #wf_forum_content .wf_new_thread .wf_textarea_post {
-    width:929px;
+      height: 300px;
+  width: 698px;
+  padding:10px;
+  font-family: Arial;
 }
 
 .wf_width100 {
@@ -599,6 +602,7 @@ code {
   background-color: white;
   border-radius: 5px 5px 0 0;
   padding: 10px;
+  height:20px;
 }
 
 #wf_smiley ul li {

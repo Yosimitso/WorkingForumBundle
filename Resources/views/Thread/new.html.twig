@@ -15,8 +15,8 @@
       
 
 
-     jQuery(".textarea_post").markdown({
-         language:'{{ app.request.locale }}',
+     jQuery(".wf_textarea_post").markdown({
+         language:'{{ request.locale }}',
    onPreview: function(e) {
  
     var converter = new Showdown.converter({ extensions: ['twitter'] });
@@ -54,14 +54,36 @@
       <p>{{ form_label(form.sublabel) }}</p>
     <p>{{ form_widget(form.sublabel) }}</p>
     
+     <script>
+            function insertSmiley(code)
+            {
+                jQuery('.wf_textarea_post').val(jQuery('.wf_textarea_post').val()+code);
+                jQuery('.wf_textarea_post').focus();
+            }
+            </script>
+         <div class="wf_new_post" id="wf_new_post">   
+        <div id="wf_smiley">
+            <ul>
+         {% for key,smiley in listSmiley %}
+             <li><a href="#" onclick="insertSmiley('{{key}}'); return false;"><img src="{{ asset('bundles/yosimitsoworkingforum/images/smiley/'~smiley) }}" /></a></li>
+         {% endfor %}
+            </ul>
+        </div>
+            <div class="wf_clear"></div>
+             
     {% for post in form.post %}
     <p>{{ form_widget(post.content) }}</p>
     {% endfor %}
-    <p>{{ form_widget(form.pin) }} {{form_label(form.pin) }}</p>
+    </div>
+   
+    {{ form_rest(form) }}
+     {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
+          <p>{{ form_widget(form.pin) }} {{form_label(form.pin) }}</p>
+     
+     {% endif %}
      <p><input type="submit" value="{{ 'forum.create_thread' | trans }}" class="wf_button wf_width50"/></p>
-     {{ form_rest(form) }}
      {{ form_end(form) }}
-    </div>   
-</div>
+             </div>
+
  </div>
 {% endblock %}

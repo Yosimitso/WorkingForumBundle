@@ -140,7 +140,8 @@ class AdminController extends Controller
         
          return $this->render('YosimitsoWorkingForumBundle:Admin/Forum:form.html.twig',[
                 'forum' => $forum,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'statistics' => false
                 ]);
     }
     

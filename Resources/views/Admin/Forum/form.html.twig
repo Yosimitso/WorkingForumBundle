@@ -64,12 +64,14 @@
     <input type="submit" value="{{ 'admin.submit' |trans }}" class="wf_button" />
    {{ form_end(form) }}
 </div>
+{%if statistics %}
 <div>
    <p class="wf_label">{{ 'admin.statistics' | trans }}</p>
    <p>{{ 'forum.nbThread' | trans }} : {{ statistics.nbThread }}</p>
    <p>{{ 'forum.nbPost' | trans }} : {{ statistics.nbPost }}</p>
    <p>{{ 'forum.averagePostThread' | trans }} : {{ statistics.averagePostThread }}
 </div>
+{%endif%}
 
 <div class="wf_clear"></div>
 </div>

@@ -22,15 +22,17 @@ forum:
     resolved: Résolu
     now_resolved: Mon sujet est résolu
     thread_resolved: Ce sujet est résolu
-    empty_forum: Aucun message
     admin_access: Accès à l'administration
+    empty_forum: Aucun message
     no_subforum: Aucun sous-forum
     pin: Epinglé
     wrote: à écrit
     must_be_logged: Vous devez être connecté pour accèder à cette page
     user:
         ROLE_SUPER_ADMIN: Admin
+        ROLE_ADMIN: Admin
         ROLE_USER: Utilisateur
+        ROLE_MODERATOR: Modérateur
         username: Utilisateur
         banned: Banni
         roles: Rôles

@@ -154,7 +154,46 @@ class AdminController extends Controller
                  'date_format' => $date_format
                 ]);
     }
+       
+    public function ReportActionGoodAction(Request $request)
+    {
+         $em = $this->getDoctrine()->getManager();
+         
+          $id = (int) htmlentities($request->request->get('id'));  
+      
+      
+      
+          
+             if ($id)
+          {
+          $report = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneById($id);
+            if (is_null($report))
+          {
+           return new Response(json_encode('fail'),500);   
+          }
+          $report->setProcessed(1);
+          $em->persist($report);
+          }
+          $em->flush();
+          return new Response(json_encode('ok'),200);   
+       
+    }
     
+    public function userListAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $usersList = $em->getRepository('YosimitsoWorkingForumBundle:User')->findAll(); 
+      
+        return $this->render('YosimitsoWorkingForumBundle:Admin/User:userslist.html.twig',[
+                 'usersList' => $usersList
+                
+                ]);
+        
+    }
+    
+        /**
+ * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+ */
     public function ReportActionModerateAction(Request $request)
     {
          $em = $this->getDoctrine()->getManager();
@@ -201,42 +240,6 @@ class AdminController extends Controller
           $em->flush();
           return new Response(json_encode('ok'),200);   
        
-    }
-    
-    public function ReportActionGoodAction(Request $request)
-    {
-         $em = $this->getDoctrine()->getManager();
-         
-          $id = (int) htmlentities($request->request->get('id'));  
-      
-      
-      
-          
-             if ($id)
-          {
-          $report = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneById($id);
-            if (is_null($report))
-          {
-           return new Response(json_encode('fail'),500);   
-          }
-          $report->setProcessed(1);
-          $em->persist($report);
-          }
-          $em->flush();
-          return new Response(json_encode('ok'),200);   
-       
-    }
-    
-    public function userListAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $usersList = $em->getRepository('YosimitsoWorkingForumBundle:User')->findAll(); 
-      
-        return $this->render('YosimitsoWorkingForumBundle:Admin/User:userslist.html.twig',[
-                 'usersList' => $usersList
-                
-                ]);
-        
     }
             
 

@@ -33,14 +33,15 @@ Functionnalities
 
 Setup
 ------------------
-This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rendering
+This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rendering and the extra package for Symfony
 Add to your composer.json, section 'require'
 ````json
 "require" : {
         [...]
         "yosimitso/workingforumbundle" : "dev-master",
         "knplabs/knp-paginator-bundle": "~2.5",
-        "knplabs/knp-markdown-bundle": "~1.5"
+        "knplabs/knp-markdown-bundle": "~1.5",
+        "sensio/framework-extra-bundle": "~3.0"
     }
 ```
 
@@ -127,14 +128,15 @@ Fonctionnalités
 
 Installation
 ------------------
-Ce bundle utilise KnpPaginatorBundle pour la pagination, KnpMarkdown pour le parsage du markdown
+Ce bundle utilise KnpPaginatorBundle pour la pagination, KnpMarkdown pour le parsage du markdown et le package d'extra pour Symfony
 Ajoutez à votre composer.json, section 'require'
 ````json
 "require" : {
         [...]
         "yosimitso/workingforumbundle" : "dev-master",
         "knplabs/knp-paginator-bundle": "~2.5",
-        "knplabs/knp-markdown-bundle": "~1.5"
+        "knplabs/knp-markdown-bundle": "~1.5",
+        "sensio/framework-extra-bundle": "~3.0"
     }
 ```
 

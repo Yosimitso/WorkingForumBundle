@@ -76,12 +76,13 @@
     {% endfor %}
     </div>
    
-    {{ form_rest(form) }}
+    
      {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
           <p>{{ form_widget(form.pin) }} {{form_label(form.pin) }}</p>
      
      {% endif %}
      <p><input type="submit" value="{{ 'forum.create_thread' | trans }}" class="wf_button wf_width50"/></p>
+     {{ form_rest(form) }}
      {{ form_end(form) }}
              </div>
 

@@ -10,6 +10,7 @@ use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class ThreadController extends Controller
 {
@@ -221,39 +222,7 @@ class ThreadController extends Controller
 	));
 	return $str;
 }
-/*
- * The thread is locked by a moderator or admin
- */
-        function lockAction($subforum_slug,$thread_slug)
-        {
-            $em = $this->getDoctrine()->getManager();
-            $thread = $em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
-            if (is_null($thread))
-            {
-                throw new Exception("Thread can't be found", 500, "");
-                
-            }
-            
-               
-            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !$this->get('security.authorization_checker')->isGranted('ROLE_MODERATOR'))
-        {
-            throw new \Exception('You are not authorized to do this');
-        }
-            
-            
-            $thread->setLocked(true);
-            $em->persist($thread);
-            $em->flush();
-            
-            $this->get('session')->getFlashBag()->add(
-            'success',
-            $this->get('translator')->trans('message.threadLocked',[],'YosimitsoWorkingForumBundle'));
-            
-            
-            return $this->redirect($this->generateUrl('workingforum_thread',array('thread_slug' => $thread_slug, 'subforum_slug' => $subforum_slug)));
-            
-            
-        }
+
         
   /*
    * The thread is resolved
@@ -267,15 +236,15 @@ class ThreadController extends Controller
             
             if (is_null($thread) || is_null($user))
             {
-                throw new Exception("Error",
+                throw new \Exception("Error",
                         500, "");
                 
             }
             
             
-            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') || !$this->get('security.authorization_checker')->isGranted('ROLE_MODERATOR') || $user->getId() != $thread->getAuthor()->getId() ) // ONLY ADMIN MODERATOR OR THE THREAD'S AUTHOR CAN SET A THREAD AS RESOLVED
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') && !$this->get('security.authorization_checker')->isGranted('ROLE_MODERATOR') || $user->getId() != $thread->getAuthor()->getId() ) // ONLY ADMIN MODERATOR OR THE THREAD'S AUTHOR CAN SET A THREAD AS RESOLVED
         {
-            throw new \Exception('You are not authorized to do this');
+            throw new \Exception('You are not authorized to do this',403,'');
         }
             
             $thread->setResolved(true);
@@ -327,6 +296,39 @@ class ThreadController extends Controller
             
             
              
+        }
+        
+        /*
+ * The thread is locked by a moderator or admin
+ *         
+ * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+ */
+        function lockAction($subforum_slug,$thread_slug)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $thread = $em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
+            if (is_null($thread))
+            {
+                throw new Exception("Thread can't be found", 500, "");
+                
+            }
+            
+               
+      
+            
+            
+            $thread->setLocked(true);
+            $em->persist($thread);
+            $em->flush();
+            
+            $this->get('session')->getFlashBag()->add(
+            'success',
+            $this->get('translator')->trans('message.threadLocked',[],'YosimitsoWorkingForumBundle'));
+            
+            
+            return $this->redirect($this->generateUrl('workingforum_thread',array('thread_slug' => $thread_slug, 'subforum_slug' => $subforum_slug)));
+            
+            
         }
 }
 

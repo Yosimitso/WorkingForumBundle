@@ -3,6 +3,7 @@
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
+<script src="{{ asset('bundles/yosimitsoworkingforum/js/smiley.js') }}"></script>
 <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
 <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
 <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/locale/bootstrap-markdown.fr.js') }}"></script>
@@ -25,8 +26,7 @@
    return html;
    }
      });
-        });
-        
+        });  
         function nl2br (str, is_xhtml) {
     var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
@@ -57,8 +57,7 @@
      <script>
             function insertSmiley(code)
             {
-                jQuery('.wf_textarea_post').val(jQuery('.wf_textarea_post').val()+code);
-                jQuery('.wf_textarea_post').focus();
+                jQuery('.wf_textarea_post').insertAtCaret(code);
             }
             </script>
          <div class="wf_new_post" id="wf_new_post">   
@@ -76,12 +75,13 @@
     {% endfor %}
     </div>
    
-    {{ form_rest(form) }}
+    
      {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
           <p>{{ form_widget(form.pin) }} {{form_label(form.pin) }}</p>
      
      {% endif %}
      <p><input type="submit" value="{{ 'forum.create_thread' | trans }}" class="wf_button wf_width50"/></p>
+     {{ form_rest(form) }}
      {{ form_end(form) }}
              </div>
 

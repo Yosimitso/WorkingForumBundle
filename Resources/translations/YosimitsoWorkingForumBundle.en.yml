@@ -32,6 +32,7 @@ forum:
         ROLE_SUPER_ADMIN: Super Admin
         ROLE_ADMIN: Admin
         ROLE_USER: User
+        ROLE_MODERATOR: Moderator
         username: Username
         banned: Banned
         roles: Roles

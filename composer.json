@@ -1,17 +1,18 @@
 {
     "name": "yosimitso/workingforumbundle",
-    "description": "A full Symfony 2 system",
-    "type": "symfony2-bundle",
+    "description": "A full Symfony 3 system",
+    "type": "symfony3-bundle",
     "require": {
         "knplabs/knp-paginator-bundle": "~2.4",
         "knplabs/knp-markdown-bundle": "^1.4",
-		"symfony/framework-bundle": "~2.7"
+	"symfony/framework-bundle": "~2.7",
+        "sensio/framework-extra-bundle": "~3.0"
     },
     "license": "MIT",
     "authors": [
         {
             "name": "Yosimitso",
-            "email": "yosimitso@gmail.com"
+            "email": "contact@charlymartins.fr"
         }
     ],
     "minimum-stability": "dev",

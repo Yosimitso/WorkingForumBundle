@@ -1,0 +1,62 @@
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+<script>
+function nl2br (str, is_xhtml) {
+    var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+    return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+}
+
+    function quote(postId)
+    {
+        jQuery('.wf_textarea_post').val(jQuery('.wf_textarea_post').val()+"[quote="+postId+"]");
+        jQuery('.wf_textarea_post').focus();
+    }
+    
+    function report(url)
+    {
+        if (!confirm("{{'forum.confirm_report' | trans }}"))
+        {
+            return false;
+        }
+            jQuery.ajax({
+           
+		   type: "GET", 
+		   url: url,
+		   crossDomain: false,
+		   dataType: 'json',
+                   async: false,
+		   success: function(verif){
+                       if (verif == 'true')
+                       {
+                        alert('{{'forum.thanks_reporting' | trans }}');
+                       }
+                       else
+                       {
+                        
+                       }
+                   }
+        });                  
+    }
+    
+     function moderate(id)
+    {
+        
+            reason = prompt('{{ 'admin.report.why' | trans }}');
+            
+          
+                jQuery.ajax({
+           
+		   type: "POST", 
+		   url: '{{ path('workingforum_admin_report_action_moderate') }}',
+		   crossDomain: false,
+                   data: 'reason='+reason+'&postId='+id,
+		   dataType: 'json',
+                   async: false,
+		   success: function(res){
+                       if (res == 'ok')
+                       {
+                         jQuery('#wf_post'+id).html('<p class="wf_moderate">{{'forum.post_moderated' |trans }} '+reason+'</p>');
+                       }
+                   }
+        });  
+        }
+</script>

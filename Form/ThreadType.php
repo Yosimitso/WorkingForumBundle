@@ -22,7 +22,7 @@ class ThreadType extends AbstractType
             ->add('label',TextType::class,['translation_domain' => 'YosimitsoWorkingForumBundle','label' => 'forum.thread', 'error_bubbling' => true])
             ->add('sublabel',TextType::class,['translation_domain' => 'YosimitsoWorkingForumBundle','label' => 'forum.sublabel','error_bubbling' => true])
             ->add('post',CollectionType::class,['entry_type' => \Yosimitso\WorkingForumBundle\Form\PostType::class, 'allow_add' => false, 'error_bubbling' => true])
-            ->add('pin',CheckboxType::class,['translation_domain' => 'YosimitsoWorkingForumBundle', 'label' => 'forum.doPin'])
+            ->add('pin',CheckboxType::class,['translation_domain' => 'YosimitsoWorkingForumBundle', 'label' => 'forum.doPin', 'required' => false])
             
             
         ;

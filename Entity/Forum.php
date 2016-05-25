@@ -89,7 +89,7 @@ class Forum
     
     public function addSubForum(\Yosimitso\WorkingForumBundle\Entity\Subforum $subforum)
     {
-        $this->subforum[] = $subforum; 
+        $this->subForum[] = $subforum; 
     }
     
      /**

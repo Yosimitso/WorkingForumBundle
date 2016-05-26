@@ -89,6 +89,7 @@ class AdminController extends Controller
         
         if ($form->isValid())
         {
+       
            foreach ($forum->getSubforum() as $subforum)
             {
                 $subforum->setForum($forum);
@@ -129,12 +130,13 @@ class AdminController extends Controller
             {
                 $subforum->setForum($forum);
             }
+            $forum->genSlug($forum->getName());
             $em->persist($forum);
             $em->flush();
             
               $this->get('session')->getFlashBag()->add(
             'success',
-            $this->get('translator')->trans('message.saved','YosimitsoWorkingForumBundle'));
+            $this->get('translator')->trans('message.saved',[],'YosimitsoWorkingForumBundle'));
             return $this->redirect($this->generateUrl('workingforum_admin'));     
         }
         

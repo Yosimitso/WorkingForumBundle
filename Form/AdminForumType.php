@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Yosimitso\WorkingForumBundle\Form\AdminSubforumType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AdminForumType extends AbstractType
 {
@@ -20,7 +21,8 @@ class AdminForumType extends AbstractType
         $builder
             ->add('name',TextType::class,[ 'label' => 'admin.forum_name', 'translation_domain' => 'YosimitsoWorkingForumBundle'])
             ->add('subforum',CollectionType::class,['entry_type' => \Yosimitso\WorkingForumBundle\Form\AdminSubforumType::class, 'allow_add' => true, 'allow_delete' => true])
-        ;
+            ->add('submit',  SubmitType::class,['label' => 'admin.submit','translation_domain' => 'YosimitsoWorkingForumBundle', 'attr' => ['class' => 'wf_button']])
+            ;
     }
     
     /**

@@ -10,14 +10,19 @@
         &larr; {{ 'admin.back_to_admin' |trans }}
         </a></p>
    <div class="wf_admin_left">
-    
+    {% if form_errors(form) %}
+      <div class="alert-error">
+                      {{form_errors(form) }}
+                  </div>   
+    {% endif %}
+       
    {{ form_start(form) }}
    <p>{{ form_label(form.name) }}</p>
    <p>{{ form_widget(form.name) }}</p>
    <p class="wf_label">{{ 'admin.list_subforum' | trans }}</p>
    
-  
-       <table style="width:80%">
+    
+       <table style="width:80%" id="wf_list_subforum">
    {% for subforum in form.subforum %}
 
        <tr id="wf_sub_{{ loop.index-1 }}">
@@ -38,7 +43,6 @@
            
        {% endfor %}
        </table>
-   
    {# {{ form(form) }} #}
   
   <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
@@ -54,14 +58,15 @@
        }
        function NewSubforum() {
         
-           var length = (jQuery('#wf_list_subforum').children().length)+1;
-           var content = '<li id="wf_sub_'+length+'"><input type="text" value="" required="required" name="yosimitso_workingforumbundle_forum[subforum]['+length+'][name]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a></li>';
-           jQuery('#wf_list_subforum').append(content);
+           var length = (jQuery('#wf_list_subforum').children().length);
+           var content = '<tr id="wf_sub_'+length+'"><td><input type="text" value="" required="required" name="admin_forum[subforum]['+length+'][name]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"></td><td></td><td></td><td><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a></td></tr>';
+            jQuery('#wf_list_subforum').append(content);
            return true;
        }
     </script>   
-   <a class="wf_button" onclick="NewSubforum()"><span class="wf_add-plus"></span>{{ 'admin.new_subforum' | trans }}</a>
-    <input type="submit" value="{{ 'admin.submit' |trans }}" class="wf_button" />
+    <p><a class="wf_button" onclick="NewSubforum()"><span class="wf_add-plus"></span>{{ 'admin.new_subforum' | trans }}</a></p>
+   <p>{{ form_widget(form.submit) }}</p>
+   {{ form_rest(form) }}
    {{ form_end(form) }}
 </div>
 {% if statistics is defined %}

@@ -57,7 +57,7 @@ admin:
     submit: Enregistrer
     manage_forum: Gestion des forums
     manage_settings: Réglages
-    delete_subforum: Souhaitez vous supprimer ce sous forum ? Cette action est irréversible après l'enregistrement
+    delete_subforum: Souhaitez vous supprimer ce sous forum ?
     install_settings: Installation des règlages
     add: Ajouter
     statistics: Statistiques

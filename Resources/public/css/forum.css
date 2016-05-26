@@ -673,3 +673,7 @@ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
 .wf_moderate {
     font-style: italic;
 }
+
+#wf_list_subforum ul {
+    list-style: none;
+}

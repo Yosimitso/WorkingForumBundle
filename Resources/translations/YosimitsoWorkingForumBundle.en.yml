@@ -60,7 +60,7 @@ admin:
     submit: Save
     manage_forum: Manage forums
     manage_settings: Settings
-    delete_subforum: Are you sure to delete this subforum ? There is no rollback possible after confirmation
+    delete_subforum: Are you sure to delete this subforum ?
     install_settings: Settings installations
     add: Add
     statistics: Statistics

@@ -46,7 +46,7 @@ src: url(./fonts/roboto-regular.ttf);
 }
 
 .wf_sub_stat {
-  width: 20%;
+  width: 10%;
 }
 
 
@@ -676,4 +676,13 @@ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
 
 #wf_list_subforum ul {
     list-style: none;
+}
+
+.wf_sub_name p {
+    margin:0;
+}
+
+.wf_latest_page {
+    font-style: italic;
+    font-size: 10px;
 }

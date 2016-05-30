@@ -23,7 +23,7 @@ class ForumController extends Controller
      */
     public function subforumAction($subforum_slug,Request $request,$page = 1)
     {
-         $allow_anonymous = $this->container->getParameter( 'yosimitso_working_forum.allow_anonymous_read' );
+         $allow_anonymous = $this->getParameter( 'yosimitso_working_forum.allow_anonymous_read' );
          $user = $this->getUser();
           $subforum = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
          if ($user !== null || $allow_anonymous)
@@ -36,12 +36,12 @@ class ForumController extends Controller
        
        $list_subforum_query = $this->getDoctrine()->getManager()->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')->findBySubforum($subforum->getId(),['pin' => 'DESC', 'lastReplyDate' => 'DESC']);
       
-        $date_format = $this->container->getParameter( 'yosimitso_working_forum.date_format' );
+        $date_format = $this->getParameter( 'yosimitso_working_forum.date_format' );
        $paginator  = $this->get('knp_paginator');
         $list_subforum = $paginator->paginate(
         $list_subforum_query,
         $request->query->get('page', 1)/*page number*/,
-        $this->container->getParameter( 'yosimitso_working_forum.thread_per_page' ) /*limit per page*/
+        $this->getParameter( 'yosimitso_working_forum.thread_per_page' ) /*limit per page*/
     );
         
          }
@@ -56,7 +56,9 @@ class ForumController extends Controller
             'subforum' => $subforum,
             'thread_list' => $list_subforum,
             'date_format' => $date_format,
-            'forbidden' => $forbidden
+            'forbidden' => $forbidden,
+            'post_per_page' => $this->getParameter( 'yosimitso_working_forum.post_per_page' ),
+            'page_prefix' => 'page'                                                                   //$this->getParameter('knp_paginator.default_options.page_name')
                 ));
     }
 }

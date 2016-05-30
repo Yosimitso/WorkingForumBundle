@@ -50,6 +50,7 @@ forum:
 pagination:
     previous: Previous
     next: Next
+    latestPage: Latest page
     
 admin:
     admin_workingforum: Administration of WorkingForum

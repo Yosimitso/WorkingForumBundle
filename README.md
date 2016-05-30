@@ -51,6 +51,7 @@ Register the bundles in your AppKernel
   new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
   new Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle(),
   new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
+  new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle()
 ```
 Add to your app/config.yml
 
@@ -145,6 +146,7 @@ Ajoutez les bundles dans votre AppKernel
   new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
   new Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle(),
   new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
+  new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle()
 
 ```
 Ajoutez à votre app/config.yml

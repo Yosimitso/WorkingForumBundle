@@ -68,6 +68,7 @@
    <p>{{ form_widget(form.submit) }}</p>
    {{ form_rest(form) }}
    {{ form_end(form) }}
+  
 </div>
 {% if statistics is defined %}
 <div>
@@ -75,6 +76,9 @@
    <p>{{ 'forum.nbThread' | trans | capitalize }} : {{ statistics.nbThread  }}</p>
    <p>{{ 'forum.nbPost' | trans | capitalize }} : {{ statistics.nbPost }}</p>
    <p>{{ 'forum.averagePostThread' | trans }} : {{ statistics.averagePostThread | round(2) }}
+        <p>
+   <a href="{{ path('workingforum_admin_delete_forum', {forum_id: forum.id}) }}" onclick="if (!confirm('{{'admin.confirmDeleteForum'|trans}}')) { return false; }" class="wf_button wf_button-red">{{ 'admin.delete_forum' | trans}}</a>
+   </p>
 </div>
 {% endif %}
 <div class="wf_clear"></div>

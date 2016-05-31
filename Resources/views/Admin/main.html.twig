@@ -3,24 +3,7 @@
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 <div id="wf_forum_content">
-    {% if app.session.flashbag.has('success') %}
-                <div class="alert-success">
-                    <ul>
-                  {% for flashMessage in app.session.flashbag.get('success') %}
-                      <li>{{ flashMessage }}</li>
-                  {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-               {% if app.session.flashbag.has('error') %}
-                <div class="alert-error">
-                    <ul>
-                  {% for flashMessage in app.session.flashbag.get('error') %}
-                      <li>{{ flashMessage }}</li>
-                  {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
+  {% include 'YosimitsoWorkingForumBundle:Common:flashmsg.html.twig' %}
                <h1>{{ 'admin.admin_workingforum' | trans }}</h1>
 <div id="wf_forum_admin">
   <p><a class="wf_button" href="{{ path('workingforum_forum') }}">

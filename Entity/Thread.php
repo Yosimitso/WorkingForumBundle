@@ -25,7 +25,7 @@ class Thread
     /**
      * @var integer
      *
-    * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Subforum")
+    * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Subforum",inversedBy="thread")
      *  @ORM\JoinColumn(name="subforum_id",referencedColumnName="id",nullable=false)
      * @var arrayCollection
      */

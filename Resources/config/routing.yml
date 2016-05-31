@@ -51,6 +51,10 @@ workingforum_admin_report_action_moderate:
 workingforum_admin_report_action_good:
     path: /admin/reportaction/good
     defaults: {_controller: YosimitsoWorkingForumBundle:Admin:reportActionGood }
+    
+workingforum_admin_delete_forum:
+    path: /admin/deleteforum/{forum_id}
+    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:deleteForum }
 workingforum_search:
     path: /search
     defaults: {_controller: YosimitsoWorkingForumBundle:Search:index }

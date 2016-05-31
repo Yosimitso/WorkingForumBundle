@@ -397,6 +397,12 @@ font-weight:normal;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
 }
 
+.wf_button-red {
+  background-color: #8E0604;
+  background-image: linear-gradient(to bottom, #8E0604 0px, #E20602 100%);
+  border-color: #8E0604;  
+}
+
 a.wf_button  {
     color:white;
 }

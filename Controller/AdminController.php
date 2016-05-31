@@ -82,7 +82,9 @@ class AdminController extends Controller
             $statistics['nbThread'] += $subforum->getNbThread();
             $statistics['nbPost'] += $subforum->getNbPost();
         }
-        $statistics['averagePostThread'] = $statistics['nbPost']/$statistics['nbThread'] ;
+        
+        
+        $statistics['averagePostThread'] = ($statistics['nbThread'] > 0) ? $statistics['nbPost']/$statistics['nbThread'] : 0 ;
         $form = $this->createForm(AdminForumType::class,$forum);
         
         $form->handleRequest($request);
@@ -242,6 +244,23 @@ class AdminController extends Controller
           $em->flush();
           return new Response(json_encode('ok'),200);   
        
+    }
+    
+    public function deleteForumAction($forum_id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $forum = $em->getRepository('YosimitsoWorkingForumBundle:Forum')->findOneById($forum_id);
+        
+        if (!is_null($forum))
+        {
+            $em->remove($forum);
+            $em->flush();
+             $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('admin.forumDeleted',[],'YosimitsoWorkingForumBundle'));
+        }
+        
+        return $this->forward('YosimitsoWorkingForumBundle:Admin:index',[]);
     }
             
 

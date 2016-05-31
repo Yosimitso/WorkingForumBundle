@@ -80,7 +80,7 @@
               {% set nbPage = (thread.nbReplies/post_per_page) %}
                {% if nbPage > 1 %}
                    <p class="wf_latest_page">
-                    <a href="{{ path( 'workingforum_thread', {'subforum_slug' : thread.subforum.slug, 'thread_slug' : thread.slug, (page_prefix) : (nbPage |round) }) }}">&rarr; {{ 'pagination.latestPage' | trans }}
+                    <a href="{{ path( 'workingforum_thread', {'subforum_slug' : thread.subforum.slug, 'thread_slug' : thread.slug, (page_prefix) : (nbPage |round(0,'ceil')) }) }}">&rarr; {{ 'pagination.latestPage' | trans }}
                    </p>
              {%endif%}
              </td>

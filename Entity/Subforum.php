@@ -86,6 +86,24 @@ class Subforum
      */
     private $lastReplyDate;
     
+     /**
+      * @var arrayCollection
+    * @ORM\OneToMany(targetEntity="Yosimitso\WorkingForumBundle\Entity\Thread", mappedBy="subforum", cascade={"remove"})
+     
+     */
+    private $thread;
+    
+    public function getThread()
+    {
+        return $this->thread;
+    }
+    
+    public function addThread(\Yosimitso\WorkingForumBundle\Entity\Thread $thread)
+    {
+        $this->thread[] = $thread;
+        return $this;
+    }
+    
      public function getForum() {
         return $this->forum;
     }

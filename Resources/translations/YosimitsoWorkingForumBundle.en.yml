@@ -74,6 +74,9 @@ admin:
     action: action
     decision: "decision :"
     nowModerated: This post is now hidden
+    delete_forum: Delete this forum
+    forumDeleted: The forum has been deleted
+    confirmDeleteForum: Are you sure you want to delete this forum?
     report:
         good: good
         moderate: moderate

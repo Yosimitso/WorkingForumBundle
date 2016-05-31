@@ -5,7 +5,7 @@
     "require": {
         "knplabs/knp-paginator-bundle": "~2.4",
         "knplabs/knp-markdown-bundle": "^1.4",
-	"symfony/framework-bundle": "~2.7",
+	"symfony/framework-bundle": "~2.7,~3.0",
         "sensio/framework-extra-bundle": "~3.0"
     },
     "license": "MIT",

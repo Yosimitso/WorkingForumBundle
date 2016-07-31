@@ -90,10 +90,10 @@ class PostReport
     /**
      * Set user
      *
-     * @param \Yosimitso\WorkingForumBundle\Entity\User $user
+     * @param \Yosimitso\WorkingForumBundle\Entity\UserInterface $user
      * @return PostReport
      */
-    public function setUser(\Yosimitso\WorkingForumBundle\Entity\User $user)
+    public function setUser(\Yosimitso\WorkingForumBundle\Entity\UserInterface $user)
     {
         $this->user = $user;
 

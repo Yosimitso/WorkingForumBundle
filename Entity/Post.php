@@ -81,7 +81,7 @@ class Post
     
     public function __construct()
     {
-        $this->ip = htmlentities($_SERVER["REMOTE_ADDR"]);
+        $this->ip = htmlentities((isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 0));
     }
     
     public function getUser() {
@@ -123,7 +123,8 @@ class Post
     
     public function setContent($content)
     {
-        $this->content = htmlentities($content);
+        $this->content = htmlentities(strip_tags($content));
+        
         
 
      
@@ -139,7 +140,7 @@ class Post
      */
     public function getContent()
     {
-        return $this->content;
+        return html_entity_decode($this->content);
     }
 
     /**

@@ -79,7 +79,6 @@ class ThreadController extends Controller
         $my_post->setCdate(new \DateTime)
                 ->setPublished($published)
                 ->setContent($my_post->getContent())
-                ->setIp(htmlentities($_SERVER['REMOTE_ADDR']))
                 ->setUser($user)
                 ;
          $my_post->setThread($thread);
@@ -174,6 +173,7 @@ class ThreadController extends Controller
                 ->setPublished($published)
                 ->setContent($my_post->getContent())
                 ->setUser($user);
+        
         $my_post->setThread($my_thread);
 		
 		 $subforum->setNbPost($subforum->getNbPost()+1);

@@ -38,7 +38,7 @@ src: url(./fonts/roboto-regular.ttf);
 
 
 .wf_sub_name {
-    width:50%;
+    width:40%;
 }
 
 .wf_sub_lastreply, .wf_sub_stat {
@@ -47,6 +47,10 @@ src: url(./fonts/roboto-regular.ttf);
 
 .wf_sub_stat {
   width: 10%;
+}
+
+.wf_sub_author {
+    width:20%
 }
 
 
@@ -691,4 +695,9 @@ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
 .wf_latest_page {
     font-style: italic;
     font-size: 10px;
+}
+
+.wf_cadre-img-small {
+  vertical-align: middle;
+  width: 40px;
 }

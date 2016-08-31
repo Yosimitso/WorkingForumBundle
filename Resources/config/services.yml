@@ -6,7 +6,9 @@ services:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension
         tags:
             -  { name: twig.extension }
-        arguments: ['@request_stack']
+        arguments: 
+            request: "@request_stack"
+            asset: "@twig.extension.assets"
         
     yosimitso_workingforum_quote:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\QuoteTwigExtension

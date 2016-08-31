@@ -8,8 +8,10 @@ class SmileyTwigExtension extends \Twig_Extension
     
     private $basePath;
     private $listSmiley;
-    public function __construct(\Symfony\Component\HttpFoundation\RequestStack $request_stack) {
+    private $asset;
+    public function __construct(\Symfony\Component\HttpFoundation\RequestStack $request_stack, $asset) {
         $request = $request_stack->getCurrentRequest();
+        $this->asset = $asset;
         if (is_object($request))
         {
         $this->basePath = $request->getBasePath();
@@ -17,6 +19,7 @@ class SmileyTwigExtension extends \Twig_Extension
         else {
             $this->basePath = '';
         }
+        
         
         $this->listSmiley = [
             ':smile:' => 'smile.png',
@@ -74,7 +77,7 @@ class SmileyTwigExtension extends \Twig_Extension
      
         foreach ($this->listSmiley as $key => $value)
         {
-            $list[$key] = '<img src="'.$this->basePath.'/bundles/yosimitsoworkingforum/images/smiley/'.$value.'" />';
+            $list[$key] = '<img src="'.$this->asset->getAssetUrl('/bundles/yosimitsoworkingforum/images/smiley/'.$value).'" />';
         }
         return $this->strReplaceAssoc($list, $text);
     }

@@ -84,7 +84,16 @@
                    </p>
              {%endif%}
              </td>
-             <td class="wf_sub_stat">{{ thread.author.username }}</td>
+             <td class="wf_sub_author">
+                 <img class="wf_cadre-img-small" src="
+                  {% if thread.author.avatarUrl is not empty %}
+          {{ asset('bundles/yosimitsoworkingforum/'~thread.author.avatarUrl) }}
+          {% else %}
+           {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}   
+          {% endif %}
+          " />
+                 {{ thread.author.username |slice(0,30) }}
+             </td>
             <td class="wf_sub_stat">{{ thread.nbReplies}} {{ 'forum.nbPost' | trans }}</td>
             <td class="wf_sub_lastreply">{{'forum.last_reply_date' | trans }}<br />{{ thread.lastReplyDate | date(date_format)}} {{ 'forum.by' | trans }} {{ thread.author.username}}</td>
             

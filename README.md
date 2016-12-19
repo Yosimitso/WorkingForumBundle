@@ -104,7 +104,7 @@ Ce bundle utilise votre bundle utilisateur (qui peut hériter de FOSUserBundle)
 
 Demo
 -------------
-Essayez le ici - http://www.charlymartins.fr/demo/demoworkingforum/
+Essayez le ici - http://demo.charlymartins.fr/demoworkingforum/
 
 
 Fonctionnalités

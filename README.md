@@ -8,7 +8,7 @@ This bundle work with your user bundle with no extra configuration (which can ex
 
 Demo
 -------------
-Try it here - http://www.charlymartins.fr/demo/demoworkingforum/
+Try it here - http://demo.charlymartins.fr/demoworkingforum/
 
 
 Functionnalities

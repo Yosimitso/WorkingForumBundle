@@ -37,8 +37,8 @@ class YosimitsoWorkingForumExtension extends Extension
         throw new \InvalidArgumentException('The "allow_anonymous_read" option must be set in "yosimitso_working_forum"');
         }
         
-           if (!isset($config['allow_moderator_delete_thread'])) {
-        throw new \InvalidArgumentException('The "allow_moderator_delete_thread" option must be set in "yosimitso_working_forum"');
+           if (!isset($config['theme_color'])) {
+        throw new \InvalidArgumentException('The "theme_color" option must be set in "yosimitso_working_forum"');
         }
         
         
@@ -49,6 +49,7 @@ class YosimitsoWorkingForumExtension extends Extension
          $container->setParameter('yosimitso_working_forum.date_format', $config['date_format']);
          $container->setParameter('yosimitso_working_forum.allow_anonymous_read', $config['allow_anonymous_read']);
          $container->setParameter('yosimitso_working_forum.allow_moderator_delete_thread', $config['allow_moderator_delete_thread']);
+         $container->setParameter('yosimitso_working_forum.theme_color', $config['theme_color']);
          
     }
 }

@@ -38,6 +38,10 @@ class Configuration implements ConfigurationInterface
                                         ->isRequired()
                                         ->end()
                                         ->end();
+                            ->scalarNode('theme_color')
+                                        ->isRequired()
+                                        ->cannotBeEmpty()
+                                        ->end()
         
         
         // Here you should define the parameters that are allowed to

@@ -22,6 +22,6 @@ services:
         tags:
             - { name: twig.extension }
         arguments:
-            themeColor: "%yosimitso_workingforumbundle.theme_color%" 
+            themeColor: "%yosimitso_working_forum.theme_color%" 
 
 

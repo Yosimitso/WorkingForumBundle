@@ -15,7 +15,7 @@ class ConfigurationTwigExtension extends \Twig_Extension
       public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('getWFParam',[$this,'getWFParam']);
+            new \Twig_SimpleFunction('getWFParam',[$this,'getWFParam'])
         );
     }
 
@@ -27,7 +27,7 @@ class ConfigurationTwigExtension extends \Twig_Extension
         }
         else
         {
-            throw new \Exception('The param "'.$param.'" is missing in the WorkingForumBundle configuration')
+            throw new \Exception('The param "'.$param.'" is missing in the WorkingForumBundle configuration');
         }
 
     }

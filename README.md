@@ -62,6 +62,7 @@ yosimitso_working_forum:
     date_format: 'd/m/Y H:i:s'
     allow_anonymous_read: false
     allow_moderator_delete_thread: false
+    theme_color: green
 knp_paginator:
     page_range: 1                      # default page range used in pagination control
     default_options:
@@ -158,6 +159,7 @@ yosimitso_working_forum:
     date_format: 'd/m/Y H:i:s'
     allow_anonymous_read: false
     allow_moderator_delete_thread: false
+    theme_color: green
 	
 knp_paginator:
     page_range: 1                      # default page range used in pagination control

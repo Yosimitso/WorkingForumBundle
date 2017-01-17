@@ -17,4 +17,11 @@ services:
         arguments:
             em: "@doctrine.orm.entity_manager"
             trans: "@translator"
+    yosimitso_workingforum_config:
+        class: Yosimitso\WorkingForumBundle\Twig\Extension\ConfigurationTwigExtension
+        tags:
+            - { name: twig.extension }
+        arguments:
+            themeColor: "%yosimitso_workingforumbundle.theme_color%" 
+
 

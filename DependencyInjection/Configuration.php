@@ -37,7 +37,13 @@ class Configuration implements ConfigurationInterface
                              ->booleanNode('allow_moderator_delete_thread')
                                         ->isRequired()
                                         ->end()
-                                        ->end();
+                                        
+                            ->scalarNode('theme_color')
+                                        ->isRequired()
+                                        ->cannotBeEmpty()
+                                        ->end()
+                                        ->end()
+                                        ;
         
         
         // Here you should define the parameters that are allowed to

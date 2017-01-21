@@ -5,7 +5,9 @@ namespace Yosimitso\WorkingForumBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Setting
+ * Class Setting
+ *
+ * @package Yosimitso\WorkingForumBundle\Entity
  *
  * @ORM\Table(name="workingforum_setting")
  * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Entity\SettingRepository")
@@ -15,8 +17,8 @@ class Setting
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
@@ -34,7 +36,7 @@ class Setting
      * @ORM\Column(name="value", type="string", length=255)
      */
     private $value;
-    
+
     /**
      * @var string
      *
@@ -42,48 +44,28 @@ class Setting
      */
     private $type;
 
-
-
     /**
-     * Get id
-     *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
-    
-     /**
-     * Set nid
-     *
-     * @param integer $id
-     * @return Setting
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    
-        return $this;
-    }
 
     /**
-     * Set name
-     *
      * @param string $name
+     *
      * @return Setting
      */
     public function setName($name)
     {
         $this->name = $name;
-    
+
         return $this;
     }
 
     /**
-     * Get name
-     *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -91,46 +73,39 @@ class Setting
     }
 
     /**
-     * Set value
-     *
      * @param string $value
+     *
      * @return Setting
      */
     public function setValue($value)
     {
         $this->value = $value;
-    
+
         return $this;
     }
 
     /**
-     * Get value
-     *
-     * @return string 
+     * @return string
      */
     public function getValue()
     {
         return $this->value;
     }
-    
-    
-     /**
-     * Set type
-     *
+
+    /**
      * @param string $type
+     *
      * @return Setting
      */
     public function setType($type)
     {
         $this->type = $type;
-    
+
         return $this;
     }
 
     /**
-     * Get type
-     *
-     * @return string 
+     * @return string
      */
     public function getType()
     {

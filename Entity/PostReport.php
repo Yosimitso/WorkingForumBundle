@@ -5,7 +5,9 @@ namespace Yosimitso\WorkingForumBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * PostReport
+ * Class PostReport
+ *
+ * @package Yosimitso\WorkingForumBundle\Entity
  *
  * @ORM\Table(name="workingforum_post_report")
  * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Entity\PostReportRepository")
@@ -15,14 +17,15 @@ class PostReport
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var integer
+     *
      * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Post")
      * @ORM\JoinColumn(name="post_id", referencedColumnName="id", nullable=false)
      */
@@ -45,10 +48,13 @@ class PostReport
     
     /**
      * @var boolean
-     *  @ORM\Column(name="processed", type="boolean",nullable=true)
+     *  @ORM\Column(name="processed", type="boolean", nullable=true)
      */  
     private $processed;
-    
+
+    /**
+     * PostReport constructor.
+     */
     public function __construct()
     {
         $this->cdate = new \DateTime;
@@ -65,22 +71,7 @@ class PostReport
     }
 
     /**
-     * Set post
-     *
-     * @param \Yosimitso\WorkingForumBundle\Entity\Post $post
-     * @return PostReport
-     */
-    public function setPost(\Yosimitso\WorkingForumBundle\Entity\Post $post)
-    {
-        $this->post = $post;
-
-        return $this;
-    }
-
-    /**
-     * Get post
-     *
-     * @return integer 
+     * @return int
      */
     public function getPost()
     {
@@ -88,22 +79,19 @@ class PostReport
     }
 
     /**
-     * Set user
+     * @param int $post
      *
-     * @param \Yosimitso\WorkingForumBundle\Entity\UserInterface $user
      * @return PostReport
      */
-    public function setUser(\Yosimitso\WorkingForumBundle\Entity\UserInterface $user)
+    public function setPost($post)
     {
-        $this->user = $user;
+        $this->post = $post;
 
         return $this;
     }
 
     /**
-     * Get user
-     *
-     * @return integer 
+     * @return int
      */
     public function getUser()
     {
@@ -111,12 +99,31 @@ class PostReport
     }
 
     /**
-     * Set cdate
+     * @param int $user
      *
-     * @param \DateTime $cdate
      * @return PostReport
      */
-    public function setCdate($cdate)
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCdate(): \DateTime
+    {
+        return $this->cdate;
+    }
+
+    /**
+     * @param \DateTime $cdate
+     *
+     * @return PostReport
+     */
+    public function setCdate(\DateTime $cdate)
     {
         $this->cdate = $cdate;
 
@@ -124,19 +131,16 @@ class PostReport
     }
 
     /**
-     * Get cdate
-     *
-     * @return \DateTime 
+     * @return bool
      */
-    public function getCdate()
+    public function isProcessed(): bool
     {
-        return $this->cdate;
+        return $this->processed;
     }
-    
-     /**
-     * Set processed
+
+    /**
+     * @param bool $processed
      *
-     * @param boolean $processed
      * @return PostReport
      */
     public function setProcessed($processed)
@@ -144,15 +148,5 @@ class PostReport
         $this->processed = $processed;
 
         return $this;
-    }
-
-    /**
-     * Get processed
-     *
-     * @return boolean
-     */
-    public function getProcessed()
-    {
-        return $this->processed;
     }
 }

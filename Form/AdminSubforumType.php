@@ -10,30 +10,50 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class AdminSubforumType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            
-            ->add('name',TextType::class,['error_bubbling' => true, 'attr' => ['class' => 'form_subforum']])
-                ->add('nbThread',NumberType::class,['disabled' => true,'attr' => ['style' => 'width:30px']])
-                ->add('nbPost',NumberType::class,['disabled' => true,'attr' => ['style' => 'width:30px']])
-           
-            
+            ->add(
+                'name',
+                TextType::class,
+                [
+                    'error_bubbling' => true,
+                    'attr'           => ['class' => 'form_subforum'],
+                ]
+            )
+            ->add(
+                'nbThread',
+                NumberType::class,
+                [
+                    'disabled' => true,
+                    'attr'     => ['style' => 'width:30px'],
+                ]
+            )
+            ->add(
+                'nbPost',
+                NumberType::class,
+                [
+                    'disabled' => true,
+                    'attr'     => ['style' => 'width:30px'],
+                ]
+            )
         ;
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Subforum'
-        ));
+        $resolver->setDefaults(
+            [
+                'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Subforum',
+            ]
+        );
     }
 
     /**

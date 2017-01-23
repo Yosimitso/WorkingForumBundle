@@ -9,34 +9,70 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
-
+/**
+ * Class ThreadType
+ *
+ * @package Yosimitso\WorkingForumBundle\Form
+ */
 class ThreadType extends AbstractType
 {
-        /**
+    /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('label',TextType::class,['translation_domain' => 'YosimitsoWorkingForumBundle','label' => 'forum.thread', 'error_bubbling' => true])
-            ->add('sublabel',TextType::class,['translation_domain' => 'YosimitsoWorkingForumBundle','label' => 'forum.sublabel','error_bubbling' => true])
-            ->add('post',CollectionType::class,['entry_type' => \Yosimitso\WorkingForumBundle\Form\PostType::class, 'allow_add' => false, 'error_bubbling' => true])
-            ->add('pin',CheckboxType::class,['translation_domain' => 'YosimitsoWorkingForumBundle', 'label' => 'forum.doPin', 'required' => false])
-            
-            
+            ->add(
+                'label',
+                TextType::class,
+                [
+                    'translation_domain' => 'YosimitsoWorkingForumBundle',
+                    'label'              => 'forum.thread',
+                    'error_bubbling'     => true,
+                ]
+            )
+            ->add(
+                'sublabel',
+                TextType::class,
+                [
+                    'translation_domain' => 'YosimitsoWorkingForumBundle',
+                    'label'              => 'forum.sublabel',
+                    'error_bubbling'     => true,
+                ]
+            )
+            ->add(
+                'post',
+                CollectionType::class,
+                [
+                    'entry_type'     => PostType::class,
+                    'allow_add'      => false,
+                    'error_bubbling' => true,
+                ]
+            )
+            ->add(
+                'pin',
+                CheckboxType::class,
+                [
+                    'translation_domain' => 'YosimitsoWorkingForumBundle',
+                    'label'              => 'forum.doPin',
+                    'required'           => false,
+                ]
+            )
         ;
     }
-    
+
     /**
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Thread'
+        $resolver->setDefaults(
+            [
+                'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Thread',
 
-        ));
+            ]
+        );
     }
 
     /**

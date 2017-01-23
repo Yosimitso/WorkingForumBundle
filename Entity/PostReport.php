@@ -135,7 +135,7 @@ class PostReport
      */
     public function isProcessed(): bool
     {
-        return $this->processed;
+        return (bool) $this->processed;
     }
 
     /**

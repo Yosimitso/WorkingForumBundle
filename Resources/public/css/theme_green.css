@@ -1,5 +1,10 @@
 .wf_forum {
     border-left-color: #188d40;
+    background-color: white;
+}
+
+.wf_subforum {
+    background-color: white;
 }
 
 .wf_subforum td {

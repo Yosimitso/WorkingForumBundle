@@ -157,7 +157,7 @@ class ThreadController extends Controller
         $form = $this->createForm(ThreadType::class, $my_thread);
         $form->handleRequest($request);
 
-        if ($user->getBanned()) {
+        if ($user->isBanned()) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('message.banned', 'YosimitsoWorkingForumBundle')

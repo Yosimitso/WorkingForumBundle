@@ -126,6 +126,11 @@ class Thread
     {
         return $this->id;
     }
+	
+	public function __construct()
+	{
+		$this->post = new ArrayCollection;
+	}
 
     /**
      * @param Subforum $subforum

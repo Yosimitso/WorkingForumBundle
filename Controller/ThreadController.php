@@ -71,7 +71,7 @@ class ThreadController extends Controller
 
             if ($form->isSubmitted()) {
 
-                if ($user->getBanned()) // USER IS BANNED CAN'T POST
+                if ($user->isBanned()) // USER IS BANNED CAN'T POST
                 {
                     $this->get('session')->getFlashBag()->add(
                         'error',

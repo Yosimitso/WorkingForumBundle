@@ -12,18 +12,25 @@
 
 .wf_thread_list th {
     background-color: #A9A9A9;
+    color: white;
 }
 
 .wf_thread h1 {
+    color: white;
     background-color: #3fa757;
 }
 
 .wf_thread h2 {
     background-color: #F5F5F5;
+    color: grey;
 }
 
 .wf_breadcrumb {
     background-color: #f5f5f5;
+}
+
+.wf_breadcrumb a:hover {
+    color: #2a6496;
 }
 
 .wf_post {
@@ -38,7 +45,12 @@
     background-color: #d1be75;
 }
 
+.wf_new_thread {
+    background-color: white;
+}
+
 .wf_new_thread h1 {
+    color: white;
     background-color: #3fa757;
 }
 
@@ -46,12 +58,28 @@
     border-color: #d8d8d8;
 }
 
+.wf_thread_list .wf_sublabel {
+    color: grey;
+}
+
 .wf_forum a:hover {
     color: #2a6496;
 }
 
+#wf_forum_admin {
+    background-color: white;
+}
+
+#wf_forum_admin label, #wf_forum_admin .wf_label {
+    color: grey;
+}
+
 #wf_forum_admin input[type="text"], #wf_forum_admin input[type="email"], #wf_forum_admin input[type="password"], #wf_forum_admin select {
     border-color: #d8d8d8;
+}
+
+.wf_forum_block_admin {
+    border-color: silver;
 }
 
 #wf_forum_content h1 {
@@ -69,6 +97,10 @@
     background-image: linear-gradient(to bottom, #44e567 0px, #00a547 100%);
     border-color: #00a547;
 }
+
+.wf_locked {
+    color: red;
+}    
 
 .wf_button-red {
     background-color: #8E0604;
@@ -172,6 +204,10 @@ code {
     color: #c7254e;
 }
 
+.wf_post-right .wf_date {
+    color: grey;
+}
+
 .wf_post-right blockquote {
     border: 1px solid #cecece;
     border-left: 5px solid #cecece;
@@ -184,6 +220,7 @@ code {
 #wf_search {
     background-color: white;
     border-left-color: #188d40;
+    border-bottom-color silver:
 }
 
 #wf_search input {
@@ -200,4 +237,13 @@ code {
 
 .wf_admin_table tbody tr:nth-child(odd) {
     background-color: #E2E2E2;
+}
+
+#wf_new_post .md-editor > .md-preview {
+    border-bottom-color: #ddd;
+    border-top-color: #ddd;
+}
+
+.wf_resolved td {
+    background-color: #afddaf;
 }

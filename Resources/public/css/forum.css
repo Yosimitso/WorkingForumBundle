@@ -8,7 +8,6 @@
 }
 
 .wf_forum {
-    background-color: white;
     font-family: Roboto;
     border-bottom: 0.5px solid silver;
     border-left: 1px solid;
@@ -20,8 +19,6 @@
 
 .wf_subforum {
     margin: 5px;
-    background-color: white;
-
     padding: 5px;
     width: 99%;
     border-collapse: collapse;
@@ -70,21 +67,17 @@
 
 .wf_thread_list .wf_sublabel {
     font-size: 12px;
-    color: grey;
 }
 
 .wf_thread_list th {
     text-align: left;
-    color: white;
 }
 
 .wf_thread {
-
     padding-bottom: 60px;
 }
 
 .wf_thread h1 {
-    color: white;
     font-size: 18px;
     padding: 10px 10px 10px 30px;
     font-family: RobotoCondensed;
@@ -93,7 +86,6 @@
 
 .wf_thread h2 {
     font-size: 14px;
-    color: grey;
     padding: 5px;
     margin: 0;
 
@@ -131,7 +123,6 @@
 }
 
 .wf_locked {
-    color: red;
     font-style: italic;
 }
 
@@ -146,7 +137,6 @@
 }
 
 .wf_post-right .wf_date {
-    color: grey;
     font-size: 12px;
     margin-bottom: 10px;
 }
@@ -200,10 +190,6 @@
     text-decoration: none;
 }
 
-.wf_breadcrumb a:hover {
-    color: #2a6496;
-}
-
 .wf_thread_list a {
     color: inherit;
     text-decoration: inherit;
@@ -220,12 +206,8 @@
 
 }
 
-.wf_new_thread {
-    background-color: white;
-}
 
 .wf_new_thread h1 {
-    color: white;
     font-size: 18px;
     padding: 10px 10px 10px 30px;
     font-family: RobotoCondensed;
@@ -259,15 +241,7 @@
     padding: 20px;
 }
 
-/*#forum_admin_content {
-background-color: white;
-margin-top: 100px;
-padding-bottom: 60px;
-width: 100%;
-}*/
-
 #wf_forum_admin {
-    background-color: white;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 20px;
@@ -279,7 +253,6 @@ width: 100%;
 
 #wf_forum_admin label, #wf_forum_admin .wf_label {
     font-size: 20px;
-    color: grey;
     font-family: "Lucida Grande", Arial;
     margin-top: 20px;
 }
@@ -321,7 +294,7 @@ width: 100%;
 }
 
 .wf_forum_block_admin {
-    border: 1px solid silver;
+    border: 1px solid;
     max-width: 500px;
     min-width: 300px;
     font-family: "Arial";
@@ -347,10 +320,6 @@ width: 100%;
 
 .wf_clear {
     clear: both;
-}
-
-.wf_resolved td {
-    background-color: #afddaf;
 }
 
 .wf_pin td {
@@ -415,8 +384,8 @@ width: 100%;
 
 #wf_new_post .md-editor > .md-preview {
     background: #fff none repeat scroll 0 0;
-    border-bottom: 1px dashed #ddd;
-    border-top: 1px dashed #ddd;
+    border-bottom: 1px dashed;
+    border-top: 1px dashed;
     min-height: 10px;
     overflow: auto;
     padding: 10px;
@@ -528,7 +497,7 @@ code {
 #wf_search {
     padding: 60px;
     font-family: Roboto;
-    border-bottom: 0.5px solid silver;
+    border-bottom: 0.5px solid;
     border-left: 1px solid;
 }
 

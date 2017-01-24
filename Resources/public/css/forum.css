@@ -48,7 +48,6 @@
 
 .wf_thread_list {
     margin: 5px;
-    background-color: white;
     font-size: 13px;
     padding: 5px;
     width: 99%;
@@ -101,7 +100,6 @@
 .wf_post {
     padding-left: 10px;
     padding-top: 10px;
-    background-color: white;
     border-bottom: 1px solid;
     padding-bottom: 5px;
 }
@@ -259,7 +257,6 @@
 
 #wf_forum_admin .wf_forum_block_admin label {
     font-size: 12px;
-    color: black;
 }
 
 #wf_forum_admin input[type="text"], #wf_forum_admin input[type="email"], #wf_forum_admin input[type="password"], #wf_forum_admin select {
@@ -287,7 +284,6 @@
     font-family: Arial;
     font-size: 28px;
     padding: 5px 0 5px 0;
-    color: white;
     margin-bottom: 0;
     margin-top: 0;
     font-weight: normal;
@@ -335,7 +331,6 @@
     border-radius: 2px;
     border-width: 1px;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset;
-    color: #fff;
     cursor: pointer;
     font-family: Arial, Tahoma, sans-serif;
     font-size: 14px;
@@ -523,7 +518,6 @@ code {
 
 .wf_admin_table thead tr th {
     padding: 10px;
-    color: white;
     font-weight: normal;
     text-align: left;
 }

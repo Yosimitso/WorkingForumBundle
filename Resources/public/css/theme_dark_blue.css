@@ -10,6 +10,10 @@
     border-bottom-color: #f3f3f3;
 }
 
+.wf_thread_list {
+    background-color: white;
+}
+
 .wf_thread_list th {
     background-color: #A9A9A9;
     color: white;
@@ -35,6 +39,7 @@
 
 .wf_post {
     border-bottom-color: #EDEDED;
+    background-color: white;
 }
 
 .wf_post .wf_post-left {
@@ -70,6 +75,9 @@
     background-color: white;
 }
 
+#wf_forum_admin .wf_forum_block_admin label {
+   color: black;
+}
 #wf_forum_admin label, #wf_forum_admin .wf_label {
     color: grey;
 }
@@ -85,6 +93,7 @@
 #wf_forum_content h1 {
     border-bottom-color: #CCCCCC;
     background-color: #185390;
+    color: white;
 }
 
 .wf_forum_block_title {
@@ -96,6 +105,7 @@
     background-color: #00a547;
     background-image: linear-gradient(to bottom, #51abe0 0px, #142c84 100%);
     border-color: #00a547;
+    color: #fff;
 }
 
 .wf_locked {
@@ -232,8 +242,9 @@ code {
     border-color: #d8d8d8;
 }
 
-.wf_admin_table thead tr {
+.wf_admin_table thead tr th {
     background-color: #185390;
+    color: white;
 }
 
 .wf_admin_table tbody tr:nth-child(odd) {

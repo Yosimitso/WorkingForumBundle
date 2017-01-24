@@ -242,12 +242,9 @@ code {
     border-color: #d8d8d8;
 }
 
-.wf_admin_table thead tr {
-    background-color: #188D40;
-}
-
 .wf_admin_table thead tr th {
     color: white;
+    background-color: #188D40;
 }
 
 .wf_admin_table tbody tr:nth-child(odd) {

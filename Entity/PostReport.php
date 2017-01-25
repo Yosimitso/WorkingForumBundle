@@ -113,7 +113,7 @@ class PostReport
     /**
      * @return \DateTime
      */
-    public function getCdate(): \DateTime
+    public function getCdate()
     {
         return $this->cdate;
     }
@@ -133,7 +133,7 @@ class PostReport
     /**
      * @return bool
      */
-    public function isProcessed(): bool
+    public function isProcessed()
     {
         return (bool) $this->processed;
     }

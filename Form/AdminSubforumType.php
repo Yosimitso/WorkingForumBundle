@@ -17,6 +17,7 @@ class AdminSubforumType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+<<<<<<< Updated upstream
             ->add(
                 'name',
                 TextType::class,
@@ -41,6 +42,31 @@ class AdminSubforumType extends AbstractType
                     'attr'     => ['style' => 'width:30px'],
                 ]
             )
+=======
+            
+            ->add('name',TextType::class,['error_bubbling' => true, 'attr' => ['class' => 'form_subforum']])
+                ->add('nbThread',NumberType::class,['disabled' => true,'attr' => ['style' => 'width:30px']])
+                ->add('nbPost',NumberType::class,['disabled' => true,'attr' => ['style' => 'width:30px']])
+                ->add('allowedRoles',TextType::class,['error_bubbling' => true])
+                ->get('allowedRoles')
+                    ->addModelTransformer(new CallbackTransformer (
+                        function ($rolesAsArray) {
+                            if (isset($rolesAsArray) && is_array($rolesAsArray))
+                            {
+                                return implode(',',(array) $rolesAsArray);
+                            }
+                            else
+                            {
+                                return '';
+                            }
+                        },
+                        function ($rolesAsString) {
+                            return explode(',',str_replace(' ','',$rolesAsString));
+                        }
+                        ))
+           
+            
+>>>>>>> Stashed changes
         ;
     }
 

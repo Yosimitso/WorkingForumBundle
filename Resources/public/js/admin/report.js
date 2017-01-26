@@ -1,0 +1,48 @@
+function report(action, id, postId) {
+    if (action == 'moderate' || action == 'moderateandban') {
+        reason = prompt('{{ '
+        admin.report.why
+        ' | trans }}'
+    )
+        ;
+
+        if (action == 'moderateandban') {
+            banuser = 1;
+        }
+        else {
+            banuser = 0;
+        }
+        jQuery.ajax({
+
+            type: "POST",
+            url: '{{ path('workingforum_admin_report_action_moderate') }}',
+            crossDomain: false,
+            data: 'reason=' + reason + '&id=' + id + '&postId=' + postId + '&banuser=' + banuser,
+            dataType: 'json',
+            async: false,
+            success: function (res) {
+                if (res == 'ok') {
+                    jQuery('#postmoderate\\[' + id + '\\]').fadeOut();
+                }
+            }
+        });
+    }
+
+    else if (action == 'good') {
+
+        jQuery.ajax({
+
+            type: "POST",
+            url: '{{ path('workingforum_admin_report_action_good') }}',
+            crossDomain: false,
+            data: 'id=' + id + '&postId=' + postId,
+            dataType: 'json',
+            async: false,
+            success: function (res) {
+                if (res == 'ok') {
+                    jQuery('#postmoderate\\[' + id + '\\]').fadeOut();
+                }
+            }
+        });
+    }
+}

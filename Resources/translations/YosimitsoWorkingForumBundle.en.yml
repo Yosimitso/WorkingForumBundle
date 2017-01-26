@@ -85,6 +85,7 @@ admin:
         moderateAndBan: moderate and ban user
         why: "Give a reason :"
         history: Reports history
+        list: Reports list
 setting:
     allow_anonymous_read: Allow anonymous users to read
     allow_moderator_delete_thread: Allow moderators to delete threads

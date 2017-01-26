@@ -85,22 +85,22 @@ class Subforum
      */
     private $thread;
 
+    /** @var ArrayCollection
+    * @ORM\Column(name="allowed_roles",type="array", nullable=true)
+    */
+
+    private $allowedRoles;
+
     /**
-<<<<<<< Updated upstream
      * @return integer
      */
     public function getId()
     {
         return $this->id;
-=======
-    * @var ArrayCollection
-    * @ORM\Column(name="allowed_roles",type="array", nullable=true)
-    */
+    }
 
-    private $allowedRoles;
     public function __construct() {
         $this->allowedRoles = new \ArrayCollection;
->>>>>>> Stashed changes
     }
 
     /**
@@ -271,6 +271,26 @@ class Subforum
     public function addThread(Thread $thread)
     {
         $this->thread[] = $thread;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getAllowedRoles()
+    {
+        return $this->allowedRoles;
+    }
+
+    /**
+     * @param ArrayCollection $allowedRoles
+     *
+     * @return Subforum
+     */
+    public function setAllowedRoles(ArrayCollection $allowedRoles)
+    {
+        $this->allowedRoles = $allowedRoles;
 
         return $this;
     }

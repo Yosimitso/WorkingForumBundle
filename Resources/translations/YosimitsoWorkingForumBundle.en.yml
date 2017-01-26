@@ -84,12 +84,7 @@ admin:
         moderate: moderate
         moderateAndBan: moderate and ban user
         why: "Give a reason :"
-<<<<<<< Updated upstream
-=======
         history: Reports history
-
->>>>>>> Stashed changes
-        
 setting:
     allow_anonymous_read: Allow anonymous users to read
     allow_moderator_delete_thread: Allow moderators to delete threads

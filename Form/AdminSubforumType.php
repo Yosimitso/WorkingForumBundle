@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\CallbackTransformer;
 
 class AdminSubforumType extends AbstractType
 {
@@ -17,7 +18,6 @@ class AdminSubforumType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-<<<<<<< Updated upstream
             ->add(
                 'name',
                 TextType::class,
@@ -42,8 +42,6 @@ class AdminSubforumType extends AbstractType
                     'attr'     => ['style' => 'width:30px'],
                 ]
             )
-=======
-            
             ->add('name',TextType::class,['error_bubbling' => true, 'attr' => ['class' => 'form_subforum']])
                 ->add('nbThread',NumberType::class,['disabled' => true,'attr' => ['style' => 'width:30px']])
                 ->add('nbPost',NumberType::class,['disabled' => true,'attr' => ['style' => 'width:30px']])
@@ -64,9 +62,6 @@ class AdminSubforumType extends AbstractType
                             return explode(',',str_replace(' ','',$rolesAsString));
                         }
                         ))
-           
-            
->>>>>>> Stashed changes
         ;
     }
 
@@ -82,12 +77,5 @@ class AdminSubforumType extends AbstractType
         );
     }
 
-    /**
-     * @return string
-     */
-    /*
-    public function getName()
-    {
-        return 'yosimitso_workingforumbundle_subforum';
-    }*/
+
 }

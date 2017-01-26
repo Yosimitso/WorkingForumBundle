@@ -30,19 +30,6 @@
                <td>{{ form_widget(subforum.name) }}</td>
            </tr>
 
-<<<<<<< Updated upstream
-       <tr id="wf_sub_{{ loop.index-1 }}">
-           <td>
-               {{ form_widget(subforum.name) }}
-           </td>
-           <td>
-               {{ form_widget(subforum.nbThread) }} {{ 'forum.nbThread' | trans }}
-           </td>
-           <td>
-               {{ form_widget(subforum.nbPost) }} {{ 'forum.nbPost' | trans }}
-           </td>
-           <td>
-=======
            <tr>
                 <th>{{ 'forum.allowed_roles' | trans | capitalize }}</th>
                 <td>{{ form_widget(subforum.allowedRoles) }}</td>
@@ -60,7 +47,6 @@
 
             <tr>
            <td colspan="2">
->>>>>>> Stashed changes
                <a href="#" onclick="deleteSubforum({{ loop.index-1 }})"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a>
            </td>
            </tr>

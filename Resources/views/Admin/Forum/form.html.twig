@@ -4,11 +4,8 @@
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 
 <div id="wf_forum_content">
-     <h1>{{ 'admin.admin_area' | trans }}</h1>
+    {%  include 'YosimitsoWorkingForumBundle:Admin:header.html.twig' with {'backToAdmin': true, 'adminSubtitle': 'admin.menu.forum'} %}
 <div id="wf_forum_admin">
-    <p><a class="wf_button" href="{{ path('workingforum_admin') }}">
-        &larr; {{ 'admin.back_to_admin' |trans }}
-        </a></p>
    <div class="wf_admin_left">
     {% if form_errors(form) %}
       <div class="alert-error">

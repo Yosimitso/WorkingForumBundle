@@ -1,24 +1,67 @@
 {% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
 {% block forum %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
-{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+    {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
     <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('bundles/yosimitsoworkingforum/js/admin/report.js') }}"></script>
+    <script>
+        function report(action, id, postId) {
+            if (action == 'moderate' || action == 'moderateandban') {
+                reason = prompt('{{ 'admin.report.why' | trans }}'
+                )
+                ;
 
-<div id="wf_forum_content">
-     <h1>{{ 'admin.admin_area' | trans }}</h1>
-<div id="wf_forum_admin">
-      <p>
-          <a class="wf_button" href="{{ path('workingforum_admin') }}">
-            &larr; {{ 'admin.back_to_admin' |trans }}
-          </a>
-      </p>
-      <p>
-          <a class="wf_button" href="{{ path('workingforum_admin_report_history') }}">
-              {{ 'admin.report.history' |trans }}
-          </a>
-      </p>
-    {%  include 'YosimitsoWorkingForumBundle:Admin:Report/report_content.html.twig' with {'postReportList': postReportList } %}
-</div>
-</div>
+                if (action == 'moderateandban') {
+                    banuser = 1;
+                }
+                else {
+                    banuser = 0;
+                }
+                jQuery.ajax({
+
+                    type: "POST",
+                    url: '{{ path('workingforum_admin_report_action_moderate') }}',
+                    crossDomain: false,
+                    data: 'reason=' + reason + '&id=' + id + '&postId=' + postId + '&banuser=' + banuser,
+                    dataType: 'json',
+                    async: false,
+                    success: function (res) {
+                        if (res == 'ok') {
+                            jQuery('#postmoderate\\[' + id + '\\]').fadeOut();
+                        }
+                    }
+                });
+            }
+
+            else if (action == 'good') {
+
+                jQuery.ajax({
+
+                    type: "POST",
+                    url: '{{ path('workingforum_admin_report_action_good') }}',
+                    crossDomain: false,
+                    data: 'id=' + id + '&postId=' + postId,
+                    dataType: 'json',
+                    async: false,
+                    success: function (res) {
+                        if (res == 'ok') {
+                            jQuery('#postmoderate\\[' + id + '\\]').fadeOut();
+                        }
+                    }
+                });
+            }
+        }
+
+    </script>
+
+    <div id="wf_forum_content">
+        {%  include 'YosimitsoWorkingForumBundle:Admin:header.html.twig' with {'backToAdmin': true, 'adminSubtitle': 'admin.menu.report'} %}
+        <div id="wf_forum_admin">
+            <p>
+                <a class="wf_button" href="{{ path('workingforum_admin_report_history') }}">
+                    {{ 'admin.report.history' |trans }}
+                </a>
+            </p>
+            {% include 'YosimitsoWorkingForumBundle:Admin:Report/report_content.html.twig' with {'postReportList': postReportList } %}
+        </div>
+    </div>
 {% endblock %}

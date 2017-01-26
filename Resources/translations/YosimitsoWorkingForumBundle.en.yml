@@ -86,6 +86,11 @@ admin:
         why: "Give a reason :"
         history: Reports history
         list: Reports list
+    menu:
+        user: Users management
+        forum: Forums management
+        report_history: Reports History
+        report: Reports
 setting:
     allow_anonymous_read: Allow anonymous users to read
     allow_moderator_delete_thread: Allow moderators to delete threads

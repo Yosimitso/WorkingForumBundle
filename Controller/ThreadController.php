@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
+use Yosimitso\WorkingForumBundle\Util\Authorization;
 
 /**
  * Class ThreadController
@@ -21,6 +22,13 @@ use Yosimitso\WorkingForumBundle\Util\Slugify;
  */
 class ThreadController extends Controller
 {
+    private $authorizationChecker;
+
+    public function __construct()
+    {
+        $this->autorizationChecker = $this->get('yosimitso_workingforum_authorization');
+    }
+
     /**
      * Display a thread, save a post
      *
@@ -35,20 +43,21 @@ class ThreadController extends Controller
      */
     public function indexAction($subforum_slug, $thread_slug, Request $request, $page = 1)
     {
-        $allow_anonymous = $this->container->getParameter('yosimitso_working_forum.allow_anonymous_read');
         $em = $this->getDoctrine()->getManager();
         $subforum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
         $thread = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')->findOneBySlug($thread_slug);
         $user = $this->getUser();
-        $forbidden = true;
-        $post_list = null;
-        $date_format = null;
-        $form = null;
-        $listSmiley = null;
 
-        if ($user !== null || $allow_anonymous) {
-            $forbidden = false;
+        if (!$this->authorizationChecker->hasUserAuthorization()) {
+            return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',
+                [
+                    'subforum'    => $subforum,
+                    'thread'      => $thread,
+                    'forbidden'   => true,
+                ]
+            );
 
+        }
             $post_query = $em
                 ->getRepository('Yosimitso\WorkingForumBundle\Entity\Post')
                 ->findByThread($thread->getId())
@@ -120,7 +129,7 @@ class ThreadController extends Controller
                 }
             }
 
-        }
+
 
         return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',
             [
@@ -130,7 +139,7 @@ class ThreadController extends Controller
                 'date_format' => $date_format,
                 'form'        => (isset($form)) ? $form->createView() : null,
                 'listSmiley'  => $listSmiley,
-                'forbidden'   => $forbidden,
+                'forbidden'   => false,
                 'request'     => $request,
             ]
         );
@@ -248,10 +257,7 @@ class ThreadController extends Controller
 
         }
 
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'
-            ) && !$this->get('security.authorization_checker')->isGranted('ROLE_MODERATOR') || $user->getId(
-            ) != $thread->getAuthor()->getId()
-        ) // ONLY ADMIN MODERATOR OR THE THREAD'S AUTHOR CAN SET A THREAD AS RESOLVED
+        if (!$this->authorizationChecker->hasModeratorAuthorization() && $user->getId() != $thread->getAuthor()->getId()) // ONLY ADMIN MODERATOR OR THE THREAD'S AUTHOR CAN SET A THREAD AS RESOLVED
         {
             throw new \Exception('You are not authorized to do this', 403, '');
         }

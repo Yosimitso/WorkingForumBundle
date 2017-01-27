@@ -22,6 +22,10 @@ services:
         tags:
             - { name: twig.extension }
         arguments:
-            themeColor: "%yosimitso_working_forum.theme_color%" 
+            themeColor: "%yosimitso_working_forum.theme_color%"
+    yosimitso_workingforum_authorization:
+        class: Yosimitso\WorkingForumBundle\Security\Authorization
+        arguments :
+            securityChecker: "@security.authorization_checker"
 
 

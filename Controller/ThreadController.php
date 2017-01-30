@@ -22,12 +22,6 @@ use Yosimitso\WorkingForumBundle\Security\Authorization;
  */
 class ThreadController extends Controller
 {
-    private $authorizationChecker;
-
-    public function __construct()
-    {
-        $this->autorizationChecker = $this->get('yosimitso_workingforum_authorization');
-    }
 
     /**
      * Display a thread, save a post
@@ -48,7 +42,8 @@ class ThreadController extends Controller
         $thread = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')->findOneBySlug($thread_slug);
         $user = $this->getUser();
 
-        if (!$this->authorizationChecker->hasUserAuthorization()) {
+        $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
+        if (!$authorizationChecker->hasSubforumAccess($subforum)) {
             return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',
                 [
                     'subforum'    => $subforum,
@@ -159,6 +154,21 @@ class ThreadController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $subforum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
+        $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
+
+          if (!$authorizationChecker->hasSubforumAccess($subforum)) {
+            return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',
+                [
+                    'subforum'    => $subforum,
+                    'thread'      => $thread,
+                    'forbidden'   => true,
+                    'forbiddenMsg' => $this->authorizationChecker->getErrorMessage()
+                ]
+            );
+
+        }
+
+
         $my_thread = new Thread;
         $my_post = new Post;
         $my_thread->addPost($my_post);
@@ -167,17 +177,8 @@ class ThreadController extends Controller
         $form = $this->createForm(ThreadType::class, $my_thread);
         $form->handleRequest($request);
 
-        if ($user->isBanned()) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('message.banned', 'YosimitsoWorkingForumBundle')
-            )
-            ;
 
-            return $this->redirect($this->generateUrl('workingforum', []));
-        }
-
-        if ($form->isValid() && $user) {
+        if ($form->isValid()) {
             $published = 1;
             $my_thread->addNbReplies(1)
                       ->setLastReplyDate(new \DateTime)
@@ -248,17 +249,17 @@ class ThreadController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $thread = $em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
-
         $user = $this->getUser();
+        $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
 
-        if (is_null($thread) || is_null($user)) {
-            throw new \Exception("Error",
+        if (is_null($thread)) {
+            throw new \Exception("Thread error",
                 500, ""
             );
 
         }
 
-        if (!$this->authorizationChecker->hasModeratorAuthorization() && $user->getId() != $thread->getAuthor()->getId()) // ONLY ADMIN MODERATOR OR THE THREAD'S AUTHOR CAN SET A THREAD AS RESOLVED
+        if (!$authorizationChecker->hasModeratorAuthorization() && $user->getId() != $thread->getAuthor()->getId()) // ONLY ADMIN MODERATOR OR THE THREAD'S AUTHOR CAN SET A THREAD AS RESOLVED
         {
             throw new \Exception('You are not authorized to do this', 403, '');
         }

@@ -71,8 +71,8 @@ class Authorization
             throw new \Exception('User entity invalid');
             return false;
         }
-        $subforumRoles = $subforum->getRestrictedRolesAsArray();
-        if (empty($subforum->getRestrictedRolesAsArray()))
+        $subforumRoles = $subforum->getAllowedRoles();
+        if (empty($subforum->getAllowedRoles()))
         {
             return true;
         }

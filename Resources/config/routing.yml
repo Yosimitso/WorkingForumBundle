@@ -41,6 +41,9 @@ workingforum_admin_install_settings:
 workingforum_admin_report:
     path: /admin/report
     defaults: {_controller: YosimitsoWorkingForumBundle:Admin:report }
+workingforum_admin_report_history:
+    path: /admin/report/history
+    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:reportHistory }
 workingforum_admin_user:
     path: /admin/user
     defaults: {_controller: YosimitsoWorkingForumBundle:Admin:userList }    

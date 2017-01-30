@@ -3,11 +3,7 @@
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 <div id="wf_forum_content">
-     <h1>{{ 'admin.admin_area' | trans }}</h1>
-<div id="wf_forum_admin">
-    <p><a class="wf_button" href="{{ path('workingforum_admin') }}">
-        &larr; {{ 'admin.back_to_admin' |trans }}
-        </a></p>
+    {%  include 'YosimitsoWorkingForumBundle:Admin:header.html.twig' with {'backToAdmin': true, 'adminSubtitle': 'admin.menu.user'} %}
         <table class="wf_admin_table">
             <thead>
             <th>ID</th>

@@ -46,6 +46,8 @@ forum:
     post_moderated: "This post has been moderated for the following reason :"
     has_written: has written
     confirm_report: Do you want to report this post ?
+    subforum_name: Subforum name
+    allowed_roles: Allowed roles
 pagination:
     previous: Previous
     next: Next
@@ -81,7 +83,13 @@ admin:
         moderate: moderate
         moderateAndBan: moderate and ban user
         why: "Give a reason :"
-        
+        history: Reports history
+        list: Reports list
+    menu:
+        user: Users management
+        forum: Forums management
+        report_history: Reports History
+        report: Reports
 setting:
     allow_anonymous_read: Allow anonymous users to read
     allow_moderator_delete_thread: Allow moderators to delete threads

@@ -1,0 +1,37 @@
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+<table class="wf_admin_table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>{{ 'forum.date' | trans | capitalize }}</th>
+        <th>{{ 'forum.author' | trans | capitalize  }}</th>
+        <th>{{ 'forum.content' | trans | capitalize }}</th>
+        <th>{{ 'admin.reported_by' | trans | capitalize }}</th>
+        <th>{{ 'admin.action' | trans | capitalize }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for post in postReportList %}
+        <tr id="postmoderate[{{ post.id }}]">
+            <td>{{ post.id }}</td>
+            <td>{{ post.cdate | date(date_format) }}</td>
+            <td>{{ post.post.user.username }}</td>
+            <td>{{ post.post.content | quote | markdown | replace({'\n':'<br />'}) | smiley | raw }}</td>
+            <td>{{ post.user.username }}</td>
+            <td>
+                {% if not post.processed %}
+                    <p><a href="#" style="color:green; text-decoration:none" onclick="report('good',{{ post.id }},0); return false;">&#10004; {{ 'admin.report.good' | trans | capitalize}}</a></p>
+                    <p><a href="#" style="color:red; text-decoration:none" onclick="report('moderate',{{ post.id }},{{ post.post.id }}); return false;">X {{ 'admin.report.moderate' | trans | capitalize }}</a></p>
+                    <p><a href="#" style="color:red; text-decoration:none" onclick="report('moderateandban',{{ post.id }},{{ post.post.id }}); return false;">XXX {{ 'admin.report.moderateAndBan' | trans | capitalize }}</a></p>
+                {% else %}
+                    {% if post.post.moderateReason is empty %}
+                        <p style="color:green;">{{ 'admin.decision' | trans |capitalize }} {{ 'admin.report.good' | trans}}</p>
+                    {% else %}
+                        <p style="color:red;">{{ 'admin.decision' | trans |capitalize}} {{ 'admin.report.moderate' | trans}} ({{ post.post.moderateReason}})</p>
+                    {% endif %}
+                {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>

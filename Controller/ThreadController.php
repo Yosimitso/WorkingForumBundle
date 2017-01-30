@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
-use Yosimitso\WorkingForumBundle\Util\Authorization;
+use Yosimitso\WorkingForumBundle\Security\Authorization;
 
 /**
  * Class ThreadController
@@ -54,6 +54,7 @@ class ThreadController extends Controller
                     'subforum'    => $subforum,
                     'thread'      => $thread,
                     'forbidden'   => true,
+                    'forbiddenMsg' => $this->authorizationChecker->getErrorMessage()
                 ]
             );
 

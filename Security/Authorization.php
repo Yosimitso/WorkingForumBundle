@@ -6,15 +6,21 @@ namespace Yosimitso\WorkingForumBundle\Security;
 class Authorization
 {
     private $securityChecker;
+    private $errorMessage;
+    private $tokenStorage;
+    private $allowAnonymousRead;
 
-    public function __construct(Symfony\Component\Security\Core\Authorization\AuthorizationChecker $securityChecker) {
+    public function __construct(\Symfony\Component\Security\Core\Authorization\AuthorizationChecker $securityChecker, $tokenStorage, $allowAnonymousRead) {
         $this->securityChecker = $securityChecker;
+        $this->tokenStorage = $tokenStorage;
+        $this->allowAnonymousRead = $allowAnonymousRead;
     }
     public function hasModeratorAuthorization() {
         if ($this->securityChecker->isGranted('ROLE_ADMIN') || $this->get('security.authorization_checker')->isGranted('ROLE_MODERATOR')) {
             return true;
         }
         else {
+            $this->setErrorMessage('restricted_action');
             return false;
         }
     }
@@ -25,26 +31,72 @@ class Authorization
             return true;
         }
         else {
+            $this->setErrorMessage('restricted_action');
             return false;
         }
     }
 
     public function hasUserAuthorization()
     {
-        $user = $this->getUser();
-        $allowAnonymous = $this->container->getParameter('yosimitso_working_forum.allow_anonymous_read');
-
-        if ($user !== null && $user->isBanned()) {
+        $user = $this->tokenStorage->getToken()->getUser();
+        if (is_object($user) && $user->isBanned()) {
             $this->get('session')->getFlashBag()->add(
                 'error',
                 $this->get('translator')->trans('message.banned', [], 'YosimitsoWorkingForumBundle')
             )
             ;
+            $this->setErrorMessage('banned');
             return false;
         }
-        if ($user !== null || $allowAnonymous) {
+
+        if (is_object($user) || $this->allowAnonymousRead) {
             return true;
         }
+
+        $this->setErrorMessage('must_be_logged');
+        return false;
+
+
+    }
+
+    public function hasSubforumAccess($subforum)
+    {
+        if (!$this->hasUserAuthorization())
+        {
+            return false;
+        }
+        $user = $this->tokenStorage->getToken()->getUser();
+        if (!is_object($user))
+        {
+            throw new \Exception('User entity invalid');
+            return false;
+        }
+        $subforumRoles = $subforum->getRestrictedRolesAsArray();
+        if (empty($subforum->getRestrictedRolesAsArray()))
+        {
+            return true;
+        }
+        $userRoles = $user->getRoles();
+
+        foreach ($userRoles as $userRole)
+        {
+            if (in_array($userRole,$subforumRoles))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
+    }
+
+    private function setErrorMessage($message)
+    {
+        $this->errorMessage = 'message.error.'.$message;
     }
 
 }

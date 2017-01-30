@@ -27,5 +27,7 @@ services:
         class: Yosimitso\WorkingForumBundle\Security\Authorization
         arguments :
             securityChecker: "@security.authorization_checker"
+            tokenStorage: "@security.token_storage"
+            allowAnonymous: "%yosimitso_working_forum.allow_anonymous_read%"
 
 

@@ -27,7 +27,6 @@ forum:
     no_subforum: No subforum
     pin: Pin
     wrote: wrote
-    must_be_logged: You have to be logged in to access this
     user:
         ROLE_SUPER_ADMIN: Super Admin
         ROLE_ADMIN: Admin
@@ -93,6 +92,10 @@ message:
     threadLocked: The thread has been successfully locked
     threadResolved: The thread is now solved, thanks for your feedback
     banned: Sorry but you are banned
+    error:
+        must_be_logged: You have to be logged in to access this
+        banned: Sorry but you are banned
+        restricted_action: You are not authorized to do this
 search:
     results_for: Results for "%keywords%"
     no_result: Sorry, no results for "%keywords%"

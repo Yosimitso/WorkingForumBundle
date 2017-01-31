@@ -27,7 +27,6 @@ forum:
     no_subforum: Aucun sous-forum
     pin: Epinglé
     wrote: à écrit
-    must_be_logged: Vous devez être connecté pour accèder à cette page
     user:
         ROLE_SUPER_ADMIN: Admin
         ROLE_ADMIN: Admin
@@ -45,9 +44,15 @@ forum:
     content: contenu
     date: date
     post_moderated: "Ce message à été modéré pour la raison suivante :"
+    has_written: a écrit
+    confirm_report: Voulez-vous signalé ce message ?
+    subforum_name: Nom du sous-forum
+    allowed_roles: Rôles autorisés
 pagination:
     previous: Précédent
     next: Suivant
+    latestPage: Dernière page
+
 admin:
     admin_workingforum: Administration de WorkingForum
     forum_name: Nom du forum
@@ -69,12 +74,22 @@ admin:
     reported_by: Signalé par
     action: action
     decision: "décision :"
-    nowModerated: Ce message est maintenant caché
+    nowModerated: Ce message est maintenant modéré
+    delete_forum: Supprimer ce forum
+    forumDeleted: Ce forum a été supprimé
+    confirmDeleteForum: Êtes vous sûr de vouloir supprimer ce forum ?
     report:
         good: Valable
         moderate: Modérer
         moderateAndBan: Modérer et bannir l'utilisateur
         why: "Donner une raison :"
+        history: Historique des signalements
+        list: Liste des signalements
+    menu:
+        user: Gestion des utilisateurs
+        forum: Gestion des forums
+        report_history: Historique des signalements
+        report: Liste des signalements
 setting:
     allow_anonymous_read: Autoriser les utilisateurs non enregistrés à lire
     allow_moderator_delete_thread: Autoriser les modérateurs à supprimer des sujets
@@ -85,6 +100,10 @@ message:
     threadLocked: Le sujet a été verrouillé avec succès
     threadResolved: Le sujet est résolu, merci pour votre retour
     banned: Désolé mais vous êtes banni
+    error:
+        must_be_logged: Vous devez être connecté pour accèder à cette page
+        banned: Désolé mais vous êtes banni
+        restricted_action: Vous n'êtes pas autorisé à faire cela
 search:
     results_for: Résultats pour "%keywords%"
     no_result: Désolé, aucun résultat pour "%keywords%"

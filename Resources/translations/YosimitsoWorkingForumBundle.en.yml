@@ -52,7 +52,7 @@ pagination:
     previous: Previous
     next: Next
     latestPage: Latest page
-    
+
 admin:
     admin_workingforum: Administration of WorkingForum
     forum_name: Forum's name
@@ -104,9 +104,9 @@ message:
         must_be_logged: You have to be logged in to access this
         banned: Sorry but you are banned
         restricted_action: You are not authorized to do this
+        restricted_access: You are not authorized to view this subforum
 search:
     results_for: Results for "%keywords%"
     no_result: Sorry, no results for "%keywords%"
     keywords: Keywords
     search_in: Search in
-    

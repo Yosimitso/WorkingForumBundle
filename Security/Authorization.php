@@ -72,11 +72,17 @@ class Authorization
             return false;
         }
         $subforumRoles = $subforum->getAllowedRoles();
-        if (empty($subforum->getAllowedRoles()))
+
+        if (!$subforum->hasAllowedRoles())
         {
             return true;
         }
         $userRoles = $user->getRoles();
+        if (!count($userRoles)) // CASE OF USER HAS NO ROLE, FALLBACK
+        {
+            $userRoles = ['ROLE_USER'];
+        }
+        
 
         foreach ($userRoles as $userRole)
         {
@@ -86,7 +92,22 @@ class Authorization
             }
         }
 
+        $this->setErrorMessage('restricted_access');
         return false;
+
+    }
+
+    public function hasSubforumAccessList($subforumList)
+    {
+        $subforumAllowed = array();
+        foreach ($subforumList as $subforum)
+            {
+                if ($this->hasSubforumAccess($subforum))
+                {
+                    $subforumAllowed[] = $subforum->getId();
+                }
+            }
+        return $subforumAllowed;
     }
 
     public function getErrorMessage()

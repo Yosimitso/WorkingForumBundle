@@ -56,6 +56,7 @@ class ForumController extends Controller
         ;
         $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
          if (!$authorizationChecker->hasSubforumAccess($subforum)) {
+
              return $this->render('YosimitsoWorkingForumBundle:Forum:thread_list.html.twig',
             [
                 'subforum'      => $subforum,

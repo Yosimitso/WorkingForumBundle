@@ -288,10 +288,28 @@ class Subforum
      *
      * @return Subforum
      */
-    public function setAllowedRoles(ArrayCollection $allowedRoles)
+    public function setAllowedRoles(array $allowedRoles)
     {
         $this->allowedRoles = $allowedRoles;
 
         return $this;
+    }
+
+    public function hasAllowedRoles()
+    {
+        if (count($this->allowedRoles) > 1)
+        {
+            return true;
+        }
+
+        if (count($this->allowedRoles <= 0))
+        {
+            return false;
+        }
+
+        if (count($this->allowedRoles) == 1 && $empty($this->allowedRoles[0]))
+        {
+            return false;
+        }
     }
 }

@@ -42,7 +42,7 @@ class AdminSubforumType extends AbstractType
                     'attr'     => ['style' => 'width:30px'],
                 ]
             )
-                ->add('allowedRoles',TextType::class,['error_bubbling' => true])
+                ->add('allowedRoles',TextType::class,['error_bubbling' => true, 'required' => false])
                 ->get('allowedRoles')
                     ->addModelTransformer(new CallbackTransformer (
                         function ($rolesAsArray) {

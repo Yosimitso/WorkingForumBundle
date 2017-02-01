@@ -310,7 +310,7 @@ class Subforum
             return false;
         }
 
-        if (count($this->allowedRoles) == 1 && $empty($this->allowedRoles[0]))
+        if (count($this->allowedRoles) == 1 && empty($this->allowedRoles[0]))
         {
             return false;
         }

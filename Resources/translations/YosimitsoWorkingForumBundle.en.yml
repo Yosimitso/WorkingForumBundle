@@ -27,7 +27,6 @@ forum:
     no_subforum: No subforum
     pin: Pin
     wrote: wrote
-    must_be_logged: You have to be logged in to access this
     user:
         ROLE_SUPER_ADMIN: Super Admin
         ROLE_ADMIN: Admin
@@ -47,11 +46,13 @@ forum:
     post_moderated: "This post has been moderated for the following reason :"
     has_written: has written
     confirm_report: Do you want to report this post ?
+    subforum_name: Subforum name
+    allowed_roles: Allowed roles
 pagination:
     previous: Previous
     next: Next
     latestPage: Latest page
-    
+
 admin:
     admin_workingforum: Administration of WorkingForum
     forum_name: Forum's name
@@ -82,7 +83,13 @@ admin:
         moderate: moderate
         moderateAndBan: moderate and ban user
         why: "Give a reason :"
-        
+        history: Reports history
+        list: Reports list
+    menu:
+        user: Users management
+        forum: Forums management
+        report_history: Reports History
+        report: Reports
 setting:
     allow_anonymous_read: Allow anonymous users to read
     allow_moderator_delete_thread: Allow moderators to delete threads
@@ -93,9 +100,13 @@ message:
     threadLocked: The thread has been successfully locked
     threadResolved: The thread is now solved, thanks for your feedback
     banned: Sorry but you are banned
+    error:
+        must_be_logged: You have to be logged in to access this
+        banned: Sorry but you are banned
+        restricted_action: You are not authorized to do this
+        restricted_access: You are not authorized to view this subforum
 search:
     results_for: Results for "%keywords%"
     no_result: Sorry, no results for "%keywords%"
     keywords: Keywords
     search_in: Search in
-    

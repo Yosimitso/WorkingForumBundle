@@ -5,7 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Yosimitso\WorkingForumBundle\Security\Authorization;
 /**
  * Class ForumController
  *
@@ -18,6 +18,9 @@ class ForumController extends Controller
      *
      * @return Response
      */
+
+
+
     public function indexAction()
     {
         $list_forum = $this
@@ -45,25 +48,27 @@ class ForumController extends Controller
      */
     public function subforumAction($subforum_slug, Request $request, $page = 1)
     {
-
-        $forbidden = true;
-        $list_subforum = null;
-        $date_format = null;
-
-        $allow_anonymous = $this->getParameter('yosimitso_working_forum.allow_anonymous_read');
-        $user = $this->getUser();
-        $subforum = $this
+            $subforum = $this
             ->getDoctrine()
             ->getManager()
             ->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')
             ->findOneBySlug($subforum_slug)
         ;
+        $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
+         if (!$authorizationChecker->hasSubforumAccess($subforum)) {
 
-        if ($user !== null || $allow_anonymous) {
-            $forbidden = false;
-            if ($page <= 0) {
-                $page = 1;
-            }
+             return $this->render('YosimitsoWorkingForumBundle:Forum:thread_list.html.twig',
+            [
+                'subforum'      => $subforum,
+                'forbidden'     => true,
+                'forbiddenMsg' => $authorizationChecker->getErrorMessage()
+
+
+                //$this->getParameter('knp_paginator.default_options.page_name')
+            ]
+        ); 
+         }
+
 
             $list_subforum_query = $this
                 ->getDoctrine()
@@ -82,14 +87,13 @@ class ForumController extends Controller
                 $this->getParameter('yosimitso_working_forum.thread_per_page') /*limit per page*/
             );
 
-        }
 
         return $this->render('YosimitsoWorkingForumBundle:Forum:thread_list.html.twig',
             [
                 'subforum'      => $subforum,
                 'thread_list'   => $list_subforum,
                 'date_format'   => $date_format,
-                'forbidden'     => $forbidden,
+                'forbidden'     => false,
                 'post_per_page' => $this->getParameter('yosimitso_working_forum.post_per_page'),
                 'page_prefix'   => 'page'
                 //$this->getParameter('knp_paginator.default_options.page_name')

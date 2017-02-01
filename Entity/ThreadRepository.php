@@ -41,25 +41,37 @@ class ThreadRepository extends EntityRepository
      *
      * @return Thread[]
      */
-    public function search($keywords, $start = 0, $limit = 100, $delimiter = ' ')
+    public function search($keywords, $start = 0, $limit = 100, array $whereSubforum)
     {
-        $keywords = explode($delimiter, $keywords);
+        $keywords = explode(' ', $keywords);
         $where = '';
 
-        foreach ($keywords as $word) {
+
+
+        foreach ($keywords as $word)
+        {
             $where .= "(a.label LIKE '%" . $word . "%' OR a.subLabel LIKE '%" . $word . "%' OR b.content LIKE '%" . $word . "%') ";
         }
 
+     
+
         $queryBuilder = $this->_em->createQueryBuilder();
-        $query = $queryBuilder
+        $queryBuilder
             ->select('a')
             ->from($this->_entityName, 'a')
             ->join('YosimitsoWorkingForumBundle:Post', 'b', 'WITH', 'a.id = b.thread')
+            ->join('YosimitsoWorkingForumBundle:Subforum','c','WITH','a.subforum = c.id')
             ->where($where)
-            ->setMaxResults($limit)
-            ->getQuery()
-        ;
+            ;
 
-        return $query->getResult();
+        if (!empty($whereSubforum))
+        {
+            $queryBuilder->andWhere('c.id IN ('.implode(',',$whereSubforum).')');
+        }
+            $queryBuilder->setMaxResults($limit)
+                    
+        ;
+        $query = $queryBuilder;
+        return $query->getQuery()->getResult();
     }
 }

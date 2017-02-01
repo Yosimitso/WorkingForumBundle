@@ -1,0 +1,16 @@
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+<div class="wf_admin_header">
+        <h1>{{ 'admin.admin_area' | trans }}</h1>
+        {%  if adminSubtitle is defined %}
+                <h2>{{ adminSubtitle | trans }}</h2>
+        {% endif %}
+
+    {%  if backToAdmin %}
+        <div class="wf_admin_header_content">
+
+                <a class="wf_button" href="{{ path('workingforum_admin') }}">
+                &larr; {{ 'admin.back_to_admin' |trans }}
+                </a>
+        </div>
+    {%  endif %}
+</div>

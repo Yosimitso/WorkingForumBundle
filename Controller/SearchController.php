@@ -23,27 +23,16 @@ class SearchController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $listForum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')->findAll();
-        /*  $user = $this->getUser();
-
-       if ($user !== null || $allow_anonymous)
-       {
-           $forbidden = false;
-      if ($page <= 0)
-      {
-          $page = 1;
-      }*/
-
-        $forbidden = false;
         $form = $this->createForm(SearchType::class);
         $form->handleRequest($request);
-        //var_dump($form);
-        //  exit();
+        $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
 
         if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-
+            if ($form->isValid())
+            {
+                $whereSubforum = (array) $authorizationChecker->hasSubforumAccessList($form['forum']->getData());
                 $thread_list_query = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')
-                                        ->search($form['keywords']->getData(), 0, 100)
+                                        ->search($form['keywords']->getData(), 0, 100, $whereSubforum)
                 ;
                 $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
 
@@ -58,8 +47,9 @@ class SearchController extends Controller
                     [
                         'thread_list' => $thread_list,
                         'date_format' => $date_format,
-                        'forbidden'   => $forbidden,
                         'keywords'    => $form['keywords']->getData(),
+                        'post_per_page' => $this->getParameter('yosimitso_working_forum.post_per_page'),
+                        'page_prefix'   => 'page'
                     ]
                 );
             }

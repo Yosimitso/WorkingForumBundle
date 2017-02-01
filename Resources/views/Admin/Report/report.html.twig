@@ -1,104 +1,67 @@
 {% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
 {% block forum %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
-{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
- <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
-<script>
-    function report(action,id,postId)
-    {
-        if (action == 'moderate' || action == 'moderateandban')
-        {
-            reason = prompt('{{ 'admin.report.why' | trans }}');
-            
-            if (action == 'moderateandban')
-            {
-                banuser = 1;
-            }
-            else
-            {
-                banuser = 0;
-            }
+    {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+    <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
+    <script>
+        function report(action, id, postId) {
+            if (action == 'moderate' || action == 'moderateandban') {
+                reason = prompt('{{ 'admin.report.why' | trans }}'
+                )
+                ;
+
+                if (action == 'moderateandban') {
+                    banuser = 1;
+                }
+                else {
+                    banuser = 0;
+                }
                 jQuery.ajax({
-           
-		   type: "POST", 
-		   url: '{{ path('workingforum_admin_report_action_moderate') }}',
-		   crossDomain: false,
-                   data: 'reason='+reason+'&id='+id+'&postId='+postId+'&banuser='+banuser,
-		   dataType: 'json',
-                   async: false,
-		   success: function(res){
-                       if (res == 'ok')
-                       {
-                         jQuery('#postmoderate\\['+id+'\\]').fadeOut();
-                       }
-                   }
-        });  
-        }
-        
-        else if (action == 'good')
-        {
-          
+
+                    type: "POST",
+                    url: '{{ path('workingforum_admin_report_action_moderate') }}',
+                    crossDomain: false,
+                    data: 'reason=' + reason + '&id=' + id + '&postId=' + postId + '&banuser=' + banuser,
+                    dataType: 'json',
+                    async: false,
+                    success: function (res) {
+                        if (res == 'ok') {
+                            jQuery('#postmoderate\\[' + id + '\\]').fadeOut();
+                        }
+                    }
+                });
+            }
+
+            else if (action == 'good') {
+
                 jQuery.ajax({
-           
-		   type: "POST", 
-		   url: '{{ path('workingforum_admin_report_action_good') }}',
-		   crossDomain: false,
-                   data: 'id='+id+'&postId='+postId,
-		   dataType: 'json',
-                   async: false,
-		   success: function(res){
-                       if (res == 'ok')
-                       {
-                         jQuery('#postmoderate\\['+id+'\\]').fadeOut();
-                       }
-                   }
-        });  
+
+                    type: "POST",
+                    url: '{{ path('workingforum_admin_report_action_good') }}',
+                    crossDomain: false,
+                    data: 'id=' + id + '&postId=' + postId,
+                    dataType: 'json',
+                    async: false,
+                    success: function (res) {
+                        if (res == 'ok') {
+                            jQuery('#postmoderate\\[' + id + '\\]').fadeOut();
+                        }
+                    }
+                });
+            }
         }
-    }
-</script>
-<div id="wf_forum_content">
-     <h1>{{ 'admin.admin_area' | trans }}</h1>
-<div id="wf_forum_admin">
-      <p><a class="wf_button" href="{{ path('workingforum_admin') }}">
-        &larr; {{ 'admin.back_to_admin' |trans }}
-        </a></p>
-    <table class="wf_admin_table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>{{ 'forum.date' | trans | capitalize }}</th>
-            <th>{{ 'forum.author' | trans | capitalize  }}</th>
-            <th>{{ 'forum.content' | trans | capitalize }}</th>
-            <th>{{ 'admin.reported_by' | trans | capitalize }}</th>
-            <th>{{ 'admin.action' | trans | capitalize }}</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for post in postReportList %}
-                <tr id="postmoderate[{{ post.id }}]">
-                    <td>{{ post.id }}</td>
-                    <td>{{ post.cdate | date(date_format) }}</td>
-                    <td>{{ post.post.user.username }}</td>
-                    <td>{{ post.post.content | quote | markdown | replace({'\n':'<br />'}) | smiley | raw }}</td>
-                    <td>{{ post.user.username }}</td>
-                    <td>
-                        {% if not post.processed %}
-                    <p><a href="#" style="color:green; text-decoration:none" onclick="report('good',{{ post.id }},0); return false;">&#10004; {{ 'admin.report.good' | trans | capitalize}}</a></p>     
-                    <p><a href="#" style="color:red; text-decoration:none" onclick="report('moderate',{{ post.id }},{{ post.post.id }}); return false;">X {{ 'admin.report.moderate' | trans | capitalize }}</a></p>
-                    <p><a href="#" style="color:red; text-decoration:none" onclick="report('moderateandban',{{ post.id }},{{ post.post.id }}); return false;">XXX {{ 'admin.report.moderateAndBan' | trans | capitalize }}</a></p>   
-                        {% else %}
-                           {% if post.post.moderateReason is empty %}
-                               <p style="color:green;">{{ 'admin.decision' | trans |capitalize }} {{ 'admin.report.good' | trans}}</p>
-                           {% else %}
-                               <p style="color:red;">{{ 'admin.decision' | trans |capitalize}} {{ 'admin.report.moderate' | trans}} ({{ post.post.moderateReason}})</p>
-                           {% endif %}    
-                       {% endif %}    
-                    <td></td>
-                </tr>
-            {% endfor %}    
-        </tbody>
-    
-    </table>
-</div>
-</div>
+
+    </script>
+
+    <div id="wf_forum_content">
+        {%  include 'YosimitsoWorkingForumBundle:Admin:header.html.twig' with {'backToAdmin': true, 'adminSubtitle': 'admin.menu.report'} %}
+        <div id="wf_forum_admin">
+            <p>
+                <a class="wf_button" href="{{ path('workingforum_admin_report_history') }}">
+                    {{ 'admin.report.history' |trans }}
+                </a>
+            </p>
+            {% include 'YosimitsoWorkingForumBundle:Admin:Report/report_content.html.twig' with {'postReportList': postReportList } %}
+        </div>
+    </div>
 {% endblock %}

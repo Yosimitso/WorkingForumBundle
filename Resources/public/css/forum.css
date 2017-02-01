@@ -83,11 +83,10 @@
     margin-bottom: 0;
 }
 
-.wf_thread h2 {
+.wf_thread h2, h2 {
     font-size: 14px;
     padding: 5px;
     margin: 0;
-
 }
 
 .wf_breadcrumb {
@@ -242,11 +241,11 @@
 #wf_forum_admin {
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 20px;
+    padding-top: 10px;
+    padding-bottom:20px;
     text-align: center;
     font-family: Roboto, "Lucida Grande", Arial;
     text-align: left;
-
 }
 
 #wf_forum_admin label, #wf_forum_admin .wf_label {
@@ -518,14 +517,14 @@ code {
 
 .wf_admin_table thead tr th {
     padding: 10px;
-    font-weight: normal;
     text-align: left;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
 }
 
 .wf_admin_table td {
     font-family: Arial;
     padding: 5px;
-
 }
 
 .wf_moderate {
@@ -548,4 +547,8 @@ code {
 .wf_cadre-img-small {
     vertical-align: middle;
     width: 40px;
+}
+
+.wf_admin_header_content {
+    padding: 10px;
 }

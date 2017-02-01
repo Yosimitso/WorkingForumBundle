@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\CallbackTransformer;
 
 class AdminSubforumType extends AbstractType
 {
@@ -41,6 +42,23 @@ class AdminSubforumType extends AbstractType
                     'attr'     => ['style' => 'width:30px'],
                 ]
             )
+                ->add('allowedRoles',TextType::class,['error_bubbling' => true, 'required' => false])
+                ->get('allowedRoles')
+                    ->addModelTransformer(new CallbackTransformer (
+                        function ($rolesAsArray) {
+                            if (isset($rolesAsArray) && is_array($rolesAsArray))
+                            {
+                                return implode(',',(array) $rolesAsArray);
+                            }
+                            else
+                            {
+                                return '';
+                            }
+                        },
+                        function ($rolesAsString) {
+                            return explode(',',str_replace(' ','',$rolesAsString));
+                        }
+                        ))
         ;
     }
 
@@ -56,12 +74,5 @@ class AdminSubforumType extends AbstractType
         );
     }
 
-    /**
-     * @return string
-     */
-    /*
-    public function getName()
-    {
-        return 'yosimitso_workingforumbundle_subforum';
-    }*/
+
 }

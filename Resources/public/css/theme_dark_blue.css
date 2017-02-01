@@ -29,7 +29,7 @@
     background-color: #3fa757;
 }
 
-.wf_thread h2 {
+.wf_thread h2, h2 {
     background-color: #F5F5F5;
     color: grey;
 }
@@ -153,6 +153,7 @@ a.wf_button {
     background-color: #F7B5B5;
     border-color: #FC3838;
     color: red;
+}
 
 .alert-success {
     color: #3c763d;
@@ -236,7 +237,7 @@ code {
 #wf_search {
     background-color: white;
     border-left-color: #188d40;
-    border-bottom-color silver:
+    border-bottom-color: silver;
 }
 
 #wf_search input {
@@ -256,6 +257,10 @@ code {
     background-color: #E2E2E2;
 }
 
+.wf_admin_table tbody tr:nth-child(even) {
+    background-color: white;
+}
+
 #wf_new_post .md-editor > .md-preview {
     border-bottom-color: #ddd;
     border-top-color: #ddd;
@@ -263,4 +268,14 @@ code {
 
 .wf_resolved td {
     background-color: #afddaf;
+}
+
+.wf_admin_header h2 {
+    text-align: center;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+}
+
+.wf_admin_header_content {
+    background-color: white;
 }

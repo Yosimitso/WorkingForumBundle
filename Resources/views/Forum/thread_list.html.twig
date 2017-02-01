@@ -31,7 +31,7 @@
 </div>
  {% if forbidden is defined and forbidden %}
      <div class="wf_forum">
-     <div class="wf_empty_forum">{{ 'forum.must_be_logged' | trans }}</div>
+     <div class="wf_empty_forum">{{ forbiddenMsg | trans }}</div>
      </div>
  {% else %}    
     

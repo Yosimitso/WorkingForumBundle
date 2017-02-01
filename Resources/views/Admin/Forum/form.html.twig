@@ -4,11 +4,8 @@
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 
 <div id="wf_forum_content">
-     <h1>{{ 'admin.admin_area' | trans }}</h1>
+    {%  include 'YosimitsoWorkingForumBundle:Admin:header.html.twig' with {'backToAdmin': true, 'adminSubtitle': 'admin.menu.forum'} %}
 <div id="wf_forum_admin">
-    <p><a class="wf_button" href="{{ path('workingforum_admin') }}">
-        &larr; {{ 'admin.back_to_admin' |trans }}
-        </a></p>
    <div class="wf_admin_left">
     {% if form_errors(form) %}
       <div class="alert-error">
@@ -21,30 +18,40 @@
    <p>{{ form_widget(form.name) }}</p>
    <p class="wf_label">{{ 'admin.list_subforum' | trans }}</p>
    
-    
-       <table style="width:80%" id="wf_list_subforum">
-   {% for subforum in form.subforum %}
 
-       <tr id="wf_sub_{{ loop.index-1 }}">
-           <td>
-               {{ form_widget(subforum.name) }}
-           </td>
-           <td>
-               {{ form_widget(subforum.nbThread) }} {{ 'forum.nbThread' | trans }}
-           </td>
-           <td>
-               {{ form_widget(subforum.nbPost) }} {{ 'forum.nbPost' | trans }}
-           </td>
-           <td>
+   {% for subforum in form.subforum %}
+       <div id="wf_sub_{{ loop.index-1 }}" class="wf_admin_subforum_block">
+           <table>
+           <tr>
+               <th>{{ 'forum.subforum_name' | trans | capitalize  }}</th>
+               <td>{{ form_widget(subforum.name) }}</td>
+           </tr>
+
+           <tr>
+                <th>{{ 'forum.allowed_roles' | trans | capitalize }}</th>
+                <td>{{ form_widget(subforum.allowedRoles) }}</td>
+           </tr>
+
+           <tr>
+               <th>{{ 'forum.nbThread' | trans | capitalize }}</th>
+               <td>{{ form_widget(subforum.nbThread) }}</td>
+           </tr>
+
+           <tr>
+               <th>{{ 'forum.nbPost' | trans | capitalize }}</th>
+               <td>{{ form_widget(subforum.nbPost) }}</td>
+           </tr>
+
+            <tr>
+           <td colspan="2">
                <a href="#" onclick="deleteSubforum({{ loop.index-1 }})"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a>
            </td>
-           
-       </tr>
+           </tr>
+           </table>
+       </div>
            
        {% endfor %}
-       </table>
-   {# {{ form(form) }} #}
-  
+
   <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
    <script>
        function deleteSubforum(index)
@@ -59,7 +66,7 @@
        function NewSubforum() {
         
            var length = (jQuery('#wf_list_subforum').children().length);
-           var content = '<tr id="wf_sub_'+length+'"><td><input type="text" value="" required="required" name="admin_forum[subforum]['+length+'][name]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"></td><td></td><td></td><td><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a></td></tr>';
+           var content = '<div id="wf_sub_'+length+'" class="wf_admin_subforum_block><td><input type="text" value="" required="required" name="admin_forum[subforum]['+length+'][name]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"></td><td></td><td></td><td><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a></td></tr>';
             jQuery('#wf_list_subforum').append(content);
            return true;
        }

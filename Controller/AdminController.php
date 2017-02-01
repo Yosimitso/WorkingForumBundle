@@ -182,11 +182,27 @@ class AdminController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $postReportList = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')
-                             ->findBy([], ['processed' => 'ASC', 'id' => 'ASC'])
+                             ->findBy(['processed' => null], ['processed' => 'ASC', 'id' => 'ASC'])
         ;
         $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
 
         return $this->render('YosimitsoWorkingForumBundle:Admin/Report:report.html.twig',
+            [
+                'postReportList' => $postReportList,
+                'date_format'    => $date_format,
+            ]
+        );
+    }
+
+    public function ReportHistoryAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $postReportList = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')
+            ->findBy(['processed' => 1], ['processed' => 'ASC', 'id' => 'DESC'])
+        ;
+        $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
+
+        return $this->render('YosimitsoWorkingForumBundle:Admin/Report:report_history.html.twig',
             [
                 'postReportList' => $postReportList,
                 'date_format'    => $date_format,

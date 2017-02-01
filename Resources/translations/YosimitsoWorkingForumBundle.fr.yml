@@ -104,6 +104,7 @@ message:
         must_be_logged: Vous devez être connecté pour accèder à cette page
         banned: Désolé mais vous êtes banni
         restricted_action: Vous n'êtes pas autorisé à faire cela
+        restricted_access: Vous n'êtes pas autorisé à lire ce sous-forum
 search:
     results_for: Résultats pour "%keywords%"
     no_result: Désolé, aucun résultat pour "%keywords%"

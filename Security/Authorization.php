@@ -3,20 +3,48 @@
 namespace Yosimitso\WorkingForumBundle\Security;
 
 
+/**
+ * Class Authorization
+ * Check user's authorization
+ * @package Yosimitso\WorkingForumBundle\Security
+ */
 class Authorization
 {
+    /**
+     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationChecker
+     */
     private $securityChecker;
+    /**
+     * @var string
+     */
     private $errorMessage;
+    /**
+     * @var
+     */
     private $tokenStorage;
+    /**
+     * @var boolean
+     */
     private $allowAnonymousRead;
 
+    /**
+     * Authorization constructor.
+     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationChecker $securityChecker
+     * @param $tokenStorage
+     * @param $allowAnonymousRead
+     */
     public function __construct(\Symfony\Component\Security\Core\Authorization\AuthorizationChecker $securityChecker, $tokenStorage, $allowAnonymousRead) {
         $this->securityChecker = $securityChecker;
         $this->tokenStorage = $tokenStorage;
         $this->allowAnonymousRead = $allowAnonymousRead;
     }
+
+    /**
+     *
+     * @return bool
+     */
     public function hasModeratorAuthorization() {
-        if ($this->securityChecker->isGranted('ROLE_ADMIN') || $this->get('security.authorization_checker')->isGranted('ROLE_MODERATOR')) {
+        if ($this->securityChecker->isGranted('ROLE_SUPER_ADMIN') || $this->securityChecker->isGranted('ROLE_ADMIN') || $this->get('security.authorization_checker')->isGranted('ROLE_MODERATOR')) {
             return true;
         }
         else {
@@ -25,6 +53,17 @@ class Authorization
         }
     }
 
+    /**
+     * @param $message
+     */
+    private function setErrorMessage($message)
+    {
+        $this->errorMessage = 'message.error.'.$message;
+    }
+
+    /**
+     * @return bool
+     */
     public function hasAdminAuthorization()
     {
         if ($this->securityChecker->isGranted('ROLE_ADMIN')) {
@@ -36,29 +75,29 @@ class Authorization
         }
     }
 
-    public function hasUserAuthorization()
+    /**
+     * @param $subforumList
+     * @return array
+     */
+    public function hasSubforumAccessList($subforumList)
     {
-        $user = $this->tokenStorage->getToken()->getUser();
-        if (is_object($user) && $user->isBanned()) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('message.banned', [], 'YosimitsoWorkingForumBundle')
-            )
-            ;
-            $this->setErrorMessage('banned');
-            return false;
-        }
-
-        if (is_object($user) || $this->allowAnonymousRead) {
-            return true;
-        }
-
-        $this->setErrorMessage('must_be_logged');
-        return false;
-
-
+        $subforumAllowed = array();
+        foreach ($subforumList as $subforum)
+            {
+                if ($this->hasSubforumAccess($subforum))
+                {
+                    $subforumAllowed[] = $subforum->getId();
+                }
+            }
+        return $subforumAllowed;
     }
 
+    /**
+     * Check if user has permissions to view/write into a subforum
+     * @param $subforum
+     * @return bool
+     * @throws \Exception
+     */
     public function hasSubforumAccess($subforum)
     {
         if (!$this->hasUserAuthorization())
@@ -82,7 +121,7 @@ class Authorization
         {
             $userRoles = ['ROLE_USER'];
         }
-        
+
 
         foreach ($userRoles as $userRole)
         {
@@ -97,27 +136,38 @@ class Authorization
 
     }
 
-    public function hasSubforumAccessList($subforumList)
+    /**
+     * @return bool
+     */
+    public function hasUserAuthorization()
     {
-        $subforumAllowed = array();
-        foreach ($subforumList as $subforum)
-            {
-                if ($this->hasSubforumAccess($subforum))
-                {
-                    $subforumAllowed[] = $subforum->getId();
-                }
-            }
-        return $subforumAllowed;
+        $user = $this->tokenStorage->getToken()->getUser();
+        if (is_object($user) && $user->isBanned()) {
+            $this->get('session')->getFlashBag()->add(
+                'error',
+                $this->get('translator')->trans('message.banned', [], 'YosimitsoWorkingForumBundle')
+            )
+            ;
+            $this->setErrorMessage('banned');
+            return false;
+        }
+
+        if (is_object($user) || $this->allowAnonymousRead) {
+            return true;
+        }
+
+        $this->setErrorMessage('must_be_logged');
+        return false;
+
+
     }
 
+    /**
+     * @return string
+     */
     public function getErrorMessage()
     {
         return $this->errorMessage;
-    }
-
-    private function setErrorMessage($message)
-    {
-        $this->errorMessage = 'message.error.'.$message;
     }
 
 }

@@ -295,6 +295,9 @@ class Subforum
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function hasAllowedRoles()
     {
         if (count($this->allowedRoles) > 1)

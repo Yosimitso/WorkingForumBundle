@@ -2,10 +2,6 @@
 {% block forum %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
-
-
-
- 
             <div id="wf_forum_content">
                 {% if app.session.flashbag.has('success') %}
                 <div class="alert-success">
@@ -53,6 +49,7 @@
 <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
 {#<script src="{{ asset('bundles/yosimitsoworkingforum/markdown/locale/bootstrap-markdown.en.js') }}"></script>#}
 <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/twitter.js') }}"></script>
+<script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/github.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}" type="text/css" media="all" />
 <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}" type="text/css" media="all" />
 
@@ -61,7 +58,7 @@
      jQuery(".wf_textarea_post").markdown({
          language:'{{ request.locale }}',
    onPreview: function(e) {
-    var converter = new Showdown.converter({ extensions: ['twitter'] });
+    var converter = new Showdown.converter({ extensions: ['twitter','github'] });
     var html  = converter.makeHtml(nl2br(e.getContent()));
    return html;
    },
@@ -89,8 +86,15 @@
          </a></p>
             {% endif %}
  {% endif %}
- 
- 
+
+  {% if moveThread %}
+      <p>
+          <a class="wf_button" id="wf_move_thread_button">
+              &rarr; {{ 'forum.move_thread' | trans }}
+          </a>
+          {{ form_widget(moveThread.forum) }}
+          </p>
+  {% endif %}
 
 <div class="wf_thread">
     <h1>{{ thread.label }}</h1>

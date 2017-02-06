@@ -21,7 +21,9 @@ workingforum_resolve_thread:
 workingforum_report_post:
     path: /report/{post_id}
     defaults: { _controller: YosimitsoWorkingForumBundle:Thread:report }
-
+workingforum_move_thread:
+    path: /movethread
+    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:moveThread }
         
 workingforum_admin:
     path: /admin

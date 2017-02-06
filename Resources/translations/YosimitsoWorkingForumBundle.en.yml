@@ -48,6 +48,10 @@ forum:
     confirm_report: Do you want to report this post ?
     subforum_name: Subforum name
     allowed_roles: Allowed roles
+    move_thread: Move thread
+    confirm_move_thread: "Move to :"
+    thread_was_moved_to: The thread was moved to
+
 pagination:
     previous: Previous
     next: Next

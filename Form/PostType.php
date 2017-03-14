@@ -37,7 +37,9 @@ class PostType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([]);
+        $resolver->setDefaults([
+			'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Post',
+		]);
     }
 
 }

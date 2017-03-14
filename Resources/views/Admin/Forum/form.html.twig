@@ -18,7 +18,7 @@
    <p>{{ form_widget(form.name) }}</p>
    <p class="wf_label">{{ 'admin.list_subforum' | trans }}</p>
    
-
+	<div id="wf_list_subforum">
    {% for subforum in form.subforum %}
        <div id="wf_sub_{{ loop.index-1 }}" class="wf_admin_subforum_block">
            <table>
@@ -51,7 +51,7 @@
        </div>
            
        {% endfor %}
-
+		</div>
   <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
    <script>
        function deleteSubforum(index)
@@ -66,8 +66,8 @@
        function NewSubforum() {
         
            var length = (jQuery('#wf_list_subforum').children().length);
-           var content = '<div id="wf_sub_'+length+'" class="wf_admin_subforum_block><td><input type="text" value="" required="required" name="admin_forum[subforum]['+length+'][name]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"></td><td></td><td></td><td><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a></td></tr>';
-            jQuery('#wf_list_subforum').append(content);
+           var content = '<div id="wf_sub_'+length+'" class="wf_admin_subforum_block"><table><tr><th>{{ 'forum.subforum_name' | trans | capitalize  }}</th><td><input type="text" value="" required="required" name="admin_forum[subforum]['+length+'][name]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"></td></tr><tr><th>{{ 'forum.allowed_roles' | trans | capitalize }}</th><td><input type="text" value="" name="admin_forum[subforum]['+length+'][allowedRoles]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_allowedRoles"></td></tr><tr><th>{{ 'forum.nbThread' | trans | capitalize }}</th><td>-</td></tr><tr><th>{{ 'forum.nbPost' | trans | capitalize }}</th><td>-</td></tr><tr><td colspan="2"><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a></td></tr></table></div>';
+			jQuery('#wf_list_subforum').append(content);
            return true;
        }
     </script>   

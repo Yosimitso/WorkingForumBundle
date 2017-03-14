@@ -44,7 +44,7 @@ class Authorization
      * @return bool
      */
     public function hasModeratorAuthorization() {
-        if ($this->securityChecker->isGranted('ROLE_SUPER_ADMIN') || $this->securityChecker->isGranted('ROLE_ADMIN') || $this->get('security.authorization_checker')->isGranted('ROLE_MODERATOR')) {
+        if ($this->securityChecker->isGranted('ROLE_SUPER_ADMIN') || $this->securityChecker->isGranted('ROLE_ADMIN') || $this->securityChecker->isGranted('ROLE_MODERATOR')) {
             return true;
         }
         else {

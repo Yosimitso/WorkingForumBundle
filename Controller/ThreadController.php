@@ -130,7 +130,7 @@ class ThreadController extends Controller
 
         if ($authorizationChecker->hasModeratorAuthorization())
         {
-            $moveThread = $this->createForm(MoveThreadType::class);
+            $moveThread = $this->createForm(MoveThreadType::class)->createView();
         }
         else
         {
@@ -147,7 +147,7 @@ class ThreadController extends Controller
                 'listSmiley'  => $listSmiley,
                 'forbidden'   => false,
                 'request'     => $request,
-                'moveThread' => $moveThread->createView()
+                'moveThread' => $moveThread
             ]
         );
 

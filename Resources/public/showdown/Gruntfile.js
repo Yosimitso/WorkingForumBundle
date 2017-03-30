@@ -20,14 +20,6 @@ module.exports = function (grunt) {
                 src: ['src/extensions/github.js'],
                 dest: 'compressed/extensions/github.min.js'
             },
-            prettify_ext: {
-                src: ['src/extensions/prettify.js'],
-                dest: 'compressed/extensions/prettify.min.js'
-            },
-            table_ext: {
-                src: ['src/extensions/table.js'],
-                dest: 'compressed/extensions/table.min.js'
-            },
             twitter_ext: {
                 src: ['src/extensions/twitter.js'],
                 dest: 'compressed/extensions/twitter.min.js'
@@ -45,16 +37,6 @@ module.exports = function (grunt) {
             github_ext: {
                 files: {
                     'compressed/extensions/github.min.js': ['<%= concat.github_ext.dest %>']
-                }
-            },
-            prettify_ext: {
-                files: {
-                    'compressed/extensions/prettify.min.js': ['<%= concat.prettify_ext.dest %>']
-                }
-            },
-            table_ext: {
-                files: {
-                    'compressed/extensions/table.min.js': ['<%= concat.table_ext.dest %>']
                 }
             },
             twitter_ext: {

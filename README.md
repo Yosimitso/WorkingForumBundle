@@ -37,13 +37,13 @@ This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rend
 Add to your composer.json, section 'require'
 ````json
 "require" : {
-        [...]
-        "yosimitso/workingforumbundle" : "dev-master",
-        "knplabs/knp-paginator-bundle": "~2.5",
-        "knplabs/knp-markdown-bundle": "~1.5",
-        "sensio/framework-extra-bundle": "~3.0"
-    }
-```
+ [...]
+ "yosimitso/workingforumbundle" : "dev-master",
+ "knplabs/knp-paginator-bundle": "~2.5",
+ "knplabs/knp-markdown-bundle": "~1.5",
+ "sensio/framework-extra-bundle": "~3.0"
+ }
+````
 
 
 Register the bundles in your AppKernel
@@ -52,7 +52,7 @@ Register the bundles in your AppKernel
   new Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle(),
   new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
   new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle()
-```
+````
 Add to your app/config.yml
 
 ````yml
@@ -73,12 +73,12 @@ knp_paginator:
     template:
         pagination: YosimitsoWorkingForumBundle:Common:slidePagination.html.twig     # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
-```
+````
 Add to you app/config.yml into 'orm' key :
 ````yml
 resolve_target_entities:
     Yosimitso\WorkingForumBundle\Entity\User: You\YourUserBundle\Entity\YourUser
-```
+````
 You can override the translations files
 
 Your User Entity needs to extends : \Yosimitso\WorkingForumBundle\Entity\User
@@ -88,7 +88,7 @@ Example :
 {
     // YOUR ENTITY
 }
-```
+````
 In case your user entity already extends an another bundle (like FOSUserBundle), implement the interface \Yosimitso\WorkingForumBundle\Entity\UserInterface
 in your user entity. Then copy/paste the content of \Yosimitso\WorkingForumBundle\Entity\User (attributes, getter, setter) into your user entity
 
@@ -140,7 +140,7 @@ Ajoutez à votre composer.json, section 'require'
         "knplabs/knp-markdown-bundle": "~1.5",
         "sensio/framework-extra-bundle": "~3.0"
     }
-```
+````
 
 Ajoutez les bundles dans votre AppKernel
 ````php
@@ -149,7 +149,7 @@ Ajoutez les bundles dans votre AppKernel
   new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
   new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle()
 
-```
+````
 Ajoutez à votre app/config.yml
 
 ````yml
@@ -171,12 +171,12 @@ knp_paginator:
     template:
         pagination: YosimitsoWorkingForumBundle:Common:slidePagination.html.twig     # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
-```   
+````   
 Ajouter à votre app/config.yml dans la clé 'orm' :
 ````yml
  resolve_target_entities:
             Yosimitso\WorkingForumBundle\Entity\User: You\YourUserBundle\Entity\YourUser
-```
+````
 
 Vous pouvez surcharger les fichiers de traductions
 
@@ -188,7 +188,7 @@ Exemple :
     // VOTRE ENTITE
 }
 
-```
+````
 Dans le cas où votre entité utilisateur étend déjà un autre de bundle (comme FOSUserBundle), implémenter l'interface \Yosimitso\WorkingForumBundle\Entity\UserInterface
 dans votre entité. Ensuite copier / coller le contenu de \Yosimitso\WorkingForumBundle\Entity\User (attributs, getter, setter) dans votre entité.
 

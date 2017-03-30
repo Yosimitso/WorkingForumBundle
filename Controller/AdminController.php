@@ -94,7 +94,7 @@ class AdminController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             foreach ($forum->getSubforum() as $subforum) {
                 $subforum->setForum($forum);
@@ -138,7 +138,7 @@ class AdminController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isValid() && $form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             foreach ($forum->getSubforum() as $subforum) {
                 $subforum->setForum($forum);
             }

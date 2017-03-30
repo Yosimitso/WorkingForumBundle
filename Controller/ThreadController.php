@@ -4,16 +4,18 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
+use Yosimitso\WorkingForumBundle\Form\MoveThreadType;
 use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
-use Yosimitso\WorkingForumBundle\Security\Authorization;
+
 
 /**
  * Class ThreadController
@@ -126,6 +128,14 @@ class ThreadController extends Controller
             }
 
 
+        if ($authorizationChecker->hasModeratorAuthorization())
+        {
+            $moveThread = $this->createForm(MoveThreadType::class)->createView();
+        }
+        else
+        {
+            $moveThread = false;
+        }
 
         return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',
             [
@@ -137,6 +147,7 @@ class ThreadController extends Controller
                 'listSmiley'  => $listSmiley,
                 'forbidden'   => false,
                 'request'     => $request,
+                'moveThread' => $moveThread
             ]
         );
 
@@ -363,6 +374,33 @@ class ThreadController extends Controller
             )
         );
 
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @param Request $request
+     * @return Response|Reponse
+     */
+    public function moveThreadAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $threadId = $request->get('threadId');
+        $target = $request->get('target');
+
+        $thread = $em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneById($threadId);
+        $target = $em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneById($target);
+
+        if (is_null($thread) || is_null($target))
+        {
+            return new Reponse(null,500);
+        }
+
+        $thread->setSubforum($target);
+
+        $em->persist($thread);
+        $em->flush();
+
+        return new Response(json_encode(['res' => 'true', 'targetLabel' => $target->getName()]), 200);
     }
 }
 

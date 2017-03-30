@@ -100,7 +100,7 @@ class Subforum
     }
 
     public function __construct() {
-        $this->allowedRoles = new \ArrayCollection;
+        $this->allowedRoles = new ArrayCollection;
     }
 
     /**

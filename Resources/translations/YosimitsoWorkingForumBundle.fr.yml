@@ -48,6 +48,9 @@ forum:
     confirm_report: Voulez-vous signalé ce message ?
     subforum_name: Nom du sous-forum
     allowed_roles: Rôles autorisés
+    move_thread: Deplacer le sujet
+    confirm_move_thread: "Déplacer dans :"
+    thread_was_moved_to: Le sujet a été déplacé dans
 pagination:
     previous: Précédent
     next: Suivant

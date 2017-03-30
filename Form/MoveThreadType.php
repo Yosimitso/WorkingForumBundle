@@ -6,13 +6,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 /**
- * Class PostType
+ * Class MoveThreadType
  *
  * @package Yosimitso\WorkingForumBundle\Form
  */
-class PostType extends AbstractType
+class MoveThreadType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -22,12 +23,19 @@ class PostType extends AbstractType
     {
         $builder
             ->add(
-                'content',
-                TextareaType::class,
+                'forum',
+                EntityType::class,
                 [
+                    'class' => 'YosimitsoWorkingForumBundle:Subforum',
+                    'choice_label' => 'name',
+                    'multiple' => false,
+                    'label' => 'search.search_in',
                     'translation_domain' => 'YosimitsoWorkingForumBundle',
-                    'label' => 'forum.content',
-                    'attr' => ['class' => 'wf_textarea_post'],
+                    'group_by' => function ($sub) {
+                        return $sub->getForum()->getName();
+                    },
+                   'attr' => ['style' => 'display:none']
+
                 ]
             );
     }
@@ -37,9 +45,12 @@ class PostType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-			'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Post',
-		]);
+        $resolver->setDefaults(
+            [
+                'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Post',
+            ]
+        );
     }
+
 
 }

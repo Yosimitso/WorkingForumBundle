@@ -13,11 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @package Yosimitso\WorkingForumBundle\Controller
  *
- * @Security("has_role('ROLE_ADMIN')")
+ * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
  */
 class AdminController extends Controller
 {
-    /**
+    /** @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
      * @param Request $request
      *
      * @return Response
@@ -25,16 +25,8 @@ class AdminController extends Controller
      */
     public function indexAction(Request $request)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            throw new \Exception('You are not authorized to do this');
-        }
         $em = $this->getDoctrine()->getManager();
         $list_forum = $em->getRepository('YosimitsoWorkingForumBundle:Forum')->findAll();
-        //$manage_forum = new ManageForumType;
-
-        // $form = $this->createForm(new AdminForum);
-        //  $settings = $em->getRepository('YosimitsoWorkingForumBundle:Setting')->findAll();
-        // $form_settings_builder = $this->createFormBuilder();
 
         $settings = [
             'allow_anonymous_read'          => ['type' => 'boolean', 'value' => false],
@@ -79,6 +71,7 @@ class AdminController extends Controller
     }
 
     /**
+     * @Security("has_role('ROLE_ADMIN')")
      * @param Request $request
      * @param         $id
      *
@@ -87,9 +80,6 @@ class AdminController extends Controller
      */
     public function editAction(Request $request, $id)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            throw new \Exception('You are not authorized to do this');
-        }
         $em = $this->getDoctrine()->getManager();
         $forum = $em->getRepository('YosimitsoWorkingForumBundle:Forum')->find($id);
 
@@ -132,6 +122,7 @@ class AdminController extends Controller
     }
 
     /**
+     * @Security("has_role('ROLE_ADMIN')")
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
@@ -139,9 +130,6 @@ class AdminController extends Controller
      */
     public function addAction(Request $request)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-            throw new \Exception('You are not authorized to do this');
-        }
         $em = $this->getDoctrine()->getManager();
         $forum = new \Yosimitso\WorkingForumBundle\Entity\Forum;
         $forum->addSubForum(new \Yosimitso\WorkingForumBundle\Entity\Subforum);
@@ -176,6 +164,7 @@ class AdminController extends Controller
     }
 
     /**
+     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
      * @return Response
      */
     public function ReportAction()
@@ -194,6 +183,8 @@ class AdminController extends Controller
         );
     }
 
+    /**  @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     */
     public function ReportHistoryAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -211,6 +202,7 @@ class AdminController extends Controller
     }
 
     /**
+     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
      * @param Request $request
      *
      * @return Response
@@ -236,6 +228,7 @@ class AdminController extends Controller
     }
 
     /**
+     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
      * @return Response
      */
     public function userListAction()
@@ -301,6 +294,7 @@ class AdminController extends Controller
     }
 
     /**
+     * @Security("has_role('ROLE_ADMIN')")
      * @param $forum_id
      *
      * @return Response

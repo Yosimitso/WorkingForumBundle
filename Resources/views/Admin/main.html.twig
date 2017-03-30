@@ -1,56 +1,63 @@
 {% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
 {% block forum %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
-{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
-<div id="wf_forum_content">
-  {% include 'YosimitsoWorkingForumBundle:Common:flashmsg.html.twig' %}
-               <h1>{{ 'admin.admin_workingforum' | trans }}</h1>
-<div id="wf_forum_admin">
-  <p><a class="wf_button" href="{{ path('workingforum_forum') }}">
-        &larr; {{ 'admin.back_to_forum' |trans }}
-        </a></p>
-    <div class="wf_forum_block_admin">
-        <div class="wf_forum_block_title">{{ 'admin.manage_forum' | trans }}</div>
-        <div class="wf_forum_content">
-    <ul style="list-style: inside decimal;">
-    {% for forum in list_forum %}
-        <li><a href="{{ path('workingforum_admin_forum_edit', { 'id' : forum.id }) }}">{{ forum.name }}</a></li>   
-   {% endfor %}
-    </ul>
-     <a class="wf_button wf_button-center" href="{{ path('workingforum_admin_forum_add') }}"><span class="wf_add-plus"></span>{{ 'admin.add' | trans }}</a>
+    {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+    <div id="wf_forum_content">
+        {% include 'YosimitsoWorkingForumBundle:Common:flashmsg.html.twig' %}
+        <h1>{{ 'admin.admin_workingforum' | trans }}</h1>
+        <div id="wf_forum_admin">
+            <p><a class="wf_button" href="{{ path('workingforum_forum') }}">
+                    &larr; {{ 'admin.back_to_forum' |trans }}
+                </a></p>
+
+            {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN")) %}
+            <div class="wf_forum_block_admin">
+                <div class="wf_forum_block_title">{{ 'admin.manage_forum' | trans }}</div>
+                <div class="wf_forum_content">
+                    <ul style="list-style: inside decimal;">
+                        {% for forum in list_forum %}
+                            <li>
+                                <a href="{{ path('workingforum_admin_forum_edit', { 'id' : forum.id }) }}">{{ forum.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <a class="wf_button wf_button-center" href="{{ path('workingforum_admin_forum_add') }}"><span
+                                class="wf_add-plus"></span>{{ 'admin.add' | trans }}</a>
+                </div>
+            </div>
+
+            <div class="wf_forum_block_admin">
+                <div class="wf_forum_block_title">{{ 'admin.manage_settings' | trans }}</div>
+                <div class="wf_forum_content">
+
+                    <ul>
+                        {% for setting in settings_render %}
+
+                            <li>{{ setting |raw }}</li>
+
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="wf_forum_block_admin">
+                <div class="wf_forum_block_title">{{ 'admin.manage_users' | trans }}</div>
+                <div class="wf_forum_content">
+                    <ul style="list-style: inside decimal;">
+                        <li><a href="{{ path('workingforum_admin_user') }}">{{ 'admin.users_list' | trans }}</a></li>
+                        <li>
+                            <a href="{{ path('workingforum_admin_report') }}">{{ 'admin.reported_messages' | trans }}
+                                <span style="color: {% if newPostReported <= 0 %} green {% else %} red {% endif %}">
+                     ({{ newPostReported }} {{ 'forum.new' | trans }})
+                 </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="wf_clear"></div>
         </div>
     </div>
-     <div class="wf_forum_block_admin">
-        <div class="wf_forum_block_title">{{ 'admin.manage_settings' | trans }}</div>
-        <div class="wf_forum_content">
-            
-    <ul>
-        {% for setting in settings_render %}
-           
-            <li>{{ setting |raw}}</li>
-           
-        {% endfor %}
-    </ul>
-   
-     </div>
-    </div>
-    
-    <div class="wf_forum_block_admin">
-    <div class="wf_forum_block_title">{{ 'admin.manage_users' | trans }}</div>
-    <div class="wf_forum_content">
-         <ul style="list-style: inside decimal;">
-             <li><a href="{{ path('workingforum_admin_user') }}">{{ 'admin.users_list' | trans }}</a></li>
-             <li>
-                 <a href="{{ path('workingforum_admin_report') }}">{{ 'admin.reported_messages' | trans }}
-                 <span style="color: {% if newPostReported <= 0 %} green {% else %} red {% endif %}">
-                     ({{ newPostReported }} {{ 'forum.new' | trans}})
-                 </span>
-                 </a>
-             </li>
-         </ul>
-    </div>
-    </div>
-    <div class="wf_clear"></div>
-</div>
-</div>
 {% endblock %}

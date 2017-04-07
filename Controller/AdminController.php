@@ -28,38 +28,16 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $list_forum = $em->getRepository('YosimitsoWorkingForumBundle:Forum')->findAll();
 
-        $settings = [
-            'allow_anonymous_read'          => ['type' => 'boolean', 'value' => false],
-            'allow_moderator_delete_thread' => ['type' => 'boolean', 'value' => false],
+        $settingsList = [
+            'allow_anonymous_read'          => ['varType' => 'boolean'],
+            'allow_moderator_delete_thread' => ['varType' => 'boolean'],
+            'theme_color'                   => ['varType' => 'string']
         ];
-        $settings_render = [];
-        foreach ($settings as $index => $setting) {
-            $setting['value'] = $this->container->getParameter('yosimitso_working_forum.' . $index);
-            if ($setting['type'] == 'boolean') {
-                $attrs = ['autocomplete' => 'off', 'disabled' => 'disabled'];
-                $setting_html = '<input type="checkbox" id="' . $index . '" name="' . $index . '" ';
-            }
 
-            foreach ($attrs as $indexAttr => $attr) {
-                $setting_html .= $indexAttr . '="' . $attr . '" ';
-            }
-
-            $setting_html .= '/>' . $this->get('translator')
-                                         ->trans('setting.' . $index, [], 'YosimitsoWorkingForumBundle')
-            ;
-
-            $settings_render[] = $setting_html;
-
-            //$form_settings_builder->add($index,'checkbox',['required' => false, 'label' => 'setting.'.$index, 'translation_domain' => 'YosimitsoWorkingForumBundle', 'attr' => $attr ]);
-        }
-
+        $settings_render = $this->renderSettings($settingsList);
         $newPostReported = count($em->getRepository('YosimitsoWorkingForumBundle:PostReport')
                                     ->findBy(['processed' => null])
         );
-
-        /* echo '<pre>';
-         \Doctrine\Common\Util\Debug::dump($user);
-         echo '</pre>';*/
 
         return $this->render('YosimitsoWorkingForumBundle:Admin:main.html.twig',
             [
@@ -316,5 +294,43 @@ class AdminController extends Controller
 
         return $this->forward('YosimitsoWorkingForumBundle:Admin:index', []);
     }
+
+    private function renderSettings($settingsList)
+    {
+        $settingsHtml = [];
+
+        foreach ($settingsList as $index => $setting) {
+            $html = [];
+            $setting['value'] = $this->container->getParameter('yosimitso_working_forum.'.$index);
+
+            switch ($setting['varType']) {
+                case 'boolean':
+                    $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled'];
+                    $setting['type'] = 'checkbox';
+                    break;
+                case 'string':
+                    $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled', 'style' => 'width:80px'];
+                    $setting['type'] = 'text';
+
+            }
+
+
+
+
+            $html['text'] = $this->get('translator')
+                    ->trans('setting.'.$index, [], 'YosimitsoWorkingForumBundle');
+
+            $html['input'] = '<input type="'.$setting['type'].'" value="'.$setting['value'].'"';
+            foreach ($setting['attr'] as $indexAttr => $attr) {
+                $html['input'] .= ' '.$indexAttr.'="'.$attr.'"';
+            }
+
+            $html['input'] .= '/>';
+
+            $settingsHtml[] = $html;
+        }
+        return $settingsHtml;
+
+        }
 
 }

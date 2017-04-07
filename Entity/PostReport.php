@@ -26,7 +26,7 @@ class PostReport
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Post")
+     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Post", inversedBy="postReport")
      * @ORM\JoinColumn(name="post_id", referencedColumnName="id", nullable=false)
      */
     private $post;

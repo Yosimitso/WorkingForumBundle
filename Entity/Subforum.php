@@ -86,8 +86,8 @@ class Subforum
     private $thread;
 
     /** @var ArrayCollection
-    * @ORM\Column(name="allowed_roles",type="array", nullable=true)
-    */
+     * @ORM\Column(name="allowed_roles",type="array", nullable=true)
+     */
 
     private $allowedRoles;
 
@@ -99,7 +99,8 @@ class Subforum
         return $this->id;
     }
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->allowedRoles = new ArrayCollection;
     }
 
@@ -183,6 +184,13 @@ class Subforum
         return $this;
     }
 
+    public function addNbThread($nb)
+    {
+        $this->nbThread += $nb;
+
+        return $this;
+    }
+
     /**
      * @return string
      */
@@ -219,6 +227,13 @@ class Subforum
     public function setNbPost($nbPost)
     {
         $this->nbPost = $nbPost;
+
+        return $this;
+    }
+
+    public function addNbPost($nb)
+    {
+        $this->nbPost += $nb;
 
         return $this;
     }
@@ -300,18 +315,15 @@ class Subforum
      */
     public function hasAllowedRoles()
     {
-        if (count($this->allowedRoles) > 1)
-        {
+        if (count($this->allowedRoles) > 1) {
             return true;
         }
 
-        if (count($this->allowedRoles <= 0))
-        {
+        if (count($this->allowedRoles <= 0)) {
             return false;
         }
 
-        if (count($this->allowedRoles) == 1 && empty($this->allowedRoles[0]))
-        {
+        if (count($this->allowedRoles) == 1 && empty($this->allowedRoles[0])) {
             return false;
         }
     }

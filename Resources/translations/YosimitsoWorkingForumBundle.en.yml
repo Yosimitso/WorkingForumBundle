@@ -51,6 +51,8 @@ forum:
     move_thread: Move thread
     confirm_move_thread: "Move to :"
     thread_was_moved_to: The thread was moved to
+    delete_thread: Delete thread
+    confirm_delete_thread: Are you sure to delete this thread ?
 
 pagination:
     previous: Previous
@@ -95,8 +97,10 @@ admin:
         report_history: Reports History
         report: Reports
 setting:
+    intro: Settings can be modified into app's config file
     allow_anonymous_read: Allow anonymous users to read
     allow_moderator_delete_thread: Allow moderators to delete threads
+    theme_color: Theme's color
 message:
     saved: Successfully saved
     posted: Post saved
@@ -109,6 +113,7 @@ message:
         banned: Sorry but you are banned
         restricted_action: You are not authorized to do this
         restricted_access: You are not authorized to view this subforum
+    thread_deleted: The thread was succesfully deleted
 search:
     results_for: Results for "%keywords%"
     no_result: Sorry, no results for "%keywords%"

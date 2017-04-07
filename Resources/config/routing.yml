@@ -12,18 +12,26 @@ workingforum_thread:
 workingforum_new_thread:
     path: /newthread/{subforum_slug}
     defaults: { _controller: YosimitsoWorkingForumBundle:Thread:new }
+
 workingforum_lock_thread:
     path: /locked/{subforum_slug}/{thread_slug}
     defaults: { _controller: YosimitsoWorkingForumBundle:Thread:lock }
+
 workingforum_resolve_thread:
     path: /resolved/{subforum_slug}/{thread_slug}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:resolve }   
+    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:resolve }
+
 workingforum_report_post:
     path: /report/{post_id}
     defaults: { _controller: YosimitsoWorkingForumBundle:Thread:report }
+
 workingforum_move_thread:
     path: /movethread
     defaults: { _controller: YosimitsoWorkingForumBundle:Thread:moveThread }
+
+workingforum_delete_thread:
+    path: /deletethread/{threadSlug}
+    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:deleteThread }
         
 workingforum_admin:
     path: /admin

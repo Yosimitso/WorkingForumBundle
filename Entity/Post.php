@@ -81,6 +81,18 @@ class Post
     private $moderateReason;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Yosimitso\WorkingForumBundle\Entity\PostReport",
+     *     mappedBy="post",
+     *     cascade={"remove"}
+     * )
+     */
+
+    private $postReport;
+
+    /**
      * Post constructor.
      */
     public function __construct()
@@ -254,5 +266,13 @@ class Post
         $this->moderateReason = $moderateReason;
 
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPostReport()
+    {
+        return $this->postReport;
     }
 }

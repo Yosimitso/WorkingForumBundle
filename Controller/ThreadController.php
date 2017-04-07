@@ -3,6 +3,7 @@
 namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Yosimitso\WorkingForumBundle\Entity\Post;
@@ -137,6 +138,8 @@ class ThreadController extends Controller
             $moveThread = false;
         }
 
+
+
         return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',
             [
                 'subforum'    => $subforum,
@@ -147,7 +150,8 @@ class ThreadController extends Controller
                 'listSmiley'  => $listSmiley,
                 'forbidden'   => false,
                 'request'     => $request,
-                'moveThread' => $moveThread
+                'moveThread' => $moveThread,
+                'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')
             ]
         );
 
@@ -402,6 +406,54 @@ class ThreadController extends Controller
 
         return new Response(json_encode(['res' => 'true', 'targetLabel' => $target->getName()]), 200);
     }
+
+        /**
+         * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+         *
+         */
+    public function deleteThreadAction($threadSlug)
+    {
+        if (!$this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread'))
+        {
+            throw new Exception('Thread deletion is not allowed');
+        }
+        $em = $this->getDoctrine()->getManager();
+        $thread = $em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($threadSlug);
+        $subforum = $em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneById($thread->getSubforum()->getId());
+
+        if (is_null($thread))
+        {
+            throw new Exception('Thread cannot be found');
+        }
+        if (is_null($subforum))
+        {
+            throw new Exception('Thread cannot be found');
+        }
+
+        $subforum->addNbThread(-1);
+        $subforum->addNbPost(-$thread->getnbReplies());
+
+        $em->persist($subforum);
+        $em->remove($thread);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->add(
+            'success',
+            $this->get('translator')->trans('message.thread_deleted', [], 'YosimitsoWorkingForumBundle')
+        )
+        ;
+
+        return $this->redirect(
+            $this->generateUrl('workingforum_subforum',
+                [
+                    'subforum_slug' => $subforum->getSlug(),
+                ]
+            )
+        );
+
+
+    }
+
 }
 
         

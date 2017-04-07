@@ -29,14 +29,16 @@
             <div class="wf_forum_block_admin">
                 <div class="wf_forum_block_title">{{ 'admin.manage_settings' | trans }}</div>
                 <div class="wf_forum_content">
-
-                    <ul>
+                    <h2>{{ 'setting.intro' | trans  }}</h2>
+                    <table>
                         {% for setting in settings_render %}
-
-                            <li>{{ setting |raw }}</li>
+                        <tr>
+                            <td>{{ setting.text | raw }}</td>
+                            <td>{{ setting.input | raw }}</td>
+                        </tr>
 
                         {% endfor %}
-                    </ul>
+                    </table>
 
                 </div>
             </div>

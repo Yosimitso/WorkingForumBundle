@@ -1,188 +1,215 @@
 {% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
 {% block forum %}
     {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
-{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
-            <div id="wf_forum_content">
-                {% if app.session.flashbag.has('success') %}
-                <div class="alert-success">
-                    <ul>
-                  {% for flashMessage in app.session.flashbag.get('success') %}
-                      <li>{{ flashMessage }}</li>
-                  {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-               {% if app.session.flashbag.has('error') %}
-                <div class="alert-error">
-                    <ul>
-                  {% for flashMessage in app.session.flashbag.get('error') %}
-                      <li>{{ flashMessage }}</li>
-                  {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-            
-   <div class="wf_breadcrumb">
-     <a href="{{ path('workingforum_forum')}}">Forum</a> &rarr; <a href="{{ path('workingforum_forum') }}">{{subforum.forum.name}}</a> &rarr; <a href="{{ path('workingforum_subforum',{ 'subforum_slug' : subforum.slug }) }}">{{subforum.name }}</a> &rarr; {{ thread.label }}
-</div>
-
-  {% if thread.resolved %}
-     <div class="alert-success"><ul><li><span class="wf_tick"></span>{{ 'forum.thread_resolved' | trans }}</li></ul></div> 
- {% else %}
-     {% if app.user %}
-    {% if (thread.author.id == app.user.id) or (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
- <p><a class="wf_button" href="{{ path('workingforum_resolve_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a></p>
+    {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+    <div id="wf_forum_content">
+    {% if app.session.flashbag.has('success') %}
+        <div class="alert-success">
+            <ul>
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                    <li>{{ flashMessage }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     {% endif %}
-  {% endif %}
-     {% endif %}           
-       
+    {% if app.session.flashbag.has('error') %}
+        <div class="alert-error">
+            <ul>
+                {% for flashMessage in app.session.flashbag.get('error') %}
+                    <li>{{ flashMessage }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
 
-  {% if forbidden is defined and forbidden %}
-     <div class="wf_forum">
-     <div class="wf_empty_forum">{{ 'forum.must_be_logged' | trans }}</div>
-     </div>
- {% else %}
-     
- <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
-  <script src="{{ asset('bundles/yosimitsoworkingforum/js/smiley.js') }}"></script>
-<script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
-<script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
-{#<script src="{{ asset('bundles/yosimitsoworkingforum/markdown/locale/bootstrap-markdown.en.js') }}"></script>#}
-<script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/twitter.js') }}"></script>
-<script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/github.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}" type="text/css" media="all" />
-<link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}" type="text/css" media="all" />
+    <div class="wf_breadcrumb">
+        <a href="{{ path('workingforum_forum') }}">Forum</a> &rarr; <a
+                href="{{ path('workingforum_forum') }}">{{ subforum.forum.name }}</a> &rarr; <a
+                href="{{ path('workingforum_subforum',{ 'subforum_slug' : subforum.slug }) }}">{{ subforum.name }}</a> &rarr; {{ thread.label }}
+    </div>
 
-<script>
-   jQuery(document).ready(function() {
-     jQuery(".wf_textarea_post").markdown({
-         language:'{{ request.locale }}',
-   onPreview: function(e) {
-    var converter = new Showdown.converter({ extensions: ['twitter','github'] });
-    var html  = converter.makeHtml(nl2br(e.getContent()));
-   return html;
-   },
-    fullscreen: {enable: false}
-     });
-     
-    });
-</script>
-{% include 'YosimitsoWorkingForumBundle:Thread:thread.js.twig' %}
-    
-     {# LOCK #}
-{% if thread.locked %}
-    <p>
-<a class="wf_button wf_button-grey">
-  <span class="wf_locked"></span>{{ 'forum.thread_locked' | trans() }}  
-</a>
-    </p>
+    {% if thread.resolved %}
+        <div class="alert-success">
+            <ul>
+                <li><span class="wf_tick"></span>{{ 'forum.thread_resolved' | trans }}</li>
+            </ul>
+        </div>
     {% else %}
-          {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-              <p><a class="wf_button" href="#wf_new_post">{{ 'forum.reply' | trans }}</a></p> {# thread NON LOCKE ON PEUT REPONDRE #}
-           {% endif %}
-     {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
-         <p><a class="wf_button" href="{{ path('workingforum_lock_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}"> {# ADMIN ET MODO PEUVENT LOCKER #}
-     {{ 'forum.lock' | trans }}
-         </a></p>
+        {% if app.user %}
+            {% if (thread.author.id == app.user.id) or (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
+                <p><a class="wf_button"
+                      href="{{ path('workingforum_resolve_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a>
+                </p>
             {% endif %}
- {% endif %}
+        {% endif %}
+    {% endif %}
 
-  {% if moveThread %}
-      <p>
-          <a class="wf_button" id="wf_move_thread_button">
-              &rarr; {{ 'forum.move_thread' | trans }}
-          </a>
-          {{ form_widget(moveThread.forum) }}
-          </p>
-  {% endif %}
 
-<div class="wf_thread">
-    <h1>{{ thread.label }}</h1>
-    <h2>{{ thread.sublabel }}</h2>
-    
-    {% for post in post_list %}
-    <div class="wf_post">
-     <div class="wf_post-left">
-       <img class="wf_cadre-img" width="80px" src="
+    {% if forbidden is defined and forbidden %}
+        <div class="wf_forum">
+            <div class="wf_empty_forum">{{ 'forum.must_be_logged' | trans }}</div>
+        </div>
+    {% else %}
+
+        <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
+        <script src="{{ asset('bundles/yosimitsoworkingforum/js/smiley.js') }}"></script>
+        <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
+        <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
+        {#<script src="{{ asset('bundles/yosimitsoworkingforum/markdown/locale/bootstrap-markdown.en.js') }}"></script>#}
+        <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/twitter.js') }}"></script>
+        <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/github.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}"
+          type="text/css" media="all"/>
+    <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}"
+          type="text/css" media="all"/>
+
+        <script>
+            jQuery(document).ready(function () {
+                jQuery(".wf_textarea_post").markdown({
+                    language: '{{ request.locale }}',
+                    onPreview: function (e) {
+                        var converter = new Showdown.converter({extensions: ['twitter', 'github']});
+                        var html = converter.makeHtml(nl2br(e.getContent()));
+                        return html;
+                    },
+                    fullscreen: {enable: false}
+                });
+
+            });
+        </script>
+        {% include 'YosimitsoWorkingForumBundle:Thread:thread.js.twig' %}
+
+        {# LOCK #}
+    {% if thread.locked %}
+        <p>
+            <a class="wf_button wf_button-grey">
+                <span class="wf_locked"></span>{{ 'forum.thread_locked' | trans() }}
+            </a>
+        </p>
+    {% else %}
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <p><a class="wf_button" href="#wf_new_post">{{ 'forum.reply' | trans }}</a>
+        </p> {# thread NON LOCKE ON PEUT REPONDRE #}
+    {% endif %}
+    {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
+        <p><a class="wf_button"
+              href="{{ path('workingforum_lock_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}"> {# ADMIN ET MODO PEUVENT LOCKER #}
+                {{ 'forum.lock' | trans }}
+            </a></p>
+    {% endif %}
+    {% endif %}
+
+    {% if moveThread %}
+        <p>
+            <a class="wf_button" id="wf_move_thread_button">
+                &rarr; {{ 'forum.move_thread' | trans }}
+            </a>
+            {{ form_widget(moveThread.forum) }}
+        </p>
+    {% endif %}
+
+    {% if allowModeratorDeleteThread and (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
+        <p><a class="wf_button" onclick="if (!confirm('{{ 'forum.confirm_delete_thread' | trans }}')) { return false; }" href="{{ path('workingforum_delete_thread',{'threadSlug': thread.slug}) }}">
+                {{ 'forum.delete_thread' | trans }}
+            </a>
+        </p>
+    {% endif %}
+
+        <div class="wf_thread">
+            <h1>{{ thread.label }}</h1>
+            <h2>{{ thread.sublabel }}</h2>
+
+            {% for post in post_list %}
+                <div class="wf_post">
+                    <div class="wf_post-left">
+                        <img class="wf_cadre-img" width="80px" src="
           {% if post.user.avatarUrl is not empty %}
           {{ asset('bundles/yosimitsoworkingforum/'~post.user.avatarUrl) }}
           {% else %}
            {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}   
           {% endif %}
           
-          " /> 
-       <p class="wf_username" id="wf_user{{post.user.id}}">{{ post.user.username }}</p>
-       <p class="wf_message">{{ post.user.nbPost }} {{ 'forum.nbPost' | trans }}</p>
-       <p class="wf_message">{% if post.user.roles.0 is defined %} {{ (('forum.user.'~post.user.roles.0) | trans) }} {% else %} {{ ('forum.user.ROLE_USER' | trans) }}{% endif %}</p>
-     </div>   
-      <div class="wf_post-right">
-          <p class="wf_date">
-              {{ post.cdate | date(date_format) }}
-              
-              {% if post.moderateReason is empty %}
-                  <a href="#" onclick="report('{{ path('workingforum_report_post', {'post_id' : post.id}) }}'); return false;"><img src="{{asset('bundles/yosimitsoworkingforum/images/exclamation.png')}}" class="wf_quote-img"></a>
-                  <a href="#" onclick="quote({{ post.id}},{{post.user.id}}); return false;"><img src="{{asset('bundles/yosimitsoworkingforum/images/quote.png')}}" class="wf_quote-img"></a>
-              {% endif %}
-            {% if ((is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR"))) and post.moderateReason is empty  %}
-            <a href="#" onclick="moderate({{ post.id }}); return false;"><img class="wf_quote-img" src="{{ asset('bundles/yosimitsoworkingforum/images/moderate.png') }}"></a>
+          "/>
+                        <p class="wf_username" id="wf_user{{ post.user.id }}">{{ post.user.username }}</p>
+                        <p class="wf_message">{{ post.user.nbPost }} {{ 'forum.nbPost' | trans }}</p>
+                        <p class="wf_message">{% if post.user.roles.0 is defined %} {{ (('forum.user.'~post.user.roles.0) | trans) }} {% else %} {{ ('forum.user.ROLE_USER' | trans) }}{% endif %}</p>
+                    </div>
+                    <div class="wf_post-right">
+                        <p class="wf_date">
+                            {{ post.cdate | date(date_format) }}
+
+                            {% if post.moderateReason is empty %}
+                                <a href="#"
+                                   onclick="report('{{ path('workingforum_report_post', {'post_id' : post.id}) }}'); return false;"><img
+                                            src="{{ asset('bundles/yosimitsoworkingforum/images/exclamation.png') }}"
+                                            class="wf_quote-img"></a>
+                                <a href="#" onclick="quote({{ post.id }},{{ post.user.id }}); return false;"><img
+                                            src="{{ asset('bundles/yosimitsoworkingforum/images/quote.png') }}"
+                                            class="wf_quote-img"></a>
+                            {% endif %}
+                            {% if ((is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR"))) and post.moderateReason is empty %}
+                                <a href="#" onclick="moderate({{ post.id }}); return false;"><img class="wf_quote-img"
+                                                                                                  src="{{ asset('bundles/yosimitsoworkingforum/images/moderate.png') }}"></a>
+                            {% endif %}
+                        </p>
+                        <div id="wf_post{{ post.id }}">
+                            {% if post.moderateReason is empty %}
+                                {{ post.content |  quote | markdown | replace({'\n':'<br />'})| smiley |  raw }}
+                            {% else %}
+                                <p class="wf_moderate">{{ 'forum.post_moderated' |trans }} {{ post.moderateReason }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="wf_clear"></div>
+                </div>
+            {% endfor %}
+            {{ knp_pagination_render(post_list) }}
+            {% if not thread.locked %}
+                {% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <div class="wf_new_post">
+                        <p class="wf_post_a_message">{{ 'forum.no_message_login' | trans }}</p>
+                    </div>
+                {% else %}
+                    <div class="wf_new_post" id="wf_new_post">
+                        <p class="wf_post_a_message">{{ 'forum.post_a_message' | trans }}</p>
+                        <script>
+                            function insertSmiley(code) {
+                                jQuery('.wf_textarea_post').insertAtCaret(code);
+
+                            }
+                        </script>
+                        <div id="wf_smiley">
+                            <ul>
+                                {% for key,smiley in listSmiley %}
+                                    <li><a href="#" onclick="insertSmiley('{{ key }}'); return false;"><img
+                                                    src="{{ asset('bundles/yosimitsoworkingforum/images/smiley/'~smiley) }}"/></a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+
+                        </div>
+                        <div class="wf_clear"></div>
+                        {{ form_start(form) }}
+
+
+                        <p>{{ form_widget(form.content) }}</p>
+                        {{ form_rest(form) }}
+                        <p><input type="submit" value="{{ 'forum.submit_post' | trans }}"
+                                  class="wf_button wf_width100"/></p>
+                        {{ form_end(form) }}
+                    </div>
+                {% endif %}
+            {% else %}
+
+                <div class="wf_new_post">
+                    <p class="wf_post_a_message">{{ 'forum.no_message_locked' | trans }}</p>
+                </div>
+
+
             {% endif %}
-          </p>
-          <div id="wf_post{{ post.id}}">
-              {% if post.moderateReason is empty %}
-              {{ post.content |  quote | markdown | replace({'\n':'<br />'})| smiley |  raw }}
-              {% else %}
-                  <p class="wf_moderate">{{'forum.post_moderated' |trans }} {{ post.moderateReason }}</p>    
-              {% endif %}
-          </div>    
-      </div> 
-      <div class="wf_clear"></div>
-    </div>    
-    {% endfor %}
-     {{ knp_pagination_render(post_list) }}
-    {% if not thread.locked %}
-          {% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-           <div class="wf_new_post">
-        <p class="wf_post_a_message">{{ 'forum.no_message_login' | trans }}</p>
-         </div> 
-         {% else %}
-    <div class="wf_new_post" id="wf_new_post">
-        <p class="wf_post_a_message">{{ 'forum.post_a_message' | trans }}</p>
-        <script>
-            function insertSmiley(code)
-            {
-                jQuery('.wf_textarea_post').insertAtCaret(code);
-            
-            }
-            </script>
-        <div id="wf_smiley">
-            <ul>
-         {% for key,smiley in listSmiley %}
-             <li><a href="#" onclick="insertSmiley('{{key}}'); return false;"><img src="{{ asset('bundles/yosimitsoworkingforum/images/smiley/'~smiley) }}" /></a></li>
-         {% endfor %}
-            </ul>
-         
+
         </div>
-            <div class="wf_clear"></div>
-    {{ form_start(form) }}
-      
-    
-    <p>{{ form_widget(form.content) }}</p>
-    {{form_rest(form) }}
-    <p><input type="submit" value="{{ 'forum.submit_post' | trans }}" class="wf_button wf_width100"/></p>
-    {{ form_end(form) }}
-    </div>
-        {% endif %}
-    {% else %}
-       
-         <div class="wf_new_post">
-        <p class="wf_post_a_message">{{ 'forum.no_message_locked' | trans }}</p>
-         </div>
-       
-            
-         {% endif %}
-    
-</div>
-  
-            </div>
-         {% endif %}
+
+        </div>
+    {% endif %}
 {% endblock %}

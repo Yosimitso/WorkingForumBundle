@@ -105,7 +105,7 @@ class Thread
     private $slug;
 
     /**
-     * @ORM\OneToMany(targetEntity="Yosimitso\WorkingForumBundle\Entity\Post", mappedBy="thread", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Yosimitso\WorkingForumBundle\Entity\Post", mappedBy="thread", cascade={"persist","remove"})
      *
      * @var ArrayCollection
      */

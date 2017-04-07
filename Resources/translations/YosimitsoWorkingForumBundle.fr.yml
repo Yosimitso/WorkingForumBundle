@@ -51,6 +51,9 @@ forum:
     move_thread: Deplacer le sujet
     confirm_move_thread: "Déplacer dans :"
     thread_was_moved_to: Le sujet a été déplacé dans
+    delete_thread: Supprimer le sujet
+    confirm_delete_thread: Êtes vous sûr de vouloir supprimer ce sujet ?
+
 pagination:
     previous: Précédent
     next: Suivant
@@ -94,8 +97,10 @@ admin:
         report_history: Historique des signalements
         report: Liste des signalements
 setting:
+    intro: Ces paramètres sont modifiables dans le fichier de configuration de l'app.
     allow_anonymous_read: Autoriser les utilisateurs non enregistrés à lire
     allow_moderator_delete_thread: Autoriser les modérateurs à supprimer des sujets
+    theme_color: Couleur du thème
 message:
     saved: Enregistrement effectués
     posted: Message posté
@@ -108,6 +113,7 @@ message:
         banned: Désolé mais vous êtes banni
         restricted_action: Vous n'êtes pas autorisé à faire cela
         restricted_access: Vous n'êtes pas autorisé à lire ce sous-forum
+    thread_deleted: Le sujet a été supprimé avec succès
 search:
     results_for: Résultats pour "%keywords%"
     no_result: Désolé, aucun résultat pour "%keywords%"

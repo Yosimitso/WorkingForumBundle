@@ -93,6 +93,7 @@
         {% endif %}
     {% endif %}
 
+     {# ACTIONS LIST FOR MODERATOR #}
     {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
     <ul class="wf_action_list">
         {% if not thread.locked %}
@@ -114,6 +115,14 @@
             <a class="wf_button" onclick="if (!confirm('{{ 'forum.confirm_delete_thread' | trans }}')) { return false; }"
                href="{{ path('workingforum_delete_thread',{'threadSlug': thread.slug}) }}">
                 {{ 'forum.delete_thread' | trans }}
+            </a>
+        </li>
+        {% endif %}
+        {% if not thread.pin  %}
+        <li>
+            <a class="wf_button"
+               href="{{ path('workingforum_pin_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
+                {{ 'forum.pin_thread' | trans }}
             </a>
         </li>
         {% endif %}

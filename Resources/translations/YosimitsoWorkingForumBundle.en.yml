@@ -53,6 +53,7 @@ forum:
     thread_was_moved_to: The thread was moved to
     delete_thread: Delete thread
     confirm_delete_thread: Are you sure to delete this thread ?
+    pin_thread: Pin thread
 
 pagination:
     previous: Previous
@@ -107,6 +108,7 @@ message:
     threadCreated: Your thread has been created
     threadLocked: The thread has been successfully locked
     threadResolved: The thread is now solved, thanks for your feedback
+    threadPinned: The thread has been succesfully pinned
     banned: Sorry but you are banned
     error:
         must_be_logged: You have to be logged in to access this

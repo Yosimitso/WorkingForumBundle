@@ -158,7 +158,7 @@ class ThreadController extends Controller
     }
 
     /**
-     *
+     *  New thread
      * @param int     $subforum_slug
      * @param Request $request
      *
@@ -301,8 +301,60 @@ class ThreadController extends Controller
         );
     }
 
+    /**
+     * A moderator pin a thread
+     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @param $subforum_slug
+     * @param $thread_slug
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    function pinAction($subforum_slug, $thread_slug)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $thread = $em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
+
+        if (is_null($thread)) {
+            throw new \Exception("Thread error",
+                500, ""
+            );
+
+        }
+
+        if ($thread->getPin())
+        {
+            throw new \Exception("Thread already pinned",500);
+        }
+
+        $thread->setPin(true);
+        $em->persist($thread);
+        $em->flush();
+
+        $this->get('session')
+            ->getFlashBag()
+            ->add(
+                'success',
+                $this->get('translator')->trans('message.threadPinned', [], 'YosimitsoWorkingForumBundle')
+            )
+        ;
+
+        return $this->redirect(
+            $this->generateUrl('workingforum_thread',
+                [
+                    'thread_slug'   => $thread_slug,
+                    'subforum_slug' => $subforum_slug,
+                ]
+            )
+        );
+    }
+
     /*
      * Report a post to the admins
+     */
+    /**
+     * A user report a thread
+     * @param $post_id
+     * @return Response
      */
     function reportAction($post_id)
     {

@@ -53,6 +53,7 @@ forum:
     thread_was_moved_to: Le sujet a été déplacé dans
     delete_thread: Supprimer le sujet
     confirm_delete_thread: Êtes vous sûr de vouloir supprimer ce sujet ?
+    pin_thread: Epingler le sujet
 
 pagination:
     previous: Précédent
@@ -107,6 +108,7 @@ message:
     threadCreated: Votre sujet a été crée
     threadLocked: Le sujet a été verrouillé avec succès
     threadResolved: Le sujet est résolu, merci pour votre retour
+    threadPinned: Le sujet a été epinglé avec succès
     banned: Désolé mais vous êtes banni
     error:
         must_be_logged: Vous devez être connecté pour accèder à cette page

@@ -14,8 +14,12 @@ workingforum_new_thread:
     defaults: { _controller: YosimitsoWorkingForumBundle:Thread:new }
 
 workingforum_lock_thread:
-    path: /locked/{subforum_slug}/{thread_slug}
+    path: /lock/{subforum_slug}/{thread_slug}
     defaults: { _controller: YosimitsoWorkingForumBundle:Thread:lock }
+
+workingforum_pin_thread:
+    path: /pin/{subforum_slug}/{thread_slug}
+    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:pin }
 
 workingforum_resolve_thread:
     path: /resolved/{subforum_slug}/{thread_slug}

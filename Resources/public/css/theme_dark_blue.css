@@ -282,15 +282,15 @@ code {
 
 .wf_icon-pin {
     background: url('../images/pin-btn.png') 5% no-repeat, linear-gradient(to bottom, #44e567 0px, #00a547 100%);
-    padding-left:20%
+    padding-left:25px;
 }
 
 .wf_icon-lock {
     background: url('../images/lock-btn.png') 5% no-repeat, linear-gradient(to bottom, #44e567 0px, #00a547 100%);
-    padding-left:25%
+    padding-left:25px;
 }
 
 .wf_icon-remove {
     background: url('../images/remove-btn.png') 5% no-repeat, linear-gradient(to bottom, #44e567 0px, #00a547 100%);
-    padding-left:25%
+    padding-left:25px;
 }

@@ -16,15 +16,17 @@ Functionnalities
 - Forum with subforum
 - Moderator role as ROLE_MODERATOR (and default admin roles)
 - Post editor using markdown with instant preview
+- Smiley system
 - Enable thread locking
+- Thread can be pinned
+- Thread can be moved
+- Reporting system for thread
 - Support multi language
 - Enable marking thread as 'resolved'
 - Automatic breadcrumb
 - Messages counting (user, forum, subforum) with last replies
 - Automatic pagination on thread list and thread
 - Allow or not the anonymous to read forums
-- Reporting system
-- Smiley system
 - Database safety : no HTML stored, only markdown
 - Search system
 - Backend administration
@@ -113,7 +115,12 @@ Fonctionnalités
 - Forum avec sous-forum
 - Utilise un role modérateur ROLE_MODERATOR (également les roles admin par défaut)
 - L'éditeur de message utilise markdown avec la prévisualisation instantanée
+- Prise en charge de smileys
+- Système de signalement de messages
+- Système de citation
 - Les threads peuvent être verrouillés
+- Les threads peuvent être epinglés
+- Les threads peuvent être déplacés
 - Support le multilangage
 - Les threads peuvent être marqués comme résolus
 - Breadcrumb (fil d'Arianne) automatique
@@ -121,16 +128,14 @@ Fonctionnalités
 - Pagination automatique sur la liste des thread, et les messages des threads
 - Autoriser ou non les anonymes à lire les forums
 - Système de bannissement
-- Système de signalement de messages
-- Prise en charge de smileys
 - Securité de la base de données : aucun HTML d'enregistré, uniquement du markdown
 - Système de recherche
-- Système de citation
+
 
 
 Installation
 ------------------
-Ce bundle utilise KnpPaginatorBundle pour la pagination, KnpMarkdown pour le parsage du markdown et le package d'extra pour Symfony
+Ce bundle utilise KnpPaginatorBundle pour la pagination, KnpMarkdown pour le parsage du markdown et le package d'extra pour Symfony.
 Ajoutez à votre composer.json, section 'require'
 ````json
 "require" : {

@@ -11,7 +11,7 @@ Demo
 Try it here - http://demo.charlymartins.fr/demoworkingforum/
 
 
-Functionnalities
+Features
 ------------------
 - Forum with subforum
 - Moderator role as ROLE_MODERATOR (and default admin roles)
@@ -20,6 +20,7 @@ Functionnalities
 - Enable thread locking
 - Thread can be pinned
 - Thread can be moved
+- Quoting system
 - Reporting system for thread
 - Support multi language
 - Enable marking thread as 'resolved'
@@ -30,7 +31,6 @@ Functionnalities
 - Database safety : no HTML stored, only markdown
 - Search system
 - Backend administration
-- Quoting system
 
 
 Setup
@@ -61,7 +61,7 @@ Add to your app/config.yml
 yosimitso_working_forum:
     thread_per_page: 50
     post_per_page: 10
-    date_format: 'd/m/Y H:i:s'
+    date_format: 'Y/m/d H:i:s'
     allow_anonymous_read: false
     allow_moderator_delete_thread: false
     theme_color: green
@@ -94,10 +94,7 @@ Example :
 In case your user entity already extends an another bundle (like FOSUserBundle), implement the interface \Yosimitso\WorkingForumBundle\Entity\UserInterface
 in your user entity. Then copy/paste the content of \Yosimitso\WorkingForumBundle\Entity\User (attributes, getter, setter) into your user entity
 
-Todo
------------
-- Removing post by a moderator
-- Allow anonymous users to create thread if set in the forums' configuration
+
 
 FRANCAIS
 ==================
@@ -155,7 +152,7 @@ Ajoutez les bundles dans votre AppKernel
   new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle()
 
 ````
-Ajoutez à votre app/config.yml
+Ajoutez a votre app/config.yml
 
 ````yml
 yosimitso_working_forum:
@@ -196,8 +193,3 @@ Exemple :
 ````
 Dans le cas où votre entité utilisateur étend déjà un autre de bundle (comme FOSUserBundle), implémenter l'interface \Yosimitso\WorkingForumBundle\Entity\UserInterface
 dans votre entité. Ensuite copier / coller le contenu de \Yosimitso\WorkingForumBundle\Entity\User (attributs, getter, setter) dans votre entité.
-
-Todo
------------
-- Suppression d'un thread par un modérateur
-- Autoriser ou non les utilisateurs anonyme à créer des sujets selon la configuration du forum

@@ -98,7 +98,7 @@
     <ul class="wf_action_list">
         {% if not thread.locked %}
         <li>
-            <a class="wf_button"
+            <a class="wf_button wf_icon-lock"
                    href="{{ path('workingforum_lock_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
                     {{ 'forum.lock' | trans }}
             </a>
@@ -112,7 +112,7 @@
         {% endif %}
         {% if allowModeratorDeleteThread %}
         <li>
-            <a class="wf_button" onclick="if (!confirm('{{ 'forum.confirm_delete_thread' | trans }}')) { return false; }"
+            <a class="wf_button wf_icon-remove" onclick="if (!confirm('{{ 'forum.confirm_delete_thread' | trans }}')) { return false; }"
                href="{{ path('workingforum_delete_thread',{'threadSlug': thread.slug}) }}">
                 {{ 'forum.delete_thread' | trans }}
             </a>
@@ -120,7 +120,7 @@
         {% endif %}
         {% if not thread.pin  %}
         <li>
-            <a class="wf_button"
+            <a class="wf_button wf_icon-pin"
                href="{{ path('workingforum_pin_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
                 {{ 'forum.pin_thread' | trans }}
             </a>

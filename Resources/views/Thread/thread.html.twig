@@ -47,7 +47,7 @@
 
     {% if forbidden is defined and forbidden %}
         <div class="wf_forum">
-            <div class="wf_empty_forum">{{ 'forum.must_be_logged' | trans }}</div>
+            <div class="wf_empty_forum">{{ forbiddenMsg | trans }}</div>
         </div>
     {% else %}
 
@@ -87,34 +87,38 @@
             </a>
         </p>
     {% else %}
-    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-        <p><a class="wf_button" href="#wf_new_post">{{ 'forum.reply' | trans }}</a>
-        </p> {# thread NON LOCKE ON PEUT REPONDRE #}
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <p><a class="wf_button" href="#wf_new_post">{{ 'forum.reply' | trans }}</a>
+            </p> {# thread NON LOCKE ON PEUT REPONDRE #}
+        {% endif %}
     {% endif %}
+
     {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
-        <p><a class="wf_button"
-              href="{{ path('workingforum_lock_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}"> {# ADMIN ET MODO PEUVENT LOCKER #}
-                {{ 'forum.lock' | trans }}
-            </a></p>
-    {% endif %}
-    {% endif %}
-
-    {% if moveThread %}
-        <p>
-            <a class="wf_button" id="wf_move_thread_button">
-                &rarr; {{ 'forum.move_thread' | trans }}
+    <ul class="wf_action_list">
+        {% if not thread.locked %}
+        <li>
+            <a class="wf_button"
+                   href="{{ path('workingforum_lock_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
+                    {{ 'forum.lock' | trans }}
             </a>
-            {{ form_widget(moveThread.forum) }}
-        </p>
-    {% endif %}
-
-    {% if allowModeratorDeleteThread and (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
-        <p><a class="wf_button" onclick="if (!confirm('{{ 'forum.confirm_delete_thread' | trans }}')) { return false; }" href="{{ path('workingforum_delete_thread',{'threadSlug': thread.slug}) }}">
+        </li>
+        {% endif %}
+       {% if moveThread %}
+       <li>
+           <a class="wf_button" id="wf_move_thread_button">&rarr; {{ 'forum.move_thread' | trans }}</a>
+                    {{ form_widget(moveThread.forum) }}
+       </li>
+        {% endif %}
+        {% if allowModeratorDeleteThread %}
+        <li>
+            <a class="wf_button" onclick="if (!confirm('{{ 'forum.confirm_delete_thread' | trans }}')) { return false; }"
+               href="{{ path('workingforum_delete_thread',{'threadSlug': thread.slug}) }}">
                 {{ 'forum.delete_thread' | trans }}
             </a>
-        </p>
+        </li>
+        {% endif %}
+    </ul>
     {% endif %}
-
         <div class="wf_thread">
             <h1>{{ thread.label }}</h1>
             <h2>{{ thread.sublabel }}</h2>

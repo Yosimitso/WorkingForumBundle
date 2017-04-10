@@ -52,7 +52,7 @@ class ThreadController extends Controller
                     'subforum'    => $subforum,
                     'thread'      => $thread,
                     'forbidden'   => true,
-                    'forbiddenMsg' => $this->authorizationChecker->getErrorMessage()
+                    'forbiddenMsg' => $authorizationChecker->getErrorMessage()
                 ]
             );
 
@@ -177,7 +177,7 @@ class ThreadController extends Controller
                     'subforum'    => $subforum,
                     'thread'      => $thread,
                     'forbidden'   => true,
-                    'forbiddenMsg' => $this->authorizationChecker->getErrorMessage()
+                    'forbiddenMsg' => $authorizationChecker->getErrorMessage()
                 ]
             );
 

@@ -241,7 +241,7 @@ Showdown.converter = function (converter_options) {
             ]
         ;
         var pattern = ':('+listSmiley.join('|')+'):';
-        console.log(new RegExp(pattern,'g'));
+        
         text = text.replace(new RegExp(pattern,'g'), '<img src="/bundles/yosimitsoworkingforum/images/smiley/$1.png" />');
         console.log(text);
         return text;

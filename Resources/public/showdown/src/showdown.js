@@ -207,6 +207,43 @@ Showdown.converter = function (converter_options) {
             text = _ExecuteExtension(x, text);
         });
 
+        var listSmiley = [
+                'smile',
+                'wink',
+                'angry',
+                'big_grin',
+                'crying',
+                'frown',
+                'tongue',
+                'yawn',
+                'zipped',
+                'sick',
+                'whistle',
+                'evil',
+                'stress',
+                'delicious',
+                'bashful',
+                'bored',
+                'confused',
+                'heart',
+                'love',
+                'oh',
+                'nerdy',
+                'present',
+                'sun',
+                'sunglasses',
+                'xd',
+                'football',
+                'tennis',
+                'basketball',
+                'thumbup',
+                'thumbdown'
+            ]
+        ;
+        var pattern = ':('+listSmiley.join('|')+'):';
+        console.log(new RegExp(pattern,'g'));
+        text = text.replace(new RegExp(pattern,'g'), '<img src="/bundles/yosimitsoworkingforum/images/smiley/$1.png" />');
+        console.log(text);
         return text;
     };
 

@@ -143,11 +143,6 @@ class Authorization
     {
         $user = $this->tokenStorage->getToken()->getUser();
         if (is_object($user) && $user->isBanned()) {
-            $this->get('session')->getFlashBag()->add(
-                'error',
-                $this->get('translator')->trans('message.banned', [], 'YosimitsoWorkingForumBundle')
-            )
-            ;
             $this->setErrorMessage('banned');
             return false;
         }

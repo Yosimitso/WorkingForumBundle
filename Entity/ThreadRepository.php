@@ -43,10 +43,11 @@ class ThreadRepository extends EntityRepository
      */
     public function search($keywords, $start = 0, $limit = 100, array $whereSubforum)
     {
+        if (empty($whereSubforum)) {
+            return null;
+        }
         $keywords = explode(' ', $keywords);
         $where = '';
-
-
 
         foreach ($keywords as $word)
         {

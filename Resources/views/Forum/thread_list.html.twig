@@ -116,7 +116,9 @@
 
     </div>
 </div>
+     {%  if thread_list is not empty %}
     {{ knp_pagination_render(thread_list) }}
+         {% endif %}
     
     {% endif %}
              </div>

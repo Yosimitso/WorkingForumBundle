@@ -31,17 +31,25 @@ class SearchController extends Controller
             if ($form->isValid())
             {
                 $whereSubforum = (array) $authorizationChecker->hasSubforumAccessList($form['forum']->getData());
+
                 $thread_list_query = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')
                                         ->search($form['keywords']->getData(), 0, 100, $whereSubforum)
                 ;
                 $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
 
                 $paginator = $this->get('knp_paginator');
-                $thread_list = $paginator->paginate(
-                    $thread_list_query,
-                    $request->query->get('page', 1)/*page number*/,
-                    $this->container->getParameter('yosimitso_working_forum.thread_per_page')
-                ); /*limit per page*/
+
+                if (!is_null($thread_list_query)) {
+                    $thread_list = $paginator->paginate(
+                        $thread_list_query,
+                        $request->query->get('page', 1)/*page number*/,
+                        $this->container->getParameter('yosimitso_working_forum.thread_per_page')
+                    ); /*limit per page*/
+                }
+                else
+                {
+                    $thread_list = [];
+                }
 
                 return $this->render('YosimitsoWorkingForumBundle:Forum:thread_list.html.twig',
                     [

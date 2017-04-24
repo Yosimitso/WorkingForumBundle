@@ -95,7 +95,11 @@
                  {{ thread.author.username |slice(0,30) }}
              </td>
             <td class="wf_sub_stat">{{ thread.nbReplies}} {{ 'forum.nbPost' | trans }}</td>
-            <td class="wf_sub_lastreply">{{'forum.last_reply_date' | trans }}<br />{{ thread.lastReplyDate | date(date_format)}} {{ 'forum.by' | trans }} {{ thread.author.username}}</td>
+            <td class="wf_sub_lastreply">
+                {%  if thread.lastReplyDate is not null and thread.lastReplyUser is not null %}
+                    {{'forum.last_reply_date' | trans }}<br />
+                    {{ thread.lastReplyDate | date(date_format)}} {{ 'forum.by' | trans }} {{ thread.lastReplyUser.username}}</td>
+                {% endif %}
             
             
             

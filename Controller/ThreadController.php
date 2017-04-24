@@ -95,6 +95,7 @@ class ThreadController extends Controller
                     $published = 1;
                     $thread->addNbReplies(1)
                            ->setLastReplyDate(new \DateTime)
+                            ->setLastReplyUser($user);
                     ; // Update thread statistic
 
                     $my_post->setCdate(new \DateTime)
@@ -105,7 +106,8 @@ class ThreadController extends Controller
                     $my_post->setThread($thread);
 
                     $subforum->setNbPost($subforum->getNbPost() + 1); // UPDATE THREAD MESSAGE COUNTER
-                    $subforum->setLastReplyDate(new \DateTime);
+                    $subforum->setLastReplyDate(new \DateTime)
+                            ->setLastReplyUser($user);
 
                     $user->addNbPost(1);
                     $em->persist($user);
@@ -199,6 +201,7 @@ class ThreadController extends Controller
                       ->setLastReplyDate(new \DateTime)
                       ->setCdate(new \DateTime)
                       ->setNbReplies(1)
+                      ->setLastReplyUser($user)
             ;
 
             $my_thread->setSubforum($subforum);
@@ -216,6 +219,7 @@ class ThreadController extends Controller
             $subforum->setNbPost($subforum->getNbPost() + 1);
             $subforum->setNbThread($subforum->getNbThread() + 1);
             $subforum->setLastReplyDate(new \DateTime);
+            $subforum->setLastReplyUser($user);
 
             $user->addNbPost(1);
             $em->persist($user);

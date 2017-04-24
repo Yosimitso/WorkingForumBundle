@@ -61,6 +61,14 @@ class Thread
     private $lastReplyDate;
 
     /**
+     * @var UserInterface
+     *
+     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\User")
+     * @ORM\JoinColumn(name="lastReplyUser", referencedColumnName="id", nullable=true)
+     */
+    private $lastReplyUser;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="resolved", type="boolean", nullable=true)
@@ -126,11 +134,11 @@ class Thread
     {
         return $this->id;
     }
-	
-	public function __construct()
-	{
-		$this->post = new ArrayCollection;
-	}
+
+    public function __construct()
+    {
+        $this->post = new ArrayCollection;
+    }
 
     /**
      * @param Subforum $subforum
@@ -222,6 +230,26 @@ class Thread
     public function getLastReplyDate()
     {
         return $this->lastReplyDate;
+    }
+
+    /**
+     * @return UserInterface
+     */
+    public function getLastReplyUser()
+    {
+        return $this->lastReplyUser;
+    }
+
+    /**
+     * @param UserInterface $lastReplyUser
+     *
+     * @return Thread
+     */
+    public function setLastReplyUser(UserInterface $lastReplyUser)
+    {
+        $this->lastReplyUser = $lastReplyUser;
+
+        return $this;
     }
 
     /**

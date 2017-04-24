@@ -211,7 +211,7 @@ Showdown.converter = function (converter_options) {
                 'smile',
                 'wink',
                 'angry',
-                'big_grin',
+                'biggrin',
                 'crying',
                 'frown',
                 'tongue',

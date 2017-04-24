@@ -29,7 +29,7 @@ class SmileyTwigExtension extends \Twig_Extension
         ':smile:'      => 'smile.png',
         ':wink:'       => 'wink.png',
         ':angry:'      => 'angry.png',
-        ':big_grin:'   => 'big_grin.png',
+        ':biggrin:'   => 'biggrin.png',
         ':crying:'     => 'crying.png',
         ':frown:'        => 'frown.png',
         ':tongue:'     => 'tongue.png',

@@ -134,7 +134,7 @@ Showdown.converter = function (converter_options) {
         }
     }
 
-    this.makeHtml = function (text) {
+    this.makeHtml = function (text, basePath) {
 //
 // Main function. The order in which other subs are called here is
 // essential. Link and image substitutions need to happen before
@@ -242,7 +242,7 @@ Showdown.converter = function (converter_options) {
         ;
         var pattern = ':('+listSmiley.join('|')+'):';
         
-        text = text.replace(new RegExp(pattern,'g'), '<img src="/bundles/yosimitsoworkingforum/images/smiley/$1.png" />');
+        text = text.replace(new RegExp(pattern,'g'), '<img src="'+basePath+'images/smiley/$1.png" />');
         console.log(text);
         return text;
     };

@@ -69,7 +69,7 @@
                     language: '{{ request.locale }}',
                     onPreview: function (e) {
                         var converter = new Showdown.converter({extensions: ['twitter', 'github']});
-                        var html = converter.makeHtml(nl2br(e.getContent()));
+                        var html = converter.makeHtml(nl2br(e.getContent()),'{{ asset('bundles/yosimitsoworkingforum/') }}');
                         return html;
                     },
                     fullscreen: {enable: false}

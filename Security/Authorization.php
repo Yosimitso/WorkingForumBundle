@@ -105,18 +105,16 @@ class Authorization
             return false;
         }
         $user = $this->tokenStorage->getToken()->getUser();
-        if (!is_object($user))
-        {
-            throw new \Exception('User entity invalid');
-            return false;
-        }
+
+
         $subforumRoles = $subforum->getAllowedRoles();
 
         if (!$subforum->hasAllowedRoles())
         {
             return true;
         }
-        $userRoles = $user->getRoles();
+
+        $userRoles = (is_object($user)) ? $user->getRoles() : [];
         if (!count($userRoles)) // CASE OF USER HAS NO ROLE, FALLBACK
         {
             $userRoles = ['ROLE_USER'];

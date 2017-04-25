@@ -57,7 +57,6 @@ class ThreadController extends Controller
             );
 
         }
-
             // Smileys available for markdown
             $listSmiley = $this->get('yosimitso_workingforum_smiley')->getListSmiley();
 
@@ -126,7 +125,7 @@ class ThreadController extends Controller
                     );
 
                     return $this->redirect($this->generateUrl('workingforum_thread',
-                        ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount() ]
+                        ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, $this->container->getParameter('knp_paginator.default_options.page_name') => $post_list->getPageCount() ]
                     )
                     );
                 }
@@ -150,10 +149,9 @@ class ThreadController extends Controller
 
         $post_list = $paginator->paginate(
             $post_query,
-            $request->query->get('page')/*page number*/,
+            $request->query->get('page',1)/*page number*/,
             $this->container->getParameter('yosimitso_working_forum.post_per_page') /*limit per page*/
         );
-
 
 
         return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',
@@ -228,7 +226,6 @@ class ThreadController extends Controller
                     ->setUser($user)
             ;
 
-            $my_post->setThread($my_thread);
 
             $subforum->setNbPost($subforum->getNbPost() + 1);
             $subforum->setNbThread($subforum->getNbThread() + 1);

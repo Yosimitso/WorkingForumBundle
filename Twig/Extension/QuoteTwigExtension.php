@@ -70,9 +70,9 @@ class QuoteTwigExtension extends \Twig_Extension
                         . $post->getUser()->getUsername()
                         . ' '
                         . $this->translator->trans('forum.has_written', [], 'YosimitsoWorkingForumBundle')
-                        . " :** \r\n"
+                        . " :** \n"
                         . $post->getContent()
-                        . "\r\n";
+                        . "\n\n";
                 }
 
                 return '';

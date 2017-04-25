@@ -38,7 +38,7 @@ class ThreadController extends Controller
      *
      * @return Response
      */
-    public function indexAction($subforum_slug, $thread_slug, Request $request, $page = 1)
+    public function indexAction($subforum_slug, $thread_slug, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $subforum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
@@ -57,20 +57,12 @@ class ThreadController extends Controller
             );
 
         }
-            $post_query = $em
-                ->getRepository('Yosimitso\WorkingForumBundle\Entity\Post')
-                ->findByThread($thread->getId())
-            ;
 
             // Smileys available for markdown
             $listSmiley = $this->get('yosimitso_workingforum_smiley')->getListSmiley();
 
             $paginator = $this->get('knp_paginator');
-            $post_list = $paginator->paginate(
-                $post_query,
-                $request->query->get('page', 1)/*page number*/,
-                $this->container->getParameter('yosimitso_working_forum.post_per_page') /*limit per page*/
-            );
+
             $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
 
             $my_post = new Post;
@@ -122,13 +114,24 @@ class ThreadController extends Controller
                         $this->get('translator')->trans('message.posted', [], 'YosimitsoWorkingForumBundle')
                     )
                     ;
+                    $post_query = $em
+                        ->getRepository('Yosimitso\WorkingForumBundle\Entity\Post')
+                        ->findByThread($thread->getId())
+                    ;
+
+                    $post_list = $paginator->paginate(
+                        $post_query,
+                        $request->query->get('page')/*page number*/,
+                        $this->container->getParameter('yosimitso_working_forum.post_per_page') /*limit per page*/
+                    );
 
                     return $this->redirect($this->generateUrl('workingforum_thread',
-                        ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug]
+                        ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount() ]
                     )
                     );
                 }
             }
+
 
 
         if ($authorizationChecker->hasModeratorAuthorization())
@@ -139,6 +142,17 @@ class ThreadController extends Controller
         {
             $moveThread = false;
         }
+
+        $post_query = $em
+            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Post')
+            ->findByThread($thread->getId())
+        ;
+
+        $post_list = $paginator->paginate(
+            $post_query,
+            $request->query->get('page')/*page number*/,
+            $this->container->getParameter('yosimitso_working_forum.post_per_page') /*limit per page*/
+        );
 
 
 

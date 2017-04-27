@@ -46,7 +46,7 @@ class ThreadController extends Controller
         $user = $this->getUser();
 
         $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
-        if (!$authorizationChecker->hasSubforumAccess($subforum)) {
+        if (!$authorizationChecker->hasSubforumAccess($subforum)) { // CHECK IF USER HAS AUTHORIZATION TO VIEW THIS THREAD
             return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',
                 [
                     'subforum'    => $subforum,
@@ -57,6 +57,8 @@ class ThreadController extends Controller
             );
 
         }
+            $autolock = $this->isAutoLock($thread); // CHECK IF THREAD IS AUTOMATICALLY LOCKED (TOO OLD?)
+
             // Smileys available for markdown
             $listSmiley = $this->get('yosimitso_workingforum_smiley')->getListSmiley();
 
@@ -68,7 +70,7 @@ class ThreadController extends Controller
             $form = $this->createForm(PostType::class, $my_post); // create form for posting
             $form->handleRequest($request);
 
-            if ($form->isSubmitted()) {
+            if ($form->isSubmitted()) { // USER SUBMIT HIS POST
 
                 if ($user->isBanned()) // USER IS BANNED CAN'T POST
                 {
@@ -79,6 +81,17 @@ class ThreadController extends Controller
                     ;
 
                     return $this->redirect($this->generateUrl('workingforum', []));
+                }
+
+                if ($autolock) // THREAD IS LOCKED CAUSE TOO OLD ACCORDING TO PARAMETERS
+                {
+                    $this->get('session')->getFlashBag()->add(
+                        'error',
+                        $this->get('translator')->trans('thread_too_old_locked', [], 'YosimitsoWorkingForumBundle')
+                    )
+                    ;
+
+                    return $this->redirect($this->generateUrl('workingforum_thread', ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug]));
                 }
 
                 if ($form->isValid()) {
@@ -154,6 +167,8 @@ class ThreadController extends Controller
         );
 
 
+
+
         return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',
             [
                 'subforum'    => $subforum,
@@ -165,7 +180,8 @@ class ThreadController extends Controller
                 'forbidden'   => false,
                 'request'     => $request,
                 'moveThread' => $moveThread,
-                'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')
+                'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread'),
+                'autolock' => $autolock
             ]
         );
 
@@ -519,6 +535,26 @@ class ThreadController extends Controller
         );
 
 
+    }
+
+    private function isAutoLock($thread) {
+        if ($this->getParameter('yosimitso_working_forum.lock_thread_older_than'))
+        {
+            $diff = $thread->getCdate()->diff(new \DateTime());
+            if ($diff->days > $this->getParameter('yosimitso_working_forum.lock_thread_older_than'))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

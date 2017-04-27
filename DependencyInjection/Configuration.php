@@ -49,6 +49,9 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->cannotBeEmpty()
                 ->end()
+                ->scalarNode('lock_thread_older_than')
+                    ->isRequired()
+                    ->cannotBeEmpty()
              ->end()
         ;
 

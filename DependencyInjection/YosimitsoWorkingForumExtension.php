@@ -55,6 +55,12 @@ class YosimitsoWorkingForumExtension extends Extension
             );
         }
 
+        if (!isset($config['lock_thread_older_than'])) {
+            throw new \InvalidArgumentException(
+                'The "lock_thread_older_than" option must be set in "yosimitso_working_forum"'
+            );
+        }
+
         $loader = new Loader\YamlFileLoader(
             $container,
             new FileLocator(__DIR__ . '/../Resources/config')
@@ -65,9 +71,8 @@ class YosimitsoWorkingForumExtension extends Extension
         $container->setParameter('yosimitso_working_forum.post_per_page', $config['post_per_page']);
         $container->setParameter('yosimitso_working_forum.date_format', $config['date_format']);
         $container->setParameter('yosimitso_working_forum.allow_anonymous_read', $config['allow_anonymous_read']);
-        $container->setParameter('yosimitso_working_forum.allow_moderator_delete_thread',
-            $config['allow_moderator_delete_thread']
-        );
+        $container->setParameter('yosimitso_working_forum.allow_moderator_delete_thread', $config['allow_moderator_delete_thread']);
         $container->setParameter('yosimitso_working_forum.theme_color', $config['theme_color']);
+        $container->setParameter('yosimitso_working_forum.lock_thread_older_than', $config['lock_thread_older_than']);
     }
 }

@@ -87,7 +87,7 @@
             </a>
         </p>
     {% else %}
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and not autolock %}
             <p><a class="wf_button" href="#wf_new_post">{{ 'forum.reply' | trans }}</a>
             </p> {# thread NON LOCKE ON PEUT REPONDRE #}
         {% endif %}
@@ -181,6 +181,10 @@
                 {% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                     <div class="wf_new_post">
                         <p class="wf_post_a_message">{{ 'forum.no_message_login' | trans }}</p>
+                    </div>
+                {% elseif autolock %}
+                    <div class="wf_new_post">
+                        <p class="wf_post_a_message">{{ 'forum.thread_too_old_locked' | trans }}</p>
                     </div>
                 {% else %}
                     <div class="wf_new_post" id="wf_new_post">

@@ -54,6 +54,7 @@ forum:
     delete_thread: Delete thread
     confirm_delete_thread: Are you sure to delete this thread ?
     pin_thread: Pin thread
+    thread_too_old_locked: This thread is too old to reply
 
 pagination:
     previous: Previous

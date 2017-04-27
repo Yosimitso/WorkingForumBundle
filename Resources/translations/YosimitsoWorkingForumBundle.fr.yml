@@ -54,6 +54,7 @@ forum:
     delete_thread: Supprimer le sujet
     confirm_delete_thread: Êtes vous sûr de vouloir supprimer ce sujet ?
     pin_thread: Epingler le sujet
+    thread_too_old_locked: Le sujet est trop vieux et n'accepte plus de réponses
 
 pagination:
     previous: Précédent

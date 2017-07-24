@@ -35,6 +35,7 @@ forum:
         username: Utilisateur
         banned: Banni
         roles: Rôles
+    report: Signaler ce message
     thanks_reporting: Merci d'avoir signalé !
     doPin: Epingler
     required: Requis
@@ -55,6 +56,7 @@ forum:
     confirm_delete_thread: Êtes vous sûr de vouloir supprimer ce sujet ?
     pin_thread: Epingler le sujet
     thread_too_old_locked: Le sujet est trop vieux et n'accepte plus de réponses
+    quote: Citer ce message
 
 pagination:
     previous: Précédent
@@ -103,6 +105,7 @@ setting:
     allow_anonymous_read: Autoriser les utilisateurs non enregistrés à lire
     allow_moderator_delete_thread: Autoriser les modérateurs à supprimer des sujets
     theme_color: Couleur du thème
+    lock_thread_older_than: Verrouiller les sujet plus vieux que (jours)
 message:
     saved: Enregistrement effectués
     posted: Message posté

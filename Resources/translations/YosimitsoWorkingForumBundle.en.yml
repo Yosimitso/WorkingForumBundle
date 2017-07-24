@@ -35,6 +35,7 @@ forum:
         username: Username
         banned: Banned
         roles: Roles
+    report: Report this post
     thanks_reporting: Thanks for reporting !
     doPin: Pin
     required: Required
@@ -55,6 +56,7 @@ forum:
     confirm_delete_thread: Are you sure to delete this thread ?
     pin_thread: Pin thread
     thread_too_old_locked: This thread is too old to reply
+    quote: Quote this post
 
 pagination:
     previous: Previous
@@ -103,6 +105,7 @@ setting:
     allow_anonymous_read: Allow anonymous users to read
     allow_moderator_delete_thread: Allow moderators to delete threads
     theme_color: Theme's color
+    lock_thread_older_than: Lock thread older than (days)
 message:
     saved: Successfully saved
     posted: Post saved

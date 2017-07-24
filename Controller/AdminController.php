@@ -29,19 +29,22 @@ class AdminController extends Controller
         $list_forum = $em->getRepository('YosimitsoWorkingForumBundle:Forum')->findAll();
 
         $settingsList = [
-            'allow_anonymous_read'          => ['varType' => 'boolean'],
+            'allow_anonymous_read' => ['varType' => 'boolean'],
             'allow_moderator_delete_thread' => ['varType' => 'boolean'],
-            'theme_color'                   => ['varType' => 'string']
+            'theme_color' => ['varType' => 'string'],
+            'lock_thread_older_than' => ['varType' => 'number'],
         ];
 
         $settings_render = $this->renderSettings($settingsList);
-        $newPostReported = count($em->getRepository('YosimitsoWorkingForumBundle:PostReport')
-                                    ->findBy(['processed' => null])
+        $newPostReported = count(
+            $em->getRepository('YosimitsoWorkingForumBundle:PostReport')
+                ->findBy(['processed' => null])
         );
 
-        return $this->render('YosimitsoWorkingForumBundle:Admin:main.html.twig',
+        return $this->render(
+            'YosimitsoWorkingForumBundle:Admin:main.html.twig',
             [
-                'list_forum'      => $list_forum,
+                'list_forum' => $list_forum,
                 'settings_render' => $settings_render,
                 'newPostReported' => $newPostReported,
             ]
@@ -83,17 +86,17 @@ class AdminController extends Controller
             $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('message.saved', [], 'YosimitsoWorkingForumBundle')
-            )
-            ;
+            );
 
             return $this->redirect($this->generateUrl('workingforum_admin'));
 
         }
 
-        return $this->render('YosimitsoWorkingForumBundle:Admin/Forum:form.html.twig',
+        return $this->render(
+            'YosimitsoWorkingForumBundle:Admin/Forum:form.html.twig',
             [
-                'forum'      => $forum,
-                'form'       => $form->createView(),
+                'forum' => $forum,
+                'form' => $form->createView(),
                 'statistics' => $statistics,
             ]
         );
@@ -127,16 +130,16 @@ class AdminController extends Controller
             $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('message.saved', [], 'YosimitsoWorkingForumBundle')
-            )
-            ;
+            );
 
             return $this->redirect($this->generateUrl('workingforum_admin'));
         }
 
-        return $this->render('YosimitsoWorkingForumBundle:Admin/Forum:form.html.twig',
+        return $this->render(
+            'YosimitsoWorkingForumBundle:Admin/Forum:form.html.twig',
             [
                 'forum' => $forum,
-                'form'  => $form->createView(),
+                'form' => $form->createView(),
             ]
         );
     }
@@ -149,14 +152,14 @@ class AdminController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $postReportList = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')
-                             ->findBy(['processed' => null], ['processed' => 'ASC', 'id' => 'ASC'])
-        ;
+            ->findBy(['processed' => null], ['processed' => 'ASC', 'id' => 'ASC']);
         $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
 
-        return $this->render('YosimitsoWorkingForumBundle:Admin/Report:report.html.twig',
+        return $this->render(
+            'YosimitsoWorkingForumBundle:Admin/Report:report.html.twig',
             [
                 'postReportList' => $postReportList,
-                'date_format'    => $date_format,
+                'date_format' => $date_format,
             ]
         );
     }
@@ -167,14 +170,14 @@ class AdminController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $postReportList = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')
-            ->findBy(['processed' => 1], ['processed' => 'ASC', 'id' => 'DESC'])
-        ;
+            ->findBy(['processed' => 1], ['processed' => 'ASC', 'id' => 'DESC']);
         $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
 
-        return $this->render('YosimitsoWorkingForumBundle:Admin/Report:report_history.html.twig',
+        return $this->render(
+            'YosimitsoWorkingForumBundle:Admin/Report:report_history.html.twig',
             [
                 'postReportList' => $postReportList,
-                'date_format'    => $date_format,
+                'date_format' => $date_format,
             ]
         );
     }
@@ -189,7 +192,7 @@ class AdminController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $id = (int) htmlentities($request->request->get('id'));
+        $id = (int)htmlentities($request->request->get('id'));
 
         if ($id) {
             $report = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneById($id);
@@ -214,7 +217,8 @@ class AdminController extends Controller
         $em = $this->getDoctrine()->getManager();
         $usersList = $em->getRepository('YosimitsoWorkingForumBundle:User')->findAll();
 
-        return $this->render('YosimitsoWorkingForumBundle:Admin/User:userslist.html.twig',
+        return $this->render(
+            'YosimitsoWorkingForumBundle:Admin/User:userslist.html.twig',
             [
                 'usersList' => $usersList,
 
@@ -233,9 +237,9 @@ class AdminController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $reason = htmlentities($request->request->get('reason'));
-        $id = (int) htmlentities($request->request->get('id'));
-        $postId = (int) htmlentities($request->request->get('postId'));
-        $banuser = (int) htmlentities($request->request->get('banuser'));
+        $id = (int)htmlentities($request->request->get('id'));
+        $postId = (int)htmlentities($request->request->get('postId'));
+        $banuser = (int)htmlentities($request->request->get('banuser'));
 
         if (empty($reason)) {
             return new Response(json_encode('fail'), 500);
@@ -288,8 +292,7 @@ class AdminController extends Controller
             $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('admin.forumDeleted', [], 'YosimitsoWorkingForumBundle')
-            )
-            ;
+            );
         }
 
         return $this->forward('YosimitsoWorkingForumBundle:Admin:index', []);
@@ -311,14 +314,16 @@ class AdminController extends Controller
                 case 'string':
                     $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled', 'style' => 'width:80px'];
                     $setting['type'] = 'text';
-
+                    break;
+                case 'number':
+                    $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled'];
+                    $setting['type'] = 'number';
+                    break;
             }
 
 
-
-
             $html['text'] = $this->get('translator')
-                    ->trans('setting.'.$index, [], 'YosimitsoWorkingForumBundle');
+                ->trans('setting.'.$index, [], 'YosimitsoWorkingForumBundle');
 
             $html['input'] = '<input type="'.$setting['type'].'" value="'.$setting['value'].'"';
             foreach ($setting['attr'] as $indexAttr => $attr) {
@@ -329,8 +334,9 @@ class AdminController extends Controller
 
             $settingsHtml[] = $html;
         }
+
         return $settingsHtml;
 
-        }
+    }
 
 }

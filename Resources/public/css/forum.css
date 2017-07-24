@@ -566,3 +566,7 @@ code {
     display:block;
 }
 
+.wf_date a:hover, wf_date a:visited, .wf_date a:active, .wf_date a:focus {
+    text-decoration: none;
+}
+

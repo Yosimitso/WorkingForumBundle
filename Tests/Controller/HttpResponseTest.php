@@ -17,8 +17,8 @@ class HttpControllerTest extends WebTestCase
         $client = static::createClient(
             [],
             [
-                'PHP_AUTH_USER' => 'admin',
-                'PHP_AUTH_PW' => 'jeanpaul2'
+                'PHP_AUTH_USER' => 'testmoderator',
+                'PHP_AUTH_PW' => 'modpwd'
             ]
         );
 

@@ -19,15 +19,14 @@ class ThreadControllerTest extends WebTestCase
         // LOG IMMEDIATELY
         $client = static::createClient([],
             [
-                'PHP_AUTH_USER' => 'testuser',
-                'PHP_AUTH_PW'   => 'pwd',
             ]
         );
 
         // GO IN THE FIRST SUBFORUM OF THE FIRST FORUM
         $crawler = $client->request('GET', '/');
-        $link = $crawler->filter('.wf_sub_name > a')->links();
-        $crawler = $client->click($link[0]);
+        $this->assertEquals(1,2, $crawler->html());
+        $link = $crawler->filter('.wf_sub_name > a')->first()->link();
+        $crawler = $client->click($link);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         // GO THE "NEW THREAD" PAGE

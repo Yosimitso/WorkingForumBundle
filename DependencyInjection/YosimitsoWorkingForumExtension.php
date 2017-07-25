@@ -31,9 +31,9 @@ class YosimitsoWorkingForumExtension extends Extension
             );
         }
 
-        if (!isset($config['post_per_page'])) {
+        if ($config['post'] <= 0) {
             throw new \InvalidArgumentException(
-                'The "post_per_page" option must be set in "yosimitso_working_forum"'
+                'The "lock_thread_older_than" option must be a positive numeric, greater than zero'
             );
         }
 

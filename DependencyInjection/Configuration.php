@@ -27,13 +27,15 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('yosimitso_working_forum');
         $rootNode
             ->children()
-                ->scalarNode('thread_per_page')
+                ->integerNode('thread_per_page')
                     ->isRequired()
                     ->cannotBeEmpty()
+                    ->min(1)
                 ->end()
-                ->scalarNode('post_per_page')
+                ->integerNode('post_per_page')
                     ->isRequired()
                     ->cannotBeEmpty()
+                    ->min(1)
                 ->end()
                 ->scalarNode('date_format')
                     ->isRequired()
@@ -49,9 +51,10 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->cannotBeEmpty()
                 ->end()
-                ->scalarNode('lock_thread_older_than')
+                ->integerNode('lock_thread_older_than')
                     ->isRequired()
                     ->cannotBeEmpty()
+                    ->min(1)
              ->end()
         ;
 

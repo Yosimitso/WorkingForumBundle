@@ -24,6 +24,7 @@ Features
 - Reporting system for thread
 - Support multi language
 - Enable marking thread as 'resolved'
+- Auto-lock system for old thread
 - Automatic breadcrumb
 - Messages counting (user, forum, subforum) with last replies
 - Automatic pagination on thread list and thread
@@ -118,8 +119,11 @@ Fonctionnalités
 - Les threads peuvent être verrouillés
 - Les threads peuvent être epinglés
 - Les threads peuvent être déplacés
-- Support le multilangage
 - Les threads peuvent être marqués comme résolus
+- Système d'auto-lock pour les vieux sujets
+- Support le multilangage
+
+
 - Breadcrumb (fil d'Arianne) automatique
 - Compteur de messages (utilisateur, forum, sousforum) avec dernières réponses
 - Pagination automatique sur la liste des thread, et les messages des threads

@@ -1,0 +1,77 @@
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+<div class="wf_post">
+    <div class="wf_post-left">
+        <img class="wf_cadre-img" src="
+          {% if post.user.avatarUrl is not empty %}
+          {{ asset('bundles/yosimitsoworkingforum/'~post.user.avatarUrl) }}
+          {% else %}
+           {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}
+          {% endif %}
+
+          "/>
+        <p class="wf_username" id="wf_user{{ post.user.id }}">{{ post.user.username }}</p>
+        <p class="wf_message">{{ post.user.nbPost }} {{ 'forum.nbPost' | trans }}</p>
+        <p class="wf_message">{% if post.user.roles.0 is defined %} {{ (('forum.user.'~post.user.roles.0) | trans) }} {% else %} {{ ('forum.user.ROLE_USER' | trans) }}{% endif %}</p>
+    </div>
+    <div class="wf_post-right{% if post.voteUp >= parameters.thresholdUsefulPost and post.moderateReason is empty %} wf_useful_post{% endif %}">
+        <p class="wf_date">
+            {{ post.cdate | date(parameters.dateFormat) }}
+
+            {% if post.moderateReason is empty %}
+                <a href="#"
+                   onclick="report('{{ path('workingforum_report_post', {'post_id' : post.id}) }}'); return false;"
+                   title="{{ 'forum.report' | trans }}"
+                   class=""
+                >
+                    <img
+                            src="{{ asset('bundles/yosimitsoworkingforum/images/exclamation.png') }}"
+                            class="wf_quote-img">
+                </a>
+                <a href="#"
+                   onclick="quote({{ post.id }},{{ post.user.id }}); return false;"
+                   title="{{ 'forum.quote' | trans }}"
+                >
+                    <img
+                            src="{{ asset('bundles/yosimitsoworkingforum/images/quote.png') }}"
+                            class="wf_quote-img"></a>
+            {% endif %}
+            {% if ((is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR"))) and post.moderateReason is empty %}
+                <a href="#"
+                   onclick="moderate({{ post.id }}); return false;"
+                   title="{{ 'admin.report.moderate' | trans }}"
+                ><img class="wf_quote-img"
+                      src="{{ asset('bundles/yosimitsoworkingforum/images/moderate.png') }}"></a>
+            {% endif %}
+        </p>
+        <div id="wf_post{{ post.id }}">
+            {% if post.moderateReason is empty %}
+                {{ post.content |  quote | markdown | replace({'\n':'<br />'})| smiley |  raw }}
+            {% else %}
+                <p class="wf_moderate">{{ 'forum.post_moderated' |trans }} {{ post.moderateReason }}</p>
+            {% endif %}
+        </div>
+        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and loop.index != 1 and post.user.id != app.user.id and post.moderateReason is empty and not thread.locked and not autolock  %}
+            <div class="wf_block_vote">
+                {% if post.id in hasAlreadyVoted %}
+                    <img class="wf_quote-img"
+                         src="{{ asset('bundles/yosimitsoworkingforum/images/thumbup-has.png') }}">
+                {% else %}
+                    <a href="#"
+                       onclick="voteUp({{ post.id }}, this); return false"
+                       id="voteUpLink_{{ post.id }}"
+                    >
+                        <img class="wf_quote-img"
+                             src="{{ asset('bundles/yosimitsoworkingforum/images/thumbup.png') }}">
+
+                    </a>
+                {% endif %}
+                <span class="voteup"
+                      id="voteUpLabel_{{ post.id }}">+ {{ post.voteUp |default(0) }}</span>
+            </div>
+        {% endif %}
+    </div>
+    <div>
+
+    </div>
+    <div class="wf_clear"></div>
+</div>

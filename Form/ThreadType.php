@@ -74,13 +74,4 @@ class ThreadType extends AbstractType
             ]
         );
     }
-
-    /**
-     * @return string
-     */
-    /*
-    public function getName()
-    {
-        return 'yosimitso_working_forumbundle_thread';
-    }*/
 }

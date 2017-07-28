@@ -55,6 +55,12 @@ class YosimitsoWorkingForumExtension extends Extension
             );
         }
 
+        if (!isset($config['vote'])) {
+            throw new \InvalidArgumentException(
+                'The "vote" array option must be set in "yosimitso_working_forum"'
+            );
+        }
+
         $loader = new Loader\YamlFileLoader(
             $container,
             new FileLocator(__DIR__ . '/../Resources/config')
@@ -68,5 +74,6 @@ class YosimitsoWorkingForumExtension extends Extension
         $container->setParameter('yosimitso_working_forum.allow_moderator_delete_thread', $config['allow_moderator_delete_thread']);
         $container->setParameter('yosimitso_working_forum.theme_color', $config['theme_color']);
         $container->setParameter('yosimitso_working_forum.lock_thread_older_than', $config['lock_thread_older_than']);
+        $container->setParameter('yosimitso_working_forum.vote', $config['vote']);
     }
 }

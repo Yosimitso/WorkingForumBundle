@@ -67,6 +67,8 @@ yosimitso_working_forum:
     allow_moderator_delete_thread: false
     theme_color: green
     lock_thread_older_than: 0
+    vote:
+        threshold_useful_post: 5
 knp_paginator:
     page_range: 1                      # default page range used in pagination control
     default_options:
@@ -96,6 +98,12 @@ Example :
 In case your user entity already extends an another bundle (like FOSUserBundle), implement the interface \Yosimitso\WorkingForumBundle\Entity\UserInterface
 in your user entity. Then copy/paste the content of \Yosimitso\WorkingForumBundle\Entity\User (attributes, getter, setter) into your user entity
 
+To import the bundle's routing, add to your app/config.yml (you are free to modifiy the prefix) :
+````yml
+yosimitso_working_forum:
+    resource: "@YosimitsoWorkingForumBundle/Resources/config/routing.yml"
+    prefix:   /
+````    
 
 
 FRANCAIS
@@ -168,6 +176,8 @@ yosimitso_working_forum:
     allow_moderator_delete_thread: false
     theme_color: green
     lock_thread_older_than: 0
+    vote:
+        threshold_useful_post: 5
 	
 knp_paginator:
     page_range: 1                      # default page range used in pagination control
@@ -199,3 +209,10 @@ Exemple :
 ````
 Dans le cas où votre entité utilisateur étend déjà un autre de bundle (comme FOSUserBundle), implémenter l'interface \Yosimitso\WorkingForumBundle\Entity\UserInterface
 dans votre entité. Ensuite copier / coller le contenu de \Yosimitso\WorkingForumBundle\Entity\User (attributs, getter, setter) dans votre entité.
+
+Pour importer le routing du bundle, ajoutez à votre app/config.yml (vous pouvez modifier le prefix) :
+````yml
+yosimitso_working_forum:
+    resource: "@YosimitsoWorkingForumBundle/Resources/config/routing.yml"
+    prefix:   /
+```` 

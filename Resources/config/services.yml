@@ -6,7 +6,7 @@ services:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension
         tags:
             -  { name: twig.extension }
-        arguments: ["@request_stack", "@twig.extension.assets"]
+        arguments: ["@request_stack", "@assets.packages"]
 
     yosimitso_workingforum_quote:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\QuoteTwigExtension
@@ -18,11 +18,17 @@ services:
         tags:
             - { name: twig.extension }
         arguments: ["%yosimitso_working_forum.theme_color%"]
+
     yosimitso_workingforum_authorization:
         class: Yosimitso\WorkingForumBundle\Security\Authorization
         arguments :
             - "@security.authorization_checker"
             - "@security.token_storage"
             - "%yosimitso_working_forum.allow_anonymous_read%"
+
+    yosimitso_workingforum_util_thread:
+        class: Yosimitso\WorkingForumBundle\Util\Thread
+        arguments:
+            - "%yosimitso_working_forum.lock_thread_older_than%"
 
 

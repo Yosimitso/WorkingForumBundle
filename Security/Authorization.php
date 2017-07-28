@@ -111,12 +111,11 @@ class Authorization
 
         if (!$subforum->hasAllowedRoles())
         {
-            exit('ici');
             return true;
         }
 
         $userRoles = (is_object($user)) ? $user->getRoles() : [];
-        if (!count($userRoles)) // CASE OF USER HAS NO ROLE, FALLBACK
+        if (!count($userRoles) || trim($userRoles[0]) === '') // CASE OF USER HAS NO ROLE, FALLBACK
         {
             $userRoles = ['ROLE_USER'];
         }
@@ -126,7 +125,7 @@ class Authorization
         {
             if (in_array($userRole,$subforumRoles))
             {
-                return true;
+                return true; // THE USER HAS A ROLE ALLOWED
             }
         }
 

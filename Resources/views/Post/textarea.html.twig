@@ -1,0 +1,29 @@
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+<div class="wf_new_post" id="wf_new_post">
+            <p class="wf_post_a_message">{{ 'forum.post_a_message' | trans }}</p>
+            <script>
+                function insertSmiley(code) {
+                    jQuery('.wf_textarea_post').insertAtCaret(code);
+
+                }
+            </script>
+            <div id="wf_smiley">
+                <ul>
+                    {% for key,smiley in listSmiley %}
+                        <li><a href="#" onclick="insertSmiley('{{ key }}'); return false;"><img
+                                        src="{{ asset('bundles/yosimitsoworkingforum/images/smiley/'~smiley) }}"/></a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+            <div class="wf_clear"></div>
+            {{ form_start(form) }}
+
+
+            <p>{{ form_widget(form.content) }}</p>
+            {{ form_rest(form) }}
+            <p><input type="submit" value="{{ 'forum.submit_post' | trans }}"
+                      class="wf_button wf_width100"/></p>
+            {{ form_end(form) }}
+        </div>

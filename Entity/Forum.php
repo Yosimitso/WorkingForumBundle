@@ -5,6 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Forum
@@ -29,6 +30,7 @@ class Forum
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank(message="forum.not_blank")
      */
     private $name;
 
@@ -36,6 +38,7 @@ class Forum
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $slug;
 

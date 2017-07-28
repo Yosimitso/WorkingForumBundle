@@ -41,5 +41,4 @@ class PostType extends AbstractType
 			'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Post',
 		]);
     }
-
 }

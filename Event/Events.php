@@ -4,5 +4,5 @@ namespace Yosimitso\WorkingForumBundle\Event;
 
 final class LogEvents
 {
-    const  = 'yosimitso_workingforum.message_post';
+    const messagePost = 'yosimitso_workingforum.message_post';
 }

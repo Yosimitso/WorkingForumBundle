@@ -4,6 +4,7 @@ namespace Yosimitso\WorkingForumBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Post
@@ -35,6 +36,7 @@ class Post
      * @var string
      *
      * @ORM\Column(name="content", type="text")
+     * @Assert\NotBlank(message="post.not_blank")
      */
     private $content;
 
@@ -64,6 +66,7 @@ class Post
      * @var \DateTime
      *
      * @ORM\Column(name="cdate", type="datetime")
+     * @Assert\NotBlank()
      */
     private $cdate;
 
@@ -71,7 +74,7 @@ class Post
      *
      * @ORM\Column(name="ip", type="string")
      */
-    private $ip; // FOR SECURITY REASON
+    private $ip; // FOR LEGAL AND SECURITY REASON
 
     /**
      * @var string
@@ -93,11 +96,28 @@ class Post
     private $postReport;
 
     /**
+     * @var integer
+     * @ORM\Column(name="voteUp", type="integer", nullable=true)
+     */
+
+    private $voteUp;
+
+    /**
      * Post constructor.
      */
-    public function __construct()
+    public function __construct(UserInterface $user = null, Thread $thread = null)
     {
-        $this->ip = htmlentities(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 0);
+        $this->setCdate(new \DateTime)
+            ->setPublished(1)
+            ->setIp(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 0);
+
+        if (!is_null($user)) {
+            $this->setUser($user);
+        }
+
+        if (!is_null($thread)) {
+            $this->setThread($thread);
+        }
     }
 
     /**
@@ -243,7 +263,7 @@ class Post
      */
     public function setIp($ip)
     {
-        $this->ip = $ip;
+        $this->ip = htmlentities($ip);
 
         return $this;
     }
@@ -275,4 +295,25 @@ class Post
     {
         return $this->postReport;
     }
+
+    /**
+     * @return int
+     */
+
+    public function getVoteUp()
+    {
+        return $this->voteUp;
+    }
+
+    /**
+     * @return Post
+     */
+
+    public function addVoteUp()
+    {
+        $this->voteUp += 1;
+        return $this;
+    }
+
+
 }

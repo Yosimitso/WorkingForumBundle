@@ -66,6 +66,7 @@ yosimitso_working_forum:
     allow_anonymous_read: false
     allow_moderator_delete_thread: false
     theme_color: green
+    lock_thread_older_than: 0
 knp_paginator:
     page_range: 1                      # default page range used in pagination control
     default_options:
@@ -166,6 +167,7 @@ yosimitso_working_forum:
     allow_anonymous_read: false
     allow_moderator_delete_thread: false
     theme_color: green
+    lock_thread_older_than: 0
 	
 knp_paginator:
     page_range: 1                      # default page range used in pagination control

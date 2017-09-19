@@ -71,8 +71,8 @@ class QuoteTwigExtension extends \Twig_Extension
                         . ' '
                         . $this->translator->trans('forum.has_written', [], 'YosimitsoWorkingForumBundle')
                         . " :** \n"
-                        . $post->getContent()
-                        . "\n\n";
+                        . '>'.$this->markdownQuote($this->quote($post->getContent()))
+                        . "\n";
                 }
 
                 return '';
@@ -83,6 +83,9 @@ class QuoteTwigExtension extends \Twig_Extension
         return $content;
     }
 
+    private function markdownQuote($text) {
+        return preg_replace('/\n/', "\n >", $text );
+    }
     /**
      * @return string
      */

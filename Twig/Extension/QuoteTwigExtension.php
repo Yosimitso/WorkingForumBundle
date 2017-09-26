@@ -65,7 +65,7 @@ class QuoteTwigExtension extends \Twig_Extension
                     ->findOneById((int) $listQuote[1])
                 ;
 
-                if (!is_null($post)) {
+                if (!is_null($post) && empty($post->getModerateReason())) {
                     return '>**'
                         . $post->getUser()->getUsername()
                         . ' '

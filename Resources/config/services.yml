@@ -6,28 +6,23 @@ services:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension
         tags:
             -  { name: twig.extension }
-        arguments: 
-            request: "@request_stack"
-            asset: "@twig.extension.assets"
-        
+        arguments: ["@request_stack", "@twig.extension.assets"]
+
     yosimitso_workingforum_quote:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\QuoteTwigExtension
         tags:
             -  { name: twig.extension }
-        arguments:
-            em: "@doctrine.orm.entity_manager"
-            trans: "@translator"
+        arguments: ["@doctrine.orm.entity_manager", "@translator"]
     yosimitso_workingforum_config:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\ConfigurationTwigExtension
         tags:
             - { name: twig.extension }
-        arguments:
-            themeColor: "%yosimitso_working_forum.theme_color%"
+        arguments: ["%yosimitso_working_forum.theme_color%"]
     yosimitso_workingforum_authorization:
         class: Yosimitso\WorkingForumBundle\Security\Authorization
         arguments :
-            securityChecker: "@security.authorization_checker"
-            tokenStorage: "@security.token_storage"
-            allowAnonymous: "%yosimitso_working_forum.allow_anonymous_read%"
+            - "@security.authorization_checker"
+            - "@security.token_storage"
+            - "%yosimitso_working_forum.allow_anonymous_read%"
 
 

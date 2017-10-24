@@ -138,7 +138,7 @@ class ThreadController extends Controller
                     );
 
                     return $this->redirect($this->generateUrl('workingforum_thread',
-                        ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, $this->container->getParameter('knp_paginator.default_options.page_name') => $post_list->getPageCount() ]
+                        ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount() ]
                     )
                     );
                 }

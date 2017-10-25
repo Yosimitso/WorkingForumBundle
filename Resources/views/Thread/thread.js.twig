@@ -42,21 +42,22 @@
 
         reason = prompt('{{ 'admin.report.why' | trans }}');
 
-
-        jQuery.ajax({
-        type: "POST",
-        url: '{{ path('workingforum_admin_report_action_moderate') }}',
-        crossDomain: false,
-        data: 'reason='+reason+'&postId='+id,
-        dataType: 'json',
-        async: false,
-        success: function(res){
-        if (res == 'ok')
-    {
-        jQuery('#wf_post'+id).html('<p class="wf_moderate">{{ 'forum.post_moderated' |trans }} '+reason+'</p>');
-    }
-    }
-    });
+if (reason != null) {
+            jQuery.ajax({
+            type: "POST",
+            url: '{{ path('workingforum_admin_report_action_moderate') }}',
+            crossDomain: false,
+            data: 'reason='+reason+'&postId='+id,
+            dataType: 'json',
+            async: false,
+            success: function(res){
+            if (res == 'ok')
+        {
+            jQuery('#wf_post'+id).html('<p class="wf_moderate">{{ 'forum.post_moderated' |trans }} '+reason+'</p>');
+        }
+        }
+        });
+      }
     }
 
     jQuery(document).ready(function() {

@@ -54,9 +54,7 @@ class ThreadRepository extends EntityRepository
             $where .= "(a.label LIKE '%" . $word . "%' OR a.subLabel LIKE '%" . $word . "%' OR b.content LIKE '%" . $word . "%') OR";
         }
 
-        if ($where != '') {
-            $where = rtrim($where, ' OR');
-        }
+        $where = rtrim($where, ' OR');
 
         $queryBuilder = $this->_em->createQueryBuilder();
         $queryBuilder

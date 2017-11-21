@@ -65,14 +65,14 @@ class QuoteTwigExtension extends \Twig_Extension
                     ->findOneById((int) $listQuote[1])
                 ;
 
-                if (!is_null($post)) {
+                if (!is_null($post) && empty($post->getModerateReason())) {
                     return '>**'
                         . $post->getUser()->getUsername()
                         . ' '
                         . $this->translator->trans('forum.has_written', [], 'YosimitsoWorkingForumBundle')
                         . " :** \n"
-                        . $post->getContent()
-                        . "\n\n";
+                        . '>'.$this->markdownQuote($this->quote($post->getContent()))
+                        . "\n";
                 }
 
                 return '';
@@ -83,6 +83,9 @@ class QuoteTwigExtension extends \Twig_Extension
         return $content;
     }
 
+    private function markdownQuote($text) {
+        return preg_replace('/\n/', "\n >", $text );
+    }
     /**
      * @return string
      */

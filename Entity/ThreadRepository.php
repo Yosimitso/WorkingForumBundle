@@ -51,10 +51,10 @@ class ThreadRepository extends EntityRepository
 
         foreach ($keywords as $word)
         {
-            $where .= "(a.label LIKE '%" . $word . "%' OR a.subLabel LIKE '%" . $word . "%' OR b.content LIKE '%" . $word . "%') ";
+            $where .= "(a.label LIKE '%" . $word . "%' OR a.subLabel LIKE '%" . $word . "%' OR b.content LIKE '%" . $word . "%') OR";
         }
 
-     
+        $where = rtrim($where, ' OR');
 
         $queryBuilder = $this->_em->createQueryBuilder();
         $queryBuilder

@@ -138,7 +138,7 @@ class ThreadController extends Controller
                     );
 
                     return $this->redirect($this->generateUrl('workingforum_thread',
-                        ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, $this->container->getParameter('knp_paginator.default_options.page_name') => $post_list->getPageCount() ]
+                        ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount() ]
                     )
                     );
                 }
@@ -475,6 +475,8 @@ class ThreadController extends Controller
         $target = $request->get('target');
 
         $thread = $em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneById($threadId);
+        $current_subforum = $thread->getSubforum();
+        $current_nbReplies = $thread->getNbReplies();
         $target = $em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneById($target);
 
         if (is_null($thread) || is_null($target))
@@ -482,9 +484,15 @@ class ThreadController extends Controller
             return new Reponse(null,500);
         }
 
+        $current_subforum->setNbThread($current_subforum->getNbThread() - 1);
+        $current_subforum->setNbPost($current_subforum->getNbPost() - $current_nbReplies);
         $thread->setSubforum($target);
+        $target->setNbThread($target->getNbThread() + 1);
+        $target->setNbPost($target->getNbPost() + $current_nbReplies);
 
         $em->persist($thread);
+        $em->persist($current_subforum);
+        $em->persist($target);
         $em->flush();
 
         return new Response(json_encode(['res' => 'true', 'targetLabel' => $target->getName()]), 200);

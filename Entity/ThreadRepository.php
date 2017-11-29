@@ -63,6 +63,7 @@ class ThreadRepository extends EntityRepository
             ->join('YosimitsoWorkingForumBundle:Post', 'b', 'WITH', 'a.id = b.thread')
             ->join('YosimitsoWorkingForumBundle:Subforum','c','WITH','a.subforum = c.id')
             ->where($where)
+            ->andWhere('b.moderateReason IS NULL')
             ;
 
         if (!empty($whereSubforum))

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Form\SearchType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 /**
  * Class SearchController
@@ -23,7 +24,12 @@ class SearchController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $listForum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')->findAll();
-        $form = $this->createForm(SearchType::class);
+        $form = $this->get('form.factory')
+            ->createNamedBuilder('', SearchType::class, null, array('csrf_protection' => false,))
+            ->add('page', HiddenType::class, ['data' => 1])
+            ->setMethod('GET')
+            ->getForm()
+        ;
         $form->handleRequest($request);
         $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
 

@@ -111,6 +111,7 @@ class Authorization
 
         if (!$subforum->hasAllowedRoles())
         {
+            exit('ici');
             return true;
         }
 

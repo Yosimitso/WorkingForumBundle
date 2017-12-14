@@ -41,7 +41,7 @@ Add to your composer.json, section 'require'
 ````json
 "require" : {
  [...]
- "yosimitso/workingforumbundle" : "~1.0",
+ "yosimitso/workingforumbundle" : "~1.1",
  "knplabs/knp-paginator-bundle": "~2.5",
  "knplabs/knp-markdown-bundle": "~1.5",
  "sensio/framework-extra-bundle": "~3.0"
@@ -142,7 +142,7 @@ Ajoutez à votre composer.json, section 'require'
 ````json
 "require" : {
         [...]
-        "yosimitso/workingforumbundle" : "~1.0",
+        "yosimitso/workingforumbundle" : "~1.1",
         "knplabs/knp-paginator-bundle": "~2.5",
         "knplabs/knp-markdown-bundle": "~1.5",
         "sensio/framework-extra-bundle": "~3.0"

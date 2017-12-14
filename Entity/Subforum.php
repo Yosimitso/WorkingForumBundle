@@ -342,16 +342,16 @@ class Subforum
      */
     public function hasAllowedRoles()
     {
-        if (count($this->allowedRoles) > 1) {
-            return true;
-        }
-
-        if (count($this->allowedRoles <= 0)) {
+        if (count($this->allowedRoles <= 0)) { // NO ALLOWED ROLES
             return false;
         }
 
-        if (count($this->allowedRoles) == 1 && empty($this->allowedRoles[0])) {
-            return false;
+        if (count($this->allowedRoles) >= 1) {
+            if (empty($this->allowedRoles[0])) { // EMPTY ROLE
+                return false;
+            } else {
+                return true;
+            }
         }
     }
 }

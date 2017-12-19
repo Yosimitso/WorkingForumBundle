@@ -59,6 +59,7 @@ class ThreadType extends AbstractType
                     'required'           => false,
                 ]
             )
+
         ;
     }
 

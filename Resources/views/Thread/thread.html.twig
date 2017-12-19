@@ -35,6 +35,7 @@
         <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
         <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/twitter.js') }}"></script>
         <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/github.js') }}"></script>
+        <script src="{{ asset('bundles/yosimitsoworkingforum/js/nicefileinput/jquery.nicefileinput.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}"
           type="text/css" media="all"/>
     <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}"
@@ -127,7 +128,7 @@
                         <p class="wf_post_a_message">{{ 'forum.thread_too_old_locked' | trans }}</p>
                     </div>
                 {% else %}
-                    {% include 'YosimitsoWorkingForumBundle:Post:textarea.html.twig' with {'listSmiley': listSmiley, 'form': form} only %}
+                    {% include 'YosimitsoWorkingForumBundle:Post:textarea.html.twig' with {'listSmiley': listSmiley, 'form': form, 'parameters': parameters} only %}
                 {% endif %}
             {% else %}
 

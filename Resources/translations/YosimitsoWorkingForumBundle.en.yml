@@ -57,6 +57,16 @@ forum:
     pin_thread: Pin thread
     thread_too_old_locked: This thread is too old to reply
     quote: Quote this post
+    enclosed_files: Enclosed file(s)
+    file_upload:
+        accepted_format: Accepted formats
+        add_enclosed_file: Add an enclosed file
+        ko_max: ko max.
+        error:
+            default: An error occured on file upload, please contact an administrator
+            max_size_exceeded: Your files exceed the maximum size allowed, the limit is %max_size% ko
+            invalid_format: "Your file format isn't allowed : %format%"
+            invalid_filename: "Your filename is invalid : %filename%"
 
 pagination:
     previous: Previous

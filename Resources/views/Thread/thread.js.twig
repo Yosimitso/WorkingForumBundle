@@ -42,22 +42,22 @@
 
         reason = prompt('{{ 'admin.report.why' | trans }}');
 
-if (reason != null) {
-            jQuery.ajax({
-            type: "POST",
-            url: '{{ path('workingforum_admin_report_action_moderate') }}',
-            crossDomain: false,
-            data: 'reason='+reason+'&postId='+id,
-            dataType: 'json',
-            async: false,
-            success: function(res){
-            if (res == 'ok')
-        {
-            jQuery('#wf_post'+id).html('<p class="wf_moderate">{{ 'forum.post_moderated' |trans }} '+reason+'</p>');
-        }
-        }
-        });
-      }
+        if (reason != null) {
+        jQuery.ajax({
+        type: "POST",
+        url: '{{ path('workingforum_admin_report_action_moderate') }}',
+        crossDomain: false,
+        data: 'reason='+reason+'&postId='+id,
+        dataType: 'json',
+        async: false,
+        success: function(res){
+        if (res == 'ok')
+    {
+        jQuery('#wf_post'+id).html('<p class="wf_moderate">{{ 'forum.post_moderated' |trans }} '+reason+'</p>');
+    }
+    }
+    });
+    }
     }
 
     function voteUp(id, element)
@@ -66,21 +66,26 @@ if (reason != null) {
             type: "POST",
             url: '{{ path('workingforum_vote_up') }}',
             crossDomain: false,
-            data: 'postId='+id,
+            data: 'postId=' + id,
             dataType: 'json',
             async: false,
-            success: function(content){
-                if (content.res == 'true')
-                {
+            success: function (content) {
+                if (content.res == 'true') {
                     let img = jQuery(element).html();
                     jQuery(element).remove();
-                    jQuery('#voteUpLabel_'+id).html(img+'+ '+content.voteUp);
+                    jQuery('#voteUpLabel_' + id).html(img + '+ ' + content.voteUp);
                 }
                 else {
-                    alert('Sorry an error occured : '+content.errMsg);
+                    alert('Sorry an error occured : ' + content.errMsg);
                 }
             }
         });
+    }
+
+    function showEnclosed(arrow, id)
+    {
+        jQuery('#wf_enclosed_files_' + id).slideDown();
+        jQuery(arrow).remove();
     }
 
     jQuery(document).ready(function() {
@@ -117,5 +122,15 @@ if (reason != null) {
             });
         }
     });
+
+    jQuery('.wf_add_enclosed_file').click(function(e)
+{
+    e.preventDefault();
+    var index = jQuery('#wf_enclosed_files_list li').length;
+    var prototype = jQuery('#wf_enclosed_files_list').data('prototype');
+    prototype = prototype.replace(/__name__/g, index);
+    jQuery('#wf_enclosed_files_list').append('<li>'+prototype+'</li>').show();
+    $('#post_filesUploaded_'+index).nicefileinput();
+});
 });
 </script>

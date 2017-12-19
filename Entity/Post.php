@@ -103,7 +103,21 @@ class Post
     private $voteUp;
 
     /**
+     * @ORM\OneToMany(targetEntity="Yosimitso\WorkingForumBundle\Entity\File", mappedBy="post", cascade={"persist","remove"})
+     *
+     * @var ArrayCollection
+     */
+    private $files;
+
+    /**
+     *
+     */
+    private $filesUploaded;
+
+    /**
      * Post constructor.
+     * @param UserInterface|null $user
+     * @param Thread|null $thread
      */
     public function __construct(UserInterface $user = null, Thread $thread = null)
     {
@@ -314,6 +328,61 @@ class Post
         $this->voteUp += 1;
         return $this;
     }
+
+    /**
+ * @return ArrayCollection
+ */
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    /**
+     * @return Post
+     */
+    public function addFiles($files)
+    {
+        if (is_array($files)) {
+            foreach ($files as $file) {
+                $this->files[] = $file;
+            }
+        } else {
+            $this->files[] = $files;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param filesUploaded
+     *
+     * @return Post
+     */
+    public function setFilesUploaded($filesUploaded)
+    {
+        $this->filesUploaded = $filesUploaded;
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getFilesUploaded()
+    {
+        return $this->filesUploaded;
+    }
+
+    /**
+     * @param $file
+     * @return $this
+     */
+    public function addFilesUploaded($file)
+    {
+        $this->filesUploaded[] = $file;
+        return $this;
+    }
+
 
 
 }

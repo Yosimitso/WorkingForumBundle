@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 /**
  * Class PostType
@@ -28,6 +30,16 @@ class PostType extends AbstractType
                     'translation_domain' => 'YosimitsoWorkingForumBundle',
                     'label' => 'forum.content',
                     'attr' => ['class' => 'wf_textarea_post'],
+                ]
+            )
+            ->add('filesUploaded',
+                CollectionType::class,
+                [
+                    'entry_type' => FileType::class,
+                    'entry_options' => ['attr' => ['class' => 'wf_input_submit']],
+                    'allow_add' => true,
+                    'required' => false,
+                    'label' => false
                 ]
             );
     }

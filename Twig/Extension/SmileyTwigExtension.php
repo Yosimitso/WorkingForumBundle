@@ -107,7 +107,7 @@ class SmileyTwigExtension extends \Twig_Extension
         foreach ($this->listSmiley as $key => $value) {
             $list[$key] =
                 '<img src="'
-                . $this->asset->getAssetUrl('/bundles/yosimitsoworkingforum/images/smiley/' . $value)
+                . $this->asset->getUrl('/bundles/yosimitsoworkingforum/images/smiley/' . $value)
                 . '" />';
         }
 

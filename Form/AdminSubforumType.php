@@ -73,6 +73,4 @@ class AdminSubforumType extends AbstractType
             ]
         );
     }
-
-
 }

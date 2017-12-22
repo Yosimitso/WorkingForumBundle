@@ -1,0 +1,10 @@
+thread:
+    label:
+        not_blank: The thread must have have a title
+        min_length: The thread's title must have at least {{ limit }} characters
+        max_length: The thread's title must have less than {{ limit }} characters
+post:
+    not_blank: The post cannot be empty
+
+forum:
+    not_blank: The forum must have a name

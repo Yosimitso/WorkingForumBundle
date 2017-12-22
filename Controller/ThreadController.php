@@ -57,16 +57,11 @@ class ThreadController extends Controller
             );
 
         }
-            $autolock = $this->isAutoLock($thread); // CHECK IF THREAD IS AUTOMATICALLY LOCKED (TOO OLD?)
-
-            // Smileys available for markdown
-            $listSmiley = $this->get('yosimitso_workingforum_smiley')->getListSmiley();
-
+            $autolock = $this->get('yosimitso_workingforum_util_thread')->isAutolock($thread); // CHECK IF THREAD IS AUTOMATICALLY LOCKED (TOO OLD?)
+            $listSmiley = $this->get('yosimitso_workingforum_smiley')->getListSmiley(); // Smileys available for markdown
             $paginator = $this->get('knp_paginator');
 
-            $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
-
-            $my_post = new Post;
+            $my_post = new Post($user, $thread);
             $form = $this->createForm(PostType::class, $my_post); // create form for posting
             $form->handleRequest($request);
 
@@ -96,24 +91,10 @@ class ThreadController extends Controller
 
                 if ($form->isValid()) {
 
-                    $published = 1;
-                    $thread->addNbReplies(1)
-                           ->setLastReplyDate(new \DateTime)
-                            ->setLastReplyUser($user);
-                    ; // Update thread statistic
-
-                    $my_post->setCdate(new \DateTime)
-                            ->setPublished($published)
-                            ->setContent($my_post->getContent())
-                            ->setUser($user)
-                    ;
-                    $my_post->setThread($thread);
-
-                    $subforum->setNbPost($subforum->getNbPost() + 1); // UPDATE THREAD MESSAGE COUNTER
-                    $subforum->setLastReplyDate(new \DateTime)
-                            ->setLastReplyUser($user);
-
+                    $subforum->newPost($user); // UPDATE SUBFORUM STATISTIC
+                    $thread->addReply($user); // UPDATE THREAD STATISTIC
                     $user->addNbPost(1);
+
                     $em->persist($user);
                     $em->persist($thread);
                     $em->persist($my_post);
@@ -160,28 +141,33 @@ class ThreadController extends Controller
             ->findByThread($thread->getId())
         ;
 
+
         $post_list = $paginator->paginate(
             $post_query,
             $request->query->get('page',1)/*page number*/,
             $this->container->getParameter('yosimitso_working_forum.post_per_page') /*limit per page*/
         );
 
+        $hasAlreadyVoted = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\PostVote')->getThreadVoteByUser($thread, $user);
 
-
-
+        $parameters  = [
+            'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format'),
+            'thresholdUsefulPost' => $this->container->getParameter('yosimitso_working_forum.vote')['threshold_useful_post']
+            ];
         return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',
             [
                 'subforum'    => $subforum,
                 'thread'      => $thread,
                 'post_list'   => $post_list,
-                'date_format' => $date_format,
+                'parameters' => $parameters,
                 'form'        => (isset($form)) ? $form->createView() : null,
                 'listSmiley'  => $listSmiley,
                 'forbidden'   => false,
                 'request'     => $request,
                 'moveThread' => $moveThread,
                 'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread'),
-                'autolock' => $autolock
+                'autolock' => $autolock,
+                'hasAlreadyVoted' => $hasAlreadyVoted
             ]
         );
 
@@ -202,51 +188,30 @@ class ThreadController extends Controller
         $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
 
           if (!$authorizationChecker->hasSubforumAccess($subforum)) {
-            return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',
-                [
-                    'subforum'    => $subforum,
-                    'thread'      => $thread,
-                    'forbidden'   => true,
-                    'forbiddenMsg' => $authorizationChecker->getErrorMessage()
-                ]
-            );
+              $this->get('session')
+                  ->getFlashBag()
+                  ->add(
+                      'error',
+                      $this->get('translator')->trans($authorizationChecker->getErrorMessage(), [], 'YosimitsoWorkingForumBundle')
+                  )
+              ;
+              return $this->redirect($this->generateUrl('workingforum_forum'));
 
         }
 
-
-        $my_thread = new Thread;
-        $my_post = new Post;
-        $my_thread->addPost($my_post);
         $user = $this->getUser();
+
+        $my_thread = new Thread($user, $subforum);
+        $my_post = new Post($user);
+        $my_thread->addPost($my_post);
+
         $listSmiley = $this->get('yosimitso_workingforum_smiley')->getListSmiley(); // Smileys available for markdown
         $form = $this->createForm(ThreadType::class, $my_thread);
         $form->handleRequest($request);
 
 
         if ($form->isValid()) {
-            $published = 1;
-            $my_thread->addNbReplies(1)
-                      ->setLastReplyDate(new \DateTime)
-                      ->setCdate(new \DateTime)
-                      ->setNbReplies(1)
-                      ->setLastReplyUser($user)
-            ;
-
-            $my_thread->setSubforum($subforum);
-            $my_thread->setAuthor($user);
-
-            $em->persist($my_thread);
-            $my_post->setCdate(new \DateTime)
-                    ->setPublished($published)
-                    ->setContent($my_post->getContent())
-                    ->setUser($user)
-            ;
-
-
-            $subforum->setNbPost($subforum->getNbPost() + 1);
-            $subforum->setNbThread($subforum->getNbThread() + 1);
-            $subforum->setLastReplyDate(new \DateTime);
-            $subforum->setLastReplyUser($user);
+            $subforum->newThread($user); // UPDATE STATISTIC
 
             $user->addNbPost(1);
             $em->persist($user);
@@ -255,9 +220,9 @@ class ThreadController extends Controller
 
             $em->flush();
 
-            $my_thread->setSlug($my_thread->getId() . '-' . Slugify::convert($my_thread->getLabel()));
+            $my_thread->setSlug($my_thread->getId() . '-' . Slugify::convert($my_thread->getLabel())); // SLUG NEEDS THE ID
 
-            $my_post->setThread($my_thread);
+            $my_post->setThread($my_thread); // ATTACH TO THREAD
             $em->persist($my_post);
             $em->persist($my_thread);
             $em->flush();
@@ -268,7 +233,7 @@ class ThreadController extends Controller
             )
             ;
 
-            return $this->redirect($this->generateUrl('workingforum_subforum', ['subforum_slug' => $subforum_slug]));
+            return $this->redirect($this->generateUrl('workingforum_subforum', ['subforum_slug' => $subforum_slug])); // REDIRECT TO THE NEW THREAD
 
         }
 
@@ -396,9 +361,7 @@ class ThreadController extends Controller
         ;
         $post = $em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($post_id);
 
-        if (is_null($check_already) && empty($post->getModerateReason) && !is_null($user
-            )
-        ) // THE POST HASN'T BEEN REPORTED AND NOT ALREADY MODERATED
+        if (is_null($check_already) && empty($post->getModerateReason) && !is_null($user)) // THE POST HASN'T BEEN REPORTED AND NOT ALREADY MODERATED
         {
             $post = $em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($post_id);
             if (!is_null($post)) {
@@ -500,7 +463,7 @@ class ThreadController extends Controller
 
         /**
          * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-         *
+         * The thread is deleted by modo or admin
          */
     public function deleteThreadAction($threadSlug)
     {
@@ -543,26 +506,6 @@ class ThreadController extends Controller
         );
 
 
-    }
-
-    private function isAutoLock($thread) {
-        if ($this->getParameter('yosimitso_working_forum.lock_thread_older_than'))
-        {
-            $diff = $thread->getCdate()->diff(new \DateTime());
-            if ($diff->days > $this->getParameter('yosimitso_working_forum.lock_thread_older_than'))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-        }
-        else
-        {
-            return false;
-        }
     }
 
 }

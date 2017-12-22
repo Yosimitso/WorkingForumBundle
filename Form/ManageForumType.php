@@ -45,17 +45,6 @@ class ManageForumType extends AbstractType
             ]
         );
     }
-
-    /**
-     * @return string
-     */
-    /*
-    public function getName()
-    {
-        return 'yosimitso_workingforumbundle_forum';
-    }
-    */
-
 }
 
 

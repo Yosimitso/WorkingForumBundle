@@ -65,13 +65,4 @@ class SearchType extends AbstractType
     {
         $resolver->setDefaults([]);
     }
-
-    /**
-     * @return string
-     */
-    /*
-    public function getName()
-    {
-        return 'yosimitso_working_forumbundle_post';
-    }*/
 }

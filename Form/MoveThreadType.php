@@ -51,6 +51,4 @@ class MoveThreadType extends AbstractType
             ]
         );
     }
-
-
 }

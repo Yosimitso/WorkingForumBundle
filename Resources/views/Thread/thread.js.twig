@@ -60,6 +60,29 @@ if (reason != null) {
       }
     }
 
+    function voteUp(id, element)
+    {
+        jQuery.ajax({
+            type: "POST",
+            url: '{{ path('workingforum_vote_up') }}',
+            crossDomain: false,
+            data: 'postId='+id,
+            dataType: 'json',
+            async: false,
+            success: function(content){
+                if (content.res == 'true')
+                {
+                    let img = jQuery(element).html();
+                    jQuery(element).remove();
+                    jQuery('#voteUpLabel_'+id).html(img+'+ '+content.voteUp);
+                }
+                else {
+                    alert('Sorry an error occured : '+content.errMsg);
+                }
+            }
+        });
+    }
+
     jQuery(document).ready(function() {
     jQuery('#wf_move_thread_button').click(function () {
 

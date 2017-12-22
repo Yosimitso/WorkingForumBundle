@@ -5,6 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Subforum
@@ -43,6 +44,7 @@ class Subforum
      * @var string
      *
      * @ORM\Column(name="name", type="string")
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -57,6 +59,7 @@ class Subforum
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $slug;
 
@@ -353,5 +356,35 @@ class Subforum
                 return true;
             }
         }
+
+    }
+
+    /**
+     * @param UserInterface $user
+     * @return bool
+     * Update statistic on new post
+     */
+    public function newPost(UserInterface $user)
+    {
+        $this->setNbPost($this->getNbPost() + 1)
+            ->setLastReplyDate(new \DateTime)
+            ->setLastReplyUser($user);
+
+        return true;
+    }
+
+    /**
+     * @param UserInterface $user
+     * @return bool
+     * Update statistic on new post
+     */
+    public function newThread(UserInterface $user)
+    {
+        $this->setNbPost($this->getNbPost() + 1)
+            ->setNbThread($this->getNbThread() + 1)
+            ->setLastReplyDate(new \DateTime)
+            ->setLastReplyUser($user);
+
+        return true;
     }
 }

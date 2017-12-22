@@ -75,3 +75,7 @@ workingforum_admin_delete_forum:
 workingforum_search:
     path: /search
     defaults: {_controller: YosimitsoWorkingForumBundle:Search:index }
+
+workingforum_vote_up:
+    path: /voteup
+    defaults: { _controller: YosimitsoWorkingForumBundle:Post:voteUp }

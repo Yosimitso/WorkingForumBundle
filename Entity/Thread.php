@@ -43,6 +43,7 @@ class Thread
      * @var \DateTime
      *
      * @ORM\Column(name="cdate", type="datetime")
+     * @Assert\NotBlank()
      */
     private $cdate;
 
@@ -84,16 +85,13 @@ class Thread
 
     /**
      * @var string
-     *
-     * @todo use translated error messages
-     *
      * @ORM\Column(name="label", type="string")
-     * @Assert\NotBlank(message="Vous devez entrez un titre")
+     * @Assert\NotBlank(message="thread.label.not_blank")
      * @Assert\Length(
      *     min=5,
-     *     minMessage="Votre titre doit contenir au moins {{ limit }} caracteres",
+     *     minMessage="thread.label.min_length",
      *     max=50,
-     *     maxMessage="Votre titre ne doit pas contenir plus de {{ limit }} caracteres"
+     *     maxMessage="thread.label.max_length"
      * )
      */
     private $label;
@@ -135,9 +133,19 @@ class Thread
         return $this->id;
     }
 
-    public function __construct()
+    public function __construct(UserInterface $user, Subforum $subforum, Post $post = null)
     {
         $this->post = new ArrayCollection;
+        $this->setLastReplyDate(new \DateTime)
+            ->setCdate(new \DateTime)
+            ->setNbReplies(1) // A THREAD MUST HAVE AT LEAST 1 POST
+            ->setLastReplyUser($user)
+            ->setAuthor($user)
+            ->setSubforum($subforum);
+
+        if (!is_null($post)) {
+            $this->addPost($post);
+        }
     }
 
     /**
@@ -422,6 +430,19 @@ class Thread
     public function getPin()
     {
         return $this->pin;
+    }
+
+    /**
+     * @param \Yosimitso\WorkingForumBundle\Entity\UserInterface $user
+     * @return bool
+     * Update statistic on new post
+     */
+    public function addReply(UserInterface $user) {
+        $this->addNbReplies(1)
+            ->setLastReplyDate(new \DateTime)
+            ->setLastReplyUser($user);
+
+        return true;
     }
 
 }

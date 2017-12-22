@@ -98,9 +98,9 @@
 
 .wf_post {
     padding-left: 10px;
-    padding-top: 10px;
-    border-bottom: 1px solid;
+    padding-top: 5px;
     padding-bottom: 5px;
+    border-bottom: 1px solid;
 }
 
 .wf_post .wf_post-left {
@@ -109,6 +109,10 @@
     border-radius: 3px;
 }
 
+.wf_post-left, .wf_post-right {
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
 .wf_post .wf_post-admin {
     float: left;
     padding: 10px;
@@ -124,7 +128,8 @@
 }
 
 .wf_post .wf_post-right {
-    margin-left: 150px;
+    margin-left: 130px;
+    padding-left:20px;
     word-wrap: break-word;
 }
 
@@ -544,6 +549,10 @@ code {
     font-size: 10px;
 }
 
+.wf_cadre-img {
+    width: 80px;
+}
+
 .wf_cadre-img-small {
     vertical-align: middle;
     width: 40px;
@@ -568,5 +577,13 @@ code {
 
 .wf_date a:hover, wf_date a:visited, .wf_date a:active, .wf_date a:focus {
     text-decoration: none;
+}
+
+.wf_block_vote {
+    clear:both;
+}
+
+.wf_useful_post {
+    background-color: rgba(81,173,81,0.2);
 }
 

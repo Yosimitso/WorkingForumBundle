@@ -279,7 +279,7 @@ class Subforum
     /**
      * @param UserInterface $lastReplyUser
      *
-     * @return Thread
+     * @return Subforum
      */
     public function setLastReplyUser(UserInterface $lastReplyUser)
     {
@@ -345,18 +345,12 @@ class Subforum
      */
     public function hasAllowedRoles()
     {
-        if (count($this->allowedRoles <= 0)) { // NO ALLOWED ROLES
-            return false;
+        // Check if there is one or more allowed role and is not an empty one
+        if (count($this->allowedRoles) >= 1 && !empty($this->allowedRoles[0])) {
+            return true;
         }
 
-        if (count($this->allowedRoles) >= 1) {
-            if (empty($this->allowedRoles[0])) { // EMPTY ROLE
-                return false;
-            } else {
-                return true;
-            }
-        }
-
+        return false;
     }
 
     /**

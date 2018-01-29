@@ -36,9 +36,9 @@
         <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/twitter.js') }}"></script>
         <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/github.js') }}"></script>
         <script src="{{ asset('bundles/yosimitsoworkingforum/js/nicefileinput/jquery.nicefileinput.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}"
+        <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}"
           type="text/css" media="all"/>
-    <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}"
+        <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}"
           type="text/css" media="all"/>
 
         <script>
@@ -113,7 +113,7 @@
             <h2>{{ thread.sublabel }}</h2>
 
             {% for post in post_list %}
-               {% include 'YosimitsoWorkingForumBundle:Post:post.html.twig' with {'post': post, 'thread': thread, 'parameters': parameters, 'hasAlreadyVoted': hasAlreadyVoted, 'autolock': autolock, 'loop': loop} only %}
+                {% include 'YosimitsoWorkingForumBundle:Post:post.html.twig' with {'post': post, 'thread': thread, 'parameters': parameters, 'hasAlreadyVoted': hasAlreadyVoted, 'autolock': autolock, 'loop': loop} only %}
             {% endfor %}
 
             {{ knp_pagination_render(post_list) }}
@@ -128,7 +128,16 @@
                         <p class="wf_post_a_message">{{ 'forum.thread_too_old_locked' | trans }}</p>
                     </div>
                 {% else %}
-                    {% include 'YosimitsoWorkingForumBundle:Post:textarea.html.twig' with {'listSmiley': listSmiley, 'form': form, 'parameters': parameters} only %}
+                    {{ form_start(form) }}
+                    {% embed 'YosimitsoWorkingForumBundle:Post:textarea.html.twig' with {'listSmiley': listSmiley, 'form': form, 'parameters': parameters, 'submitLabelKey': 'forum.submit_post'} only %}
+                        {% block header %}
+                            <p class="wf_post_a_message">{{ 'forum.post_a_message' | trans([], 'YosimitsoWorkingForumBundle') }}</p>
+                        {% endblock %}
+                        {% block extraInput %}
+                            {{ form_rest(form) }}
+                        {% endblock %}
+                    {% endembed %}
+                    {{ form_end(form) }}
                 {% endif %}
             {% else %}
 

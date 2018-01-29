@@ -215,6 +215,7 @@ class ThreadController extends Controller
 
         }
 
+        $fileUploader = $this->get('yosimitso_workingforum_util_fileuploader');
         $user = $this->getUser();
 
         $my_thread = new Thread($user, $subforum);
@@ -227,6 +228,23 @@ class ThreadController extends Controller
 
 
         if ($form->isValid()) {
+
+            if (!empty($form->getData()->getFilesUploaded())) {
+                $file = $fileUploader->upload($form->getData()->getFilesUploaded(), $my_post);
+                if (!$file) { // FILE UPLOAD FAILED
+
+                    $flashbag->add(
+                        'error',
+                        $fileUploader->getErrorMessage()
+                    );
+                    return $this->redirect(
+                        $this->generateUrl(
+                            'workingforum_new_thread',
+                            ['subforum_slug' => $subforum_slug]
+                        ));
+                }
+                $my_post->addFiles($file);
+            }
 
             $subforum->newThread($user); // UPDATE STATISTIC
 
@@ -254,12 +272,19 @@ class ThreadController extends Controller
 
         }
 
+        $fileUploader = $this->get('yosimitso_workingforum_util_fileuploader');
+        $parameters  = [ // PARAMETERS USED BY TEMPLATE
+            'fileUpload' => $this->container->getParameter('yosimitso_working_forum.file_upload')
+        ];
+        $parameters['fileUpload']['maxSize'] = $fileUploader->getMaxSize();
+
         return $this->render('YosimitsoWorkingForumBundle:Thread:new.html.twig',
             [
                 'subforum'   => $subforum,
                 'form'       => $form->createView(),
                 'listSmiley' => $listSmiley,
                 'request'    => $request,
+                'parameters' => $parameters
             ]
         );
     }

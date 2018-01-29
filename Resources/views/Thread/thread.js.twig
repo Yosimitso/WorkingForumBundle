@@ -122,15 +122,5 @@
             });
         }
     });
-
-    jQuery('.wf_add_enclosed_file').click(function(e)
-{
-    e.preventDefault();
-    var index = jQuery('#wf_enclosed_files_list li').length;
-    var prototype = jQuery('#wf_enclosed_files_list').data('prototype');
-    prototype = prototype.replace(/__name__/g, index);
-    jQuery('#wf_enclosed_files_list').append('<li>'+prototype+'</li>').show();
-    $('#post_filesUploaded_'+index).nicefileinput();
-});
 });
 </script>

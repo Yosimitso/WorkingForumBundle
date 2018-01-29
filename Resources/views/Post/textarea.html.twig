@@ -1,16 +1,31 @@
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 <div class="wf_new_post" id="wf_new_post">
-    <p class="wf_post_a_message">{{ 'forum.post_a_message' | trans }}</p>
+    {% block header %}
+    {% endblock %}
     <script>
-        function insertSmiley(code) {
-            jQuery('.wf_textarea_post').insertAtCaret(code);
+        jQuery(document).ready(function() {
+            jQuery('.wf_add_enclosed_file').click(function(e)
+            {
+                e.preventDefault();
+                var index = jQuery('#wf_enclosed_files_list li').length;
+                var prototype = jQuery('#wf_enclosed_files_list').data('prototype');
+                prototype = prototype.replace(/__name__/g, index);
 
-        }
+                jQuery('#wf_enclosed_files_list').append('<li>'+prototype+'</li>').show();
+                $('.wf_file_upload input[type=file]').nicefileinput();
+            });
+
+            jQuery('.wf_insert-smiley').click(function(e) {
+                e.preventDefault();
+                var key = jQuery(this).data('key');
+                jQuery('.wf_textarea_post').insertAtCaret(key);
+            });
+        });
     </script>
     <div id="wf_smiley">
         <ul>
             {% for key,smiley in listSmiley %}
-                <li><a href="#" onclick="insertSmiley('{{ key }}'); return false;"><img
+                <li><a href="#" class="wf_insert-smiley" data-key="{{ key }}"><img
                                 src="{{ asset('bundles/yosimitsoworkingforum/images/smiley/'~smiley) }}"/></a>
                 </li>
             {% endfor %}
@@ -18,9 +33,6 @@
 
     </div>
     <div class="wf_clear"></div>
-    {{ form_start(form) }}
-
-
     <p>{{ form_widget(form.content) }}</p>
 
     {% if parameters.fileUpload.enable %} {# FILE UPLOAD ARE ALLOWED#}
@@ -39,9 +51,8 @@
             </div>
         </div>
     {% endif %}
-
-    {{ form_rest(form) }}
-    <p><input type="submit" value="{{ 'forum.submit_post' | trans }}"
+    {% block extraInput %}
+    {% endblock %}
+    <p><input type="submit" value="{{ submitLabelKey | trans }}"
               class="wf_button wf_width100"/></p>
-    {{ form_end(form) }}
 </div>

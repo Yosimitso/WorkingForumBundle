@@ -626,10 +626,9 @@ code {
    display:block;
 }
 
-.wf_add_enclosed_file:hover {
+.wf_add_enclosed_file:hover, .wf_add_enclosed_file:focus {
     text-decoration: none;
     color: black;
-
 }
 
 .wf_enclosed_files ul {
@@ -663,9 +662,12 @@ code {
     width: 100px;
 }
 
-.wf_file_upload .NFI-filename {
+.wf_new_thread .wf_file_upload .NFI-filename,
+.wf_file_upload .NFI-filename
+{
     height:30px;
-    width:300px
+    width:300px;
+    border-radius: 0;
 }
 
 #wf_enclosed_files_list {

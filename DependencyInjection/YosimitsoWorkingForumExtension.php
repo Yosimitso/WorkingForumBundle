@@ -33,31 +33,37 @@ class YosimitsoWorkingForumExtension extends Extension
 
         if (!isset($config['date_format'])) {
             throw new \InvalidArgumentException(
-                'The "post_per_page" option must be set in "yosimitso_working_forum"'
+                'The "post_per_page" option must be set in "yosimitso_working_forum", please see README.MD'
             );
         }
 
         if (!isset($config['allow_anonymous_read'])) {
             throw new \InvalidArgumentException(
-                'The "allow_anonymous_read" option must be set in "yosimitso_working_forum"'
+                'The "allow_anonymous_read" option must be set in "yosimitso_working_forum", please see README.MD'
             );
         }
 
         if (!isset($config['theme_color'])) {
             throw new \InvalidArgumentException(
-                'The "theme_color" option must be set in "yosimitso_working_forum"'
+                'The "theme_color" option must be set in "yosimitso_working_forum", please see README.MD'
             );
         }
 
         if (!isset($config['lock_thread_older_than'])) {
             throw new \InvalidArgumentException(
-                'The "lock_thread_older_than" option must be set in "yosimitso_working_forum"'
+                'The "lock_thread_older_than" option must be set in "yosimitso_working_forum", please see README.MD'
             );
         }
 
         if (!isset($config['vote'])) {
             throw new \InvalidArgumentException(
-                'The "vote" array option must be set in "yosimitso_working_forum"'
+                'The "vote" array option must be set in "yosimitso_working_forum", please see README.MD'
+            );
+        }
+
+        if (!isset($config['file_upload'])) {
+            throw new \InvalidArgumentException(
+                'The "file_upload" array option must be set in "yosimitso_working_forum", please see README.MD'
             );
         }
 
@@ -75,5 +81,6 @@ class YosimitsoWorkingForumExtension extends Extension
         $container->setParameter('yosimitso_working_forum.theme_color', $config['theme_color']);
         $container->setParameter('yosimitso_working_forum.lock_thread_older_than', $config['lock_thread_older_than']);
         $container->setParameter('yosimitso_working_forum.vote', $config['vote']);
+        $container->setParameter('yosimitso_working_forum.file_upload', $config['file_upload']);
     }
 }

@@ -43,6 +43,7 @@
                       src="{{ asset('bundles/yosimitsoworkingforum/images/moderate.png') }}"></a>
             {% endif %}
         </p>
+        {# POST CONTENT #}
         <div id="wf_post{{ post.id }}">
             {% if post.moderateReason is empty %}
                 {{ post.content |  quote | markdown | replace({'\n':'<br />'})| smiley |  raw }}
@@ -50,6 +51,7 @@
                 <p class="wf_moderate">{{ 'forum.post_moderated' |trans }} {{ post.moderateReason }}</p>
             {% endif %}
         </div>
+        {# POST VOTE #}
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and loop.index != 1 and post.user.id != app.user.id and post.moderateReason is empty and not thread.locked and not autolock  %}
             <div class="wf_block_vote">
                 {% if post.id in hasAlreadyVoted %}
@@ -67,6 +69,26 @@
                 {% endif %}
                 <span class="voteup"
                       id="voteUpLabel_{{ post.id }}">+ {{ post.voteUp |default(0) }}</span>
+            </div>
+        {% endif %}
+        {# POST ENCLOSED FILES #}
+        {% if post.files | length > 0  %}
+            <div class="wf_enclosed_files">
+                <span class="title">
+                    {{ 'forum.enclosed_files' | trans }} <a href="#" onclick="showEnclosed(this, {{ post.id }}); return false;">&darr;</a>
+                </span>
+                <ul id="wf_enclosed_files_{{ post.id }}">
+                    {%  for file in post.files %}
+                        <li>
+                            <a href="{{ asset(file.path) }}">
+                                {% if file.extension in ['jpg', 'jpeg', 'png', 'gif', 'tiff'] and parameters.fileUpload.preview_file  %}
+                                <img class="preview" src="{{ asset(file.path) }}" />
+                                {% endif %}
+                                {{ file.originalName }} <span class="size">- {{ (file.size/1000) | round }} ko</span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
         {% endif %}
     </div>

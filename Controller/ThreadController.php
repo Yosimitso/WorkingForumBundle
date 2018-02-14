@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
+use Yosimitso\WorkingForumBundle\Entity\File;
 use Yosimitso\WorkingForumBundle\Form\MoveThreadType;
 use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
@@ -44,6 +45,10 @@ class ThreadController extends Controller
         $subforum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
         $thread = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')->findOneBySlug($thread_slug);
         $user = $this->getUser();
+        $threadUtil = $this->get('yosimitso_workingforum_util_thread');
+        $anonymousUser = (is_null($user)) ? true : false;
+        $flashbag =  $this->get('session')->getFlashBag();
+        $fileUploader = $this->get('yosimitso_workingforum_util_fileuploader');
 
         $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
         if (!$authorizationChecker->hasSubforumAccess($subforum)) { // CHECK IF USER HAS AUTHORIZATION TO VIEW THIS THREAD
@@ -57,9 +62,8 @@ class ThreadController extends Controller
             );
 
         }
-            $autolock = $this->get('yosimitso_workingforum_util_thread')->isAutolock($thread); // CHECK IF THREAD IS AUTOMATICALLY LOCKED (TOO OLD?)
+            $autolock = $threadUtil->isAutolock($thread); // CHECK IF THREAD IS AUTOMATICALLY LOCKED (TOO OLD?)
             $listSmiley = $this->get('yosimitso_workingforum_smiley')->getListSmiley(); // Smileys available for markdown
-            $paginator = $this->get('knp_paginator');
 
             $my_post = new Post($user, $thread);
             $form = $this->createForm(PostType::class, $my_post); // create form for posting
@@ -67,9 +71,9 @@ class ThreadController extends Controller
 
             if ($form->isSubmitted()) { // USER SUBMIT HIS POST
 
-                if ($user->isBanned()) // USER IS BANNED CAN'T POST
+                if (!$anonymousUser && $user->isBanned()) // USER IS BANNED CAN'T POST
                 {
-                    $this->get('session')->getFlashBag()->add(
+                    $flashbag->add(
                         'error',
                         $this->get('translator')->trans('message.banned', [], 'YosimitsoWorkingForumBundle')
                     )
@@ -80,7 +84,7 @@ class ThreadController extends Controller
 
                 if ($autolock) // THREAD IS LOCKED CAUSE TOO OLD ACCORDING TO PARAMETERS
                 {
-                    $this->get('session')->getFlashBag()->add(
+                    $flashbag->add(
                         'error',
                         $this->get('translator')->trans('thread_too_old_locked', [], 'YosimitsoWorkingForumBundle')
                     )
@@ -93,29 +97,45 @@ class ThreadController extends Controller
 
                     $subforum->newPost($user); // UPDATE SUBFORUM STATISTIC
                     $thread->addReply($user); // UPDATE THREAD STATISTIC
-                    $user->addNbPost(1);
 
-                    $em->persist($user);
+                    if (!$anonymousUser) {
+                        $user->addNbPost(1);
+                        $em->persist($user);
+                    }
+
                     $em->persist($thread);
                     $em->persist($my_post);
                     $em->persist($subforum);
 
-                    $em->flush();
-
-                    $this->get('session')->getFlashBag()->add(
-                        'success',
-                        $this->get('translator')->trans('message.posted', [], 'YosimitsoWorkingForumBundle')
-                    )
-                    ;
-                    $post_query = $em
+                    $postQuery = $em
                         ->getRepository('Yosimitso\WorkingForumBundle\Entity\Post')
                         ->findByThread($thread->getId())
                     ;
 
-                    $post_list = $paginator->paginate(
-                        $post_query,
-                        $request->query->get('page')/*page number*/,
-                        $this->container->getParameter('yosimitso_working_forum.post_per_page') /*limit per page*/
+                    $post_list =  $threadUtil->paginate($postQuery);
+
+                    if (!empty($form->getData()->getFilesUploaded())) {
+                        $file = $fileUploader->upload($form->getData()->getFilesUploaded(), $my_post);
+                        if (!$file) { // FILE UPLOAD FAILED
+
+                            $flashbag->add(
+                                'error',
+                                $fileUploader->getErrorMessage()
+                            );
+                            return $this->redirect(
+                                $this->generateUrl(
+                                    'workingforum_thread',
+                                    ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount()]
+                                ));
+                        }
+                        $my_post->addFiles($file);
+                    }
+
+                    $em->flush();
+
+                    $flashbag->add(
+                        'success',
+                        $this->get('translator')->trans('message.posted', [], 'YosimitsoWorkingForumBundle')
                     );
 
                     return $this->redirect($this->generateUrl('workingforum_thread',
@@ -136,24 +156,21 @@ class ThreadController extends Controller
             $moveThread = false;
         }
 
-        $post_query = $em
+        $postQuery = $em
             ->getRepository('Yosimitso\WorkingForumBundle\Entity\Post')
             ->findByThread($thread->getId())
         ;
-
-
-        $post_list = $paginator->paginate(
-            $post_query,
-            $request->query->get('page',1)/*page number*/,
-            $this->container->getParameter('yosimitso_working_forum.post_per_page') /*limit per page*/
-        );
+        $post_list = $threadUtil->paginate($postQuery);
 
         $hasAlreadyVoted = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\PostVote')->getThreadVoteByUser($thread, $user);
 
-        $parameters  = [
+        $parameters  = [ // PARAMETERS USED BY TEMPLATE
             'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format'),
-            'thresholdUsefulPost' => $this->container->getParameter('yosimitso_working_forum.vote')['threshold_useful_post']
+            'thresholdUsefulPost' => $this->container->getParameter('yosimitso_working_forum.vote')['threshold_useful_post'],
+            'fileUpload' => $this->container->getParameter('yosimitso_working_forum.file_upload'),
             ];
+        $parameters['fileUpload']['maxSize'] = $fileUploader->getMaxSize();
+
         return $this->render('YosimitsoWorkingForumBundle:Thread:thread.html.twig',
             [
                 'subforum'    => $subforum,
@@ -167,7 +184,7 @@ class ThreadController extends Controller
                 'moveThread' => $moveThread,
                 'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread'),
                 'autolock' => $autolock,
-                'hasAlreadyVoted' => $hasAlreadyVoted
+                'hasAlreadyVoted' => $hasAlreadyVoted,
             ]
         );
 
@@ -186,11 +203,10 @@ class ThreadController extends Controller
         $em = $this->getDoctrine()->getManager();
         $subforum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')->findOneBySlug($subforum_slug);
         $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
+        $flashbag =  $this->get('session')->getFlashBag();
 
           if (!$authorizationChecker->hasSubforumAccess($subforum)) {
-              $this->get('session')
-                  ->getFlashBag()
-                  ->add(
+              $flashbag->add(
                       'error',
                       $this->get('translator')->trans($authorizationChecker->getErrorMessage(), [], 'YosimitsoWorkingForumBundle')
                   )
@@ -199,6 +215,7 @@ class ThreadController extends Controller
 
         }
 
+        $fileUploader = $this->get('yosimitso_workingforum_util_fileuploader');
         $user = $this->getUser();
 
         $my_thread = new Thread($user, $subforum);
@@ -211,6 +228,24 @@ class ThreadController extends Controller
 
 
         if ($form->isValid()) {
+
+            if (!empty($form->getData()->getFilesUploaded())) {
+                $file = $fileUploader->upload($form->getData()->getFilesUploaded(), $my_post);
+                if (!$file) { // FILE UPLOAD FAILED
+
+                    $flashbag->add(
+                        'error',
+                        $fileUploader->getErrorMessage()
+                    );
+                    return $this->redirect(
+                        $this->generateUrl(
+                            'workingforum_new_thread',
+                            ['subforum_slug' => $subforum_slug]
+                        ));
+                }
+                $my_post->addFiles($file);
+            }
+
             $subforum->newThread($user); // UPDATE STATISTIC
 
             $user->addNbPost(1);
@@ -227,7 +262,7 @@ class ThreadController extends Controller
             $em->persist($my_thread);
             $em->flush();
 
-            $this->get('session')->getFlashBag()->add(
+            $flashbag->add(
                 'success',
                 $this->get('translator')->trans('message.threadCreated', [], 'YosimitsoWorkingForumBundle')
             )
@@ -237,12 +272,19 @@ class ThreadController extends Controller
 
         }
 
+        $fileUploader = $this->get('yosimitso_workingforum_util_fileuploader');
+        $parameters  = [ // PARAMETERS USED BY TEMPLATE
+            'fileUpload' => $this->container->getParameter('yosimitso_working_forum.file_upload')
+        ];
+        $parameters['fileUpload']['maxSize'] = $fileUploader->getMaxSize();
+
         return $this->render('YosimitsoWorkingForumBundle:Thread:new.html.twig',
             [
                 'subforum'   => $subforum,
                 'form'       => $form->createView(),
                 'listSmiley' => $listSmiley,
                 'request'    => $request,
+                'parameters' => $parameters
             ]
         );
     }

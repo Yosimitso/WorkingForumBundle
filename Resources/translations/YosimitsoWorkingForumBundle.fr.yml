@@ -57,6 +57,16 @@ forum:
     pin_thread: Epingler le sujet
     thread_too_old_locked: Le sujet est trop vieux et n'accepte plus de réponses
     quote: Citer ce message
+    enclosed_files: Fichier joint(s)
+    file_upload:
+        accepted_format: Formats acceptés
+        add_enclosed_file: Ajouter un fichier joint
+        ko_max: ko max.
+        error:
+            default: Une erreur est survenue lors de l'upload du fichier, merci de contacter un administrateur
+            max_size_exceeded: Vos fichiers dépassent la taille maximum autorisée, la limite est de %max_size% ko
+            invalid_format: "Le format de votre fichier n'est pas autorisé : %format%"
+            invalid_filename: "Le nom de fichier est invalide : %filename%"
 
 pagination:
     previous: Précédent

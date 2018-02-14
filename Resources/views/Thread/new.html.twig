@@ -8,6 +8,7 @@
     <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
     <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/locale/bootstrap-markdown.fr.js') }}"></script>
     <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/twitter.js') }}"></script>
+    <script src="{{ asset('bundles/yosimitsoworkingforum/js/nicefileinput/jquery.nicefileinput.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}"
           type="text/css" media="all"/>
     <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}"
@@ -15,15 +16,13 @@
 
     <script type="text/javascript">
         jQuery(document).ready(function () {
-
-
             jQuery(".wf_textarea_post").markdown({
                 language: '{{ request.locale }}',
                 onPreview: function (e) {
 
                     var converter = new Showdown.converter({extensions: ['twitter']});
 
-                    var html = converter.makeHtml(nl2br(e.getContent()));
+                    var html = converter.makeHtml(nl2br(e.getContent()), '{{ asset('bundles/yosimitsoworkingforum/') }}');
                     return html;
                 }
             });
@@ -37,58 +36,33 @@
     </script>
 
     <div id="wf_forum_content">
-        <div class="wf_breadcrumb">
-            <a href="{{ path('workingforum_forum') }}">Forum</a> &rarr; <a
-                    href="{{ path('workingforum_forum') }}">{{ subforum.forum.name }}</a> &rarr; <a
-                    href="{{ path('workingforum_subforum',{ 'subforum_slug' : subforum.slug }) }}">{{ subforum.name }}</a>
-            &rarr; {{ 'forum.new_thread' | trans }}
-        </div>
+        {% include 'YosimitsoWorkingForumBundle:Common:flashmsg.html.twig' %}
+        {% include 'YosimitsoWorkingForumBundle:Common:breadcrumb.html.twig' with {'subforum': subforum, 'extraPath': ['forum.new_thread' | trans] } only %}
         <div class="wf_new_thread">
 
             <h1>{{ ('forum.new_thread' | trans) }} {{ ('forum.into_forum' | trans) }} <em>{{ subforum.name }}</em></h1>
             <div class="wf_content">
-                {% if form_errors(form) %}
-                    <div class="alert-error">
-                        {{ form_errors(form) }}
-                    </div>
-                {% endif %}
+
+
                 {{ form_start(form) }}
                 <p>{{ form_label(form.label) }}</p>
                 <p>{{ form_widget(form.label) }}</p>
 
                 <p>{{ form_label(form.sublabel) }}</p>
                 <p>{{ form_widget(form.sublabel) }}</p>
+                {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'form': form.post.0, 'parameters': parameters, 'submitLabelKey': 'forum.create_thread'} only %}
 
-                <script>
-                    function insertSmiley(code) {
-                        jQuery('.wf_textarea_post').insertAtCaret(code);
-                    }
-                </script>
-                <div class="wf_new_post" id="wf_new_post">
-                    <div id="wf_smiley">
-                        <ul>
-                            {% for key,smiley in listSmiley %}
-                                <li><a href="#" onclick="insertSmiley('{{ key }}'); return false;"><img
-                                                src="{{ asset('bundles/yosimitsoworkingforum/images/smiley/'~smiley) }}"/></a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <div class="wf_clear"></div>
+                  {% block extraInput %}
+                      {{ form_rest(form) }}
+                    {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
+                        <p>{{ form_widget(form.pin) }} {{ form_label(form.pin) }}</p>
+                    {% endif %}
+                  {% endblock %}
 
-                    {% for post in form.post %}
-                        <p>{{ form_widget(post.content) }}</p>
-                    {% endfor %}
-                </div>
-
-
-                {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
-                    <p>{{ form_widget(form.pin) }} {{ form_label(form.pin) }}</p>
-
-                {% endif %}
-                <p><input type="submit" value="{{ 'forum.create_thread' | trans }}" class="wf_button wf_width50"/></p>
-                {{ form_rest(form) }}
+                {% endembed %}
                 {{ form_end(form) }}
+
+
             </div>
 
         </div>

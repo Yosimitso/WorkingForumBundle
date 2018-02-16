@@ -12,7 +12,7 @@ use Yosimitso\WorkingForumBundle\Entity\PostVote;
  *
  * @package Yosimitso\WorkingForumBundle\Controller
  */
-class PostController extends Controller
+class PostController extends BaseController
 {
     /**
      * @param Request $request
@@ -21,26 +21,23 @@ class PostController extends Controller
      */
     public function voteUpAction(Request $request)
     {
-
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->getUser();
         $postId = $request->get('postId');
 
-        $post = $em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($postId);
-        if (is_null($user)) {
+        $post = $this->em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($postId);
+        if (is_null($this->user)) {
             return new Response(json_encode(['res' => 'false', 'errMsg' => 'You must be a registered user'], 403));
         }
         if (is_null($post)) {
             return new Response(json_encode(['res' => 'false', 'errMsg' => 'Thread not found'], 500));
         }
-        if ($post->getUser()->getId() == $user->getId()) { // CAN'T VOTE FOR YOURSELF
+        if ($post->getUser()->getId() == $this->user->getId()) { // CAN'T VOTE FOR YOURSELF
             return new Response(json_encode(['res' => 'false', 'errMsg' => 'An user can\'t vote for his post'], 403));
         }
         if (!empty($post->getModerateReason()) || $post->getThread()->getLocked() || $this->get('yosimitso_workingforum_util_thread')->isAutolock($post->getThread()) ) {
             return new Response(json_encode(['res' => 'false', 'errMsg' => 'You can\'t vote for this post'], 403));
         }
 
-        $subforum = $em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneById(
+        $subforum = $this->em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneById(
             $post->getThread()->getSubforum()->getId()
         );
 
@@ -48,29 +45,28 @@ class PostController extends Controller
             return new Response(json_encode(['res' => 'false', 'errMsg' => 'Internal error'], 500));
         }
 
-        $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
-        if (!$authorizationChecker->hasSubforumAccess(
+        if (!$this->authorization->hasSubforumAccess(
             $subforum
         )) { // CHECK IF USER HAS AUTHORIZATION TO VIEW THIS THREAD
             return new Response(json_encode(['res' => 'false'], 403));
         }
 
-        $alreadyVoted = $em->getRepository('YosimitsoWorkingForumBundle:PostVote')->findOneBy(
-            ['user' => $user, 'post' => $post]
+        $alreadyVoted = $this->em->getRepository('YosimitsoWorkingForumBundle:PostVote')->findOneBy(
+            ['user' => $this->user, 'post' => $post]
         );
 
         if (is_null($alreadyVoted)) {
             $postVote = new PostVote();
             $postVote->setPost($post)
-                ->setUser($user)
+                ->setUser($this->user)
                 ->setVoteType(PostVote::VOTE_UP)
                 ->setThread($post->getThread());
 
             $post->addVoteUp();
 
-            $em->persist($postVote);
-            $em->persist($post);
-            $em->flush();
+            $this->em->persist($postVote);
+            $this->em->persist($post);
+            $this->em->flush();
 
             return new Response(json_encode(['res' => 'true', 'voteUp' => $post->getVoteUp()], 200));
         } else {

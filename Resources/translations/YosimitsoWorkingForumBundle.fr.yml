@@ -58,6 +58,7 @@ forum:
     thread_too_old_locked: Le sujet est trop vieux et n'accepte plus de réponses
     quote: Citer ce message
     enclosed_files: Fichier joint(s)
+    move_thread_success: Le sujet a été déplacé
     file_upload:
         accepted_format: Formats acceptés
         add_enclosed_file: Ajouter un fichier joint

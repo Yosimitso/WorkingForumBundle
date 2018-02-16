@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
  *
  * @package Yosimitso\WorkingForumBundle\Controller
  */
-class SearchController extends Controller
+class SearchController extends BaseController
 {
     /**
      * @param Request $request
@@ -22,8 +22,7 @@ class SearchController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $listForum = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')->findAll();
+        $listForum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findAll();
         $form = $this->get('form.factory')
             ->createNamedBuilder('', SearchType::class, null, array('csrf_protection' => false,))
             ->add('page', HiddenType::class, ['data' => 1])
@@ -31,22 +30,19 @@ class SearchController extends Controller
             ->getForm()
         ;
         $form->handleRequest($request);
-        $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
 
         if ($form->isSubmitted()) {
             if ($form->isValid())
             {
-                $whereSubforum = (array) $authorizationChecker->hasSubforumAccessList($form['forum']->getData());
+                $whereSubforum = (array) $this->authorization->hasSubforumAccessList($form['forum']->getData());
 
-                $thread_list_query = $em->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')
+                $thread_list_query = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')
                                         ->search($form['keywords']->getData(), 0, 100, $whereSubforum)
                 ;
-                $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
-
-                $paginator = $this->get('knp_paginator');
+                $date_format = $this->getParameter('yosimitso_working_forum.date_format');
 
                 if (!is_null($thread_list_query)) {
-                    $thread_list = $paginator->paginate(
+                    $thread_list = $this->paginator->paginate(
                         $thread_list_query,
                         $request->query->get('page', 1)/*page number*/,
                         $this->container->getParameter('yosimitso_working_forum.thread_per_page')
@@ -57,7 +53,7 @@ class SearchController extends Controller
                     $thread_list = [];
                 }
 
-                return $this->render('YosimitsoWorkingForumBundle:Forum:thread_list.html.twig',
+                return $this->render('@YosimitsoWorkingForum/Forum/thread_list.html.twig',
                     [
                         'thread_list' => $thread_list,
                         'date_format' => $date_format,
@@ -69,7 +65,7 @@ class SearchController extends Controller
             }
         }
 
-        return $this->render('YosimitsoWorkingForumBundle:Search:search.html.twig',
+        return $this->render('@YosimitsoWorkingForum/Search/search.html.twig',
             [
                 'listForum' => $listForum,
                 'form'      => $form->createView(),

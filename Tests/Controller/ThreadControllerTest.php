@@ -11,29 +11,32 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class ThreadControllerTest extends WebTestCase
 {
-    /**
-     * @test
-     */
-    public function testGoToSubforumAndCreateThreadIndex()
+    private $client = null;
+
+    public function setUp()
     {
-        // LOG IMMEDIATELY
-        $client = static::createClient([],
+        $this->client = static::createClient(
+            [],
             [
+                'PHP_AUTH_USER' => $_ENV['TEST_ADMIN_USERNAME'],
+                'PHP_AUTH_PW' => $_ENV['TEST_ADMIN_PASSWORD'],
             ]
         );
+    }
 
+    public function testGoToSubforumAndCreateThreadIndex()
+    {
         // GO IN THE FIRST SUBFORUM OF THE FIRST FORUM
-        $crawler = $client->request('GET', '/');
-        $this->assertEquals(1,2, $crawler->html());
+        $crawler = $this->client->request('GET', '/');
         $link = $crawler->filter('.wf_sub_name > a')->first()->link();
-        $crawler = $client->click($link);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->click($link);
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // GO THE "NEW THREAD" PAGE
         $link = $crawler->filter('a.wf_add')->links();
 
-        $crawler = $client->click($link[0]);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $crawler = $this->client->click($link[0]);
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         // CREATE A FORM
         $form = $crawler->filter('input[type=submit]')->form();
@@ -49,9 +52,17 @@ _italic_
 `<script>alert(\'hello world\')</script>`
 > A quote from me';
 
-        $client->submit($form);
+        $this->client->submit($form);
 
-        $crawler = $client->followRedirect();
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $post = $crawler->filter('.wf_post')[1];
+        $this->assertEquals(
+            '
+         <p>This is a test<img src="/bundles/yosimitsoworkingforum/images/smiley/smile.png"><br><strong>bold</strong><br><em>italic</em><br><a href="http://google.com">link google</a><br>
+         <img src="http://charlymartins.fr/images/jim-carrey.jpg" alt="random image" title="jimmy"></p><br><br><p><code>alert(\'hello world\')</code></p><br><br><blockquote><br>
+         <p>A quote from me</p><br></blockquote><br>',
+            $post
+        );
+        $this->client->followRedirect();
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 }

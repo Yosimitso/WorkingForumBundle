@@ -15,18 +15,15 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
  */
-class AdminController extends Controller
+class AdminController extends BaseController
 {
     /** @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-     * @param Request $request
-     *
      * @return Response
      * @throws \Exception
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $list_forum = $em->getRepository('YosimitsoWorkingForumBundle:Forum')->findAll();
+        $list_forum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findAll();
 
         $settingsList = [
             'allow_anonymous_read' => ['varType' => 'boolean'],
@@ -37,12 +34,12 @@ class AdminController extends Controller
 
         $settings_render = $this->renderSettings($settingsList);
         $newPostReported = count(
-            $em->getRepository('YosimitsoWorkingForumBundle:PostReport')
+            $this->em->getRepository('YosimitsoWorkingForumBundle:PostReport')
                 ->findBy(['processed' => null])
         );
 
         return $this->render(
-            'YosimitsoWorkingForumBundle:Admin:main.html.twig',
+            '@YosimitsoWorkingForum/Admin/main.html.twig',
             [
                 'list_forum' => $list_forum,
                 'settings_render' => $settings_render,
@@ -61,8 +58,7 @@ class AdminController extends Controller
      */
     public function editAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $forum = $em->getRepository('YosimitsoWorkingForumBundle:Forum')->find($id);
+        $forum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->find($id);
 
         $statistics = ['nbThread' => 0, 'nbPost' => 0];
         foreach ($forum->getSubforum() as $subforum) {
@@ -80,12 +76,12 @@ class AdminController extends Controller
             foreach ($forum->getSubforum() as $subforum) {
                 $subforum->setForum($forum);
             }
-            $em->persist($forum);
-            $em->flush();
+            $this->em->persist($forum);
+            $this->em->flush();
 
-            $this->get('session')->getFlashBag()->add(
+            $this->flashbag->add(
                 'success',
-                $this->get('translator')->trans('message.saved', [], 'YosimitsoWorkingForumBundle')
+                $this->translator->trans('message.saved', [], 'YosimitsoWorkingForumBundle')
             );
 
             return $this->redirect($this->generateUrl('workingforum_admin'));
@@ -93,7 +89,7 @@ class AdminController extends Controller
         }
 
         return $this->render(
-            'YosimitsoWorkingForumBundle:Admin/Forum:form.html.twig',
+            '@YosimitsoWorkingForum/Admin/Forum/form.html.twig',
             [
                 'forum' => $forum,
                 'form' => $form->createView(),
@@ -111,7 +107,6 @@ class AdminController extends Controller
      */
     public function addAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
         $forum = new \Yosimitso\WorkingForumBundle\Entity\Forum;
         $forum->addSubForum(new \Yosimitso\WorkingForumBundle\Entity\Subforum);
 
@@ -124,19 +119,19 @@ class AdminController extends Controller
                 $subforum->setForum($forum);
             }
             $forum->generateSlug($forum->getName());
-            $em->persist($forum);
-            $em->flush();
+            $this->em->persist($forum);
+            $this->em->flush();
 
-            $this->get('session')->getFlashBag()->add(
+            $this->flashbag->add(
                 'success',
-                $this->get('translator')->trans('message.saved', [], 'YosimitsoWorkingForumBundle')
+                $this->translator->trans('message.saved', [], 'YosimitsoWorkingForumBundle')
             );
 
             return $this->redirect($this->generateUrl('workingforum_admin'));
         }
 
         return $this->render(
-            'YosimitsoWorkingForumBundle:Admin/Forum:form.html.twig',
+            '@YosimitsoWorkingForum/Admin/Forum/form.html.twig',
             [
                 'forum' => $forum,
                 'form' => $form->createView(),
@@ -150,13 +145,12 @@ class AdminController extends Controller
      */
     public function ReportAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $postReportList = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')
+        $postReportList = $this->em->getRepository('YosimitsoWorkingForumBundle:PostReport')
             ->findBy(['processed' => null], ['processed' => 'ASC', 'id' => 'ASC']);
         $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
 
         return $this->render(
-            'YosimitsoWorkingForumBundle:Admin/Report:report.html.twig',
+            '@YosimitsoWorkingForum/Admin/Report/report.html.twig',
             [
                 'postReportList' => $postReportList,
                 'date_format' => $date_format,
@@ -168,13 +162,12 @@ class AdminController extends Controller
      */
     public function ReportHistoryAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $postReportList = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')
+        $postReportList = $this->em->getRepository('YosimitsoWorkingForumBundle:PostReport')
             ->findBy(['processed' => 1], ['processed' => 'ASC', 'id' => 'DESC']);
-        $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
+        $date_format = $this->getParameter('yosimitso_working_forum.date_format');
 
         return $this->render(
-            'YosimitsoWorkingForumBundle:Admin/Report:report_history.html.twig',
+            '@YosimitsoWorkingForum/Admin/Report/report_history.html.twig',
             [
                 'postReportList' => $postReportList,
                 'date_format' => $date_format,
@@ -190,19 +183,18 @@ class AdminController extends Controller
      */
     public function ReportActionGoodAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $id = (int)htmlentities($request->request->get('id'));
 
         if ($id) {
-            $report = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneById($id);
+            $report = $this->em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneById($id);
             if (is_null($report)) {
                 return new Response(json_encode('fail'), 500);
             }
             $report->setProcessed(1);
-            $em->persist($report);
+            $this->em->persist($report);
         }
-        $em->flush();
+
+        $this->em->flush();
 
         return new Response(json_encode('ok'), 200);
 
@@ -214,11 +206,10 @@ class AdminController extends Controller
      */
     public function userListAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $usersList = $em->getRepository('YosimitsoWorkingForumBundle:User')->findAll();
+        $usersList = $this->em->getRepository('YosimitsoWorkingForumBundle:User')->findAll();
 
         return $this->render(
-            'YosimitsoWorkingForumBundle:Admin/User:userslist.html.twig',
+            '@YosimitsoWorkingForum/Admin/User/userslist.html.twig',
             [
                 'usersList' => $usersList,
 
@@ -235,7 +226,6 @@ class AdminController extends Controller
      */
     public function ReportActionModerateAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
         $reason = htmlentities($request->request->get('reason'));
         $id = (int)htmlentities($request->request->get('id'));
         $postId = (int)htmlentities($request->request->get('postId'));
@@ -245,31 +235,31 @@ class AdminController extends Controller
             return new Response(json_encode('fail'), 500);
         }
 
-        $post = $em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($postId);
+        $post = $this->em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($postId);
         if (is_null($post)) {
             return new Response(json_encode('fail'), 500);
         }
         $post->setModerateReason($reason);
-        $em->persist($post);
+        $this->em->persist($post);
 
         if ($id) {
-            $report = $em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneById($id);
+            $report = $this->em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneById($id);
             if (is_null($report)) {
                 return new Response(json_encode('fail'), 500);
             }
             $report->setProcessed(1);
-            $em->persist($report);
+            $this->em->persist($report);
         }
 
         if ($banuser) {
-            $postUser = $em->getRepository('YosimitsoWorkingForumBundle:User')->findOneById($post->getUser()->getId());
+            $postUser = $this->em->getRepository('YosimitsoWorkingForumBundle:User')->findOneById($post->getUser()->getId());
             if (is_null($postUser)) {
                 return new Response(json_encode('fail'), 500);
             }
             $postUser->setBanned(1);
-            $em->persist($postUser);
+            $this->em->persist($postUser);
         }
-        $em->flush();
+        $this->em->flush();
 
         return new Response(json_encode('ok'), 200);
 
@@ -283,19 +273,18 @@ class AdminController extends Controller
      */
     public function deleteForumAction($forum_id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $forum = $em->getRepository('YosimitsoWorkingForumBundle:Forum')->findOneById($forum_id);
+        $forum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findOneById($forum_id);
 
         if (!is_null($forum)) {
-            $em->remove($forum);
-            $em->flush();
-            $this->get('session')->getFlashBag()->add(
+            $this->em->remove($forum);
+            $this->em->flush();
+            $this->flashbag->add(
                 'success',
                 $this->get('translator')->trans('admin.forumDeleted', [], 'YosimitsoWorkingForumBundle')
             );
         }
 
-        return $this->forward('YosimitsoWorkingForumBundle:Admin:index', []);
+        return $this->forward('@YosimitsoWorkingForum/Admin/index', []);
     }
 
     private function renderSettings($settingsList)
@@ -304,7 +293,7 @@ class AdminController extends Controller
 
         foreach ($settingsList as $index => $setting) {
             $html = [];
-            $setting['value'] = $this->container->getParameter('yosimitso_working_forum.'.$index);
+            $setting['value'] = $this->getParameter('yosimitso_working_forum.'.$index);
 
             switch ($setting['varType']) {
                 case 'boolean':
@@ -322,7 +311,7 @@ class AdminController extends Controller
             }
 
 
-            $html['text'] = $this->get('translator')
+            $html['text'] = $this->translator
                 ->trans('setting.'.$index, [], 'YosimitsoWorkingForumBundle');
 
             $html['input'] = '<input type="'.$setting['type'].'" value="'.$setting['value'].'"';

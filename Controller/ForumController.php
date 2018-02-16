@@ -2,17 +2,15 @@
 
 namespace Yosimitso\WorkingForumBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Yosimitso\WorkingForumBundle\Security\Authorization;
-
+use Yosimitso\WorkingForumBundle\Controller\BaseController;
 /**
  * Class ForumController
  *
  * @package Yosimitso\WorkingForumBundle\Controller
  */
-class ForumController extends Controller
+class ForumController extends BaseController
 {
     /**
      * Display homepage of forum with subforums
@@ -20,17 +18,15 @@ class ForumController extends Controller
      * @return Response
      */
 
-
     public function indexAction()
     {
         $list_forum = $this
-            ->getDoctrine()
-            ->getManager()
+            ->em
             ->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')
             ->findAll();
 
         return $this->render(
-            'YosimitsoWorkingForumBundle:Forum:index.html.twig',
+            '@YosimitsoWorkingForum/Forum/index.html.twig',
             [
                 'list_forum' => $list_forum,
             ]
@@ -49,19 +45,17 @@ class ForumController extends Controller
     public function subforumAction($subforum_slug, Request $request, $page = 1)
     {
         $subforum = $this
-            ->getDoctrine()
-            ->getManager()
+            ->em
             ->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')
             ->findOneBySlug($subforum_slug);
-        $authorizationChecker = $this->get('yosimitso_workingforum_authorization');
-        if (!$authorizationChecker->hasSubforumAccess($subforum)) {
+        if (!$this->authorization->hasSubforumAccess($subforum)) {
 
             return $this->render(
                 'YosimitsoWorkingForumBundle:Forum:thread_list.html.twig',
                 [
                     'subforum' => $subforum,
                     'forbidden' => true,
-                    'forbiddenMsg' => $authorizationChecker->getErrorMessage()
+                    'forbiddenMsg' => $this->authorization->getErrorMessage()
 
 
                     //$this->getParameter('knp_paginator.default_options.page_name')
@@ -71,8 +65,7 @@ class ForumController extends Controller
 
 
         $list_subforum_query = $this
-            ->getDoctrine()
-            ->getManager()
+            ->em
             ->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')
             ->findBySubforum(
                 $subforum->getId(),
@@ -80,8 +73,8 @@ class ForumController extends Controller
             );
 
         $date_format = $this->getParameter('yosimitso_working_forum.date_format');
-        $paginator = $this->get('knp_paginator');
-        $list_subforum = $paginator->paginate(
+
+        $list_subforum = $this->paginator->paginate(
             $list_subforum_query,
             $request->query->get('page', 1)/*page number*/,
             $this->getParameter('yosimitso_working_forum.thread_per_page') /*limit per page*/
@@ -89,7 +82,7 @@ class ForumController extends Controller
 
 
         return $this->render(
-            'YosimitsoWorkingForumBundle:Forum:thread_list.html.twig',
+            '@YosimitsoWorkingForum/Forum/thread_list.html.twig',
             [
                 'subforum' => $subforum,
                 'thread_list' => $list_subforum,

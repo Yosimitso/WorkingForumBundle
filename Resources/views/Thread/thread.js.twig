@@ -110,7 +110,7 @@
                 async: false,
                 success: function (res) {
                     if (res.res == 'true') {
-                        alert('{{ 'move_thread_success' | trans }}');
+                        alert('{{ 'forum.move_thread_success' | trans }}');
                         jQuery('#wf_move_thread_button').addClass('wf_button-grey').html('{{ 'forum.thread_was_moved_to' | trans }} ' + res.targetLabel);
                         jQuery('#move_thread_forum').hide();
                     }

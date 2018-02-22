@@ -8,7 +8,7 @@ This bundle work with your user bundle with no extra configuration (which can ex
 
 Demo
 -------------
-Try it here - http://demo.charlymartins.fr/demoworkingforum/
+Try it here - http://demoworkingforum.charlymartins.fr
 
 
 Features
@@ -122,7 +122,7 @@ Ce bundle utilise votre bundle utilisateur (qui peut hériter de FOSUserBundle)
 
 Demo
 -------------
-Essayez le ici - http://demo.charlymartins.fr/demoworkingforum/
+Essayez le ici - http://demoworkingforum.charlymartins.fr
 
 
 Fonctionnalités

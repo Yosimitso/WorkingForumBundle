@@ -38,7 +38,6 @@ class Forum
      * @var string
      *
      * @ORM\Column(name="slug", type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $slug;
 

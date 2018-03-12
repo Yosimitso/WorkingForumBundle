@@ -8,7 +8,7 @@ This bundle work with your user bundle with no extra configuration (which can ex
 
 Demo
 -------------
-Try it here - http://demo.charlymartins.fr/demoworkingforum/
+Try it here - http://demoworkingforum.charlymartins.fr
 
 
 Features
@@ -69,6 +69,11 @@ yosimitso_working_forum:
     lock_thread_older_than: 0
     vote:
         threshold_useful_post: 5
+    file_upload:
+        enable: true
+        max_size_ko: 10000
+        accepted_format: [image/jpg, image/jpeg, image/png, image/gif, image/tiff, application/pdf]
+        preview_file: true    
 knp_paginator:
     page_range: 1                      # default page range used in pagination control
     default_options:
@@ -80,6 +85,9 @@ knp_paginator:
         pagination: YosimitsoWorkingForumBundle:Common:slidePagination.html.twig     # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
 ````
+If you decide to enable the file upload system, create a directory called "wf_uploads" into your web directory,
+please also check if your PHP configuration allow file upload through forms and adjust the directives "upload_max_filesize" and "post_max_size" to your application's config
+
 Add to you app/config.yml into 'orm' key :
 ````yml
 resolve_target_entities:
@@ -114,7 +122,7 @@ Ce bundle utilise votre bundle utilisateur (qui peut hériter de FOSUserBundle)
 
 Demo
 -------------
-Essayez le ici - http://demo.charlymartins.fr/demoworkingforum/
+Essayez le ici - http://demoworkingforum.charlymartins.fr
 
 
 Fonctionnalités
@@ -131,8 +139,6 @@ Fonctionnalités
 - Les threads peuvent être marqués comme résolus
 - Système d'auto-lock pour les vieux sujets
 - Support le multilangage
-
-
 - Breadcrumb (fil d'Arianne) automatique
 - Compteur de messages (utilisateur, forum, sousforum) avec dernières réponses
 - Pagination automatique sur la liste des thread, et les messages des threads
@@ -178,6 +184,11 @@ yosimitso_working_forum:
     lock_thread_older_than: 0
     vote:
         threshold_useful_post: 5
+    file_upload:
+        enable: true
+        max_size_ko: 10000
+        accepted_format: [image/jpg, image/jpeg, image/png, image/gif, image/tiff, application/pdf]
+        preview_file: true            
 	
 knp_paginator:
     page_range: 1                      # default page range used in pagination control
@@ -189,7 +200,13 @@ knp_paginator:
     template:
         pagination: YosimitsoWorkingForumBundle:Common:slidePagination.html.twig     # sliding pagination controls template
         sortable: KnpPaginatorBundle:Pagination:sortable_link.html.twig # sort link template
-````   
+```` 
+Si vous décidez d'activer le système d'upload de fichier, vous devez créer un dossier "wf_uploads" dans votre dosiser web
+et vérifier que votre configuration de PHP vous autorise à uploader des fichiers depuis un formulaire et ajustez les
+directives "upload_max_filesize" et "post_max_size" en fonction de votre configuration d'application
+
+
+  
 Ajouter à votre app/config.yml dans la clé 'orm' :
 ````yml
  resolve_target_entities:

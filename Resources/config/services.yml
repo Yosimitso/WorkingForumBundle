@@ -30,5 +30,15 @@ services:
         class: Yosimitso\WorkingForumBundle\Util\Thread
         arguments:
             - "%yosimitso_working_forum.lock_thread_older_than%"
+            - "@knp_paginator"
+            - "%yosimitso_working_forum.post_per_page%"
+            - "@request_stack"
 
+    yosimitso_workingforum_util_fileuploader:
+        class: Yosimitso\WorkingForumBundle\Util\FileUploader
+        arguments:
+            - "@assets.packages"
+            - "@doctrine.orm.entity_manager"
+            - "%yosimitso_working_forum.file_upload%"
+            - "@translator"
 

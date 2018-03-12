@@ -468,13 +468,18 @@ code {
 .wf_post-right blockquote {
     padding: 10px 20px;
     font-size: 100%;
-
+    background-color: white;
 }
 
-#wf_smiley {
+#wf_smiley, .wf_header-block {
     border-radius: 5px 5px 0 0;
     padding: 10px;
-    height: 20px;
+    min-height: 20px;
+}
+
+.wf_header-block .small-desc {
+    color: grey;
+    font-size:10px;
 }
 
 #wf_smiley ul li {
@@ -586,4 +591,93 @@ code {
 .wf_useful_post {
     background-color: rgba(81,173,81,0.2);
 }
+
+.wf_enclosed_files {
+    padding:10px;
+    border-top: 1px solid #DBDDDD;
+}
+
+.wf_enclosed_files .title {
+
+}
+
+.wf_enclosed_files ul {
+    margin-top: 10px;
+    display:none;
+}
+
+.wf_enclosed_files ul li a {
+    text-decoration:none;
+    color:inherit;
+}
+
+.wf_enclosed_files .preview {
+    width:50px;
+}
+
+.wf_enclosed_files .size {
+    color:grey;
+}
+
+.wf_add_enclosed_file {
+   color:black;
+   text-decoration: none;
+   padding: 10px,;
+   display:block;
+}
+
+.wf_add_enclosed_file:hover, .wf_add_enclosed_file:focus {
+    text-decoration: none;
+    color: black;
+}
+
+.wf_enclosed_files ul {
+    list-style: none;
+}
+
+.wf_header-block {
+    border-radius: 5px 5px 0 0;
+    padding: 10px;
+    min-height: 20px;
+}
+
+.wf_block {
+    background-color: #F5F5F5;
+    margin-top:0;
+}
+
+.wf_file_upload {
+    margin-bottom: 10px;
+}
+
+.wf_file_upload .NFI-wrapper {
+// the container div
+}
+
+.wf_file_upload .NFI-button {
+    background: #656565;
+    color: white;
+    border-radius: 2px;
+    padding: 5px;
+    width: 100px;
+}
+
+.wf_new_thread .wf_file_upload .NFI-filename,
+.wf_file_upload .NFI-filename
+{
+    height:30px;
+    width:300px;
+    border-radius: 0;
+}
+
+#wf_enclosed_files_list {
+    padding-top: 5px;
+}
+
+#wf_enclosed_files_list li {
+    list-style: none;
+    margin-top: 10px;
+}
+
+
 

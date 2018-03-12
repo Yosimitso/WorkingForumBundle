@@ -12,8 +12,8 @@ class Slugify
 {
     /**
      * @param string $string
-     *
      * @return mixed|string
+     * Generate a slug
      */
     public static function convert($string)
     {

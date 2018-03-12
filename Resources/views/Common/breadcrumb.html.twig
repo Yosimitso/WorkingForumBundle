@@ -7,4 +7,9 @@
     {% if thread is defined %}
         &rarr; {{ thread.label }}
     {% endif %}
+    {% if extraPath is defined and extraPath is iterable %}
+        {% for path in extraPath %}
+            &rarr; {{ path }}
+        {% endfor %}
+    {% endif %}
 </div>

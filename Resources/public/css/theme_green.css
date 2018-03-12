@@ -230,7 +230,7 @@ code {
     border-left: 5px solid #cecece;
 }
 
-#wf_smiley {
+#wf_smiley, .wf_header-block {
     background-color: white;
 }
 

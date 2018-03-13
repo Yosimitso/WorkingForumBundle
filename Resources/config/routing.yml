@@ -1,81 +1,81 @@
 workingforum_forum:
     path:     /
-    defaults: { _controller: YosimitsoWorkingForumBundle:Forum:index }
+    defaults: { _controller: yosimitso_workingforum_forum_controller:indexAction }
 workingforum_subforum:
     path: /view/{subforum_slug}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Forum:subforum }
+    defaults: { _controller: yosimitso_workingforum_forum_controller:subforumAction }
 
 workingforum_thread:
     path: /view/{subforum_slug}/{thread_slug}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:index }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:indexAction }
 
 workingforum_new_thread:
     path: /newthread/{subforum_slug}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:new }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:newAction }
 
 workingforum_lock_thread:
     path: /lock/{subforum_slug}/{thread_slug}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:lock }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:lockAction }
 
 workingforum_pin_thread:
     path: /pin/{subforum_slug}/{thread_slug}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:pin }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:pinAction }
 
 workingforum_resolve_thread:
     path: /resolved/{subforum_slug}/{thread_slug}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:resolve }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:resolveAction }
 
 workingforum_report_post:
     path: /report/{post_id}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:report }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:reportAction }
 
 workingforum_move_thread:
     path: /movethread
-    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:moveThread }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:moveThreadAction }
 
 workingforum_delete_thread:
     path: /deletethread/{threadSlug}
-    defaults: { _controller: YosimitsoWorkingForumBundle:Thread:deleteThread }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:deleteThreadAction }
         
 workingforum_admin:
     path: /admin
-    defaults: { _controller: YosimitsoWorkingForumBundle:Admin:index }
+    defaults: { _controller: yosimitso_workingforum_admin_controller:indexAction }
     
 workingforum_admin_forum_edit:
     path: /admin/edit/{id}
-    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:edit }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:editAction }
     
 workingforum_admin_forum_add:
     path: /admin/add
-    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:add }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:addAction }
 
 workingforum_admin_install_settings:
     path: /admin/install-settings
-    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:installSettings }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:installSettingsAction }
 workingforum_admin_report:
     path: /admin/report
-    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:report }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:reportAction }
 workingforum_admin_report_history:
     path: /admin/report/history
-    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:reportHistory }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:reportHistoryAction }
 workingforum_admin_user:
     path: /admin/user
-    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:userList }    
+    defaults: {_controller: yosimitso_workingforum_admin_controller:userListAction }
 workingforum_admin_report_action_moderate:
     path: /admin/reportaction/moderate
-    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:reportActionModerate }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:reportActionModerateAction }
     
 workingforum_admin_report_action_good:
     path: /admin/reportaction/good
-    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:reportActionGood }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:reportActionGoodAction }
     
 workingforum_admin_delete_forum:
     path: /admin/deleteforum/{forum_id}
-    defaults: {_controller: YosimitsoWorkingForumBundle:Admin:deleteForum }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:deleteForumAction }
 workingforum_search:
     path: /search
-    defaults: {_controller: YosimitsoWorkingForumBundle:Search:index }
+    defaults: {_controller: yosimitso_workingforum_search_controller:indexAction }
 
 workingforum_vote_up:
     path: /voteup
-    defaults: { _controller: YosimitsoWorkingForumBundle:Post:voteUp }
+    defaults: { _controller: yosimitso_workingforum_post_controller:voteUpAction }

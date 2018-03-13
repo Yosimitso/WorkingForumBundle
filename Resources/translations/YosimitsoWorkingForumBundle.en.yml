@@ -58,6 +58,7 @@ forum:
     thread_too_old_locked: This thread is too old to reply
     quote: Quote this post
     enclosed_files: Enclosed file(s)
+    move_thread_success: The tread has been moved
     file_upload:
         accepted_format: Accepted formats
         add_enclosed_file: Add an enclosed file

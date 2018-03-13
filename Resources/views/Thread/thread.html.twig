@@ -1,10 +1,10 @@
-{% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
+{% extends '@YosimitsoWorkingForum/Common/base.html.twig' %}
 {% block forum %}
-    {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
+    {% include '@YosimitsoWorkingForum/Common/header.html.twig' %}
     {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
     <div id="wf_forum_content">
-    {% include 'YosimitsoWorkingForumBundle:Common:flashmsg.html.twig' %}
-    {% include 'YosimitsoWorkingForumBundle:Common:breadcrumb.html.twig' with {'subforum': subforum, 'thread': thread} only %}
+    {% include '@YosimitsoWorkingForum/Common/flashmsg.html.twig' %}
+    {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'subforum': subforum, 'thread': thread} only %}
 
     {% if thread.resolved %}
         <div class="alert-success">
@@ -55,7 +55,7 @@
 
             });
         </script>
-        {% include 'YosimitsoWorkingForumBundle:Thread:thread.js.twig' %}
+        {% include '@YosimitsoWorkingForum/Thread/thread.js.twig' %}
 
         {# LOCK #}
     {% if thread.locked %}
@@ -113,7 +113,7 @@
             <h2>{{ thread.sublabel }}</h2>
 
             {% for post in post_list %}
-                {% include 'YosimitsoWorkingForumBundle:Post:post.html.twig' with {'post': post, 'thread': thread, 'parameters': parameters, 'hasAlreadyVoted': hasAlreadyVoted, 'autolock': autolock, 'loop': loop} only %}
+                {% include '@YosimitsoWorkingForum/Post/post.html.twig' with {'post': post, 'thread': thread, 'parameters': parameters, 'hasAlreadyVoted': hasAlreadyVoted, 'autolock': autolock, 'loop': loop} only %}
             {% endfor %}
 
             {{ knp_pagination_render(post_list) }}
@@ -129,7 +129,7 @@
                     </div>
                 {% else %}
                     {{ form_start(form) }}
-                    {% embed 'YosimitsoWorkingForumBundle:Post:textarea.html.twig' with {'listSmiley': listSmiley, 'form': form, 'parameters': parameters, 'submitLabelKey': 'forum.submit_post'} only %}
+                    {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'form': form, 'parameters': parameters, 'submitLabelKey': 'forum.submit_post'} only %}
                         {% block header %}
                             <p class="wf_post_a_message">{{ 'forum.post_a_message' | trans([], 'YosimitsoWorkingForumBundle') }}</p>
                         {% endblock %}

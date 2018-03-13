@@ -1,6 +1,6 @@
-{% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
+{% extends '@YosimitsoWorkingForum/Common/base.html.twig' %}
 {% block forum %}
-    {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
+    {% include '@YosimitsoWorkingForum/Common/header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
 {% if app.session.flashbag.has('success') %}
                 <div class="alert-success">
@@ -51,12 +51,6 @@
     {% endif %}    
    
 <table class="wf_thread_list">
-    {# <thead>
-        <tr>
-            <th>{{ 'forum.thread' | trans }}</th>
-            <th>{{ 'forum.author' | trans }}</th>
-            <th>{{ 'forum.replies' | trans }}
-    </thead> #}
     {% if thread_list is not empty %}
     {% for thread in thread_list %}
         <tr {% if thread.pin %} class="wf_pin" {% elseif thread.resolved  %} class="wf_resolved"{% endif %}>

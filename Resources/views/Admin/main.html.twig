@@ -1,9 +1,9 @@
-{% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
+{% extends '@YosimitsoWorkingForum/Common/base.html.twig' %}
 {% block forum %}
-    {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
+    {% include '@YosimitsoWorkingForum/Common/header.html.twig' %}
     {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
     <div id="wf_forum_content">
-        {% include 'YosimitsoWorkingForumBundle:Common:flashmsg.html.twig' %}
+        {% include '@YosimitsoWorkingForum/Common/flashmsg.html.twig' %}
         <h1>{{ 'admin.admin_workingforum' | trans }}</h1>
         <div id="wf_forum_admin">
             <p><a class="wf_button" href="{{ path('workingforum_forum') }}">

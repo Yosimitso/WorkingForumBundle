@@ -2,6 +2,40 @@ parameters:
 
 
 services:
+    yosimitso_workingforum_base_controller:
+        class: Yosimitso\WorkingForumBundle\Controller\BaseController
+        calls:
+          - ["setParameters",["@doctrine.orm.entity_manager","@yosimitso_workingforum_authorization","@=service('security.token_storage').getToken().getUser()","@session", "@translator", "@knp_paginator"]]
+
+    yosimitso_workingforum_forum_controller:
+        class: Yosimitso\WorkingForumBundle\Controller\ForumController
+        parent: yosimitso_workingforum_base_controller
+        public: true
+
+    yosimitso_workingforum_thread_controller:
+        class: Yosimitso\WorkingForumBundle\Controller\ThreadController
+        parent: yosimitso_workingforum_base_controller
+        public: true
+        arguments:
+          - "@yosimitso_workingforum_util_thread"
+          - "@yosimitso_workingforum_util_fileuploader"
+          - "@yosimitso_workingforum_smiley"
+
+    yosimitso_workingforum_admin_controller:
+        class: Yosimitso\WorkingForumBundle\Controller\AdminController
+        parent: yosimitso_workingforum_base_controller
+        public: true
+
+    yosimitso_workingforum_search_controller:
+        class: Yosimitso\WorkingForumBundle\Controller\SearchController
+        parent: yosimitso_workingforum_base_controller
+        public: true
+
+    yosimitso_workingforum_post_controller:
+        class: Yosimitso\WorkingForumBundle\Controller\PostController
+        parent: yosimitso_workingforum_base_controller
+        public: true
+
     yosimitso_workingforum_smiley:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension
         tags:

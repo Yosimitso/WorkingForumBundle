@@ -1,6 +1,6 @@
-{% extends 'YosimitsoWorkingForumBundle:Common:base.html.twig' %}
+{% extends '@YosimitsoWorkingForum/Common/base.html.twig' %}
 {% block forum %}
-    {% include 'YosimitsoWorkingForumBundle:Common:header.html.twig' %}
+    {% include '@YosimitsoWorkingForum/Common/header.html.twig' %}
     {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
     <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
     <script src="{{ asset('bundles/yosimitsoworkingforum/js/smiley.js') }}"></script>
@@ -36,8 +36,8 @@
     </script>
 
     <div id="wf_forum_content">
-        {% include 'YosimitsoWorkingForumBundle:Common:flashmsg.html.twig' %}
-        {% include 'YosimitsoWorkingForumBundle:Common:breadcrumb.html.twig' with {'subforum': subforum, 'extraPath': ['forum.new_thread' | trans] } only %}
+        {% include '@YosimitsoWorkingForum/Common/flashmsg.html.twig' %}
+        {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'subforum': subforum, 'extraPath': ['forum.new_thread' | trans] } only %}
         <div class="wf_new_thread">
 
             <h1>{{ ('forum.new_thread' | trans) }} {{ ('forum.into_forum' | trans) }} <em>{{ subforum.name }}</em></h1>
@@ -50,15 +50,14 @@
 
                 <p>{{ form_label(form.sublabel) }}</p>
                 <p>{{ form_widget(form.sublabel) }}</p>
-                {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'form': form.post.0, 'parameters': parameters, 'submitLabelKey': 'forum.create_thread'} only %}
+                {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'pin': form.pin, 'form': form.post.0, 'parameters': parameters, 'submitLabelKey': 'forum.create_thread'} only %}
 
                   {% block extraInput %}
-                      {{ form_rest(form) }}
                     {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
-                        <p>{{ form_widget(form.pin) }} {{ form_label(form.pin) }}</p>
+                        <p>{{ form_widget(pin) }} {{ form_label(pin) }}</p>
                     {% endif %}
+                      {{ form_rest(form) }}
                   {% endblock %}
-
                 {% endembed %}
                 {{ form_end(form) }}
 

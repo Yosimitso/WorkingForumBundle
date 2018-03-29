@@ -49,16 +49,20 @@ class ThreadType extends AbstractType
                     'allow_add'      => false,
                     'error_bubbling' => true,
                 ]
-            )
-            ->add(
-                'pin',
-                CheckboxType::class,
-                [
-                    'translation_domain' => 'YosimitsoWorkingForumBundle',
-                    'label'              => 'forum.doPin',
-                    'required'           => false,
-                ]
-            )
+            );
+
+            if ($options['hasModeratorAuthorization']) {
+                $builder->add(
+                    'pin',
+                    CheckboxType::class,
+                    [
+                        'translation_domain' => 'YosimitsoWorkingForumBundle',
+                        'label'              => 'forum.doPin',
+                        'required'           => false,
+                    ]
+                );
+            }
+
 
         ;
     }
@@ -68,6 +72,10 @@ class ThreadType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setRequired([
+            'hasModeratorAuthorization'
+        ]);
+
         $resolver->setDefaults(
             [
                 'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Thread',

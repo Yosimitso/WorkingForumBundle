@@ -40,9 +40,6 @@ class ThreadController extends BaseController
     }
     /**
      * Display a thread, save a post
-     *
-     * Méthode pour afficher le thread et de poster un nouveau message
-     *
      * @param string  $subforum_slug
      * @param string  $thread_slug
      * @param Request $request
@@ -196,13 +193,13 @@ class ThreadController extends BaseController
 
     }
 
+
     /**
-     *  New thread
-     * @param int     $subforum_slug
+     * New thread
+     * @param $subforum_slug
      * @param Request $request
-     *
      * @return RedirectResponse|Response
-     *  new thread
+     * @throws \Exception
      */
     public function newAction($subforum_slug, Request $request)
     {
@@ -228,11 +225,26 @@ class ThreadController extends BaseController
         $my_thread->addPost($my_post);
 
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
-        $form = $this->createForm(ThreadType::class, $my_thread);
+        $form = $this->createForm(ThreadType::class, $my_thread, ['hasModeratorAuthorization' => $this->authorization->hasModeratorAuthorization()]);
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $subforum->newThread($this->user); // UPDATE STATISTIC
+
+            $this->user->addNbPost(1);
+            $this->em->persist($this->user);
+            $this->em->persist($my_thread);
+            $this->em->persist($subforum);
+
+            $this->em->flush();
+
+            $my_thread->setSlug($my_thread->getId() . '-' . Slugify::convert($my_thread->getLabel())); // SLUG NEEDS THE ID
+
+            $my_post->setThread($my_thread); // ATTACH TO THREAD
+            $this->em->persist($my_post);
+            $this->em->persist($my_thread);
 
             if (!empty($form->getData()->getPost()[0]->getFilesUploaded())) {
                 $file = $this->fileUploaderUtil->upload($form->getData()->getPost()[0]->getFilesUploaded(), $my_post);
@@ -250,21 +262,6 @@ class ThreadController extends BaseController
                 }
                 $my_post->addFiles($file);
             }
-
-            $subforum->newThread($this->user); // UPDATE STATISTIC
-
-            $this->user->addNbPost(1);
-            $this->em->persist($this->user);
-            $this->em->persist($my_thread);
-            $this->em->persist($subforum);
-
-            $this->em->flush();
-
-            $my_thread->setSlug($my_thread->getId() . '-' . Slugify::convert($my_thread->getLabel())); // SLUG NEEDS THE ID
-
-            $my_post->setThread($my_thread); // ATTACH TO THREAD
-            $this->em->persist($my_post);
-            $this->em->persist($my_thread);
             $this->em->flush();
 
             $this->flashbag->add(
@@ -383,9 +380,6 @@ class ThreadController extends BaseController
         );
     }
 
-    /*
-     * Report a post to the admins
-     */
     /**
      * A user report a thread
      * @param $post_id
@@ -496,10 +490,12 @@ class ThreadController extends BaseController
         return new Response(json_encode(['res' => 'true', 'targetLabel' => $target->getName()]), 200);
     }
 
-        /**
-         * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-         * The thread is deleted by modo or admin
-         */
+    /**
+     * The thread is deleted by modo or admin
+     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @param $threadSlug
+     * @return RedirectResponse
+     */
     public function deleteThreadAction($threadSlug)
     {
         if (!$this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread'))

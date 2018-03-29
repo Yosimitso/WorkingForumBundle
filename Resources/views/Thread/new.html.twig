@@ -50,10 +50,10 @@
 
                 <p>{{ form_label(form.sublabel) }}</p>
                 <p>{{ form_widget(form.sublabel) }}</p>
-                {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'pin': form.pin, 'form': form.post.0, 'parameters': parameters, 'submitLabelKey': 'forum.create_thread'} only %}
+                {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'pin': (form.pin is defined) ? form.pin : null, 'form': form.post.0, 'parameters': parameters, 'submitLabelKey': 'forum.create_thread'} only %}
 
                   {% block extraInput %}
-                    {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
+                    {% if (pin) %}
                         <p>{{ form_widget(pin) }} {{ form_label(pin) }}</p>
                     {% endif %}
                       {{ form_rest(form) }}

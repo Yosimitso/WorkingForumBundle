@@ -146,6 +146,8 @@ class Thread
         if (!is_null($post)) {
             $this->addPost($post);
         }
+
+        $this->pin = false;
     }
 
     /**

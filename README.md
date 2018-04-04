@@ -14,6 +14,7 @@ Try it here - http://demoworkingforum.charlymartins.fr
 Features
 ------------------
 - Forum with subforum
+- Responsive design (optimized for mobiles and tablets)
 - Moderator role as ROLE_MODERATOR (and default admin roles)
 - Post editor using markdown with instant preview
 - Smiley system

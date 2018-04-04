@@ -12,7 +12,7 @@ forum:
     new_thread: Nouveau sujet
     into_forum: dans le forum
     create_thread : Créez le sujet
-    last_reply_date: Dernier message le
+    last_reply_date: Dernier message
     lock: Verrouiller
     no_message_locked: Ce sujet a été verrouillé, vous ne pouvez pas poster de nouveaux messages
     no_message_login: Vous devez être connecté pour pouvoir poster un message
@@ -99,6 +99,7 @@ admin:
     delete_forum: Supprimer ce forum
     forumDeleted: Ce forum a été supprimé
     confirmDeleteForum: Êtes vous sûr de vouloir supprimer ce forum ?
+    empty_means_all: Vide = pas de restriction
     report:
         good: Valable
         moderate: Modérer

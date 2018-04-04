@@ -7,7 +7,7 @@
         <table class="wf_admin_table">
             <thead>
             <th>ID</th>
-            <th></th>
+            <th class="hide-for-small"></th>
             <th>{{ 'forum.user.username' | trans }}</th>
             <th>{{ 'forum.user.roles' | trans }}</th>
             <th>{{ 'forum.nbPost' | trans |capitalize }}</th>
@@ -17,7 +17,7 @@
             {% for aUser in usersList %}
                 <tr>
                     <td>{{ aUser.id }}</td>
-                    <td>
+                    <td class="hide-for-small">
                            <img class="wf_cadre-img" src="
           {% if aUser.avatarUrl is not empty %}
           {{ asset('bundles/yosimitsoworkingforum/'~aUser.avatarUrl) }}

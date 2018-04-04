@@ -3,7 +3,7 @@
     {% include '@YosimitsoWorkingForum/Common/header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
  <div id="wf_forum_content">
-     <div class="wf_breadcrumb"><a href="{{ path('workingforum_forum') }}">Forum</a></div>
+     {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'extraPath': [('forum.search_forum' | trans)]} only %}
     <div id="wf_search">
          {{ form_start(form) }}
         <p>{{ form_label(form.keywords)}}</p>

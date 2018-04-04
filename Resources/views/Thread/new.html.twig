@@ -24,7 +24,8 @@
 
                     var html = converter.makeHtml(nl2br(e.getContent()), '{{ asset('bundles/yosimitsoworkingforum/') }}');
                     return html;
-                }
+                },
+                fullscreen: {enable: false}
             });
         });
 
@@ -41,7 +42,7 @@
         <div class="wf_new_thread">
 
             <h1>{{ ('forum.new_thread' | trans) }} {{ ('forum.into_forum' | trans) }} <em>{{ subforum.name }}</em></h1>
-            <div class="wf_content">
+            <div class="wf_new_thread_content">
 
 
                 {{ form_start(form) }}

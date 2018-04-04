@@ -230,7 +230,7 @@ code {
     border-left: 5px solid #cecece;
 }
 
-#wf_smiley, .wf_header-block {
+.wf_header-block {
     background-color: white;
 }
 
@@ -272,7 +272,6 @@ code {
 
 .wf_admin_subforum_block {
     background-color: #f1f1f1;
-    width:70%;
 }
 
 .wf_admin_header h2 {

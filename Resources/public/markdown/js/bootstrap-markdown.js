@@ -495,8 +495,9 @@
       }
 
       // Set the preview element dimensions
+          
       replacementContainer.css({
-        width: parseInt(container.outerWidth()-20) + 'px',
+        width: parseInt(container.outerWidth()-21) + 'px',
         height: parseInt(container.outerHeight()-22) + 'px'
       });
 

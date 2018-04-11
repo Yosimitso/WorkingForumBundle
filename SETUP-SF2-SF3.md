@@ -9,7 +9,7 @@ Add to your composer.json, section 'require'
 ````json
 "require" : {
  [...]
- "yosimitso/workingforumbundle" : "~1.1",
+ "yosimitso/workingforumbundle" : "~1.2",
  }
 ````
 
@@ -28,17 +28,18 @@ yosimitso_working_forum:
     thread_per_page: 50
     post_per_page: 10
     date_format: 'Y/m/d H:i:s'
-    allow_anonymous_read: false
+    allow_anonymous_read: false             # ALLOW OR NOT ACCESS TO ANONYMOUS USERS
     allow_moderator_delete_thread: false
-    theme_color: green
-    lock_thread_older_than: 0
+    theme_color: green                      # GREEN OR DARK_BLUE
+    lock_thread_older_than: 0               # DAYS UNTIL A THREAD DOESN'T ACCEPT NEW POSTS, 0 MEANS DISABLED
+    post_flood_sec: 30                      # SECONDS MINIMUM BETWEEN EACH POST FROM A SAME USER 
     vote:
-        threshold_useful_post: 5
+        threshold_useful_post: 5            # NUMBER OF VOTE NEEDED FOR A POST TO BE CONSIDERED AS USEFUL
     file_upload:
-        enable: true
+        enable: true                        # ALLOW OR NOT USERS TO UPLOAD ENCLOSED FILES 
         max_size_ko: 10000
         accepted_format: [image/jpg, image/jpeg, image/png, image/gif, image/tiff, application/pdf]
-        preview_file: true    
+        preview_file: true                  # FOR IMAGES ONLY, DISPLAY A THUMBNAIL  
 knp_paginator:
     page_range: 1                      # default page range used in pagination control
     default_options:

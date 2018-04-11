@@ -68,6 +68,7 @@ forum:
             max_size_exceeded: Your files exceed the maximum size allowed, the limit is %max_size% ko
             invalid_format: "Your file format isn't allowed : %format%"
             invalid_filename: "Your filename is invalid : %filename%"
+    error_flood: Flood is forbidden, please wait %second% seconds between each post
 
 pagination:
     previous: Previous

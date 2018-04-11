@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package Yosimitso\WorkingForumBundle\Entity
  *
  * @ORM\MappedSuperclass
+ * 
  */
 abstract class User implements UserInterface
 {
@@ -44,6 +45,13 @@ abstract class User implements UserInterface
      * @ORM\Column(name="banned", type="boolean", nullable=true)
      */
     protected $banned;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="lastReplyDate", type="datetime", nullable=true)
+     */
+    private $lastReplyDate;
 
     /**
      * @return int
@@ -131,5 +139,25 @@ abstract class User implements UserInterface
         $this->banned = $banned;
 
         return $this;
+    }
+
+    /**
+     * @param \DateTime $lastReplyDate
+     *
+     * @return Thread
+     */
+    public function setLastReplyDate($lastReplyDate)
+    {
+        $this->lastReplyDate = $lastReplyDate;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLastReplyDate()
+    {
+        return $this->lastReplyDate;
     }
 }

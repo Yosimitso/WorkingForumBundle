@@ -100,6 +100,11 @@ class ThreadController extends BaseController
 
                     $subforum->newPost($this->user); // UPDATE SUBFORUM STATISTIC
                     $thread->addReply($this->user); // UPDATE THREAD STATISTIC
+                    $postQuery = $this->em
+                        ->getRepository('YosimitsoWorkingForumBundle:Post')
+                        ->findByThread($thread->getId())
+                    ;
+                    $post_list =  $this->threadUtil->paginate($postQuery);
 
                     if (!$anonymousUser) {
                         $this->user->addNbPost(1);
@@ -107,15 +112,25 @@ class ThreadController extends BaseController
                     }
 
                     $this->em->persist($thread);
+                    try { // COULD FAILED IF EVENTS THROW EXCEPTIONS
+                        $this->em->persist($my_post);
+                    } catch (\Exception $e) {
+                        $this->flashbag->add(
+                            'error',
+                            $e->getMessage()
+                        );
+
+                        return $this->redirect(
+                            $this->generateUrl(
+                                'workingforum_thread',
+                                ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount()]
+                            ));
+                    }
                     $this->em->persist($my_post);
                     $this->em->persist($subforum);
 
-                    $postQuery = $this->em
-                        ->getRepository('YosimitsoWorkingForumBundle:Post')
-                        ->findByThread($thread->getId())
-                    ;
 
-                    $post_list =  $this->threadUtil->paginate($postQuery);
+
 
                     if (!empty($form->getData()->getFilesUploaded())) {
                         $file = $this->fileUploaderUtil->upload($form->getData()->getFilesUploaded(), $my_post);
@@ -235,6 +250,7 @@ class ThreadController extends BaseController
 
             $this->user->addNbPost(1);
             $this->em->persist($this->user);
+
             $this->em->persist($my_thread);
             $this->em->persist($subforum);
 

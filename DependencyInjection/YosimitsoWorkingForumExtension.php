@@ -67,6 +67,12 @@ class YosimitsoWorkingForumExtension extends Extension
             );
         }
 
+        if (!isset($config['post_flood_sec'])) {
+            throw new \InvalidArgumentException(
+                'The "post_flood_sec" option must be set in "yosimitso_working_forum", please see README.MD'
+            ); 
+        }
+
         $loader = new Loader\YamlFileLoader(
             $container,
             new FileLocator(__DIR__ . '/../Resources/config')
@@ -82,5 +88,6 @@ class YosimitsoWorkingForumExtension extends Extension
         $container->setParameter('yosimitso_working_forum.lock_thread_older_than', $config['lock_thread_older_than']);
         $container->setParameter('yosimitso_working_forum.vote', $config['vote']);
         $container->setParameter('yosimitso_working_forum.file_upload', $config['file_upload']);
+        $container->setParameter('yosimitso_working_forum.post_flood_sec', $config['post_flood_sec']);
     }
 }

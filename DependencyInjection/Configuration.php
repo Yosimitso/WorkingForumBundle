@@ -79,6 +79,9 @@ class Configuration implements ConfigurationInterface
                             ->end()
                     ->end()
                 ->end()
+                ->integerNode('post_flood_sec')
+                    ->isRequired()
+                    ->min(1)
 
              ->end()
         ;

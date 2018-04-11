@@ -9,7 +9,7 @@ This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rend
 1/ Add to your "composer.json", section "require"
 ````json
 "require" : {
- "yosimitso/workingforumbundle" : "~1.2",
+ "yosimitso/workingforumbundle" : "~1.2.1",
  }
 ````
 

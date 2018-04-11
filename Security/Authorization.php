@@ -66,7 +66,7 @@ class Authorization
      */
     public function hasAdminAuthorization()
     {
-        if ($this->securityChecker->isGranted('ROLE_ADMIN')) {
+        if ($this->securityChecker->isGranted('ROLE_ADMIN') || $this->securityChecker->isGranted('ROLE_SUPER_ADMIN')) {
             return true;
         }
         else {

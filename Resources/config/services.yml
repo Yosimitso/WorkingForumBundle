@@ -76,3 +76,11 @@ services:
             - "%yosimitso_working_forum.file_upload%"
             - "@translator"
 
+    yosimitso_workingforum_listener.post:
+        class: Yosimitso\WorkingForumBundle\Event\PostEvent
+        arguments:
+            - "%yosimitso_working_forum.post_flood_sec%"
+            - "@translator"
+        tags:
+          - { name: doctrine.event_listener, event: prePersist}
+

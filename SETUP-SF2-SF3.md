@@ -9,7 +9,7 @@ Add to your composer.json, section 'require'
 ````json
 "require" : {
  [...]
- "yosimitso/workingforumbundle" : "~1.2",
+ "yosimitso/workingforumbundle" : "~1.2.1",
  }
 ````
 

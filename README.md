@@ -3,8 +3,9 @@ WorkingForumBundle
 
 ENGLISH
 =================
-A forum bundle for Symfony 2 (>= 2.7) and Symfony 3, easy to use and fully fonctionnal
+A forum bundle for Symfony 2/3/4 (>= 2.8), easy to use with a lot of features 
 This bundle work with your user bundle with no extra configuration (which can extend FOSUserBundle)
+The bundle was made to be customizable and overridable to fit your application
 
 Demo
 -------------

@@ -34,6 +34,7 @@ Features
 - Database safety : no HTML stored, only markdown
 - Search system
 - Backend administration
+- Antiflood system
 
 
 Setup

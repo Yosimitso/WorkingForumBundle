@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package Yosimitso\WorkingForumBundle\Entity
  *
  * @ORM\Table(name="workingforum_post")
- * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Entity\PostRepository")
+ * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks()
  */
 class Post

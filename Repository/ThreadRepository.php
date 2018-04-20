@@ -1,13 +1,13 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\Entity;
+namespace Yosimitso\WorkingForumBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
 /**
  * Class ThreadRepository
  *
- * @package Yosimitso\WorkingForumBundle\Entity
+ * @package Yosimitso\WorkingForumBundle\Repository
  */
 class ThreadRepository extends EntityRepository
 {

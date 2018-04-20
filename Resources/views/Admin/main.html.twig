@@ -14,6 +14,7 @@
             <div class="wf_forum_block_admin">
                 <div class="wf_forum_block_title">{{ 'admin.manage_forum' | trans }}</div>
                 <div class="wf_forum_content">
+                    <p><a href="{{ path('workingforum_admin_forum_rules') }}">{{ 'admin.edit_rules' }}</a></p>
                     <ul style="list-style: inside decimal;">
                         {% for forum in list_forum %}
                             <li>

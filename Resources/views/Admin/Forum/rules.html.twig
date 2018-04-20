@@ -1,0 +1,49 @@
+{% extends '@YosimitsoWorkingForum/Common/base.html.twig' %}
+{% block forum %}
+    {% include '@YosimitsoWorkingForum/Common/header.html.twig' %}
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+    <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('bundles/yosimitsoworkingforum/js/smiley.js') }}"></script>
+    <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
+    <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
+    <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/twitter.js') }}"></script>
+    <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/github.js') }}"></script>
+    <script src="{{ asset('bundles/yosimitsoworkingforum/js/nicefileinput/jquery.nicefileinput.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}"
+          type="text/css" media="all"/>
+    <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}"
+          type="text/css" media="all"/>
+
+    <script>
+        jQuery(document).ready(function () {
+            jQuery(".wf_textarea_post").markdown({
+                language: '{{ request.locale }}',
+                onPreview: function (e) {
+                    var converter = new Showdown.converter({extensions: ['twitter', 'github']});
+                    var html = converter.makeHtml(nl2br(e.getContent()), '{{ asset('bundles/yosimitsoworkingforum/') }}');
+                    return html;
+                },
+                fullscreen: {enable: false}
+            });
+
+        });
+
+        function nl2br(str, is_xhtml) {
+            var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+            return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+        }
+    </script>
+<div id="wf_forum_content">
+    {%  include '@YosimitsoWorkingForum/Admin/header.html.twig' with {'backToAdmin': true, 'adminSubtitle': 'admin.menu.forum_rules'} %}
+    <div id="wf_forum_admin">
+        {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'form': form, 'parameters': parameters, 'submitLabelKey': 'admin.save_rules'} only %}
+            {% block header %}
+                <p class="wf_post_a_message">{{ 'admin.edit_rules' | trans([], 'YosimitsoWorkingForumBundle') }}</p>
+            {% endblock %}
+            {% block extraInput %}
+                {{ form_rest(form) }}
+            {% endblock %}
+        {% endembed %}
+    </div>
+</div>
+{% endblock %}

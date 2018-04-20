@@ -42,12 +42,16 @@ workingforum_admin:
     defaults: { _controller: yosimitso_workingforum_admin_controller:indexAction }
     
 workingforum_admin_forum_edit:
-    path: /admin/edit/{id}
+    path: /admin/forum/edit/{id}
     defaults: {_controller: yosimitso_workingforum_admin_controller:editAction }
     
 workingforum_admin_forum_add:
-    path: /admin/add
+    path: /admin/forum/add
     defaults: {_controller: yosimitso_workingforum_admin_controller:addAction }
+
+workingforum_admin_forum_rules:
+    path: /admin/rules
+    defaults: {_controller: yosimitso_workingforum_admin_controller:editRulesAction }
 
 workingforum_admin_install_settings:
     path: /admin/install-settings

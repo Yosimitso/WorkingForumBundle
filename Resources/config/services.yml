@@ -25,6 +25,8 @@ services:
         class: Yosimitso\WorkingForumBundle\Controller\AdminController
         parent: yosimitso_workingforum_base_controller
         public: true
+        arguments:
+          - "@yosimitso_workingforum_smiley"
 
     yosimitso_workingforum_search_controller:
         class: Yosimitso\WorkingForumBundle\Controller\SearchController

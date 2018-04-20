@@ -3,10 +3,13 @@
 namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Yosimitso\WorkingForumBundle\Entity\Rules;
 use Yosimitso\WorkingForumBundle\Form\AdminForumType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
+use Yosimitso\WorkingForumBundle\Form\RulesType;
+use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 
 /**
  * Class AdminController
@@ -17,6 +20,15 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AdminController extends BaseController
 {
+
+    private $smileyTwigExtension;
+
+    public function __construct(SmileyTwigExtension $smileyTwigExtension)
+    {
+        $this->smileyTwigExtension = $smileyTwigExtension;
+    }
+
+
     /** @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
      * @return Response
      * @throws \Exception
@@ -135,6 +147,37 @@ class AdminController extends BaseController
             [
                 'forum' => $forum,
                 'form' => $form->createView(),
+            ]
+        );
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function editRulesAction(Request $request)
+    {
+        $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
+        $rules = new Rules();
+        $langs = array_merge(['en'], (array) $this->em->getRepository('YosimitsoWorkingForumBundle:Rules')->getLangs());
+
+        $form = $this->createForm(RulesType::class, $rules, ['langs' => $langs]);
+        $form->handleRequest($request);
+        $parameters  = [ // PARAMETERS USED BY TEMPLATE
+            'fileUpload' => ['enable' => false],
+        ];
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->persist($rules);
+            $this->em->flush();
+        }
+
+        return $this->render(
+            '@YosimitsoWorkingForum/Admin/Forum/rules.html.twig',
+            [
+                'form' => $form->createView(),
+                'listSmiley' => $listSmiley,
+                'parameters' => $parameters,
+                'request' => $request
             ]
         );
     }

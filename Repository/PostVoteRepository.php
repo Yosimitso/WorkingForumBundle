@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityRepository;
 /**
  * Class PostVoteRepository
  *
- * @package Yosimitso\WorkingForumBundle\Entity
+ * @package Yosimitso\WorkingForumBundle\Repository
  */
 class PostVoteRepository extends EntityRepository
 {

@@ -66,7 +66,7 @@
                      <span class="wf_pinText"><img src="{{ asset('bundles/yosimitsoworkingforum/images/tick.png') }}" width="16"/>{#{{ 'forum.resolved' | trans }} : #}</span>    
                 {% endif %}
             
-                <a href="{{ path( 'workingforum_thread', {'subforum_slug' : thread.subforum.slug, 'thread_slug' : thread.slug}) }}">{{ thread.label }}</a>
+                <a class="wf_label" href="{{ path( 'workingforum_thread', {'subforum_slug' : thread.subforum.slug, 'thread_slug' : thread.slug}) }}">{{ thread.label }}</a>
                 </p>
                
              

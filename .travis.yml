@@ -1,0 +1,27 @@
+# Project language
+language: php
+
+# Start mysql service
+services:
+  - mysql
+
+# Cache composer packages so "composer install" is faster
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+# Settings version PHP
+php:
+   - 7.1
+
+# Update composer
+before-install:
+  - composer install --dev
+
+# Run script
+script:
+  - phpunit --coverage-text
+
+# After a build, send email notification with the build results
+notifications:
+  email: contactportfolio@charlymartins.fr

@@ -1,6 +1,8 @@
 WorkingForumBundle
 ==================
 
+[![Join the chat at https://gitter.im/WorkingForumBundle/Lobby](https://badges.gitter.im/WorkingForumBundle/Lobby.svg)](https://gitter.im/WorkingForumBundle/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ENGLISH
 =================  
 A forum bundle for Symfony 2/3/4 (>= 2.8), easy to use with a lot of features  

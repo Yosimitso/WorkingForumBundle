@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Form\RulesType;
+use Yosimitso\WorkingForumBundle\Form\RulesEditType;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 
 /**
@@ -38,10 +39,19 @@ class AdminController extends BaseController
         $list_forum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findAll();
 
         $settingsList = [
-            'allow_anonymous_read' => ['varType' => 'boolean'],
-            'allow_moderator_delete_thread' => ['varType' => 'boolean'],
-            'theme_color' => ['varType' => 'string'],
-            'lock_thread_older_than' => ['varType' => 'number'],
+            ['label' => 'allow_anonymous_read', 'varType' => 'boolean'],
+            ['label' => 'allow_moderator_delete_thread', 'varType' => 'boolean'],
+            ['label' => 'theme_color', 'varType' => 'string'],
+            ['label' => 'lock_thread_older_than', 'varType' => 'number'],
+            ['label' => 'post_flood_sec', 'varType' => 'number'],
+            ['label' => 'vote', 'key' => 'threshold_useful_post', 'varType' => 'number'],
+            ['label' => 'file_upload.title', 'group' => true],
+            ['label' => 'file_upload', 'key' => 'enable', 'varType' => 'boolean'],
+            ['label' => 'file_upload', 'key' => 'max_size_ko', 'varType' => 'number'],
+            ['label' => 'file_upload', 'key' => 'accepted_format', 'varType' => 'array'],
+            ['label' => 'file_upload', 'key' => 'preview_file', 'varType' => 'boolean'],
+
+
         ];
 
         $settings_render = $this->renderSettings($settingsList);
@@ -151,33 +161,88 @@ class AdminController extends BaseController
         );
     }
 
+    public function rulesAction()
+    {
+        $form = $this->createForm(RulesType::class, null);
+
+        return $this->render(
+            '@YosimitsoWorkingForum/Admin/Rules/rules.html.twig',
+            [
+                'form' => $form->createView(),
+            ]
+        );
+    }
+
     /**
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function editRulesAction(Request $request)
+    public function rulesEditAction(Request $request, $lang)
     {
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
-        $rules = new Rules();
-        $langs = array_merge(['en'], (array) $this->em->getRepository('YosimitsoWorkingForumBundle:Rules')->getLangs());
+        $rules = $this->em->getRepository('YosimitsoWorkingForumBundle:Rules')->findOneBy(['lang' => $lang]);
 
-        $form = $this->createForm(RulesType::class, $rules, ['langs' => $langs]);
+        if (is_null($rules)) {
+            throw new \Exception('Lang not found', 500);
+        }
+
+        $form = $this->createForm(RulesEditType::class, $rules);
         $form->handleRequest($request);
-        $parameters  = [ // PARAMETERS USED BY TEMPLATE
-            'fileUpload' => ['enable' => false],
-        ];
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($rules);
             $this->em->flush();
+            $this->flashbag->add(
+                'success',
+                $this->translator->trans('message.saved', [], 'YosimitsoWorkingForumBundle')
+            );
+
         }
 
+        $parameters = [ // PARAMETERS USED BY TEMPLATE
+            'fileUpload' => ['enable' => false],
+        ];
+
         return $this->render(
-            '@YosimitsoWorkingForum/Admin/Forum/rules.html.twig',
+            '@YosimitsoWorkingForum/Admin/Rules/rules-edit.html.twig',
             [
                 'form' => $form->createView(),
                 'listSmiley' => $listSmiley,
+                'request' => $request,
+                'lang' => $lang,
                 'parameters' => $parameters,
-                'request' => $request
+            ]
+        );
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function rulesNewAction(Request $request, $lang)
+    {
+        $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
+        $rules = new Rules();
+
+        $form = $this->createForm(RulesEditType::class, $rules);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $rules->setLang($lang);
+            $this->em->persist($rules);
+            $this->em->flush();
+        }
+
+        $parameters = [ // PARAMETERS USED BY TEMPLATE
+            'fileUpload' => ['enable' => false],
+        ];
+
+        return $this->render(
+            '@YosimitsoWorkingForum/Admin/Rules/rules-edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'listSmiley' => $listSmiley,
+                'request' => $request,
+                'parameters' => $parameters,
+                'lang' => $lang,
             ]
         );
     }
@@ -295,7 +360,9 @@ class AdminController extends BaseController
         }
 
         if ($banuser) {
-            $postUser = $this->em->getRepository('YosimitsoWorkingForumBundle:User')->findOneById($post->getUser()->getId());
+            $postUser = $this->em->getRepository('YosimitsoWorkingForumBundle:User')->findOneById(
+                $post->getUser()->getId()
+            );
             if (is_null($postUser)) {
                 return new Response(json_encode('fail'), 500);
             }
@@ -334,37 +401,57 @@ class AdminController extends BaseController
     {
         $settingsHtml = [];
 
-        foreach ($settingsList as $index => $setting) {
-            $html = [];
-            $setting['value'] = $this->getParameter('yosimitso_working_forum.'.$index);
+        foreach ($settingsList as $setting) {
+            if (isset($setting['group']) && $setting['group']) {
+                $settingsHtml[] = [
+                    'group' => true,
+                    'label' => $this->translator->trans('setting.'.$setting['label'], [], 'YosimitsoWorkingForumBundle'),
+                ];
+            } else {
+                $html = [];
 
-            switch ($setting['varType']) {
-                case 'boolean':
-                    $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled'];
-                    $setting['type'] = 'checkbox';
-                    break;
-                case 'string':
-                    $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled', 'style' => 'width:80px'];
-                    $setting['type'] = 'text';
-                    break;
-                case 'number':
-                    $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled'];
-                    $setting['type'] = 'number';
-                    break;
+                if (isset($setting['key'])) {
+                    $setting['value'] = $this->getParameter(
+                        'yosimitso_working_forum.'.$setting['label']
+                    )[$setting['key']];
+                    $html['text'] = $this->translator
+                        ->trans('setting.'.$setting['label'].'.'.$setting['key'], [], 'YosimitsoWorkingForumBundle');
+                } else {
+                    $setting['value'] = $this->getParameter('yosimitso_working_forum.'.$setting['label']);
+                    $html['text'] = $this->translator
+                        ->trans('setting.'.$setting['label'], [], 'YosimitsoWorkingForumBundle');
+                }
+
+                switch ($setting['varType']) {
+                    case 'boolean':
+                        $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled'];
+                        $setting['type'] = 'checkbox';
+                        break;
+                    case 'string':
+                        $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled', 'style' => 'width:80px'];
+                        $setting['type'] = 'text';
+                        break;
+                    case 'number':
+                        $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled'];
+                        $setting['type'] = 'number';
+                        break;
+                    case 'array':
+                        $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled', 'style' => 'width:auto'];
+                        $setting['type'] = 'text';
+                        $setting['value'] = implode(',', $setting['value']);
+                }
+
+
+                $html['input'] = '<input type="'.$setting['type'].'" value="'.$setting['value'].'"';
+                foreach ($setting['attr'] as $indexAttr => $attr) {
+                    $html['input'] .= ' '.$indexAttr.'="'.$attr.'"';
+                }
+
+                $html['input'] .= '/>';
+
+                $settingsHtml[] = $html;
             }
 
-
-            $html['text'] = $this->translator
-                ->trans('setting.'.$index, [], 'YosimitsoWorkingForumBundle');
-
-            $html['input'] = '<input type="'.$setting['type'].'" value="'.$setting['value'].'"';
-            foreach ($setting['attr'] as $indexAttr => $attr) {
-                $html['input'] .= ' '.$indexAttr.'="'.$attr.'"';
-            }
-
-            $html['input'] .= '/>';
-
-            $settingsHtml[] = $html;
         }
 
         return $settingsHtml;

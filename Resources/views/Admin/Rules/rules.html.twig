@@ -1,0 +1,39 @@
+{% extends '@YosimitsoWorkingForum/Common/base.html.twig' %}
+{% block forum %}
+    {% include '@YosimitsoWorkingForum/Common/header.html.twig' %}
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+    <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
+    <script>
+        jQuery(document).ready(function() {
+            jQuery('#wf_edit_lang').click(function(e) {
+                var lang = jQuery('#rules_langs').val();
+                if (typeof lang !== undefined && lang !== '') {
+                    document.location.href = '{{ path('workingforum_admin_forum_rules' ) }}/edit/'+lang;
+                }
+                return;
+            });
+
+            jQuery('#wf_create_lang').click(function(e) {
+                console.log('ok');
+                var lang = jQuery('#rules_newLang').val();
+                if (lang !== undefined && lang !== '') {
+                    document.location.href = '{{ path('workingforum_admin_forum_rules' ) }}/new/'+lang;
+                } else {
+                    alert('{{ 'adsmin.rules.type_lang' | trans }}');
+                    return;
+                }
+            });
+        });
+
+    </script>
+
+<div id="wf_forum_content">
+    {%  include '@YosimitsoWorkingForum/Admin/header.html.twig' with {'backToAdmin': true, 'adminSubtitle': 'admin.menu.forum_rules'} %}
+    <div id="wf_forum_admin">
+        <p>{{ 'admin.rules.choose_one' | trans }}</p>
+        <p>{{ form_widget(form.langs) }}</p><input type="button" class="wf_button" id="wf_edit_lang" value="{{ 'button.ok' | trans }}" />
+        <p>{{ 'admin.rules.or_create_new_one' | trans }}</p>
+        <p>{{ form_widget(form.newLang) }}</p><input type="button" class="wf_button" id="wf_create_lang" value="{{ 'button.ok' | trans }}" />
+    </div>
+</div>
+{% endblock %}

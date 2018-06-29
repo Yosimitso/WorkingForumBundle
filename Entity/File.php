@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * File
  *
- * @ORM\Table(name="file")
+ * @ORM\Table(name="workingforum_file")
  * @ORM\Entity()
  */
 class File

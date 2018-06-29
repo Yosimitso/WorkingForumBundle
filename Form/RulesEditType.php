@@ -7,40 +7,27 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Yosimitso\WorkingForumBundle\Entity\Rules;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 /**
- * Class RulesType
+ * Class RulesEditType
  *
  * @package Yosimitso\WorkingForumBundle\Form
  */
-class RulesType extends AbstractType
+class RulesEditType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add(
-                'langs',
-                EntityType::class,
+                'content',
+                TextareaType::class,
                 [
-                    'class' => Rules::class,
-                    'choice_label' => 'lang',
-                    'choice_value' => 'lang',
-                    'translation_domain' => 'YosimitsoWorkingForumBundle',
-                    'label' => 'admin.rules_lang',
-                    'error_bubbling' => true,
-                    'attr' => ['id' => 'wf_edit_lang'],
-                ]
-            )
-            ->add(
-                'newLang',
-                TextType::class,
-                [
+                    'attr' => ['class' => 'wf_textarea_post']
                 ]
             );
     }
@@ -50,6 +37,11 @@ class RulesType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $resolver->setDefaults(
+            [
+                'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Rules',
 
+            ]
+        );
     }
 }

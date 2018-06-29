@@ -131,13 +131,14 @@ class FileUploader
 
     /**
      * @return float
-     * Determine the max size allowed, the "max size file upload" parameter in application config can be superior to PHP config
+     * Determine the max size allowed, the "max size file upload" parameter in application config can't be superior to PHP config
      */
     public function getMaxSize()
     {
         return (($this->configFileUpload['max_size_ko'] > (intval(ini_get('upload_max_filesize')) * 1000))
-            && ($this->configFileUpload['max_size_ko'] > (intval(ini_get('post_max_size')) * 1000)))
-            ? $this->configFileUpload['max_size_ko']
-            : max([(intval(ini_get('upload_max_filesize')) * 1000), (intval(ini_get('post_max_size')) * 1000)]);
+            || ($this->configFileUpload['max_size_ko'] > (intval(ini_get('post_max_size')) * 1000)))
+            ? min([(intval(ini_get('upload_max_filesize')) * 1000), (intval(ini_get('post_max_size')) * 1000)])
+            : $this->configFileUpload['max_size_ko'];
     }
+
 }

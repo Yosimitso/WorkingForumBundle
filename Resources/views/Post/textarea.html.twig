@@ -35,7 +35,7 @@
     <div class="wf_clear"></div>
     <p>{{ form_widget(form.content) }}</p>
 
-    {% if parameters.fileUpload.enable and form.filesUpload is defined %} {# FILE UPLOAD ARE ALLOWED#}
+    {% if parameters.fileUpload.enable and form.filesUploaded is defined %} {# FILE UPLOAD ARE ALLOWED#}
         <div class="wf_file_upload">
             <div class="wf_header-block">
                 {{ 'forum.enclosed_files' | trans }} <span

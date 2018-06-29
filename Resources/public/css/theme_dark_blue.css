@@ -270,13 +270,14 @@ code {
     background-color: #afddaf;
 }
 
-.wf_admin_header h2 {
+#wf_admin_header h2 {
     text-align: center;
     font-size: 18px;
     font-family: Arial, sans-serif;
+    margin: 0;
 }
 
-.wf_admin_header_content {
+#wf_admin_header_content {
     background-color: white;
 }
 

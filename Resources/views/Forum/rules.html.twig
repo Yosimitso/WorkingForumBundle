@@ -1,0 +1,33 @@
+{% extends '@YosimitsoWorkingForum/Common/base.html.twig' %}
+{% block forum %}
+    {% include '@YosimitsoWorkingForum/Common/header.html.twig' %}
+    {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+    <script>
+        jQuery(document).ready(function() {
+            jQuery('#rules_langs').change(function(e) {
+                var lang = jQuery('#rules_langs').val();
+                if (typeof lang !== undefined && lang !== '') {
+                    document.location.href = '{{ path('workingforum_rules' ) }}/'+lang;
+                }
+                return;
+            });
+        });
+    </script>
+    <div id="wf_forum_content">
+        {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'extraPath': ['forum.forum_rules' | trans] } only %}
+    <div id="wf_forum">
+            <div class="wf_forum">
+                <h1>{{ 'forum.forum_rules' | trans | capitalize }}</h1>
+                <div id="wf_rules">
+                {% if rules is not null %}
+                    <p>{{ 'admin.rules.lang' | trans | capitalize }} : {{ rules.lang }}</p>
+                    <p>{{ 'forum.switch_lang' | trans }} : {{ form_widget(form.langs) }}</p>
+                    <p>{{ rules.content | markdown | smiley |  raw }}</p>
+                {% else %}
+                    <p><em>{{ 'forum.no_rules_available' | trans }}</em></p>
+                {% endif %}
+                </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends '@YosimitsoWorkingForum/Common/base.html.twig' %}
 {% block forum %}
     {% include '@YosimitsoWorkingForum/Common/header.html.twig' %}
-{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+    {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
     <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
     <script src="{{ asset('bundles/yosimitsoworkingforum/js/smiley.js') }}"></script>
     <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
@@ -33,17 +33,19 @@
             return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
         }
     </script>
-<div id="wf_forum_content">
-    {%  include '@YosimitsoWorkingForum/Admin/header.html.twig' with {'backToAdmin': true, 'adminSubtitle': 'admin.menu.forum_rules'} %}
-    <div id="wf_forum_admin">
-        {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'form': form, 'parameters': parameters, 'submitLabelKey': 'admin.save_rules'} only %}
-            {% block header %}
-                <p class="wf_post_a_message">{{ 'admin.edit_rules' | trans([], 'YosimitsoWorkingForumBundle') }}</p>
-            {% endblock %}
-            {% block extraInput %}
-                {{ form_rest(form) }}
-            {% endblock %}
-        {% endembed %}
+    <div id="wf_forum_content">
+        {%  include '@YosimitsoWorkingForum/Admin/header.html.twig' with {'backToAdmin': true, 'adminSubtitle': 'admin.menu.forum_rules'} %}
+        <div id="wf_forum_admin">
+            {{ form_start(form) }}
+            <p>{{ 'admin.rules.lang' | trans }} : {{ lang }}</p>
+            {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'form': form, 'parameters': parameters, 'submitLabelKey': 'admin.submit'} only %}
+                {% block header %}
+                    <p class="wf_post_a_message">{{ 'admin.rules.edit' | trans([], 'YosimitsoWorkingForumBundle') }}</p>
+                {% endblock %}
+                {% block extraInput %}
+                    {{ form_rest(form) }}
+                {% endblock %}
+            {% endembed %}
+        </div>
     </div>
-</div>
 {% endblock %}

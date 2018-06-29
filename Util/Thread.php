@@ -30,7 +30,7 @@ class Thread
     public function isAutolock($thread)
     {
         if ($this->lockThreadOlderThan) {
-            $diff = $thread->getCdate()->diff(new \DateTime());
+            $diff = $thread->getLastReplyDate()->diff(new \DateTime());
             if ($diff->days > $this->lockThreadOlderThan) {
                 return true;
             } else {

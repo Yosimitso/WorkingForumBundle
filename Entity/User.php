@@ -122,6 +122,18 @@ abstract class User implements UserInterface
     }
 
     /**
+     * @param int $nbPost
+     *
+     * @return User
+     */
+    public function addNbPost($nbPost)
+    {
+        $this->nbPost += $nbPost;
+        
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function isBanned()

@@ -69,6 +69,9 @@ forum:
             invalid_format: "Your file format isn't allowed : %format%"
             invalid_filename: "Your filename is invalid : %filename%"
     error_flood: Flood is forbidden, please wait %second% seconds between each post
+    forum_rules: Forum rules
+    no_rules_available: The forum rules are not available yet
+    switch_lang: Switch language
 
 pagination:
     previous: Previous
@@ -108,17 +111,33 @@ admin:
         why: "Give a reason :"
         history: Reports history
         list: Reports list
+        invalid_reason: You must give a reason
     menu:
         user: Users management
         forum: Forums management
         report_history: Reports History
         report: Reports
+        forum_rules: Forums rules
+    rules:
+        edit: Edit forums rules
+        choose_one: choose the language to edit
+        or_create_new_one: or create new one
+        lang: language
 setting:
     intro: Settings can be modified into app's config file
     allow_anonymous_read: Allow anonymous users to read
     allow_moderator_delete_thread: Allow moderators to delete threads
     theme_color: Theme's color
-    lock_thread_older_than: Lock thread older than (days)
+    lock_thread_older_than: Lock thread without new posts until (days)
+    post_flood_sec: Minimum time between each post (user / sec)
+    vote:
+      threshold_useful_post: Considered as useful post (votes)
+    file_upload:
+      title: Files upload
+      enable: Enabled
+      max_size_ko: Max size per post (ko)
+      accepted_format: Accepted formats
+      preview_file: File preview
 message:
     saved: Successfully saved
     posted: Post saved
@@ -132,9 +151,15 @@ message:
         banned: Sorry but you are banned
         restricted_action: You are not authorized to do this
         restricted_access: You are not authorized to view this subforum
+        something_wrong: Sorry but something wrong has happened
     thread_deleted: The thread was succesfully deleted
+
 search:
     results_for: Results for "%keywords%"
     no_result: Sorry, no results for "%keywords%"
     keywords: Keywords
     search_in: Search in
+
+button:
+    ok: ok
+

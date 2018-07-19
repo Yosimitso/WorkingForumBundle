@@ -14,7 +14,7 @@
             <div class="wf_forum_block_admin">
                 <div class="wf_forum_block_title">{{ 'admin.manage_forum' | trans }}</div>
                 <div class="wf_forum_content">
-                    <p><a href="{{ path('workingforum_admin_forum_rules') }}">{{ 'admin.edit_rules' }}</a></p>
+                    <p><a href="{{ path('workingforum_admin_forum_rules') }}">{{ 'admin.rules.edit' | trans }}</a></p>
                     <ul style="list-style: inside decimal;">
                         {% for forum in list_forum %}
                             <li>
@@ -34,8 +34,12 @@
                     <table>
                         {% for setting in settings_render %}
                         <tr>
-                            <td>{{ setting.text | raw }}</td>
-                            <td>{{ setting.input | raw }}</td>
+                            {% if setting.group is defined and setting.group %}
+                                <td class="wf_setting_group" colspan="2">{{ setting.label }}</td>
+                            {% else %}
+                                <td>{{ setting.text | raw }}</td>
+                                <td>{{ setting.input | raw }}</td>
+                            {% endif %}
                         </tr>
 
                         {% endfor %}

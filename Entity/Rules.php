@@ -5,6 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ORM\Table(name="workingforum_rules")
  * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Repository\RulesRepository")
  */
 class Rules
@@ -31,24 +32,24 @@ class Rules
         return $this->id;
     }
 
-    public function getLang(): ?string
+    public function getLang()
     {
         return $this->lang;
     }
 
-    public function setLang(string $lang): self
+    public function setLang(string $lang)
     {
         $this->lang = $lang;
 
         return $this;
     }
 
-    public function getContent(): ?string
+    public function getContent()
     {
         return $this->content;
     }
 
-    public function setContent(string $content): self
+    public function setContent(string $content)
     {
         $this->content = $content;
 

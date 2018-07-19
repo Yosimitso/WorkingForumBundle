@@ -5,6 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
+use Yosimitso\WorkingForumBundle\Form\RulesType;
 /**
  * Class ForumController
  *
@@ -91,6 +92,31 @@ class ForumController extends BaseController
                 'post_per_page' => $this->getParameter('yosimitso_working_forum.post_per_page'),
                 'page_prefix' => 'page'
                 //$this->getParameter('knp_paginator.default_options.page_name')
+            ]
+        );
+    }
+
+    public function rulesAction($locale = null)
+    {
+        if (is_null($locale)) {
+            $rulesList = $this->em->getRepository('Yosimitso\WorkingForumBundle\Entity\Rules')->findAll();
+
+            if (!is_null($rulesList)) {
+                $rules = $rulesList[0];
+            } else {
+                $rules = null;
+            }
+        } else {
+            $rules = $this->em->getRepository('Yosimitso\WorkingForumBundle\Entity\Rules')->findOneByLang($lcoale);
+        }
+
+        $form = $this->createForm(RulesType::class, null);
+        
+        return $this->render(
+            '@YosimitsoWorkingForum/Forum/rules.html.twig',
+            [
+                'rules' => $rules,
+                'form' => $form->createView()
             ]
         );
     }

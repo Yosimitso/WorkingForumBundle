@@ -289,7 +289,7 @@
     text-align: center;
     border-bottom: 1px solid;
     font-family: Arial;
-    font-size: 1.8rem;
+    font-size: 1.6em;
     padding: 5px 0 5px 0;
     margin-bottom: 0;
     margin-top: 0;
@@ -606,7 +606,7 @@ code {
     width: 40px;
 }
 
-.wf_admin_header_content {
+#wf_admin_header_content {
     padding: 10px;
 }
 
@@ -676,6 +676,7 @@ code {
 
 .wf_enclosed_files ul {
     list-style: none;
+    padding-left: 0;
 }
 
 .wf_header-block {
@@ -727,6 +728,16 @@ code {
     color: inherit;
 }
 
+#wf_rules {
+    width: 80%;
+    margin:0 auto;
+    font-size: 0.9rem;
+}
+
+.wf_setting_group {
+    font-weight: bold;
+    text-align: center;
+}
 
 @media only screen and (max-width : 425px) { /* SMALL AND MEDIUM MOBILE */
     .wf_pagination .wf_center {

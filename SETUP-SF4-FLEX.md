@@ -23,7 +23,7 @@ yosimitso_working_forum:
     allow_anonymous_read: false             # ALLOW OR NOT ACCESS TO ANONYMOUS USERS
     allow_moderator_delete_thread: false
     theme_color: green                      # GREEN OR DARK_BLUE
-    lock_thread_older_than: 0               # DAYS UNTIL A THREAD DOESN'T ACCEPT NEW POSTS, 0 MEANS DISABLED
+    lock_thread_older_than: 0               # DAYS BETWEEN THE LAST THREAD'S POST AND THE AUTOLOCKING OF THE THREAD, 0 MEANS DISABLED
     post_flood_sec: 30                      # SECONDS MINIMUM BETWEEN EACH POST FROM A SAME USER 
     vote:
         threshold_useful_post: 5            # NUMBER OF VOTE NEEDED FOR A POST TO BE CONSIDERED AS USEFUL

@@ -95,10 +95,15 @@
     border-color: silver;
 }
 
+
 #wf_forum_content h1 {
     border-bottom-color: #CCCCCC;
-    background-color: #188D40;
+    background-color: rgba(21, 141, 64, 0.7);
+    border-left: 5px solid #188D40;
     color: white;
+    text-align:center;
+    height: 1.3em;
+    text-shadow: 1px 2px 0 rgba(0,0,0,1);
 }
 
 .wf_forum_block_title {
@@ -274,13 +279,14 @@ code {
     background-color: #f1f1f1;
 }
 
-.wf_admin_header h2 {
+#wf_admin_header h2 {
     text-align: center;
     font-size: 18px;
     font-family: Arial, sans-serif;
+    margin: 0;
 }
 
-.wf_admin_header_content {
+#wf_admin_header_content {
     background-color: white;
 }
 
@@ -300,3 +306,13 @@ code {
 }
 
 
+/** TEST **/
+#wf_forum_content h1 {
+    border-bottom-color: #CCCCCC;
+    background-color: rgba(21, 141, 64, 0.7);
+    border-left: 5px solid #188D40;
+    color: white;
+    text-align:center;
+    height: 1.3em;
+    text-shadow: 1px 2px 0 rgba(0,0,0,1);
+}

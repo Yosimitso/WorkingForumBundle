@@ -51,7 +51,18 @@ workingforum_admin_forum_add:
 
 workingforum_admin_forum_rules:
     path: /admin/rules
-    defaults: {_controller: yosimitso_workingforum_admin_controller:editRulesAction }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:rulesAction }
+
+workingforum_admin_edit_forum_rules:
+    path: /admin/rules/edit/{lang}
+    defaults: {_controller: yosimitso_workingforum_admin_controller:rulesEditAction }
+
+workingforum_admin_new_forum_rules:
+    path: /admin/rules/new/{lang}
+    defaults:
+          _controller: yosimitso_workingforum_admin_controller:rulesNewAction
+          newLang: true
+
 
 workingforum_admin_install_settings:
     path: /admin/install-settings
@@ -83,3 +94,11 @@ workingforum_search:
 workingforum_vote_up:
     path: /voteup
     defaults: { _controller: yosimitso_workingforum_post_controller:voteUpAction }
+
+workingforum_rules:
+    path: rules
+    defaults: { _controller: yosimitso_workingforum_forum_controller:rulesAction}
+
+workingforum_rules_locale:
+    path: rules/{locale}
+    defaults: { _controller: yosimitso_workingforum_forum_controller:rulesAction}

@@ -69,6 +69,8 @@ forum:
             invalid_format: "Le format de votre fichier n'est pas autorisé : %format%"
             invalid_filename: "Le nom de fichier est invalide : %filename%"
     error_flood: Le flood est interdit, merci d'attendre %second% secondes entre chaque message
+    no_rules_available: Les règle du forum ne sont pas encore disponibles
+    switch_lang: Changer de langue
 
 pagination:
     previous: Précédent
@@ -108,17 +110,33 @@ admin:
         why: "Donner une raison :"
         history: Historique des signalements
         list: Liste des signalements
+        invalid_reason: Vous devez donner une raison
     menu:
         user: Gestion des utilisateurs
         forum: Gestion des forums
         report_history: Historique des signalements
         report: Liste des signalements
+        forum_rules: Règles des forums
+    rules:
+        edit: Editer les règles
+        choose_one: choisissez la langue a éditer
+        or_create_new_one: ou créez une règle dans une nouvelle langue
+        lang: langue
 setting:
     intro: Ces paramètres sont modifiables dans le fichier de configuration de l'app.
     allow_anonymous_read: Autoriser les utilisateurs non enregistrés à lire
     allow_moderator_delete_thread: Autoriser les modérateurs à supprimer des sujets
     theme_color: Couleur du thème
-    lock_thread_older_than: Verrouiller les sujet plus vieux que (jours)
+    lock_thread_older_than: Verrouiller les sujets sans réponses depuis (jours)
+    post_flood_sec: Temps minimum entre chaque message (utilisateur / sec)
+    vote:
+      threshold_useful_post: Message considéré comme utile (votes)
+    file_upload:
+      title: Fichiers joints
+      enable: Activé
+      max_size_ko: Taille max. par message (ko)
+      accepted_format: Formats acceptés
+      preview_file: Aperçu des fichiers
 message:
     saved: Enregistrement effectués
     posted: Message posté
@@ -132,6 +150,7 @@ message:
         banned: Désolé mais vous êtes banni
         restricted_action: Vous n'êtes pas autorisé à faire cela
         restricted_access: Vous n'êtes pas autorisé à lire ce sous-forum
+        something_wrong: Désolé mais quelque chose ne s'est pas passé correctement
     thread_deleted: Le sujet a été supprimé avec succès
 search:
     results_for: Résultats pour "%keywords%"

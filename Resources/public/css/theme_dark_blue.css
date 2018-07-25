@@ -98,7 +98,11 @@
 #wf_forum_content h1 {
     border-bottom-color: #CCCCCC;
     background-color: #185390;
+    border-left: 5px solid #188D40;
     color: white;
+    text-align:center;
+    height: 1.3em;
+    text-shadow: 1px 2px 0 rgba(0,0,0,1);
 }
 
 .wf_forum_block_title {
@@ -230,6 +234,10 @@ code {
     border-left: 5px solid #cecece;
 }
 
+.wf_header-block {
+    background-color: white;
+}
+
 #wf_smiley {
     background-color: white;
 }
@@ -270,6 +278,10 @@ code {
     background-color: #afddaf;
 }
 
+.wf_admin_subforum_block {
+    background-color: #f1f1f1;
+}
+
 #wf_admin_header h2 {
     text-align: center;
     font-size: 18px;
@@ -282,16 +294,33 @@ code {
 }
 
 .wf_icon-pin {
-    background: url('../images/pin-btn.png') 5% no-repeat, linear-gradient(to bottom, #44e567 0px, #00a547 100%);
+    background: url('../images/pin-btn.png') 5% no-repeat, linear-gradient(to bottom, #51abe0 0px, #142c84 100%);
     padding-left:25px;
 }
 
 .wf_icon-lock {
-    background: url('../images/lock-btn.png') 5% no-repeat, linear-gradient(to bottom, #44e567 0px, #00a547 100%);
+    background: url('../images/lock-btn.png') 5% no-repeat, linear-gradient(to bottom, #51abe0 0px, #142c84 100%);
     padding-left:25px;
 }
 
 .wf_icon-remove {
-    background: url('../images/remove-btn.png') 5% no-repeat, linear-gradient(to bottom, #44e567 0px, #00a547 100%);
+    background: url('../images/remove-btn.png') 5% no-repeat, linear-gradient(to bottom, #51abe0 0px, #142c84 100%);
     padding-left:25px;
+}
+
+.wf_icon-reply {
+    background: url('../images/reply.png') 5% no-repeat, linear-gradient(to bottom, #51abe0 0px, #142c84 100%);
+    padding-left:25px;
+}
+
+
+/** TEST **/
+#wf_forum_content h1 {
+    border-bottom-color: #CCCCCC;
+    background-color: rgba(21, 141, 64, 0.7);
+    border-left: 5px solid #188D40;
+    color: white;
+    text-align:center;
+    height: 1.3em;
+    text-shadow: 1px 2px 0 rgba(0,0,0,1);
 }

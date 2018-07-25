@@ -20,14 +20,15 @@ class BaseController extends Controller
     protected $flashbag;
     protected $translator;
     protected $paginator;
-
-    public function setParameters($em, $authorization, $user, $session, $translator, $paginator) {
+    protected $templating;
+    
+    public function setParameters($em, $authorization, $user, $session, $translator, $paginator, $templating) {
         $this->em = $em;
         $this->authorization = $authorization;
         $this->user = (is_object($user)) ? $user : null;
         $this->flashbag = $session->getFlashBag();
         $this->translator = $translator;
         $this->paginator = $paginator;
-
+        $this->templating = $templating;
     }
 }

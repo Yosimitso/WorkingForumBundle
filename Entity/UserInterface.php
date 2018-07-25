@@ -22,4 +22,6 @@ interface UserInterface
     public function setNbPost($nbPost);
 
     public function addNbPost($nb);
+    
+    public function getEmailAddress();
 }

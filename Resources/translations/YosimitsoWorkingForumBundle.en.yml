@@ -72,6 +72,10 @@ forum:
     forum_rules: Forum rules
     no_rules_available: The forum rules are not available yet
     switch_lang: Switch language
+    subscribe: Notify me of new posts
+    already_subscribed: You'll be notified of new posts
+    cancel_subscription: cancel subscription
+    add_subscription: Subscribe
 
 pagination:
     previous: Previous
@@ -153,6 +157,8 @@ message:
         restricted_access: You are not authorized to view this subforum
         something_wrong: Sorry but something wrong has happened
     thread_deleted: The thread was succesfully deleted
+    subscription_cancelled: You are unsubscripted
+    generic_error: An error occured
 
 search:
     results_for: Results for "%keywords%"
@@ -162,4 +168,8 @@ search:
 
 button:
     ok: ok
+
+subscription:
+    emailNotification:
+        subject: "[siteTitle] New message in 'threadLabel'"
 

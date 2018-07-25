@@ -9,6 +9,7 @@ use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\File;
+use Yosimitso\WorkingForumBundle\Entity\Subscription as EntitySubscription;
 use Yosimitso\WorkingForumBundle\Form\MoveThreadType;
 use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
+use Yosimitso\WorkingForumBundle\Util\Subscription;
 use Yosimitso\WorkingForumBundle\Util\Thread as ThreadUtil;
 use Yosimitso\WorkingForumBundle\Util\FileUploader as FileUploadUtil;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
@@ -59,7 +61,7 @@ class ThreadController extends BaseController
         $anonymousUser = (is_null($this->user)) ? true : false;
 
         if (!$this->authorization->hasSubforumAccess($subforum)) { // CHECK IF USER HAS AUTHORIZATION TO VIEW THIS THREAD
-            return $this->render('@YosimitsoWorkingForum/Thread/thread.html.twig',
+            return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/thread.html.twig',
                 [
                     'subforum'    => $subforum,
                     'thread'      => $thread,
@@ -73,7 +75,14 @@ class ThreadController extends BaseController
             $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
 
             $my_post = new Post($this->user, $thread);
-            $form = $this->createForm(PostType::class, $my_post); // create form for posting
+            
+            if (!$this->container->getParameter('yosimitso_working_forum.thread_subscription')['enable']) { // SUBSCRIPTION SYSTEM DISABLED
+                $canSubscribeThread = false;
+            } else {
+                $canSubscribeThread = (empty($this->em->getRepository('YosimitsoWorkingForumBundle:Subscription')->findBy(['thread' => $thread, 'user' => $this->user]))); // HAS ALREADY SUBSCRIBED ?  
+            }
+            
+            $form = $this->createForm(PostType::class, $my_post, ['canSubscribeThread' => $canSubscribeThread]); // create form for posting
             $form->handleRequest($request);
 
             if ($form->isSubmitted()) { // USER SUBMIT HIS POST
@@ -94,8 +103,7 @@ class ThreadController extends BaseController
                     $this->flashbag->add(
                         'error',
                         $this->translator->trans('thread_too_old_locked', [], 'YosimitsoWorkingForumBundle')
-                    )
-                    ;
+                    );
 
                     return $this->redirect($this->generateUrl('workingforum_thread', ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug]));
                 }
@@ -130,11 +138,9 @@ class ThreadController extends BaseController
                                 ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount()]
                             ));
                     }
+
                     $this->em->persist($my_post);
                     $this->em->persist($subforum);
-
-
-
 
                     if (!empty($form->getData()->getFilesUploaded())) {
                         $file = $this->fileUploaderUtil->upload($form->getData()->getFilesUploaded(), $my_post);
@@ -164,19 +170,14 @@ class ThreadController extends BaseController
                         ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount() ]
                     )
                     );
+                } else {
+                    $this->flashbag->add(
+                        'error',
+                        $this->translator->trans('message.posted', [], 'YosimitsoWorkingForumBundle')
+                    );
+
                 }
             }
-
-
-
-        if ($this->authorization->hasModeratorAuthorization())
-        {
-            $moveThread = $this->createForm(MoveThreadType::class)->createView();
-        }
-        else
-        {
-            $moveThread = false;
-        }
 
         $postQuery = $this->em
             ->getRepository('YosimitsoWorkingForumBundle:Post')
@@ -190,10 +191,20 @@ class ThreadController extends BaseController
             'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format'),
             'thresholdUsefulPost' => $this->container->getParameter('yosimitso_working_forum.vote')['threshold_useful_post'],
             'fileUpload' => $this->container->getParameter('yosimitso_working_forum.file_upload'),
+            'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')
             ];
         $parameters['fileUpload']['maxSize'] = $this->fileUploaderUtil->getMaxSize();
-
-        return $this->render('@YosimitsoWorkingForum/Thread/thread.html.twig',
+        
+        $actionsAvailables = [
+            'setResolved' => (!$anonymousUser) && (($this->user->getId() == $thread->getAuthor()->getId()) || $this->authorization->hasModeratorAuthorization()),
+            'quote' => (!$anonymousUser && !$thread->getLocked()),
+            'report' => (!$anonymousUser),
+            'post' => (!$anonymousUser && !$autolock),
+            'subscribe' => $canSubscribeThread,
+            'moveThread' => ($this->authorization->hasModeratorAuthorization()) ? $this->createForm(MoveThreadType::class)->createView() : false
+        ];
+        
+        return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/thread.html.twig',
             [
                 'subforum'    => $subforum,
                 'thread'      => $thread,
@@ -203,10 +214,9 @@ class ThreadController extends BaseController
                 'listSmiley'  => $listSmiley,
                 'forbidden'   => false,
                 'request'     => $request,
-                'moveThread' => $moveThread,
-                'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread'),
                 'autolock' => $autolock,
                 'hasAlreadyVoted' => $hasAlreadyVoted,
+                'actionsAvailables' => $actionsAvailables
             ]
         );
 
@@ -299,7 +309,7 @@ class ThreadController extends BaseController
         ];
         $parameters['fileUpload']['maxSize'] = $this->fileUploaderUtil->getMaxSize();
 
-        return $this->render('@YosimitsoWorkingForum/Thread/new.html.twig',
+        return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/new.html.twig',
             [
                 'subforum'   => $subforum,
                 'form'       => $form->createView(),
@@ -479,7 +489,7 @@ class ThreadController extends BaseController
     /**
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
      * @param Request $request
-     * @return Response|Reponse
+     * @return Response
      */
     public function moveThreadAction(Request $request)
     {
@@ -493,7 +503,7 @@ class ThreadController extends BaseController
 
         if (is_null($thread) || is_null($target))
         {
-            return new Reponse(null,500);
+            return new Response(null,500);
         }
 
         $current_subforum->setNbThread($current_subforum->getNbThread() - 1);
@@ -555,9 +565,63 @@ class ThreadController extends BaseController
                 ]
             )
         );
+    }
 
+    /**
+     *
+     * @param $threadId
+     * @return Response
+     */
+    public function cancelSubscriptionAction($threadId)
+    {
+        if (is_null($this->user)) {
+            return new Response(null, 500);
+        }
+        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneById($threadId);
+        if (is_null($thread)) {
+            return new Response(null, 500);
+        }
+
+        $subscription = $this->em->getRepository('YosimitsoWorkingForumBundle:Subscription')->findOneBy(['user' => $this->user, 'thread' => $thread]);
+
+        if (!is_null($subscription)) {
+            $this->em->remove($subscription);
+            $this->em->flush();
+            return new Response(null, 200);
+        } else {
+            return new Response(null, 500);
+        }
 
     }
+
+    /**
+     * An user wants to subscribe to a thread
+     * @param $threadId
+     * @return Response
+     */
+    public function addSubscriptionAction($threadId)
+    {
+        if (is_null($this->user)) {
+            return new Response(null, 500);
+        }
+        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneById($threadId);
+        if (is_null($thread)) {
+            return new Response(null, 500);
+        }
+
+        $checkSubscription = $this->em->getRepository('YosimitsoWorkingForumBundle:Subscription')->findOneBy(['user' => $this->user, 'thread' => $thread]);
+
+        if (is_null($checkSubscription)) {
+            $subscription = new EntitySubscription($thread, $this->user);
+            $this->em->persist($subscription);
+            $this->em->flush();
+            return new Response(null, 200);
+        } else {
+            return new Response(null, 500);
+        }
+
+    }
+
 
 }
 

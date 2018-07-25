@@ -5,7 +5,7 @@ services:
     yosimitso_workingforum_base_controller:
         class: Yosimitso\WorkingForumBundle\Controller\BaseController
         calls:
-          - ["setParameters",["@doctrine.orm.entity_manager","@yosimitso_workingforum_authorization","@=service('security.token_storage').getToken().getUser()","@session", "@translator", "@knp_paginator"]]
+          - ["setParameters",["@doctrine.orm.entity_manager","@yosimitso_workingforum_authorization","@=service('security.token_storage').getToken().getUser()","@session", "@translator", "@knp_paginator", "@templating"]]
 
     yosimitso_workingforum_forum_controller:
         class: Yosimitso\WorkingForumBundle\Controller\ForumController
@@ -80,11 +80,25 @@ services:
             - "%yosimitso_working_forum.file_upload%"
             - "@translator"
 
+    yosimitso_workingforum_util_subscription:
+        class: Yosimitso\WorkingForumBundle\Util\Subscription
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@mailer"
+            - "@translator"
+            - "%yosimitso_working_forum.site_title%"
+            - "%swiftmailer.sender_address%"
+            - "@templating"
+
+
     yosimitso_workingforum_listener.post:
         class: Yosimitso\WorkingForumBundle\Event\PostEvent
         arguments:
             - "%yosimitso_working_forum.post_flood_sec%"
             - "@translator"
+            - "@yosimitso_workingforum_util_subscription"
+            - "%yosimitso_working_forum.thread_subscription%"
         tags:
           - { name: doctrine.event_listener, event: prePersist}
+          - { name: doctrine.event_listener, event: postPersist}
 

@@ -16,28 +16,22 @@ Try it here - https://demoworkingforum.charlymartins.fr
 
 Features
 ------------------
-- Forum with subforum
-- Responsive design (optimized for mobiles and tablets)
-- Moderator role as ROLE_MODERATOR (and default admin roles)
-- Post editor using markdown with instant preview
-- Smiley system
-- Enable thread locking
-- Thread can be pinned
-- Thread can be moved
-- Quoting system
-- Reporting system for thread
 - Support multi language
-- Enable marking thread as 'resolved'
+- Responsive design (mobile, tablet, desktop)
+- Post editor using markdown with smiley, quote and instant preview
+- Threads status : resolved, closed, pinned, moved from a moderator
+- Enclosed files with post (files upload system)
+- Vote system for posts
+- Moderator role as ROLE_MODERATOR (and default admin roles)
+- Reporting system for thread
 - Auto-lock system for old thread
-- Automatic breadcrumb
-- Files system upload for posts 
-- Messages counting (user, forum, subforum) with last replies
-- Automatic pagination on thread list and thread
+- Automatic breadcrumb, messages counters, pagination
 - Allow or not the anonymous to read forums
 - Database safety : no HTML stored, only markdown
 - Search system
 - Backend administration
 - Antiflood system
+- Email notification on new posts
 
 
 Setup

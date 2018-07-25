@@ -3,19 +3,18 @@
     {% block header %}
     {% endblock %}
     <script>
-        jQuery(document).ready(function() {
-            jQuery('.wf_add_enclosed_file').click(function(e)
-            {
+        jQuery(document).ready(function () {
+            jQuery('.wf_add_enclosed_file').click(function (e) {
                 e.preventDefault();
                 var index = jQuery('#wf_enclosed_files_list li').length;
                 var prototype = jQuery('#wf_enclosed_files_list').data('prototype');
                 prototype = prototype.replace(/__name__/g, index);
 
-                jQuery('#wf_enclosed_files_list').append('<li>'+prototype+'</li>').show();
+                jQuery('#wf_enclosed_files_list').append('<li>' + prototype + '</li>').show();
                 $('.wf_file_upload input[type=file]').nicefileinput();
             });
 
-            jQuery('.wf_insert-smiley').click(function(e) {
+            jQuery('.wf_insert-smiley').click(function (e) {
                 e.preventDefault();
                 var key = jQuery(this).data('key');
                 jQuery('.wf_textarea_post').insertAtCaret(key);
@@ -40,7 +39,8 @@
             <div class="wf_header-block">
                 {{ 'forum.enclosed_files' | trans }} <span
                         class="small-desc">- {{ 'forum.file_upload.accepted_format' | trans }}
-                    : {{ parameters.fileUpload.accepted_format | join(', ') }} - {{ parameters.fileUpload.maxSize }} {{ 'forum.file_upload.ko_max' | trans }}</span>
+                    : {{ parameters.fileUpload.accepted_format | join(', ') }}
+                    - {{ parameters.fileUpload.maxSize }} {{ 'forum.file_upload.ko_max' | trans }}</span>
             </div>
             <div class="wf_block">
                 <ul id="wf_enclosed_files_list"
@@ -51,6 +51,12 @@
             </div>
         </div>
     {% endif %}
+    {% if form.addSubscription is defined %}
+        <p>{{ form_widget(form.addSubscription) }} {{ form_label(form.addSubscription) }}</p>
+    {% else %}
+        <p id="cancel_subscription">{{ 'forum.already_subscribed' | trans }}, <a href="#" onclick="cancelSubscription(); return false;">{{ 'forum.cancel_subscription' | trans }}</a></p>
+    {% endif %}
+
     {% block extraInput %}
     {% endblock %}
     <p><input type="submit" value="{{ submitLabelKey | trans }}"

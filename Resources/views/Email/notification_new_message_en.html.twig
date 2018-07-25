@@ -1,0 +1,18 @@
+<style>
+    {#{{ source('bundles/yosimitsoworkingforum/css/email.css') }}#}
+</style>
+<p class="site_title">{{ siteTitle | trans }}</p>
+<p class="hello">Hello {{ user.username }} !</p>
+<p>
+    {{ postUser.username }} has posted into <em>{{ thread.label }}</em>, see the message below :
+</p>
+<hr />
+<p>
+    {{ post.content | quote | markdown | replace({'\n':'<br />'})| smiley | raw }}
+</p>
+<p>
+    <a class="url" href="{{ path( 'workingforum_thread', {'subforum_slug' : thread.subforum.slug, 'thread_slug' : thread.slug}) }}">
+        Click here to see the thread
+    </a>
+</p>
+<p></p>

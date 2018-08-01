@@ -37,6 +37,8 @@ services:
         class: Yosimitso\WorkingForumBundle\Controller\PostController
         parent: yosimitso_workingforum_base_controller
         public: true
+        arguments:
+          - "@yosimitso_workingforum_util_thread"
 
     yosimitso_workingforum_smiley:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension

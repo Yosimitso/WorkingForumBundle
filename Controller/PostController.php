@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Entity\PostVote;
+use Yosimitso\WorkingForumBundle\Util\Thread as ThreadUtil;
 
 /**
  * Class ThreadController
@@ -14,6 +15,12 @@ use Yosimitso\WorkingForumBundle\Entity\PostVote;
  */
 class PostController extends BaseController
 {
+    protected $threadUtil;
+
+    public function __construct(ThreadUtil $threadUtil)
+    {
+         $this->threadUtil = $threadUtil;
+    }
     /**
      * @param Request $request
      * @return Response
@@ -33,7 +40,7 @@ class PostController extends BaseController
         if ($post->getUser()->getId() == $this->user->getId()) { // CAN'T VOTE FOR YOURSELF
             return new Response(json_encode(['res' => 'false', 'errMsg' => 'An user can\'t vote for his post'], 403));
         }
-        if (!empty($post->getModerateReason()) || $post->getThread()->getLocked() || $this->get('yosimitso_workingforum_util_thread')->isAutolock($post->getThread()) ) {
+        if (!empty($post->getModerateReason()) || $post->getThread()->getLocked() || $this->threadUtil->isAutolock($post->getThread()) ) {
             return new Response(json_encode(['res' => 'false', 'errMsg' => 'You can\'t vote for this post'], 403));
         }
 

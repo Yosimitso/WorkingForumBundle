@@ -3,7 +3,6 @@
 namespace Yosimitso\WorkingForumBundle\Entity;
 
 use Yosimitso\WorkingForumBundle\Entity\Post as Post;
-use Yosimitso\WorkingForumBundle\Entity\User as User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -138,11 +137,11 @@ class PostVote
     /**
      * Set user
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return PostVote
      */
-    public function setUser(User $user)
+    public function setUser(UserInterface $user)
     {
         $this->user = $user;
 

@@ -51,6 +51,10 @@ class ThreadController extends BaseController
     {
         $subforum = $this->em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneBySlug($subforum_slug);
         $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
+        
+        if (is_null($thread) || is_null($subforum)) {
+            throw new \Exception('Thread not found', 404);
+        }
 
         $anonymousUser = (is_null($this->user)) ? true : false;
 

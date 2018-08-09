@@ -52,7 +52,7 @@ class ForumController extends BaseController
         if (!$this->authorization->hasSubforumAccess($subforum)) {
 
             return $this->render(
-                'YosimitsoWorkingForumBundle:Forum:thread_list.html.twig',
+                '@YosimitsoWorkingForum/Forum/thread_list.html.twig',
                 [
                     'subforum' => $subforum,
                     'forbidden' => true,

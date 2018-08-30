@@ -156,6 +156,7 @@ message:
         restricted_action: You are not authorized to do this
         restricted_access: You are not authorized to view this subforum
         something_wrong: Sorry but something wrong has happened
+        post_error: Your post is invalid
     thread_deleted: The thread was succesfully deleted
     subscription_cancelled: You are unsubscripted
     generic_error: An error occured

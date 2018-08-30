@@ -1,5 +1,5 @@
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
-<div class="wf_post">
+<div id="wf_post[{{ post.id }}]" class="wf_post">
     <div class="wf_post-left">
         <img class="wf_cadre-img" src="
           {% if post.user.avatarUrl is not empty %}
@@ -48,7 +48,7 @@
             {% endif %}
         </p>
         {# POST CONTENT #}
-        <div id="wf_post{{ post.id }}">
+        <div class="wf_post_content">
             {% if post.moderateReason is empty %}
                 {{ post.content |  quote | markdown | replace({'\n':'<br />'})| smiley |  raw }}
             {% else %}

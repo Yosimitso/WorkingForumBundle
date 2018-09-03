@@ -100,7 +100,7 @@ class Authorization
      */
     public function hasSubforumAccess($subforum)
     {
-        if (!$this->hasUserAuthorization() || is_null(subforum))
+        if (!$this->hasUserAuthorization() || is_null($subforum))
         {
             return false;
         }

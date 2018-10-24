@@ -60,7 +60,7 @@ class AdminController extends BaseController
                 ->findBy(['processed' => null])
         );
 
-        return $this->render(
+        return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Admin/main.html.twig',
             [
                 'list_forum' => $list_forum,
@@ -110,7 +110,7 @@ class AdminController extends BaseController
 
         }
 
-        return $this->render(
+        return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Admin/Forum/form.html.twig',
             [
                 'forum' => $forum,
@@ -152,7 +152,7 @@ class AdminController extends BaseController
             return $this->redirect($this->generateUrl('workingforum_admin'));
         }
 
-        return $this->render(
+        return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Admin/Forum/form.html.twig',
             [
                 'forum' => $forum,
@@ -165,7 +165,7 @@ class AdminController extends BaseController
     {
         $form = $this->createForm(RulesType::class, null);
 
-        return $this->render(
+        return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Admin/Rules/rules.html.twig',
             [
                 'form' => $form->createView(),
@@ -202,7 +202,7 @@ class AdminController extends BaseController
             'fileUpload' => ['enable' => false],
         ];
 
-        return $this->render(
+        return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Admin/Rules/rules-edit.html.twig',
             [
                 'form' => $form->createView(),
@@ -235,7 +235,7 @@ class AdminController extends BaseController
             'fileUpload' => ['enable' => false],
         ];
 
-        return $this->render(
+        return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Admin/Rules/rules-edit.html.twig',
             [
                 'form' => $form->createView(),
@@ -257,7 +257,7 @@ class AdminController extends BaseController
             ->findBy(['processed' => null], ['processed' => 'ASC', 'id' => 'ASC']);
         $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
 
-        return $this->render(
+        return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Admin/Report/report.html.twig',
             [
                 'postReportList' => $postReportList,
@@ -274,7 +274,7 @@ class AdminController extends BaseController
             ->findBy(['processed' => 1], ['processed' => 'ASC', 'id' => 'DESC']);
         $date_format = $this->getParameter('yosimitso_working_forum.date_format');
 
-        return $this->render(
+        return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Admin/Report/report_history.html.twig',
             [
                 'postReportList' => $postReportList,
@@ -316,7 +316,7 @@ class AdminController extends BaseController
     {
         $usersList = $this->em->getRepository('YosimitsoWorkingForumBundle:User')->findAll();
 
-        return $this->render(
+        return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Admin/User/userslist.html.twig',
             [
                 'usersList' => $usersList,

@@ -1,0 +1,34 @@
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+<ul class="wf_action_list">
+    {% if not thread.locked %}
+        <li>
+            <a class="wf_button wf_icon-lock"
+               href="{{ path('workingforum_lock_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
+                {{ 'forum.lock' | trans }}
+            </a>
+        </li>
+    {% endif %}
+    {% if moveThread %}
+        <li>
+            <a class="wf_button" id="wf_move_thread_button">&rarr; {{ 'forum.move_thread' | trans }}</a>
+            {{ form_widget(moveThread.forum) }}
+        </li>
+    {% endif %}
+    {% if allowModeratorDeleteThread %}
+        <li>
+            <a class="wf_button wf_icon-remove"
+               onclick="if (!confirm('{{ 'forum.confirm_delete_thread' | trans }}')) { return false; }"
+               href="{{ path('workingforum_delete_thread',{'threadSlug': thread.slug}) }}">
+                {{ 'forum.delete_thread' | trans }}
+            </a>
+        </li>
+    {% endif %}
+    {% if not thread.pin %}
+    <li>
+        <a class="wf_button wf_icon-pin"
+           href="{{ path('workingforum_pin_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
+            {{ 'forum.pin_thread' | trans }}
+        </a>
+    </li>
+    {% endif %}
+</ul>

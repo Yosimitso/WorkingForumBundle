@@ -71,6 +71,10 @@ forum:
     error_flood: Le flood est interdit, merci d'attendre %second% secondes entre chaque message
     no_rules_available: Les règle du forum ne sont pas encore disponibles
     switch_lang: Changer de langue
+    subscribe: M'avertir des nouvelles réponses
+    already_subscribed: Vous serez averti des nouvelles réponses
+    cancel_subscription: annuler l'abonnement
+    add_subscription: S'abonner
 
 pagination:
     previous: Précédent
@@ -152,8 +156,14 @@ message:
         restricted_access: Vous n'êtes pas autorisé à lire ce sous-forum
         something_wrong: Désolé mais quelque chose ne s'est pas passé correctement
     thread_deleted: Le sujet a été supprimé avec succès
+    subscription_cancelled: Vous êtes désinscrit
+    generic_error: Une erreur est survenue
 search:
     results_for: Résultats pour "%keywords%"
     no_result: Désolé, aucun résultat pour "%keywords%"
     keywords: Mots clés
     search_in: Rechercher dans
+
+subscription:
+    emailNotification:
+        subject: "[siteTitle] Nouveau message dans 'threadLabel'"

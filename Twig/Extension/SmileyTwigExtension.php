@@ -73,7 +73,9 @@ class SmileyTwigExtension extends \Twig_Extension
         $this->asset = $asset;
 
         if ($request instanceof Request) {
-            $this->basePath = $request->getBasePath();
+            $this->basePath = $request->getSchemeAndHttpHost();
+        } else {
+            $this->basePath = '';
         }
     }
 
@@ -107,7 +109,7 @@ class SmileyTwigExtension extends \Twig_Extension
         foreach ($this->listSmiley as $key => $value) {
             $list[$key] =
                 '<img src="'
-                . $this->asset->getUrl('/bundles/yosimitsoworkingforum/images/smiley/' . $value)
+                . $this->basePath.$this->asset->getUrl('/bundles/yosimitsoworkingforum/images/smiley/' . $value)
                 . '" />';
         }
 

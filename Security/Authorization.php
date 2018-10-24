@@ -1,7 +1,8 @@
 <?php
 
 namespace Yosimitso\WorkingForumBundle\Security;
-
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 /**
  * Class Authorization
@@ -11,7 +12,7 @@ namespace Yosimitso\WorkingForumBundle\Security;
 class Authorization
 {
     /**
-     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationChecker
+     * @var AuthorizationChecker
      */
     private $securityChecker;
     /**
@@ -19,7 +20,7 @@ class Authorization
      */
     private $errorMessage;
     /**
-     * @var
+     * @var TokenStorage
      */
     private $tokenStorage;
     /**
@@ -33,7 +34,7 @@ class Authorization
      * @param $tokenStorage
      * @param $allowAnonymousRead
      */
-    public function __construct(\Symfony\Component\Security\Core\Authorization\AuthorizationChecker $securityChecker, $tokenStorage, $allowAnonymousRead) {
+    public function __construct(\Symfony\Component\Security\Core\Authorization\AuthorizationChecker $securityChecker, TokenStorage $tokenStorage, $allowAnonymousRead) {
         $this->securityChecker = $securityChecker;
         $this->tokenStorage = $tokenStorage;
         $this->allowAnonymousRead = $allowAnonymousRead;
@@ -135,6 +136,7 @@ class Authorization
     }
 
     /**
+     * has user authorization ?
      * @return bool
      */
     public function hasUserAuthorization()

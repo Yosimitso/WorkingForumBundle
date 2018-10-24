@@ -13,12 +13,10 @@
             </ul>
         </div>
     {% else %}
-        {% if app.user %}
-            {% if (thread.author.id == app.user.id) or (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
-                <p><a class="wf_button"
-                      href="{{ path('workingforum_resolve_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a>
-                </p>
-            {% endif %}
+        {% if actionsAvailables.setResolved %}
+            <p><a class="wf_button"
+                  href="{{ path('workingforum_resolve_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a>
+            </p>
         {% endif %}
     {% endif %}
 
@@ -40,21 +38,6 @@
           type="text/css" media="all"/>
         <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}"
           type="text/css" media="all"/>
-
-        <script>
-            jQuery(document).ready(function () {
-                jQuery(".wf_textarea_post").markdown({
-                    language: '{{ request.locale }}',
-                    onPreview: function (e) {
-                        var converter = new Showdown.converter({extensions: ['twitter', 'github']});
-                        var html = converter.makeHtml(nl2br(e.getContent()), '{{ asset('bundles/yosimitsoworkingforum/') }}');
-                        return html;
-                    },
-                    fullscreen: {enable: false}
-                });
-
-            });
-        </script>
         {% include '@YosimitsoWorkingForum/Thread/thread.js.twig' %}
 
         {# LOCK #}
@@ -65,55 +48,27 @@
             </a>
         </p>
     {% else %}
-    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and not autolock %}
+    {% if actionsAvailables.post %}
         <p>
-            <a class="wf_button" href="#wf_new_post">{{ 'forum.reply' | trans }}</a>
+            <a class="wf_button wf_icon-reply" href="#wf_new_post">{{ 'forum.reply' | trans }}</a>
+            {% if actionsAvailables.subscribe %}
+            <a class="wf_button" id="wf_add_subscription" href="#" onclick="addSubscription(); return false;">{{ 'forum.add_subscription' | trans }}</a>
+            {% endif %}
         </p>
     {% endif %}
     {% endif %}
 
         {# ACTIONS LIST FOR MODERATOR #}
     {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
-        <ul class="wf_action_list">
-            {% if not thread.locked %}
-                <li>
-                    <a class="wf_button wf_icon-lock"
-                       href="{{ path('workingforum_lock_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
-                        {{ 'forum.lock' | trans }}
-                    </a>
-                </li>
-            {% endif %}
-            {% if moveThread %}
-                <li>
-                    <a class="wf_button" id="wf_move_thread_button">&rarr; {{ 'forum.move_thread' | trans }}</a>
-                    {{ form_widget(moveThread.forum) }}
-                </li>
-            {% endif %}
-            {% if allowModeratorDeleteThread %}
-                <li>
-                    <a class="wf_button wf_icon-remove"
-                       onclick="if (!confirm('{{ 'forum.confirm_delete_thread' | trans }}')) { return false; }"
-                       href="{{ path('workingforum_delete_thread',{'threadSlug': thread.slug}) }}">
-                        {{ 'forum.delete_thread' | trans }}
-                    </a>
-                </li>
-            {% endif %}
-            {% if not thread.pin %}
-                <li>
-                    <a class="wf_button wf_icon-pin"
-                       href="{{ path('workingforum_pin_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
-                        {{ 'forum.pin_thread' | trans }}
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
+        {% include '@YosimitsoWorkingForum/Thread/actionsModerator.html.twig' with {'subforum': subforum, 'thread': thread, 'moveThread': actionsAvailables.moveThread, 'allowModeratorDeleteThread': actionsAvailables.allowModeratorDeleteThread} %}
     {% endif %}
-        <div class="wf_thread">
+
+        <div class="wf_thread" data-id="{{ thread.id }}">
             <h1>{{ thread.label }}</h1>
             <h2>{{ thread.sublabel }}</h2>
 
             {% for post in post_list %}
-                {% include '@YosimitsoWorkingForum/Post/post.html.twig' with {'post': post, 'thread': thread, 'parameters': parameters, 'hasAlreadyVoted': hasAlreadyVoted, 'autolock': autolock, 'loop': loop} only %}
+                {% include '@YosimitsoWorkingForum/Post/post.html.twig' with {'post': post, 'thread': thread, 'parameters': parameters, 'hasAlreadyVoted': hasAlreadyVoted, 'autolock': autolock, 'loop': loop, 'actionsAvailables': actionsAvailables} only %}
             {% endfor %}
 
             {{ knp_pagination_render(post_list) }}

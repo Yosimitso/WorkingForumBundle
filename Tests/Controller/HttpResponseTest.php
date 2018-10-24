@@ -35,8 +35,8 @@ class HttpControllerTest extends WebTestCase
             'view/subforum-test',
             'newthread/subforum-test',
             'admin',
-            'admin/edit/1',
-            'admin/add',
+            'admin/forum/edit/1',
+            'admin/forum/add',
             'admin/user',
             'admin/report',
             'admin/report/history'

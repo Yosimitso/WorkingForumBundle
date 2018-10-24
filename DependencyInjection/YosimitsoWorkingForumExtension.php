@@ -73,6 +73,18 @@ class YosimitsoWorkingForumExtension extends Extension
             ); 
         }
 
+        if (!isset($config['site_title'])) {
+            throw new \InvalidArgumentException(
+                'The "site_title" option must be set in "yosimitso_working_forum", please see README.MD'
+            );
+        }
+
+        if (!isset($config['thread_subscription'])) {
+            throw new \InvalidArgumentException(
+                'The "thread_subscription" option must be set in "yosimitso_working_forum", please see README.MD'
+            );
+        }
+
         $loader = new Loader\YamlFileLoader(
             $container,
             new FileLocator(__DIR__ . '/../Resources/config')
@@ -89,5 +101,7 @@ class YosimitsoWorkingForumExtension extends Extension
         $container->setParameter('yosimitso_working_forum.vote', $config['vote']);
         $container->setParameter('yosimitso_working_forum.file_upload', $config['file_upload']);
         $container->setParameter('yosimitso_working_forum.post_flood_sec', $config['post_flood_sec']);
+        $container->setParameter('yosimitso_working_forum.site_title', $config['site_title']);
+        $container->setParameter('yosimitso_working_forum.thread_subscription', $config['thread_subscription']);
     }
 }

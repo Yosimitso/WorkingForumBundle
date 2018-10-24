@@ -18,7 +18,7 @@ class ThreadType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -28,8 +28,8 @@ class ThreadType extends AbstractType
                 TextType::class,
                 [
                     'translation_domain' => 'YosimitsoWorkingForumBundle',
-                    'label'              => 'forum.thread',
-                    'error_bubbling'     => true,
+                    'label' => 'forum.thread',
+                    'error_bubbling' => true,
                 ]
             )
             ->add(
@@ -37,34 +37,33 @@ class ThreadType extends AbstractType
                 TextType::class,
                 [
                     'translation_domain' => 'YosimitsoWorkingForumBundle',
-                    'label'              => 'forum.sublabel',
-                    'error_bubbling'     => true,
+                    'label' => 'forum.sublabel',
+                    'error_bubbling' => true,
                 ]
             )
             ->add(
                 'post',
                 CollectionType::class,
                 [
-                    'entry_type'     => PostType::class,
-                    'allow_add'      => false,
+                    'entry_type' => PostType::class,
+                    'entry_options' => ['canSubscribeThread' => true],
+                    'allow_add' => false,
                     'error_bubbling' => true,
                 ]
             );
 
-            if ($options['hasModeratorAuthorization']) {
-                $builder->add(
-                    'pin',
-                    CheckboxType::class,
-                    [
-                        'translation_domain' => 'YosimitsoWorkingForumBundle',
-                        'label'              => 'forum.doPin',
-                        'required'           => false,
-                    ]
-                );
-            }
-
-
-        ;
+        if ($options['hasModeratorAuthorization']) {
+            $builder->add(
+                'pin',
+                CheckboxType::class,
+                [
+                    'translation_domain' => 'YosimitsoWorkingForumBundle',
+                    'label' => 'forum.doPin',
+                    'required' => false,
+                    'error_bubbling' => true
+                ]
+            );
+        };
     }
 
     /**

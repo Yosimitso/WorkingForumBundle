@@ -116,6 +116,13 @@ class Post
     private $filesUploaded;
 
     /**
+     * @var boolean
+     */
+    private $addSubscription;
+
+
+
+    /**
      * Post constructor.
      * @param UserInterface|null $user
      * @param Thread|null $thread
@@ -382,6 +389,22 @@ class Post
     {
         $this->filesUploaded[] = $file;
         return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getAddSubscription()
+    {
+        return $this->addSubscription;
+    }
+
+    /**
+     * @param boolean $addSubscription
+     */
+    public function setAddSubscription($addSubscription)
+    {
+        $this->addSubscription = $addSubscription;
     }
 
 

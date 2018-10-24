@@ -37,7 +37,7 @@
     </script>
 
     <div id="wf_forum_content">
-        {% include '@YosimitsoWorkingForum/Common/flashmsg.html.twig' %}
+        {% include '@YosimitsoWorkingForum/Common/flashmsg.html.twig' with {'form': form} %}
         {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'subforum': subforum, 'extraPath': ['forum.new_thread' | trans] } only %}
         <div class="wf_new_thread">
 

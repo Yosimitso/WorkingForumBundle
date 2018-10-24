@@ -17,7 +17,7 @@
         <p class="wf_date">
             {{ post.cdate | date(parameters.dateFormat) }}
 
-            {% if post.moderateReason is empty %}
+            {% if post.moderateReason is empty and actionsAvailables.report %}
                 <a href="#"
                    onclick="report('{{ path('workingforum_report_post', {'post_id' : post.id}) }}'); return false;"
                    title="{{ 'forum.report' | trans }}"
@@ -27,13 +27,17 @@
                             src="{{ asset('bundles/yosimitsoworkingforum/images/exclamation.png') }}"
                             class="wf_quote-img">
                 </a>
-                <a href="#"
-                   onclick="quote({{ post.id }},{{ post.user.id }}); return false;"
-                   title="{{ 'forum.quote' | trans }}"
-                >
-                    <img
-                            src="{{ asset('bundles/yosimitsoworkingforum/images/quote.png') }}"
-                            class="wf_quote-img"></a>
+                {% if actionsAvailables.quote %}
+                    <a href="#"
+                       onclick="quote({{ post.id }},{{ post.user.id }}); return false;"
+                       title="{{ 'forum.quote' | trans }}"
+                    >
+                        <img
+                                src="{{ asset('bundles/yosimitsoworkingforum/images/quote.png') }}"
+                                class="wf_quote-img"
+                        ></a>
+                {% endif %}
+
             {% endif %}
             {% if ((is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR"))) and post.moderateReason is empty %}
                 <a href="#"
@@ -48,7 +52,7 @@
             {% if post.moderateReason is empty %}
                 {{ post.content |  quote | markdown | replace({'\n':'<br />'})| smiley |  raw }}
             {% else %}
-                <p class="wf_moderate">{{ 'forum.post_moderated' |trans }} {{ post.moderateReason }}</p>
+                <p class="wf_moderate">{{ 'forum.post_moderated' | trans }} {{ post.moderateReason }}</p>
             {% endif %}
         </div>
         {# POST VOTE #}

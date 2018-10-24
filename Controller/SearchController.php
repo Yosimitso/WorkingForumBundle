@@ -53,7 +53,7 @@ class SearchController extends BaseController
                     $thread_list = [];
                 }
 
-                return $this->render('@YosimitsoWorkingForum/Forum/thread_list.html.twig',
+                return $this->templating->renderResponse('@YosimitsoWorkingForum/Forum/thread_list.html.twig',
                     [
                         'thread_list' => $thread_list,
                         'date_format' => $date_format,
@@ -65,7 +65,7 @@ class SearchController extends BaseController
             }
         }
 
-        return $this->render('@YosimitsoWorkingForum/Search/search.html.twig',
+        return $this->templating->renderResponse('@YosimitsoWorkingForum/Search/search.html.twig',
             [
                 'listForum' => $listForum,
                 'form'      => $form->createView(),

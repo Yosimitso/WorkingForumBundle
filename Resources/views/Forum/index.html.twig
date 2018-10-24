@@ -27,7 +27,7 @@
                {% if subforum.nbPost > 0 %}
                {{ 'forum.last_reply_date' |trans }}
                <br />
-               {{ subforum.lastReplyDate | date('d/m/Y H:i:s') }}
+               {{ subforum.lastReplyDate | date(parameters.dateFormat) }}
                {% endif %}
                </td>
        </tr>

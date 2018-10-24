@@ -95,7 +95,6 @@
     border-color: silver;
 }
 
-
 #wf_forum_content h1 {
     border-bottom-color: #CCCCCC;
     background-color: rgba(21, 141, 64, 0.7);
@@ -305,14 +304,7 @@ code {
     padding-left:25px;
 }
 
-
-/** TEST **/
-#wf_forum_content h1 {
-    border-bottom-color: #CCCCCC;
-    background-color: rgba(21, 141, 64, 0.7);
-    border-left: 5px solid #188D40;
-    color: white;
-    text-align:center;
-    height: 1.3em;
-    text-shadow: 1px 2px 0 rgba(0,0,0,1);
+.wf_icon-reply {
+    background: url('../images/reply.png') 5% no-repeat, linear-gradient(to bottom, #44e567 0px, #00a547 100%);
+    padding-left:25px;
 }

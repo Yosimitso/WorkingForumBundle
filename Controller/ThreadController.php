@@ -265,15 +265,13 @@ class ThreadController extends BaseController
             $this->user->addNbPost(1);
             $this->em->persist($this->user);
 
+            $my_post->setThread($my_thread); // ATTACH TO THREAD
             $this->em->persist($my_thread);
             $this->em->persist($subforum);
 
             $this->em->flush();
 
             $my_thread->setSlug($my_thread->getId() . '-' . Slugify::convert($my_thread->getLabel())); // SLUG NEEDS THE ID
-
-            $my_post->setThread($my_thread); // ATTACH TO THREAD
-            $this->em->persist($my_post);
             $this->em->persist($my_thread);
 
             if (!empty($form->getData()->getPost()[0]->getFilesUploaded())) {

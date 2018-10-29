@@ -70,9 +70,15 @@ class Subscription
      */
     public function notifySubscriptions($post)
     {
-        $emailTranslation = $this->getEmailTranslation($post->getThread()->getSubforum(), $post->getThread(), $post, $post->getUser());
+        if (is_null($post->getThread())) {
+            return;
+        }
         $notifs = $this->em->getRepository('YosimitsoWorkingForumBundle:Subscription')->findByThread($post->getThread()->getId());
-
+        if (!count($notifs)) {
+            return;
+        }
+        $emailTranslation = $this->getEmailTranslation($post->getThread()->getSubforum(), $post->getThread(), $post, $post->getUser());
+        
         if (!is_null($notifs)) {
             foreach ($notifs as $notif) {
                 try {

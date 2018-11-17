@@ -15,7 +15,7 @@ This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rend
 ````
 Or run :
 ````bash
-composer require yosimitso/workingforumbundle : ~1.2.4
+composer require "yosimitso/workingforumbundle":"~1.2.4"
 ````
 
 

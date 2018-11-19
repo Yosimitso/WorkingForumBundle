@@ -415,6 +415,13 @@ class ThreadController extends BaseController
      */
     function reportAction($post_id)
     {
+        if (is_null($this->user)) {
+            throw new \Exception("user missing error",
+                403
+            );
+
+        }
+        
         $check_already = $this->em->getRepository('YosimitsoWorkingForumBundle:PostReport')
                             ->findOneBy(['user' => $this->user->getId(), 'post' => $post_id])
         ;

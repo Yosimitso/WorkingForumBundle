@@ -75,7 +75,6 @@ services:
     yosimitso_workingforum_util_fileuploader:
         class: Yosimitso\WorkingForumBundle\Util\FileUploader
         arguments:
-            - "@assets.packages"
             - "@doctrine.orm.entity_manager"
             - "%yosimitso_working_forum.file_upload%"
             - "@translator"

@@ -18,7 +18,7 @@ class FileUploader
     private $translator;
     private $errorMessage;
 
-    public function __construct($asset, $em, $configFileUpload, $translator)
+    public function __construct($em, $configFileUpload, $translator)
     {
         $this->path = 'wf_uploads/'.date('Y/m/');
         $this->em = $em;
@@ -37,10 +37,10 @@ class FileUploader
         $this->errorMessage = '';
         $fileList = [];
         $totalSize = 0;
+
         foreach ($filesSubmitted as $fileSubmitted) {
             $totalSize += $fileSubmitted->getSize() / 1000;
         }
-
         $maxSize = $this->getMaxSize();
         if ($totalSize > $maxSize) {
             $this->errorMessage = $this->translator->trans(
@@ -48,9 +48,9 @@ class FileUploader
                 ['%max_size%' => $maxSize],
                 'YosimitsoWorkingForumBundle'
             );
-
             return false;
         }
+        
 
         foreach ($filesSubmitted as $fileSubmitted) {
             if ($fileSubmitted->getError()) {
@@ -60,7 +60,6 @@ class FileUploader
                     [],
                     'YosimitsoWorkingForumBundle'
                 );
-
                 return false;
             }
 
@@ -70,21 +69,18 @@ class FileUploader
                     ['%format%' => $fileSubmitted->getMimeType()],
                     'YosimitsoWorkingForumBundle'
                 );
-
                 return false;
             }
 
             $file = new File;
             $originalFilename = [];
-            preg_match('/(.+?)\..+/', $fileSubmitted->getClientOriginalName(), $originalFilename);
-
+            preg_match('/^([A-z0-9_-]+?)\.[A-z]+/', $fileSubmitted->getClientOriginalName(), $originalFilename);
             if (!isset($originalFilename[1])) { // FILENAME IS INVALID
                 $this->errorMessage = $this->translator->trans(
                     'forum.file_upload.error.invalid_filename',
                     ['%filename%' => $originalFilename],
                     'YosimitsoWorkingForumBundle'
                 );
-
                 return false;
             }
 
@@ -106,7 +102,6 @@ class FileUploader
                     [],
                     'YosimitsoWorkingForumBundle'
                 );
-
                 return false;
             }
         }
@@ -135,10 +130,34 @@ class FileUploader
      */
     public function getMaxSize()
     {
-        return (($this->configFileUpload['max_size_ko'] > (intval(ini_get('upload_max_filesize')) * 1000))
-            || ($this->configFileUpload['max_size_ko'] > (intval(ini_get('post_max_size')) * 1000)))
-            ? min([(intval(ini_get('upload_max_filesize')) * 1000), (intval(ini_get('post_max_size')) * 1000)])
-            : $this->configFileUpload['max_size_ko'];
+        $uploadMaxFilesize = $this->extractSize(ini_get('upload_max_filesize'));
+        $uploadPostMaxsize = $this->extractSize(ini_get('post_max_size'));
+
+        return (($this->configFileUpload['max_size_ko'] > intval($uploadMaxFilesize))
+            || ($this->configFileUpload['max_size_ko'] > intval( $uploadPostMaxsize)))
+            ? min([intval($uploadMaxFilesize), intval($uploadPostMaxsize)]) // THE APPLICATION MAX SIZE EXCEEDS PHP INI CONFIGURATION
+            : $this->configFileUpload['max_size_ko']; // THE APPLICATION MAX SIZE VALUE IS OK
+    }
+
+    private function extractSize($value)
+    {
+        preg_match('/([0-9+])([A-Z]?)/', $value, $sizeRegex);
+        if (isset($sizeRegex[2])) {
+            switch ($sizeRegex[2]) {
+                case 'K':
+                    $size = intval($sizeRegex[1])*100;
+                    break;
+                case 'M':
+                    $size = intval($sizeRegex[1])*1000;
+                    break;
+                case 'G':
+                    $size = intval($sizeRegex[1])*10000;
+                    break;
+            }
+        } else {
+            $size =  ini_get('upload_max_filesize');
+        }
+        return $size;
     }
 
 }

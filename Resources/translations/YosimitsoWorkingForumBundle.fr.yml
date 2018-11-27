@@ -159,6 +159,8 @@ message:
     thread_deleted: Le sujet a été supprimé avec succès
     subscription_cancelled: Vous êtes désinscrit
     generic_error: Une erreur est survenue
+    post_saved_draft: Votre message a été enregistré dans les brouillons à
+    quote_unavailable: Le message cité avec l'id %id% ne peut être affiché, merci de le vérifier
 search:
     results_for: Résultats pour "%keywords%"
     no_result: Désolé, aucun résultat pour "%keywords%"

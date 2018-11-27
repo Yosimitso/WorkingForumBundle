@@ -201,7 +201,8 @@ class ThreadController extends BaseController
             'report' => (!$anonymousUser),
             'post' => (!$anonymousUser && !$autolock),
             'subscribe' => $canSubscribeThread,
-            'moveThread' => ($this->authorization->hasModeratorAuthorization()) ? $this->createForm(MoveThreadType::class)->createView() : false
+            'moveThread' => ($this->authorization->hasModeratorAuthorization()) ? $this->createForm(MoveThreadType::class)->createView() : false,
+            'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')
         ];
         
         return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/thread.html.twig',

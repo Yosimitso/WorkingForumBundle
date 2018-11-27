@@ -4,20 +4,20 @@
     {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
     <div id="wf_forum_content">
     {% include '@YosimitsoWorkingForum/Common/flashmsg.html.twig' %}
-    {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'subforum': subforum, 'thread': thread} only %}
 
     {% if thread.resolved %}
-        <div class="alert-success">
-            <ul>
-                <li><span class="wf_tick"></span>{{ 'forum.thread_resolved' | trans }}</li>
-            </ul>
-        </div>
-    {% else %}
-        {% if actionsAvailables.setResolved %}
-            <p><a class="wf_button"
-                  href="{{ path('workingforum_resolve_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a>
-            </p>
-        {% endif %}
+    <div class="alert-success">
+        <ul>
+            <li><span class="wf_tick"></span>{{ 'forum.thread_resolved' | trans }}</li>
+        </ul>
+    </div>
+    {% endif %}
+    {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'subforum': subforum, 'thread': thread} only %}
+
+    {% if not thread.resolved and actionsAvailables.setResolved %}
+        <p><a class="wf_button"
+              href="{{ path('workingforum_resolve_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a>
+        </p>
     {% endif %}
 
 
@@ -26,9 +26,10 @@
             <div class="wf_empty_forum">{{ forbiddenMsg | trans }}</div>
         </div>
     {% else %}
-
+        {% include '@YosimitsoWorkingForum/Thread/storeJs.html.twig' %}
         <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
         <script src="{{ asset('bundles/yosimitsoworkingforum/js/smiley.js') }}"></script>
+        <script src="{{ asset('bundles/yosimitsoworkingforum/js/thread.js') }}"></script>
         <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
         <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
         <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/twitter.js') }}"></script>
@@ -38,7 +39,6 @@
           type="text/css" media="all"/>
         <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}"
           type="text/css" media="all"/>
-        {% include '@YosimitsoWorkingForum/Thread/thread.js.twig' %}
 
         {# LOCK #}
     {% if thread.locked %}
@@ -83,7 +83,7 @@
                         <p class="wf_post_a_message">{{ 'forum.thread_too_old_locked' | trans }}</p>
                     </div>
                 {% else %}
-                    {{ form_start(form) }}
+                    {{ form_start(form, {'attr': {'id': 'wf_form_post'}}) }}
                     {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'form': form, 'parameters': parameters, 'submitLabelKey': 'forum.submit_post'} only %}
                         {% block header %}
                             <p class="wf_post_a_message">{{ 'forum.post_a_message' | trans([], 'YosimitsoWorkingForumBundle') }}</p>

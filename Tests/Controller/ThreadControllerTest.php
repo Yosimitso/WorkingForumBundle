@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class ThreadControllerTest extends WebTestCase
 {
-    private $client = null;
+    private $client;
 
     public function setUp()
     {

@@ -428,7 +428,7 @@ class ThreadController extends BaseController
         ;
         $post = $this->em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($post_id);
 
-        if (is_null($check_already) && empty($post->getModerateReason) && !is_null($this->user)) // THE POST HASN'T BEEN REPORTED AND NOT ALREADY MODERATED
+        if (is_null($check_already) && empty($post->getModerateReason()) && !is_null($this->user)) // THE POST HASN'T BEEN REPORTED AND NOT ALREADY MODERATED
         {
             $post = $this->em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($post_id);
             if (!is_null($post)) {

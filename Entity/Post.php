@@ -97,6 +97,17 @@ class Post
     private $postReport;
 
     /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Yosimitso\WorkingForumBundle\Entity\PostVote",
+     *     mappedBy="post",
+     *     cascade={"remove"}
+     * )
+     */
+    private $postVote;
+
+    /**
      * @var integer
      * @ORM\Column(name="voteUp", type="integer", nullable=true)
      */
@@ -316,6 +327,14 @@ class Post
     public function getPostReport()
     {
         return $this->postReport;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPostVote()
+    {
+        return $this->postVote;
     }
 
     /**

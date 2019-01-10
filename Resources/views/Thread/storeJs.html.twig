@@ -1,0 +1,32 @@
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+<script>
+    var storeJs = {
+        'assetPath': '{{ asset('bundles/yosimitsoworkingforum/') }}',
+        'locale': '{{ request.locale }}',
+        'trans': {
+            'forum.confirm_move_thread': '{{ 'forum.confirm_move_thread' | trans }}',
+            'forum.move_thread_success': '{{ 'forum.move_thread_success' | trans }}',
+            'forum.thread_was_moved_to': '{{ 'forum.thread_was_moved_to' | trans }}',
+            'forum.confirm_report': '{{ 'forum.confirm_report' | trans }}',
+            'forum.thanks_reporting': '{{ 'forum.thanks_reporting' | trans }}',
+            'forum.post_moderated': '{{ 'forum.post_moderated' | trans }}',
+            'forum.already_subscribed': '{{ 'forum.already_subscribed' | trans }}',
+            'forum.has_written': '{{ 'forum.has_written' | trans }}',
+            'message.subscription_cancelled': '{{ 'message.subscription_cancelled' | trans }}',
+            'message.post_saved_draft': '{{ 'message.post_saved_draft' | trans }}',
+            'message.generic_error': '{{ 'message.generic_error' | trans }}',
+            'message.error.something_wrong': '{{ 'message.error.something_wrong' | trans }}',
+            'admin.report.why': '{{ 'admin.report.why' | trans }}',
+            'admin.report.invalid_reason': '{{ 'admin.report.invalid_reason' | trans }}',
+            'message.quote_unavailable': '{{ 'message.quote_unavailable' | trans({'%id%': '%id%'}) }}'
+        },
+        'routes': {
+            'workingforum_move_thread': '{{ path('workingforum_move_thread') }}',
+            'workingforum_admin_report_action_moderate': '{{ path('workingforum_admin_report_action_moderate') }}',
+            'workingforum_vote_up': '{{ path('workingforum_vote_up') }}',
+            'workingforum_add_subscription': '{{ path('workingforum_add_subscription', {'threadId': '%thread.id%'}) }}',
+            'workingforum_cancel_subscription': '{{ path('workingforum_cancel_subscription', {'threadId': '%thread.id%'}) }}'
+        }
+    }
+
+</script>

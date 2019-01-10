@@ -244,9 +244,12 @@ Showdown.converter = function (converter_options) {
         text = text.replace(new RegExp(patternSmiley,'g'), '<img src="'+basePath+'images/smiley/$1.png" />');
 
         var patternQuote = '\[quote=(\d+)\]';
-        text = text.replace(/\[quote=(\d+)\]/, function(match, id) {
-            var username = document.querySelector('#wf_post\\['+id+'\\] .wf_username').innerHTML;
-            var content = '<blockquote><br /><strong>'+username+' has written</strong><br />'+document.querySelector('#wf_post\\['+id+'\\] .wf_post_content').innerHTML+'</blockquote>';
+        text = text.replace(/\[quote=(\d+)\]/g, function(match, id) {
+            var username = document.querySelector('#wf_post\\['+id+'\\] .wf_username');
+            if (!username) {
+                return '<blockquote><br /><em>'+storeJs.trans['message.quote_unavailable'].replace('%id%', id)+'</em></blockquote>';
+            }
+            var content = '<blockquote><br /><strong>'+username.innerHTML+' '+storeJs.trans['forum.has_written']+'</strong><br />'+document.querySelector('#wf_post\\['+id+'\\] .wf_post_content').innerHTML+'</blockquote>';
             return content;
         });
 

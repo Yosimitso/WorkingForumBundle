@@ -120,7 +120,7 @@
                 success: function(res){
                     if (res == 'ok')
                     {
-                        jQuery('#wf_post'+id).html('<p class="wf_moderate">{{ 'forum.post_moderated' |trans }} '+reason+'</p>');
+                        jQuery('#wf_post\\['+id+'\\] .wf_post_content').html('<p class="wf_moderate">{{ 'forum.post_moderated' |trans }} '+reason+'</p>');
                     }
                 }
             });

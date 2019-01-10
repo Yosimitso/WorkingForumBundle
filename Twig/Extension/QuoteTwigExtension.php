@@ -66,7 +66,7 @@ class QuoteTwigExtension extends \Twig_Extension
                 ;
 
                 if (!is_null($post) && empty($post->getModerateReason())) {
-                    return '>**'
+                    return "\n>**"
                         . $post->getUser()->getUsername()
                         . ' '
                         . $this->translator->trans('forum.has_written', [], 'YosimitsoWorkingForumBundle')

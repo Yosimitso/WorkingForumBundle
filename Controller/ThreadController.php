@@ -108,7 +108,7 @@ class ThreadController extends BaseController
                     return $this->redirect($this->generateUrl('workingforum_thread', ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug]));
                 }
 
-                if ($form->isValid()) {
+                if ($form->isValid() && !$anonymousUser) {
 
                     $subforum->newPost($this->user); // UPDATE SUBFORUM STATISTIC
                     $thread->addReply($this->user); // UPDATE THREAD STATISTIC
@@ -173,7 +173,7 @@ class ThreadController extends BaseController
                 } else {
                     $this->flashbag->add(
                         'error',
-                        $this->translator->trans('message.posted', [], 'YosimitsoWorkingForumBundle')
+                        $this->translator->trans('message.error.post_error', [], 'YosimitsoWorkingForumBundle')
                     );
 
                 }

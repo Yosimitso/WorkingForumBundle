@@ -6,15 +6,9 @@ Setup for Symfony 4 with Flex structure
 
 This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rendering and the extra package for Symfony
 
-1/ Add to your "composer.json", section "require"
-````json
-"require" : {
- "yosimitso/workingforumbundle" : "~1.2.4",
- }
-````
-Or run :
+1/ Run :
 ````bash
-composer require "yosimitso/workingforumbundle":"~1.2.4"
+composer require "yosimitso/workingforumbundle":"^2.0"
 ````
 
 2/ Create the config file "config/packages/yosimitso_working_forum.yaml" with :
@@ -78,7 +72,7 @@ in your user entity. Then copy/paste the content of \Yosimitso\WorkingForumBundl
 ````yml
 yosimitso_working_forum:
     resource: "@YosimitsoWorkingForumBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /forum
 ````    
 
 7/ Install the assets

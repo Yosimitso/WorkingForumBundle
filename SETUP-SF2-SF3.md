@@ -6,16 +6,9 @@ Setup for Symfony 2/3/4 (without Flex structure)
 
 This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rendering and the extra package for Symfony
 
-1/ Add to your composer.json, section 'require'
-````json
-"require" : {
- [...]
- "yosimitso/workingforumbundle" : "~1.2.4",
- }
-````
-Or run :
+1/ Run  :
 ````bash
-composer require "yosimitso/workingforumbundle":"~1.2.4"
+composer require "yosimitso/workingforumbundle":"^2.0"
 ````
 
 
@@ -80,11 +73,11 @@ Example :
 In case your user entity already extends an another bundle (like FOSUserBundle), implement the interface \Yosimitso\WorkingForumBundle\Entity\UserInterface
 in your user entity. Then copy/paste the content of \Yosimitso\WorkingForumBundle\Entity\User (attributes, getter, setter) into your user entity
 
-6/ To import the bundle's routing, add to your app/config.yml (you are free to modifiy the prefix) :
+6/ To import the bundle's routing, add to your app/routing.yml (you are free to modifiy the prefix) :
 ````yml
 yosimitso_working_forum:
     resource: "@YosimitsoWorkingForumBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /forum
 ````    
 
 7/ Install the assets

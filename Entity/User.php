@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package Yosimitso\WorkingForumBundle\Entity
  *
  * @ORM\MappedSuperclass
- * 
+ *
  */
 abstract class User implements UserInterface
 {
@@ -52,6 +52,13 @@ abstract class User implements UserInterface
      * @ORM\Column(name="lastReplyDate", type="datetime", nullable=true)
      */
     private $lastReplyDate;
+
+    /**
+     * @var string
+     * @ORM\Column(name="email_address", type="string",nullable=true)
+     */
+
+    protected $emailAddress;
 
     /**
      * @return int
@@ -129,7 +136,7 @@ abstract class User implements UserInterface
     public function addNbPost($nbPost)
     {
         $this->nbPost += $nbPost;
-        
+
         return $this;
     }
 
@@ -171,5 +178,21 @@ abstract class User implements UserInterface
     public function getLastReplyDate()
     {
         return $this->lastReplyDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailAddress()
+    {
+        return $this->emailAddress;
+    }
+
+    /**
+     * @param string $emailAddress
+     */
+    public function setEmailAddress($emailAddress)
+    {
+        $this->emailAddress = $emailAddress;
     }
 }

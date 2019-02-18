@@ -1,112 +1,112 @@
 workingforum_forum:
     path:     /
-    defaults: { _controller: yosimitso_workingforum_forum_controller::indexAction }
+    defaults: { _controller: yosimitso_workingforum_forum_controller:indexAction }
 workingforum_subforum:
     path: /view/{subforum_slug}
-    defaults: { _controller: yosimitso_workingforum_forum_controller::subforumAction }
+    defaults: { _controller: yosimitso_workingforum_forum_controller:subforumAction }
 
 workingforum_thread:
     path: /view/{subforum_slug}/{thread_slug}
-    defaults: { _controller: yosimitso_workingforum_thread_controller::indexAction }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:indexAction }
 
 workingforum_new_thread:
     path: /newthread/{subforum_slug}
-    defaults: { _controller: yosimitso_workingforum_thread_controller::newAction }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:newAction }
 
 workingforum_lock_thread:
     path: /lock/{subforum_slug}/{thread_slug}
-    defaults: { _controller: yosimitso_workingforum_thread_controller::lockAction }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:lockAction }
 
 workingforum_pin_thread:
     path: /pin/{subforum_slug}/{thread_slug}
-    defaults: { _controller: yosimitso_workingforum_thread_controller::pinAction }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:pinAction }
 
 workingforum_resolve_thread:
     path: /resolved/{subforum_slug}/{thread_slug}
-    defaults: { _controller: yosimitso_workingforum_thread_controller::resolveAction }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:resolveAction }
 
 workingforum_report_post:
     path: /report/{post_id}
-    defaults: { _controller: yosimitso_workingforum_thread_controller::reportAction }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:reportAction }
 
 workingforum_move_thread:
     path: /movethread
-    defaults: { _controller: yosimitso_workingforum_thread_controller::moveThreadAction }
+    defaults: { _controller: yosimitso_workingforum_thread_controller:moveThreadAction }
 
 workingforum_delete_thread:
     path: /deletethread/{threadSlug}
-    defaults: { _controller: yosimitso_workingforum_thread_controller::deleteThreadAction }
-        
+    defaults: { _controller: yosimitso_workingforum_thread_controller:deleteThreadAction }
+
 workingforum_admin:
     path: /admin
-    defaults: { _controller: yosimitso_workingforum_admin_controller::indexAction }
-    
+    defaults: { _controller: yosimitso_workingforum_admin_controller:indexAction }
+
 workingforum_admin_forum_edit:
     path: /admin/forum/edit/{id}
-    defaults: {_controller: yosimitso_workingforum_admin_controller::editAction }
-    
+    defaults: {_controller: yosimitso_workingforum_admin_controller:editAction }
+
 workingforum_admin_forum_add:
     path: /admin/forum/add
-    defaults: {_controller: yosimitso_workingforum_admin_controller::addAction }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:addAction }
 
 workingforum_admin_forum_rules:
     path: /admin/rules
-    defaults: {_controller: yosimitso_workingforum_admin_controller::rulesAction }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:rulesAction }
 
 workingforum_admin_edit_forum_rules:
     path: /admin/rules/edit/{lang}
-    defaults: {_controller: yosimitso_workingforum_admin_controller::rulesEditAction }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:rulesEditAction }
 
 workingforum_admin_new_forum_rules:
     path: /admin/rules/new/{lang}
     defaults:
-          _controller: yosimitso_workingforum_admin_controller::rulesNewAction
+          _controller: yosimitso_workingforum_admin_controller:rulesNewAction
           newLang: true
 
 
 workingforum_admin_install_settings:
     path: /admin/install-settings
-    defaults: {_controller: yosimitso_workingforum_admin_controller::installSettingsAction }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:installSettingsAction }
 workingforum_admin_report:
     path: /admin/report
-    defaults: {_controller: yosimitso_workingforum_admin_controller::reportAction }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:reportAction }
 workingforum_admin_report_history:
     path: /admin/report/history
-    defaults: {_controller: yosimitso_workingforum_admin_controller::reportHistoryAction }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:reportHistoryAction }
 workingforum_admin_user:
     path: /admin/user
-    defaults: {_controller: yosimitso_workingforum_admin_controller::userListAction }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:userListAction }
 workingforum_admin_report_action_moderate:
     path: /admin/reportaction/moderate
-    defaults: {_controller: yosimitso_workingforum_admin_controller::reportActionModerateAction }
-    
+    defaults: {_controller: yosimitso_workingforum_admin_controller:reportActionModerateAction }
+
 workingforum_admin_report_action_good:
     path: /admin/reportaction/good
-    defaults: {_controller: yosimitso_workingforum_admin_controller::reportActionGoodAction }
-    
+    defaults: {_controller: yosimitso_workingforum_admin_controller:reportActionGoodAction }
+
 workingforum_admin_delete_forum:
     path: /admin/deleteforum/{forum_id}
-    defaults: {_controller: yosimitso_workingforum_admin_controller::deleteForumAction }
+    defaults: {_controller: yosimitso_workingforum_admin_controller:deleteForumAction }
 workingforum_search:
     path: /search
-    defaults: {_controller: yosimitso_workingforum_search_controller::indexAction }
+    defaults: {_controller: yosimitso_workingforum_search_controller:indexAction }
 
 workingforum_vote_up:
     path: /voteup
-    defaults: { _controller: yosimitso_workingforum_post_controller::voteUpAction }
+    defaults: { _controller: yosimitso_workingforum_post_controller:voteUpAction }
 
 workingforum_rules:
     path: rules
-    defaults: { _controller: yosimitso_workingforum_forum_controller::rulesAction}
+    defaults: { _controller: yosimitso_workingforum_forum_controller:rulesAction}
 
 workingforum_rules_locale:
     path: rules/{locale}
-    defaults: { _controller: yosimitso_workingforum_forum_controller::rulesAction}
+    defaults: { _controller: yosimitso_workingforum_forum_controller:rulesAction}
 
 workingforum_add_subscription:
     path: addsubscription/{threadId}
-    defaults: { _controller: yosimitso_workingforum_thread_controller::addSubscriptionAction}
+    defaults: { _controller: yosimitso_workingforum_thread_controller:addSubscriptionAction}
 
 workingforum_cancel_subscription:
     path: cancelsubscription/{threadId}
-    defaults: { _controller: yosimitso_workingforum_thread_controller::cancelSubscriptionAction}
+    defaults: { _controller: yosimitso_workingforum_thread_controller:cancelSubscriptionAction}

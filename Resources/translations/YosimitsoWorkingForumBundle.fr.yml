@@ -126,6 +126,7 @@ admin:
         choose_one: choisissez la langue a éditer
         or_create_new_one: ou créez une règle dans une nouvelle langue
         lang: langue
+    edit_censored_words: Modifier la liste des mots censurés
 setting:
     intro: Ces paramètres sont modifiables dans le fichier de configuration de l'app.
     allow_anonymous_read: Autoriser les utilisateurs non enregistrés à lire

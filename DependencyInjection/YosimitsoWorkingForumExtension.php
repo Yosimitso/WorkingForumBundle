@@ -85,6 +85,12 @@ class YosimitsoWorkingForumExtension extends Extension
             );
         }
 
+        if (!isset($config['censorship'])) {
+            throw new \InvalidArgumentException(
+                'The "censorship" option must be set in "yosimitso_working_forum", please see README.MD'
+            );
+        }
+
         $loader = new Loader\YamlFileLoader(
             $container,
             new FileLocator(__DIR__ . '/../Resources/config')
@@ -103,5 +109,6 @@ class YosimitsoWorkingForumExtension extends Extension
         $container->setParameter('yosimitso_working_forum.post_flood_sec', $config['post_flood_sec']);
         $container->setParameter('yosimitso_working_forum.site_title', $config['site_title']);
         $container->setParameter('yosimitso_working_forum.thread_subscription', $config['thread_subscription']);
+        $container->setParameter('yosimitso_working_forum.censorship', $config['censorship']);
     }
 }

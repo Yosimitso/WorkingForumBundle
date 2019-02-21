@@ -32,6 +32,11 @@
                 <div class="wf_forum_content">
                     <h2>{{ 'setting.intro' | trans  }}</h2>
                     <table>
+                        <tr>
+                            <td colspan="2">
+                            {{ 'admin.edit_censored_words' }}
+                            </td>
+                        </tr>
                         {% for setting in settings_render %}
                         <tr>
                             {% if setting.group is defined and setting.group %}

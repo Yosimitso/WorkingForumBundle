@@ -50,7 +50,7 @@
         {# POST CONTENT #}
         <div class="wf_post_content">
             {% if post.moderateReason is empty %}
-                {{ post.content |  quote | markdown | replace({'\n':'<br />'})| smiley |  raw }}
+                {{ post.content | quote | markdown | replace({'\n':'<br />'}) | smiley | censor | raw }}
             {% else %}
                 <p class="wf_moderate">{{ 'forum.post_moderated' | trans }} {{ post.moderateReason }}</p>
             {% endif %}

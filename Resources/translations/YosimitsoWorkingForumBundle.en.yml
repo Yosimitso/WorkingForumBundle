@@ -127,6 +127,7 @@ admin:
         choose_one: choose the language to edit
         or_create_new_one: or create new one
         lang: language
+    edit_censored_words: Manage the censored words list
 setting:
     intro: Settings can be modified into app's config file
     allow_anonymous_read: Allow anonymous users to read

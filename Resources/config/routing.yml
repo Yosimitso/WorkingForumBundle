@@ -2,7 +2,7 @@ workingforum_forum:
     path:     /
     defaults: { _controller: yosimitso_workingforum_forum_controller:indexAction }
 workingforum_subforum:
-    path: /view/{subforum_slug}
+    path: /view/{forum_slug}/{subforum_slug}
     defaults: { _controller: yosimitso_workingforum_forum_controller:subforumAction }
 
 workingforum_thread:

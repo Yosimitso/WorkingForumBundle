@@ -16,6 +16,7 @@
 
     {% if not thread.resolved and actionsAvailables.setResolved %}
         <p><a class="wf_button"
+              rel="nofollow"
               href="{{ path('workingforum_resolve_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a>
         </p>
     {% endif %}
@@ -43,16 +44,16 @@
         {# LOCK #}
     {% if thread.locked %}
         <p>
-            <a class="wf_button wf_button-grey">
+            <a class="wf_button wf_button-grey" rel="nofollow">
                 <span class="wf_locked"></span>{{ 'forum.thread_locked' | trans() }}
             </a>
         </p>
     {% else %}
     {% if actionsAvailables.post %}
         <p>
-            <a class="wf_button wf_icon-reply" href="#wf_new_post">{{ 'forum.reply' | trans }}</a>
+            <a class="wf_button wf_icon-reply" href="#wf_new_post" rel="nofollow">{{ 'forum.reply' | trans }}</a>
             {% if actionsAvailables.subscribe %}
-            <a class="wf_button" id="wf_add_subscription" href="#" onclick="addSubscription(); return false;">{{ 'forum.add_subscription' | trans }}</a>
+            <a class="wf_button" id="wf_add_subscription" href="#" onclick="addSubscription(); return false;" rel="nofollow">{{ 'forum.add_subscription' | trans }}</a>
             {% endif %}
         </p>
     {% endif %}

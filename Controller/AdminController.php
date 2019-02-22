@@ -4,6 +4,7 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Yosimitso\WorkingForumBundle\Entity\Rules;
+use Yosimitso\WorkingForumBundle\Form\AdminCensorshipType;
 use Yosimitso\WorkingForumBundle\Form\AdminForumType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -459,6 +460,19 @@ class AdminController extends BaseController
         }
 
         return $settingsHtml;
+
+    }
+
+    public function censorshipAction()
+    {
+        $form = new AdminCensorshipType();
+        return $this->templating->renderResponse(
+            '@YosimitsoWorkingForum/Admin/Report/report.html.twig',
+            [
+                'postReportList' => $postReportList,
+                'date_format' => $date_format,
+            ]
+        );
 
     }
 

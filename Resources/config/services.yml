@@ -22,11 +22,31 @@ services:
           - "@yosimitso_workingforum_smiley"
 
     yosimitso_workingforum_admin_controller:
-        class: Yosimitso\WorkingForumBundle\Controller\AdminController
+        class: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController
+        parent: yosimitso_workingforum_base_controller
+        public: true
+
+    yosimitso_workingforum_admin_forum_controller:
+        class: Yosimitso\WorkingForumBundle\Controller\Admin\AdminForumController
+        parent: yosimitso_workingforum_base_controller
+        public: true
+
+    yosimitso_workingforum_admin_report_controller:
+        class: Yosimitso\WorkingForumBundle\Controller\Admin\AdminReportController
+        parent: yosimitso_workingforum_base_controller
+        public: true
+
+    yosimitso_workingforum_admin_rules_controller:
+        class: Yosimitso\WorkingForumBundle\Controller\Admin\AdminRulesController
         parent: yosimitso_workingforum_base_controller
         public: true
         arguments:
-          - "@yosimitso_workingforum_smiley"
+        - "@yosimitso_workingforum_smiley"
+
+    yosimitso_workingforum_admin_users_controller:
+        class: Yosimitso\WorkingForumBundle\Controller\Admin\AdminUsersController
+        parent: yosimitso_workingforum_base_controller
+        public: true
 
     yosimitso_workingforum_search_controller:
         class: Yosimitso\WorkingForumBundle\Controller\SearchController

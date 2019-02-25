@@ -25,6 +25,9 @@ class CacheManager
      */
     protected $type;
 
+    /**
+     * @var string
+     */
     protected $keyPrefix;
 
     const TYPE_REDIS = 'redis';
@@ -125,6 +128,22 @@ class CacheManager
         return null;
     }
 
+    /**
+     * Delete a key
+     * @param $key
+     * @return bool
+     */
+    public function delete($key)
+    {
+        if (!$this->cacheDriver->delete($key)) {
+            $this->enabled = false; // FOR SECURITY
+            trigger_error('YosimitsoWorkingForumBundle: failed to delete key from '.$this->type.' cache', E_USER_WARNING);
+            return false;
+        }
+
+        return true;
+
+    }
     /**
      * Is cache enabled ?
      * @return bool

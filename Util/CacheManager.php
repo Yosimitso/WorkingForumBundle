@@ -33,6 +33,7 @@ class CacheManager
     const TYPE_REDIS = 'redis';
 
     const TTL_FORUM = 3600;
+    const TTL_THREADS_BY_SUBFORUM = 60;
 
 
     /**

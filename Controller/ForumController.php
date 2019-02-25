@@ -72,14 +72,19 @@ class ForumController extends BaseController
             );
         }
 
-
-        $list_subforum_query = $this
-            ->em
-            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')
-            ->findBySubforum(
-                $subforum->getId(),
-                ['pin' => 'DESC', 'lastReplyDate' => 'DESC']
-            );
+        $cacheThreadListKey = 'thread_by_subforum_'.$subforum->getId();
+        if ($this->cacheManager->contains($cacheThreadListKey)) {
+           $list_subforum_query = $this->cacheManager->fetch($cacheThreadListKey);
+        } else {
+            $list_subforum_query = $this
+                ->em
+                ->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')
+                ->findBySubforum(
+                    $subforum->getId(),
+                    ['pin' => 'DESC', 'lastReplyDate' => 'DESC']
+                );
+            $this->cacheManager->save($cacheThreadListKey, $list_subforum_query, CacheManager::TTL_THREADS_BY_SUBFORUM);
+        }
 
         $date_format = $this->getParameter('yosimitso_working_forum.date_format');
 
@@ -88,7 +93,6 @@ class ForumController extends BaseController
             $request->query->get('page', 1)/*page number*/,
             $this->getParameter('yosimitso_working_forum.thread_per_page') /*limit per page*/
         );
-
 
         return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Forum/thread_list.html.twig',

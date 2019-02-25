@@ -21,8 +21,9 @@ class BaseController extends Controller
     protected $translator;
     protected $paginator;
     protected $templating;
+    protected $cacheManager;
     
-    public function setParameters($em, $authorization, $user, $session, $translator, $paginator, $templating) {
+    public function setParameters($em, $authorization, $user, $session, $translator, $paginator, $templating, $cacheManager) {
         $this->em = $em;
         $this->authorization = $authorization;
         $this->user = (is_object($user)) ? $user : null;
@@ -30,5 +31,6 @@ class BaseController extends Controller
         $this->translator = $translator;
         $this->paginator = $paginator;
         $this->templating = $templating;
+        $this->cacheManager = $cacheManager;
     }
 }

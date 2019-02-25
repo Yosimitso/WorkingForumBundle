@@ -5,7 +5,7 @@ services:
     yosimitso_workingforum_base_controller:
         class: Yosimitso\WorkingForumBundle\Controller\BaseController
         calls:
-          - ["setParameters",["@doctrine.orm.entity_manager","@yosimitso_workingforum_authorization","@=service('security.token_storage').getToken().getUser()","@session", "@translator", "@knp_paginator", "@templating"]]
+          - ["setParameters",["@doctrine.orm.entity_manager","@yosimitso_workingforum_authorization","@=service('security.token_storage').getToken().getUser()","@session", "@translator", "@knp_paginator", "@templating", "@yosimitso_workingforum_cache_manager"]]
 
     yosimitso_workingforum_forum_controller:
         class: Yosimitso\WorkingForumBundle\Controller\ForumController
@@ -89,6 +89,10 @@ services:
             - "%swiftmailer.sender_address%"
             - "@templating"
 
+    yosimitso_workingforum_cache_manager:
+        class: Yosimitso\WorkingForumBundle\Util\CacheManager
+        arguments:
+            - "%yosimitso_working_forum.cache%"
 
     yosimitso_workingforum_listener.post:
         class: Yosimitso\WorkingForumBundle\Event\PostEvent

@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Yosimitso\WorkingForumBundle\Form\RulesType;
+use Yosimitso\WorkingForumBundle\Util\CacheManager;
 /**
  * Class ForumController
  *
@@ -21,10 +22,15 @@ class ForumController extends BaseController
 
     public function indexAction()
     {
-        $list_forum = $this
-            ->em
-            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')
-            ->findAll();
+        if ($this->cacheManager->contains('forums')) {
+            $listForum = $this->cacheManager->fetch('forum');
+        } else {
+            $listForum = $this->em
+                ->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')
+                ->findAll();
+            $this->cacheManager->save('forums', $listForum, CacheManager::TTL_FORUM);
+        }
+
 
         $parameters  = [ // PARAMETERS USED BY TEMPLATE
             'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format')
@@ -33,7 +39,7 @@ class ForumController extends BaseController
         return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Forum/index.html.twig',
             [
-                'list_forum' => $list_forum,
+                'list_forum' => $listForum,
                 'parameters' => $parameters
             ]
         );

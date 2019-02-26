@@ -31,6 +31,7 @@ class CacheManager
     protected $keyPrefix;
 
     const TYPE_REDIS = 'redis';
+    const TYPE_MEMCACHED = 'memcached';
 
     const TTL_FORUM = 3600;
     const TTL_THREADS_BY_SUBFORUM = 120;
@@ -71,6 +72,12 @@ class CacheManager
                 $this->cacheDriver = new \Doctrine\Common\Cache\RedisCache();
                 $this->cacheDriver->setRedis($redis);
                 break;
+            case self::TYPE_MEMCACHED:
+                $memcached = new Memcached();
+                $memcached->addServer($params['host'], $params['port']);
+
+                $this->cacheDriver = new \Doctrine\Common\Cache\MemcachedCache();
+                $this->cacheDriver->setMemcached($memcached);
             default:
                 return false;
                 break;
@@ -78,7 +85,17 @@ class CacheManager
 
        $this->keyPrefix = $params['key_prefix'];
        $this->type = $type;
-       return true;
+       return $this->testWrite();
+    }
+
+    /**
+     * Test writing in cache
+     * @return bool
+     */
+    protected function testWrite()
+    {
+        $this->save('wf_test', 'testbywf', 60);
+        return ($this->fetch('wf_test') !== 'testbywf');
     }
 
     /**

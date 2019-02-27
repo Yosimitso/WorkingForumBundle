@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @package Yosimitso\WorkingForumBundle\Entity
  *
  * @ORM\Table(name="workingforum_censorship")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Repository\CensorshipRepository")
  */
 class Censorship
 {

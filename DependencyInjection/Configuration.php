@@ -111,7 +111,6 @@ class Configuration implements ConfigurationInterface
                         ->defaultValue(false)
                         ->end()
                         ->scalarNode('replacement')
-                        ->beforeNormalization()->castToString()
                         ->defaultValue('****')
                         ->cannotBeEmpty()
                         ->end()

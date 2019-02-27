@@ -2,9 +2,9 @@
 
 namespace Yosimitso\WorkingForumBundle\Twig\Extension;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Yosimitso\WorkingForumBundle\Entity\Post;
+use Yosimitso\WorkingForumBundle\Util\Censorship as CensorshipUtil;
 
 /**
  * Class CensorshipTwigExtension
@@ -13,22 +13,15 @@ use Yosimitso\WorkingForumBundle\Entity\Post;
 class CensorshipTwigExtension extends \Twig_Extension
 {
     /**
-     * @var EntityManagerInterface
+     * @var CensorshipUtil
      */
-    private $entityManager;
-
-    /**
-     * @var array
-     */
-    protected $paramCensorship;
+    private $censorshipUtil;
 
     public function __construct(
-        EntityManagerInterface $entityManager,
-        array $paramCensorship
+        CensorshipUtil $censorshipUtil
     )
     {
-        $this->entityManager = $entityManager;
-        $this->paramCensorship = $paramCensorship;
+        $this->censorshipUtil = $censorshipUtil;
     }
 
     /**
@@ -51,18 +44,7 @@ class CensorshipTwigExtension extends \Twig_Extension
      */
     public function censor($text)
     {
-        if (!$this->paramCensorship['enable']) {
-            return $text;
-        }
-
-        $words = $this->entityManager
-                    ->getRepository('YosimitsoWorkingForumBundle:Censorship')->findAll();
-
-        if (is_null($words)) {
-            return $text;
-        }
-
-        return preg_replace($words, $this->paramCensorship['replacement'], $text);
+        return $this->censorshipUtil->censor($text);
     }
 
     /**

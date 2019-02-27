@@ -50,13 +50,13 @@ services:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\QuoteTwigExtension
         tags:
             -  { name: twig.extension }
-        arguments: ["@doctrine.orm.entity_manager", "@translator"]
+        arguments: ["@doctrine.orm.entity_manager", "@translator", "@yosimitso_workingforum_util_censorship"]
 
     yosimitso_workingforum_censorship:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\CensorshipTwigExtension
         tags:
-        -  { name: twig.extension }
-        arguments: ["@doctrine.orm.entity_manager", "%yosimitso_working_forum.censorship%"]
+            -  { name: twig.extension }
+        arguments: ["@yosimitso_workingforum_util_censorship"]
 
     yosimitso_workingforum_config:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\ConfigurationTwigExtension
@@ -96,6 +96,11 @@ services:
             - "%swiftmailer.sender_address%"
             - "@templating"
 
+    yosimitso_workingforum_util_censorship:
+        class: Yosimitso\WorkingForumBundle\Util\Censorship
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "%yosimitso_working_forum.censorship%"
 
     yosimitso_workingforum_listener.post:
         class: Yosimitso\WorkingForumBundle\Event\PostEvent

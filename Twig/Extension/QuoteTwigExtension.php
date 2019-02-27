@@ -5,6 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Twig\Extension;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Yosimitso\WorkingForumBundle\Entity\Post;
+use Yosimitso\WorkingForumBundle\Util\Censorship as CensorshipUtil;
 
 /**
  * Class QuoteTwigExtension
@@ -24,16 +25,23 @@ class QuoteTwigExtension extends \Twig_Extension
     private $translator;
 
     /**
+     * @var CensorshipUtil
+     */
+    private $censorshipUtil;
+
+    /**
      * @param EntityManagerInterface $entityManager
      * @param TranslatorInterface    $translator
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        CensorshipUtil $censorship
     )
     {
         $this->entityManager = $entityManager;
         $this->translator = $translator;
+        $this->censorshipUtil = $censorship;
     }
 
     /**
@@ -71,7 +79,7 @@ class QuoteTwigExtension extends \Twig_Extension
                         . ' '
                         . $this->translator->trans('forum.has_written', [], 'YosimitsoWorkingForumBundle')
                         . " :** \n"
-                        . '>'.$this->markdownQuote($this->quote($post->getContent()))
+                        . '>'.$this->markdownQuote($this->quote($this->censorshipUtil->censor($post->getContent())))
                         . "\n";
                 }
 

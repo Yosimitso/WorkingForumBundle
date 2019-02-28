@@ -5,6 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Util;
 use Doctrine\ORM\EntityManager;
 use Yosimitso\WorkingForumBundle\Util\CacheManager;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
+use Yosimitso\WorkingForumBundle\Entity\Thread;
 
 /**
  * Class EntityProxy
@@ -60,12 +61,29 @@ class EntityProxy extends EntityManager
                 ->em
                 ->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')
                 ->findOneBySlug($slug);
-            $this->cacheManager->save($slug, $subforum, CacheManager::TTL_FORUM);
+            $this->cacheManager->save($cacheKey, $subforum, CacheManager::TTL_FORUM);
         }
 
         return $subforum;
     }
 
+    /**
+     * Get a thread
+     * @param $slug
+     * @return Thread|null
+     */
+    public function getThread($slug)
+    {
+        $cacheKey = 'thread_'.$slug;
+        if ($this->cacheManager->contains($cacheKey)) {
+            $thread = $this->cacheManager->fetch($cacheKey);
+        } else {
+            $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($slug);
+            $this->cacheManager->save($cacheKey, $thread, CacheManager::TTL_THREAD);
+        }
+
+        return $thread;
+    }
     /**
      * Get all threads for a subforum
      * @param $subforum

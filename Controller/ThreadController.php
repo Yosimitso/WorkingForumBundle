@@ -51,8 +51,8 @@ class ThreadController extends BaseController
      */
     public function indexAction($subforum_slug, $thread_slug, Request $request)
     {
-        $subforum = $this->em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneBySlug($subforum_slug);
-        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
+        $subforum = $this->entityProxy->getSubforum($subforum_slug);
+        $thread = $this->entityProxy->getThread($thread_slug);
         
         if (is_null($thread) || is_null($subforum)) {
             throw new \Exception('Thread not found', 404);
@@ -180,7 +180,7 @@ class ThreadController extends BaseController
             }
 
         $postQuery = $this->em
-            ->getRepository('YosimitsoWorkingForumBundle:Post')
+            ->getRepository('YosimitsoWorkingForumBundle:Post') // @TODO MAYBE USE THREAD->GETPOST()
             ->findByThread($thread->getId())
         ;
         $post_list = $this->threadUtil->paginate($postQuery);
@@ -238,7 +238,7 @@ class ThreadController extends BaseController
                 403);
         }
 
-        $subforum = $this->em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneBySlug($subforum_slug);
+        $subforum = $this->entityProxy->getSubforum($subforum_slug);
 
           if (!$this->authorization->hasSubforumAccess($subforum)) {
               $this->flashbag->add(

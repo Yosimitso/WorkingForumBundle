@@ -37,6 +37,7 @@ class CacheManager
     const TTL_SUBFORUM = 1800;
     const TTL_THREADS_BY_SUBFORUM = 120;
     const TTL_SEARCH = 300;
+    const TTL_THREAD = 60;
 
 
     /**

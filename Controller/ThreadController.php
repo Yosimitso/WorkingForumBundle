@@ -413,6 +413,7 @@ class ThreadController extends BaseController
      * A user report a thread
      * @param $post_id
      * @return Response
+     * @throws \Exception
      */
     function reportAction($post_id)
     {

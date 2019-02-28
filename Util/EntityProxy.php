@@ -78,7 +78,9 @@ class EntityProxy extends EntityManager
         if ($this->cacheManager->contains($cacheKey)) {
             $thread = $this->cacheManager->fetch($cacheKey);
         } else {
-            $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($slug);
+            $thread = $this->em
+                ->getRepository('YosimitsoWorkingForumBundle:Thread')
+                ->findOneBySlug($slug);
             $this->cacheManager->save($cacheKey, $thread, CacheManager::TTL_THREAD);
         }
 

@@ -23,7 +23,6 @@ class SearchController extends BaseController
      */
     public function indexAction(Request $request)
     {
-        $listForum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findAll();
         $form = $this->get('form.factory')
             ->createNamedBuilder('', SearchType::class, null, array('csrf_protection' => false,))
             ->add('page', HiddenType::class, ['data' => 1])
@@ -63,6 +62,7 @@ class SearchController extends BaseController
                 );
             }
         }
+        $listForum = $this->entityProxy->getForums();
 
         return $this->templating->renderResponse('@YosimitsoWorkingForum/Search/search.html.twig',
             [

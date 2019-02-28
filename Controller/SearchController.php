@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Form\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Yosimitso\WorkingForumBundle\Util\CacheManager;
 
 /**
  * Class SearchController
@@ -36,17 +37,15 @@ class SearchController extends BaseController
             {
                 $whereSubforum = (array) $this->authorization->hasSubforumAccessList($form['forum']->getData());
 
-                $thread_list_query = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')
-                                        ->search($form['keywords']->getData(), 0, 100, $whereSubforum)
-                ;
+                $thread_list_query = $this->entityProxy->search($whereSubforum, $form['keywords']);
                 $date_format = $this->getParameter('yosimitso_working_forum.date_format');
 
                 if (!is_null($thread_list_query)) {
                     $thread_list = $this->paginator->paginate(
                         $thread_list_query,
-                        $request->query->get('page', 1)/*page number*/,
+                        $request->query->get('page', 1),
                         $this->container->getParameter('yosimitso_working_forum.thread_per_page')
-                    ); /*limit per page*/
+                    );
                 }
                 else
                 {

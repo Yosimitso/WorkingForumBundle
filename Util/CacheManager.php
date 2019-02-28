@@ -33,8 +33,10 @@ class CacheManager
     const TYPE_REDIS = 'redis';
     const TYPE_MEMCACHED = 'memcached';
 
-    const TTL_FORUM = 3600;
+    const TTL_FORUM = 1800;
+    const TTL_SUBFORUM = 1800;
     const TTL_THREADS_BY_SUBFORUM = 120;
+    const TTL_SEARCH = 300;
 
 
     /**

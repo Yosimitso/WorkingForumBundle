@@ -17,21 +17,21 @@ class ThreadRepository extends EntityRepository
      *
      * @return array
      */
-    public function getThread($start = 0, $limit = 10)
-    {
-        $queryBuilder = $this->_em->createQueryBuilder();
-        $query = $queryBuilder
-            ->select('a')
-            ->addSelect('b')
-            ->from($this->_entityName, 'a')
-            ->join('YosimitsoWorkingForumBundle:Post', 'b', 'WITH', 'a.id = b.thread')
-            ->orderBy('a.note', 'desc')
-            ->setMaxResults($limit)
-            ->getQuery()
-        ;
-
-        return $query->getScalarResult();
-    }
+//    public function getThread($start = 0, $limit = 10)
+//    {
+//        $queryBuilder = $this->_em->createQueryBuilder();
+//        $query = $queryBuilder
+//            ->select('a')
+//            ->addSelect('b')
+//            ->from($this->_entityName, 'a')
+//            ->join('YosimitsoWorkingForumBundle:Post', 'b', 'WITH', 'a.id = b.thread')
+//            ->orderBy('a.note', 'desc')
+//            ->setMaxResults($limit)
+//            ->getQuery()
+//        ;
+//
+//        return $query->getScalarResult();
+//    }
 
     /**
      * @param string  $keywords

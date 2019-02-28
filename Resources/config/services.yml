@@ -5,7 +5,7 @@ services:
     yosimitso_workingforum_base_controller:
         class: Yosimitso\WorkingForumBundle\Controller\BaseController
         calls:
-          - ["setParameters",["@doctrine.orm.entity_manager","@yosimitso_workingforum_authorization","@=service('security.token_storage').getToken().getUser()","@session", "@translator", "@knp_paginator", "@templating", "@yosimitso_workingforum_cache_manager"]]
+          - ["setParameters",["@doctrine.orm.entity_manager","@yosimitso_workingforum_authorization","@=service('security.token_storage').getToken().getUser()","@session", "@translator", "@knp_paginator", "@templating", "@yosimitso_workingforum_cache_manager", "@yosimitso_workingforum_entity_proxy"]]
 
     yosimitso_workingforum_forum_controller:
         class: Yosimitso\WorkingForumBundle\Controller\ForumController
@@ -93,6 +93,12 @@ services:
         class: Yosimitso\WorkingForumBundle\Util\CacheManager
         arguments:
             - "%yosimitso_working_forum.cache%"
+
+    yosimitso_workingforum_entity_proxy:
+        class: Yosimitso\WorkingForumBundle\Util\EntityProxy;
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@yosimitso_workingforum_cache_manager"
 
     yosimitso_workingforum_listener.post:
         class: Yosimitso\WorkingForumBundle\Event\PostEvent

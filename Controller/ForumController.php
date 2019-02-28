@@ -22,15 +22,8 @@ class ForumController extends BaseController
 
     public function indexAction()
     {
-        if ($this->cacheManager->contains('forums')) {
-            $listForum = $this->cacheManager->fetch('forum');
-        } else {
-            $listForum = $this->em
-                ->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')
-                ->findAll();
-            $this->cacheManager->save('forums', $listForum, CacheManager::TTL_FORUM);
-        }
 
+        $listForum = $this->entityProxy->getForums();
 
         $parameters  = [ // PARAMETERS USED BY TEMPLATE
             'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format')
@@ -56,10 +49,7 @@ class ForumController extends BaseController
      */
     public function subforumAction($subforum_slug, Request $request, $page = 1)
     {
-        $subforum = $this
-            ->em
-            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')
-            ->findOneBySlug($subforum_slug);
+        $subforum = $this->entityProxy->getSubforum($subforum_slug);
         if (!$this->authorization->hasSubforumAccess($subforum)) {
 
             return $this->templating->renderResponse(
@@ -72,24 +62,11 @@ class ForumController extends BaseController
             );
         }
 
-        $cacheThreadListKey = 'thread_by_subforum_'.$subforum->getId();
-        if ($this->cacheManager->contains($cacheThreadListKey)) {
-           $list_subforum_query = $this->cacheManager->fetch($cacheThreadListKey);
-        } else {
-            $list_subforum_query = $this
-                ->em
-                ->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')
-                ->findBySubforum(
-                    $subforum->getId(),
-                    ['pin' => 'DESC', 'lastReplyDate' => 'DESC']
-                );
-            $this->cacheManager->save($cacheThreadListKey, $list_subforum_query, CacheManager::TTL_THREADS_BY_SUBFORUM);
-        }
-
+        $thread_list_query = $this->entityProxy->getThreadsBySubforum($subforum);
         $date_format = $this->getParameter('yosimitso_working_forum.date_format');
 
-        $list_subforum = $this->paginator->paginate(
-            $list_subforum_query,
+        $thread_list = $this->paginator->paginate(
+            $thread_list_query,
             $request->query->get('page', 1)/*page number*/,
             $this->getParameter('yosimitso_working_forum.thread_per_page') /*limit per page*/
         );
@@ -98,7 +75,7 @@ class ForumController extends BaseController
             '@YosimitsoWorkingForum/Forum/thread_list.html.twig',
             [
                 'subforum' => $subforum,
-                'thread_list' => $list_subforum,
+                'thread_list' => $thread_list,
                 'date_format' => $date_format,
                 'forbidden' => false,
                 'post_per_page' => $this->getParameter('yosimitso_working_forum.post_per_page'),

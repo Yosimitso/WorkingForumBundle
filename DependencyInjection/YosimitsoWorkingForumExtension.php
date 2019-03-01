@@ -84,6 +84,12 @@ class YosimitsoWorkingForumExtension extends Extension
                 'The "thread_subscription" option must be set in "yosimitso_working_forum", please see README.MD'
             );
         }
+        
+        if (!isset($config['cache'])) {
+            throw new \InvalidArgumentException(
+                'The "cache" option must be set in "yosimitso_working_forum", please see README.MD'
+            );
+        }
 
         $loader = new Loader\YamlFileLoader(
             $container,
@@ -103,5 +109,6 @@ class YosimitsoWorkingForumExtension extends Extension
         $container->setParameter('yosimitso_working_forum.post_flood_sec', $config['post_flood_sec']);
         $container->setParameter('yosimitso_working_forum.site_title', $config['site_title']);
         $container->setParameter('yosimitso_working_forum.thread_subscription', $config['thread_subscription']);
+        $container->setParameter('yosimitso_working_forum.cache', $config['cache']);
     }
 }

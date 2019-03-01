@@ -11,7 +11,7 @@ use Yosimitso\WorkingForumBundle\Entity\Thread;
  * Class EntityProxy
  * @package Yosimitso\WorkingForumBundle\Util
  */
-class EntityProxy extends EntityManager
+class EntityProxy
 {
     /**
      * @var EntityManager;

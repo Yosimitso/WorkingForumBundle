@@ -46,7 +46,7 @@ class CacheManager
      */
     public function __construct(array $config)
     {
-       if (is_null($config['enable']) || !$config['enable']) {
+       if (is_null($config['enable']) || !$config['enable'] || !isset($config['type']) || is_null($config['type'])) {
            $this->enabled = false;
        } else {
            if ($this->initializeCache($config['type'], $config['params'])) {

@@ -95,7 +95,7 @@ services:
             - "%yosimitso_working_forum.cache%"
 
     yosimitso_workingforum_entity_proxy:
-        class: Yosimitso\WorkingForumBundle\Util\EntityProxy;
+        class: Yosimitso\WorkingForumBundle\Util\EntityProxy
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@yosimitso_workingforum_cache_manager"

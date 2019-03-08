@@ -3,6 +3,7 @@
     {% if not thread.locked %}
         <li>
             <a class="wf_button wf_icon-lock"
+               rel="nofollow"
                href="{{ path('workingforum_lock_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
                 {{ 'forum.lock' | trans }}
             </a>
@@ -10,13 +11,14 @@
     {% endif %}
     {% if moveThread %}
         <li>
-            <a class="wf_button" id="wf_move_thread_button">&rarr; {{ 'forum.move_thread' | trans }}</a>
+            <a class="wf_button" id="wf_move_thread_button" rel="nofollow">&rarr; {{ 'forum.move_thread' | trans }}</a>
             {{ form_widget(moveThread.forum) }}
         </li>
     {% endif %}
     {% if allowModeratorDeleteThread %}
         <li>
             <a class="wf_button wf_icon-remove"
+               rel="nofollow"
                onclick="if (!confirm('{{ 'forum.confirm_delete_thread' | trans }}')) { return false; }"
                href="{{ path('workingforum_delete_thread',{'threadSlug': thread.slug}) }}">
                 {{ 'forum.delete_thread' | trans }}
@@ -26,6 +28,7 @@
     {% if not thread.pin %}
     <li>
         <a class="wf_button wf_icon-pin"
+           rel="nofollow"
            href="{{ path('workingforum_pin_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
             {{ 'forum.pin_thread' | trans }}
         </a>

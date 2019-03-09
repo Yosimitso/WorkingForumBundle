@@ -48,12 +48,26 @@ class ForumController extends BaseController
      *
      * @return Response
      */
-    public function subforumAction($subforum_slug, Request $request, $page = 1)
+    public function subforumAction($forum_slug, $subforum_slug, Request $request, $page = 1)
     {
+        $forum = $this
+            ->em
+            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')
+            ->findOneBySlug($forum_slug);
+
+        if (is_null($forum)) {
+            throw new NotFoundException('Forum not found');
+        }
+
         $subforum = $this
             ->em
             ->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')
-            ->findOneBySlug($subforum_slug);
+            ->findOneBy(['forum' => $forum->getId(), 'slug' => $subforum_slug]);
+
+        if (is_null($subforum)) {
+            throw new NotFoundException('Subforum not found');
+        }
+
         if (!$this->authorization->hasSubforumAccess($subforum)) {
 
             return $this->templating->renderResponse(

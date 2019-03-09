@@ -21,7 +21,7 @@
          <table class="wf_subforum">
     {% for subforum in forum.subForum %}
        <tr>
-           <td class="wf_sub_name"><a href="{{ path('workingforum_subforum', {'subforum_slug' : subforum.slug }) }}">{{ subforum.name }}</a></td>
+           <td class="wf_sub_name"><a href="{{ path('workingforum_subforum', {'forum_slug': subforum.forum.slug, 'subforum_slug' : subforum.slug }) }}">{{ subforum.name }}</a></td>
            <td class="wf_sub_stat">{{ subforum.nbThread | number_format }} {{ 'forum.nbThread' | trans }}<br />{{ subforum.nbPost | number_format }} {{ 'forum.nbPost' | trans }}</td>
            <td class="wf_sub_lastreply">
                {% if subforum.nbPost > 0 %}

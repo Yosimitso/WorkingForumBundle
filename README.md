@@ -37,3 +37,8 @@ Features
 Setup
 ------------------
 See SETUP-SF2-SF3.md or SETUP-SF4-FLEX if you use Symfony 4 with Flex structure
+
+
+Configuration
+-----------------
+Refer to CONFIGURATION.md

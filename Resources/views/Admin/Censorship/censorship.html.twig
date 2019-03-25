@@ -7,5 +7,19 @@
     {%  include '@YosimitsoWorkingForum/Admin/header.html.twig' with {'backToAdmin': true, 'adminSubtitle': 'admin.menu.forum'} %}
     {% include '@YosimitsoWorkingForum/Common/flashmsg.html.twig' %}
 
-    {{ form_widget(form.censored_words) }}
+    <div class="block-admin-censoredship-left">
+        {{ form_widget(form.censored_words) }}
+    </div>
+    <div class="lock-admin-censoredship-right">
+        <input type="text" name="censorship-pattern" id="censorship-pattern"><button id="add-pattern">Add</button>
+    </div>
+
 </div>
+<script>
+    document.querySelector('#add-pattern').addEventListener('click', function(e) {
+        var pattern = document.querySelector('#censorship-pattern')
+        var list = document.querySelector('#censorship_list');
+        list.parentNode.insertBefore('<option value="'+pattern.value+'">'+pattern.value+'</option>');
+        this.value = '';
+    });
+</script>

@@ -4,6 +4,7 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Yosimitso\WorkingForumBundle\Form\RulesType;
 /**
@@ -56,7 +57,7 @@ class ForumController extends BaseController
             ->findOneBySlug($forum_slug);
 
         if (is_null($forum)) {
-            throw new NotFoundException('Forum not found');
+            throw new NotFoundHttpException('Forum not found');
         }
 
         $subforum = $this
@@ -101,6 +102,7 @@ class ForumController extends BaseController
         return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Forum/thread_list.html.twig',
             [
+                'forum' => $forum,
                 'subforum' => $subforum,
                 'thread_list' => $list_subforum,
                 'date_format' => $date_format,

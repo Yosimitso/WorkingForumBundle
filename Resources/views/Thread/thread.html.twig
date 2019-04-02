@@ -17,7 +17,7 @@
     {% if not thread.resolved and actionsAvailables.setResolved %}
         <p><a class="wf_button"
               rel="nofollow"
-              href="{{ path('workingforum_resolve_thread',{'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a>
+              href="{{ path('workingforum_resolve_thread',{'forum_slug': forum.slug, 'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a>
         </p>
     {% endif %}
 
@@ -61,7 +61,7 @@
 
         {# ACTIONS LIST FOR MODERATOR #}
     {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
-        {% include '@YosimitsoWorkingForum/Thread/actionsModerator.html.twig' with {'subforum': subforum, 'thread': thread, 'moveThread': actionsAvailables.moveThread, 'allowModeratorDeleteThread': actionsAvailables.allowModeratorDeleteThread} %}
+        {% include '@YosimitsoWorkingForum/Thread/actionsModerator.html.twig' with {'forum': forum, 'subforum': subforum, 'thread': thread, 'moveThread': actionsAvailables.moveThread, 'allowModeratorDeleteThread': actionsAvailables.allowModeratorDeleteThread} %}
     {% endif %}
 
         <div class="wf_thread" data-id="{{ thread.id }}">

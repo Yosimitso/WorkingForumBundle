@@ -1,7 +1,7 @@
 WorkingForumBundle
 ==================
 
-[![Join the chat at https://gitter.im/WorkingForumBundle/Lobby](https://badges.gitter.im/WorkingForumBundle/Lobby.svg)](https://gitter.im/WorkingForumBundle/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/WorkingForumBundle/Lobby](https://badges.gitter.im/WorkingForumBundle/Lobby.svg)](https://gitter.im/WorkingForumBundle/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Latest Stable Version](https://poser.pugx.org/yosimitso/workingforumbundle/v/stable)](https://packagist.org/packages/yosimitso/workingforumbundle) [![Total Downloads](https://poser.pugx.org/yosimitso/workingforumbundle/downloads)](https://packagist.org/packages/yosimitso/workingforumbundle) [![License](https://poser.pugx.org/yosimitso/workingforumbundle/license)](https://packagist.org/packages/yosimitso/workingforumbundle)
 
 ENGLISH
 =================  

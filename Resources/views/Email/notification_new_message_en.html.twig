@@ -11,7 +11,7 @@
     {{ post.content | quote | markdown | replace({'\n':'<br />'})| smiley | raw }}
 </p>
 <p>
-    <a class="url" href="{{ path( 'workingforum_thread', {'subforum_slug' : thread.subforum.slug, 'thread_slug' : thread.slug}) }}">
+    <a class="url" href="{{ path( 'workingforum_thread', {'forum_slug': thread.subforum.forum.slug, 'subforum_slug' : thread.subforum.slug, 'thread_slug' : thread.slug}) }}">
         Click here to see the thread
     </a>
 </p>

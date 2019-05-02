@@ -33,13 +33,13 @@
      <div class="wf_forum">
      <div class="wf_empty_forum">{{ forbiddenMsg | trans }}</div>
      </div>
- {% else %}    
-    
+ {% else %}
+
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and subforum is defined%}
-    
-   
+
+
  <div class="wf_new_thread_button">
-    <a class="wf_button wf_add" href="{{ path('workingforum_new_thread', {'subforum_slug' : subforum.slug}) }}"><span class="wf_add-plus"></span>{{ ('forum.new_thread' | trans) }}</a>
+    <a class="wf_button wf_add" href="{{ path('workingforum_new_thread', {'forum_slug': forum.slug, 'subforum_slug' : subforum.slug}) }}"><span class="wf_add-plus"></span>{{ ('forum.new_thread' | trans) }}</a>
     </div>
     {% endif %}
 <div id="wf_forum">
@@ -48,8 +48,8 @@
     <h1>{{ subforum.name }}</h1>
     {% else %}
         <h1>{{ 'search.results_for' | trans({'%keywords%' : keywords}) }}</h1>
-    {% endif %}    
-   
+    {% endif %}
+
 <table class="wf_thread_list">
     {% if thread_list is not empty %}
     {% for thread in thread_list %}
@@ -58,23 +58,23 @@
                 <p>
                 {% if thread.locked %}
                 <img src="{{ asset('bundles/yosimitsoworkingforum/images/lock.png') }}" width="24" style="vertical-align:bottom" />
-                
+
                 {% endif %}
                 {% if thread.pin %}
-                    <span class="wf_pinText"><img src="{{ asset('bundles/yosimitsoworkingforum/images/pin.png') }}" width="16"/>{#{{ 'forum.pin' | trans }} : #}</span> 
+                    <span class="wf_pinText"><img src="{{ asset('bundles/yosimitsoworkingforum/images/pin.png') }}" width="16"/>{#{{ 'forum.pin' | trans }} : #}</span>
                     {% elseif thread.resolved %}
-                     <span class="wf_pinText"><img src="{{ asset('bundles/yosimitsoworkingforum/images/tick.png') }}" width="16"/>{#{{ 'forum.resolved' | trans }} : #}</span>    
+                     <span class="wf_pinText"><img src="{{ asset('bundles/yosimitsoworkingforum/images/tick.png') }}" width="16"/>{#{{ 'forum.resolved' | trans }} : #}</span>
                 {% endif %}
-            
-                <a class="wf_label" href="{{ path( 'workingforum_thread', {'subforum_slug' : thread.subforum.slug, 'thread_slug' : thread.slug}) }}">{{ thread.label }}</a>
+
+                <a class="wf_label" href="{{ path( 'workingforum_thread', {'forum_slug': forum.slug, 'subforum_slug' : thread.subforum.slug, 'thread_slug' : thread.slug}) }}">{{ thread.label }}</a>
                 </p>
-               
-             
+
+
                 <p class="wf_sublabel">{{ thread.sublabel }}</p>
               {% set nbPage = (thread.nbReplies/post_per_page) %}
                {% if nbPage > 1 %}
                    <p class="wf_latest_page">
-                    <a href="{{ path( 'workingforum_thread', {'subforum_slug' : thread.subforum.slug, 'thread_slug' : thread.slug, (page_prefix) : (nbPage |round(0,'ceil')) }) }}">&rarr; {{ 'pagination.latestPage' | trans }}
+                       <a href="{{ path( 'workingforum_thread', {'forum_slug': forum.slug, 'subforum_slug' : thread.subforum.slug, 'thread_slug' : thread.slug, (page_prefix) : (nbPage |round(0,'ceil')) }) }}">&rarr; {{ 'pagination.latestPage' | trans }}</a>
                    </p>
              {%endif%}
              </td>
@@ -83,7 +83,7 @@
                   {% if thread.author.avatarUrl is not empty %}
           {{ asset('bundles/yosimitsoworkingforum/'~thread.author.avatarUrl) }}
           {% else %}
-           {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}   
+           {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}
           {% endif %}
           " />
                  {{ thread.author.username |slice(0,30) }}
@@ -94,12 +94,12 @@
                     {{'forum.last_reply_date' | trans }}<br />
                     {{ thread.lastReplyDate | date(date_format)}} {{ 'forum.by' | trans }} {{ thread.lastReplyUser.username}}</td>
                 {% endif %}
-            
-            
-            
-        
-        
-        
+
+
+
+
+
+
     {% endfor %}
     </table>
     {% else %}
@@ -109,7 +109,7 @@
     {% else %}
          <div class="wf_empty_forum">{{ 'search.no_result' | trans({'%keywords%' : keywords}) }}</div>
     {% endif%}
-    {% endif %}    
+    {% endif %}
 
 
     </div>
@@ -117,8 +117,8 @@
      {%  if thread_list is not empty %}
     {{ knp_pagination_render(thread_list) }}
          {% endif %}
-    
+
     {% endif %}
              </div>
-    
+
 {% endblock %}

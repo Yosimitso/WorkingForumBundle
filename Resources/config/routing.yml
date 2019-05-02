@@ -6,23 +6,23 @@ workingforum_subforum:
     defaults: { _controller: yosimitso_workingforum_forum_controller:subforumAction }
 
 workingforum_thread:
-    path: /view/{subforum_slug}/{thread_slug}
+    path: /view/{forum_slug}/{subforum_slug}/{thread_slug}
     defaults: { _controller: yosimitso_workingforum_thread_controller:indexAction }
 
 workingforum_new_thread:
-    path: /newthread/{subforum_slug}
+    path: /newthread/{forum_slug}/{subforum_slug}
     defaults: { _controller: yosimitso_workingforum_thread_controller:newAction }
 
 workingforum_lock_thread:
-    path: /lock/{subforum_slug}/{thread_slug}
+    path: /lock/{forum_slug}/{subforum_slug}/{thread_slug}
     defaults: { _controller: yosimitso_workingforum_thread_controller:lockAction }
 
 workingforum_pin_thread:
-    path: /pin/{subforum_slug}/{thread_slug}
+    path: /pin/{forum_slug}/{subforum_slug}/{thread_slug}
     defaults: { _controller: yosimitso_workingforum_thread_controller:pinAction }
 
 workingforum_resolve_thread:
-    path: /resolved/{subforum_slug}/{thread_slug}
+    path: /resolved/{forum_slug}/{subforum_slug}/{thread_slug}
     defaults: { _controller: yosimitso_workingforum_thread_controller:resolveAction }
 
 workingforum_report_post:

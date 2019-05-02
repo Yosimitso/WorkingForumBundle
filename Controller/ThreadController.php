@@ -5,10 +5,10 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
-use Yosimitso\WorkingForumBundle\Entity\File;
 use Yosimitso\WorkingForumBundle\Entity\Subscription as EntitySubscription;
 use Yosimitso\WorkingForumBundle\Form\MoveThreadType;
 use Yosimitso\WorkingForumBundle\Form\PostType;
@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
-use Yosimitso\WorkingForumBundle\Util\Subscription;
 use Yosimitso\WorkingForumBundle\Util\Thread as ThreadUtil;
 use Yosimitso\WorkingForumBundle\Util\FileUploader as FileUploadUtil;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
@@ -42,20 +41,26 @@ class ThreadController extends BaseController
     }
     /**
      * Display a thread, save a post
+     *
+     * @param $forum_slug
      * @param string  $subforum_slug
      * @param string  $thread_slug
      * @param Request $request
-     * @param int     $page
      *
      * @return Response
      */
-    public function indexAction($subforum_slug, $thread_slug, Request $request)
+    public function indexAction($forum_slug, $subforum_slug, $thread_slug, Request $request)
     {
-        $subforum = $this->em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneBySlug($subforum_slug);
+        $forum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findOneBySlug($forum_slug);
+        if (is_null($forum)) {
+            throw new NotFoundHttpException('Forum not found');
+        }
+        
+        $subforum = $this->em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneBy(['slug' => $subforum_slug, 'forum' => $forum]);
         $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
         
         if (is_null($thread) || is_null($subforum)) {
-            throw new \Exception('Thread not found', 404);
+            throw new NotFoundHttpException('Thread not found');
         }
 
         $anonymousUser = (is_null($this->user)) ? true : false;
@@ -63,6 +68,7 @@ class ThreadController extends BaseController
         if (!$this->authorization->hasSubforumAccess($subforum)) { // CHECK IF USER HAS AUTHORIZATION TO VIEW THIS THREAD
             return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/thread.html.twig',
                 [
+                    'forum' => $forum,
                     'subforum'    => $subforum,
                     'thread'      => $thread,
                     'forbidden'   => true,
@@ -105,7 +111,7 @@ class ThreadController extends BaseController
                         $this->translator->trans('thread_too_old_locked', [], 'YosimitsoWorkingForumBundle')
                     );
 
-                    return $this->redirect($this->generateUrl('workingforum_thread', ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug]));
+                    return $this->redirect($this->generateUrl('workingforum_thread', ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug]));
                 }
 
                 if ($form->isValid() && !$anonymousUser) {
@@ -135,7 +141,7 @@ class ThreadController extends BaseController
                         return $this->redirect(
                             $this->generateUrl(
                                 'workingforum_thread',
-                                ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount()]
+                                ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount()]
                             ));
                     }
 
@@ -153,7 +159,7 @@ class ThreadController extends BaseController
                             return $this->redirect(
                                 $this->generateUrl(
                                     'workingforum_thread',
-                                    ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount()]
+                                    ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount()]
                                 ));
                         }
                         $my_post->addFiles($file);
@@ -167,7 +173,7 @@ class ThreadController extends BaseController
                     );
 
                     return $this->redirect($this->generateUrl('workingforum_thread',
-                        ['subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount() ]
+                        ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount() ]
                     )
                     );
                 } else {
@@ -207,6 +213,7 @@ class ThreadController extends BaseController
         
         return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/thread.html.twig',
             [
+                'forum' => $forum,
                 'subforum'    => $subforum,
                 'thread'      => $thread,
                 'post_list'   => $post_list,
@@ -226,19 +233,31 @@ class ThreadController extends BaseController
 
     /**
      * New thread
+     *
+     * @param $forum_slug
      * @param $subforum_slug
      * @param Request $request
      * @return RedirectResponse|Response
      * @throws \Exception
      */
-    public function newAction($subforum_slug, Request $request)
+    public function newAction($forum_slug, $subforum_slug, Request $request)
     {
         if (is_null($this->user)) {
             throw new \Exception("Anonymous user aren't allowed to create threads",
                 403);
         }
 
+        $forum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findOneBySlug($forum_slug);
+
+        if (is_null($forum)) {
+            throw new NotFoundHttpException('Forum not found');
+        }
+
         $subforum = $this->em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneBySlug($subforum_slug);
+
+        if (is_null($subforum)) {
+            throw new NotFoundHttpException('Subforum not found');
+        }
 
           if (!$this->authorization->hasSubforumAccess($subforum)) {
               $this->flashbag->add(
@@ -286,7 +305,7 @@ class ThreadController extends BaseController
                     return $this->redirect(
                         $this->generateUrl(
                             'workingforum_new_thread',
-                            ['subforum_slug' => $subforum_slug]
+                            ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug]
                         ));
                 }
                 $my_post->addFiles($file);
@@ -299,7 +318,7 @@ class ThreadController extends BaseController
             )
             ;
 
-            return $this->redirect($this->generateUrl('workingforum_thread', ['subforum_slug' => $subforum_slug, 'thread_slug' => $my_thread->getSlug()])); // REDIRECT TO THE NEW THREAD
+            return $this->redirect($this->generateUrl('workingforum_thread', ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug, 'thread_slug' => $my_thread->getSlug()])); // REDIRECT TO THE NEW THREAD
 
         }
 
@@ -310,6 +329,7 @@ class ThreadController extends BaseController
 
         return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/new.html.twig',
             [
+                'forum' => $forum,
                 'subforum'   => $subforum,
                 'form'       => $form->createView(),
                 'listSmiley' => $listSmiley,
@@ -322,13 +342,14 @@ class ThreadController extends BaseController
     /**
      * The thread is resolved
      *
+     * @param $forum_slug
      * @param $subforum_slug
      * @param $thread_slug
      *
      * @return RedirectResponse
      * @throws \Exception
      */
-    function resolveAction($subforum_slug, $thread_slug)
+    function resolveAction($forum_slug, $subforum_slug, $thread_slug)
     {
         $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
 
@@ -357,6 +378,7 @@ class ThreadController extends BaseController
         return $this->redirect(
             $this->generateUrl('workingforum_thread',
                 [
+                    'forum_slug' => $forum_slug,
                     'thread_slug'   => $thread_slug,
                     'subforum_slug' => $subforum_slug,
                 ]
@@ -367,12 +389,13 @@ class ThreadController extends BaseController
     /**
      * A moderator pin a thread
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @param $forum_slug
      * @param $subforum_slug
      * @param $thread_slug
      * @return RedirectResponse
      * @throws \Exception
      */
-    function pinAction($subforum_slug, $thread_slug)
+    function pinAction($forum_slug, $subforum_slug, $thread_slug)
     {
         $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
 
@@ -402,8 +425,9 @@ class ThreadController extends BaseController
         return $this->redirect(
             $this->generateUrl('workingforum_thread',
                 [
-                    'thread_slug'   => $thread_slug,
+                    'forum_slug' => $forum_slug,
                     'subforum_slug' => $subforum_slug,
+                    'thread_slug'   => $thread_slug,
                 ]
             )
         );
@@ -413,6 +437,7 @@ class ThreadController extends BaseController
      * A user report a thread
      * @param $post_id
      * @return Response
+     * @throws \Exception
      */
     function reportAction($post_id)
     {
@@ -457,12 +482,13 @@ class ThreadController extends BaseController
      *
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
      *
+     * @param $forum_slug
      * @param $subforum_slug
      * @param $thread_slug
      *
      * @return RedirectResponse
      */
-    function lockAction($subforum_slug, $thread_slug)
+    function lockAction($forum_slug, $subforum_slug, $thread_slug)
     {
         $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
 
@@ -484,6 +510,7 @@ class ThreadController extends BaseController
         return $this->redirect(
             $this->generateUrl('workingforum_thread',
                 [
+                    'forum_slug' => $forum_slug,
                     'thread_slug'   => $thread_slug,
                     'subforum_slug' => $subforum_slug,
                 ]

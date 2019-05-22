@@ -141,7 +141,7 @@ class FileUploader
 
     private function extractSize($value)
     {
-        preg_match('/([0-9+])([A-Z]?)/', $value, $sizeRegex);
+        preg_match('/([0-9]+)([A-Z]?)/', $value, $sizeRegex);
         if (isset($sizeRegex[2])) {
             switch ($sizeRegex[2]) {
                 case 'K':
@@ -153,6 +153,8 @@ class FileUploader
                 case 'G':
                     $size = intval($sizeRegex[1])*10000;
                     break;
+                default: 
+                    $size =  ini_get('upload_max_filesize');
             }
         } else {
             $size =  ini_get('upload_max_filesize');

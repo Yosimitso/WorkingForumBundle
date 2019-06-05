@@ -124,7 +124,7 @@ class ForumController extends BaseController
                 $rules = null;
             }
         } else {
-            $rules = $this->em->getRepository('Yosimitso\WorkingForumBundle\Entity\Rules')->findOneByLang($lcoale);
+            $rules = $this->em->getRepository('Yosimitso\WorkingForumBundle\Entity\Rules')->findOneByLang($locale);
         }
 
         $form = $this->createForm(RulesType::class, null);

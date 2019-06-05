@@ -118,7 +118,7 @@ class ForumController extends BaseController
         if (is_null($locale)) {
             $rulesList = $this->em->getRepository('Yosimitso\WorkingForumBundle\Entity\Rules')->findAll();
 
-            if (!is_null($rulesList)) {
+            if (!empty($rulesList)) {
                 $rules = $rulesList[0];
             } else {
                 $rules = null;

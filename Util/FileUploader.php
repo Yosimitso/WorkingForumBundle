@@ -154,8 +154,10 @@ class FileUploader
                     $size = intval($sizeRegex[1])*10000;
                     break;
                 default: 
-                    $size =  ini_get('upload_max_filesize');
+                    $size = intval($sizeRegex[1]);
             }
+        } elseif (isset($sizeRegex[1])) { 
+            $size = intval($sizeRegex[1]); 
         } else {
             $size =  ini_get('upload_max_filesize');
         }

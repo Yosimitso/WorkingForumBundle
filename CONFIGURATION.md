@@ -1,5 +1,4 @@
 Here's all bundle's parameters,
-please note that array nodes (such as 'vote') **are required and must be defined**
 
 yosimitso_working_forum_bundle:
 

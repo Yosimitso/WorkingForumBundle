@@ -17,7 +17,8 @@
    <p>{{ form_label(form.name) }}</p>
    <p>{{ form_widget(form.name) }}</p>
    <p class="wf_label">{{ 'admin.list_subforum' | trans }}</p>
-   
+   <p><a class="wf_button" onclick="NewSubforum()"><span class="wf_add-plus"></span>{{ 'admin.new_subforum' | trans }}</a></p>
+
 	<div id="wf_list_subforum">
         <table class="wf_admin_table">
             <thead>
@@ -58,13 +59,14 @@
        }
        function NewSubforum() {
         
-           var length = (jQuery('#wf_list_subforum').children().length);
-           var content = '<div id="wf_sub_'+length+'" class="wf_admin_subforum_block"><table><tr><th>{{ 'forum.subforum_name' | trans | capitalize  }}</th><td><input type="text" value="" required="required" name="admin_forum[subforum]['+length+'][name]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"></td></tr><tr><th>{{ 'forum.allowed_roles' | trans | capitalize }}</th><td><input type="text" value="" name="admin_forum[subforum]['+length+'][allowedRoles]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_allowedRoles"></td></tr><tr><th>{{ 'forum.nbThread' | trans | capitalize }}</th><td>-</td></tr><tr><th>{{ 'forum.nbPost' | trans | capitalize }}</th><td>-</td></tr><tr><td colspan="2"><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></a></td></tr></table></div>';
-			jQuery('#wf_list_subforum').append(content);
+           var length = jQuery('.wf_admin_table tbody').children().length;
+           var content = '<tr id="wf_sub_'+length+'"><td><input type="text" value="" required="required" name="admin_forum[subforum]['+length+'][name]" placeholder="{{ 'forum.subforum_name' | trans | capitalize  }} id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"></td>' +
+                         '<td><input type="text" placeholder="{{ 'admin.empty_means_all' | trans }}" value="" name="admin_forum[subforum]['+length+'][allowedRoles]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_allowedRoles"></td>' +
+                         '<td></td></td><td><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></td></tr>';
+			jQuery('.wf_admin_table tbody').append(content);
            return true;
        }
-    </script>   
-    <p><a class="wf_button" onclick="NewSubforum()"><span class="wf_add-plus"></span>{{ 'admin.new_subforum' | trans }}</a></p>
+    </script>
    <p>{{ form_widget(form.submit) }}</p>
    {{ form_rest(form) }}
    {{ form_end(form) }}

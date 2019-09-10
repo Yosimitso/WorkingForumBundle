@@ -99,6 +99,9 @@ class AdminController extends BaseController
                     case 'boolean':
                         $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled'];
                         $setting['type'] = 'checkbox';
+                        if ($setting['value']) {
+                            $setting['attr']['checked'] = 'checked';
+                        }
                         break;
                     case 'string':
                         $setting['attr'] = ['autocomplete' => 'off', 'disabled' => 'disabled', 'style' => 'width:80px'];

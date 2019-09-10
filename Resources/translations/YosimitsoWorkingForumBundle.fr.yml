@@ -55,6 +55,7 @@ forum:
     delete_thread: Supprimer le sujet
     confirm_delete_thread: Êtes vous sûr de vouloir supprimer ce sujet ?
     pin_thread: Epingler le sujet
+    unpin_thread: Désépingler le sujet
     thread_too_old_locked: Le sujet est trop vieux et n'accepte plus de réponses
     quote: Citer ce message
     enclosed_files: Fichier joint(s)
@@ -148,6 +149,7 @@ message:
     threadLocked: Le sujet a été verrouillé avec succès
     threadResolved: Le sujet est résolu, merci pour votre retour
     threadPinned: Le sujet a été epinglé avec succès
+    threadUnpinned: Le sujet a été désépinglé
     banned: Désolé mais vous êtes banni
     error:
         must_be_logged: Vous devez être connecté pour accèder à cette page

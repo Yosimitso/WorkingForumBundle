@@ -27,4 +27,16 @@ class CensorshipRepository extends EntityRepository
         }
         return $results;
     }
+
+    public function removeById($id)
+    {
+        $this->_em->createQueryBuilder()
+                ->delete()
+                ->from($this->_entityName, 'a')
+                ->where('a.id = :id')
+                ->setParameter('id', $id)
+                ->getQuery()
+                ->execute()
+            ;
+    }
 }

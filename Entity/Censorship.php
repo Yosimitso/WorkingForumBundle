@@ -33,6 +33,11 @@ class Censorship
      */
     private $pattern;
 
+    public function __construct($pattern = '')
+    {
+        $this->pattern = $pattern;
+    }
+
     /**
      * @return integer
      */

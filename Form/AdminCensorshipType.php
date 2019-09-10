@@ -23,10 +23,10 @@ class AdminCensorshipType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('censored_words',
+            ->add('words',
                 CollectionType::class,
                 [
-                    'entry_type' => TextType::class,
+                    'entry_type' => HiddenType::class,
                     'allow_add' => true,
                     'allow_delete' => true,
                     'label' => null,
@@ -34,12 +34,6 @@ class AdminCensorshipType extends AbstractType
                     'attr' => ['expanded' => true, 'id' => 'censorship_list']
                 ]
             )
-            ->add('censoredList',
-                HiddenType::class,
-                [
-                    'data' => implode(',', $options['censoredList'])
-
-                ])
             ->add('submit',
                 SubmitType::class,
                 [

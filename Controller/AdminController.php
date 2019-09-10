@@ -3,6 +3,7 @@
 namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Yosimitso\WorkingForumBundle\Entity\Censorship;
 use Yosimitso\WorkingForumBundle\Entity\Rules;
 use Yosimitso\WorkingForumBundle\Form\AdminCensorshipType;
 use Yosimitso\WorkingForumBundle\Form\AdminForumType;
@@ -466,11 +467,28 @@ class AdminController extends BaseController
     public function censorshipAction()
     {
         $form = new AdminCensorshipType();
+        $words = $this->em->getRepository(Censorship::class)->findAll();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            foreach ($form['words-to-remove']->getData() as $word) {
+                exit(var_dump($word));
+                $this->em->getRepository(Censorship::class)->removeById($word);
+            }
+
+            foreach ($form['words-to-add']->getData() as $word) {
+                exit(var_dump($word));
+                $censorship = new Censorship($word);
+                $this->em->persist($censorship);
+            }
+
+            $this->em->flush();
+        }
         return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Admin/Report/report.html.twig',
             [
-                'postReportList' => $postReportList,
-                'date_format' => $date_format,
+                'form' => $form->createView(),
+                'words' => $words,
             ]
         );
 

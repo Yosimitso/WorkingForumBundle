@@ -8,18 +8,43 @@
     {% include '@YosimitsoWorkingForum/Common/flashmsg.html.twig' %}
 
     <div class="block-admin-censoredship-left">
-        {{ form_widget(form.censored_words) }}
+        <select multiple id="words-list">
+        {% for word in words %}
+            <option value="{{ word.id }}">{{ word.pattern }}</option>
+        {% endfor %}
+        </select>
+        <div id="words-to-add"></div>
+        <div id="words-to-remove"></div>
+
     </div>
     <div class="lock-admin-censoredship-right">
-        <input type="text" name="censorship-pattern" id="censorship-pattern"><button id="add-pattern">Add</button>
+        <button id="remove-pattern" disabled>Remove selected pattern</button>
+        <input type="text" name="censorship-pattern" id="word-pattern"><button id="add-pattern">Add</button>
     </div>
 
 </div>
 <script>
     document.querySelector('#add-pattern').addEventListener('click', function(e) {
-        var pattern = document.querySelector('#censorship-pattern')
-        var list = document.querySelector('#censorship_list');
+        var pattern = document.querySelector('#word-pattern')
+        var list = document.querySelector('#words-list');
         list.parentNode.insertBefore('<option value="'+pattern.value+'">'+pattern.value+'</option>');
-        this.value = '';
+
+        var wordsToAdd = document.querySelector('#words-to-add');
+        wordsToAdd.append('<input type="hidden" name="words-to-add[] value="'+pattern.value+'" />');
+        pattern.value = '';
+    });
+
+    document.querySelector('#remove-pattern').addEventListener('click', function(e) {
+        var wordsList = document.querySelector('#words-list');
+
+        var opt;
+        for ( var i = 0, len = wordsList.options.length; i < len; i++ ) {
+            opt = sel.options[i];
+            if ( opt.selected === true ) {
+                document.querySelector('#words-to-remove').append('<input type="hidden" name="words-to-remove[] value="'+opt.value+'" />');
+                opt.remove();
+                break;
+            }
+        }
     });
 </script>

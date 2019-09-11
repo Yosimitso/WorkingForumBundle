@@ -20,6 +20,7 @@ services:
           - "@yosimitso_workingforum_util_thread"
           - "@yosimitso_workingforum_util_fileuploader"
           - "@yosimitso_workingforum_smiley"
+          - "@yosimitso_workingforum_service_thread"
 
     yosimitso_workingforum_admin_controller:
         class: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController
@@ -120,4 +121,10 @@ services:
         tags:
           - { name: doctrine.event_listener, event: prePersist}
           - { name: doctrine.event_listener, event: postPersist}
+
+
+    yosimitso_workingforum_service_thread:
+        class: Yosimitso\WorkingForumBundle\Service\ThreadService
+        arguments:
+            - "@doctrine.orm.entity_manager"
 

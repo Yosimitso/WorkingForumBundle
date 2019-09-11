@@ -22,5 +22,8 @@
             "Yosimitso\\WorkingForumBundle\\": ""
 
         }
-		}
+		},
+    "require-dev": {
+        "phpunit/phpunit": "^6"
+    }
 }

@@ -21,6 +21,7 @@ use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Yosimitso\WorkingForumBundle\Util\Thread as ThreadUtil;
 use Yosimitso\WorkingForumBundle\Util\FileUploader as FileUploadUtil;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
+use Yosimitso\WorkingForumBundle\Service\ThreadService;
 
 /**
  * Class ThreadController
@@ -32,13 +33,16 @@ class ThreadController extends BaseController
     protected $threadUtil;
     protected $fileUploaderUtil;
     protected $smileyTwigExtension;
+    protected $threadService;
 
-    public function __construct(ThreadUtil $threadUtil, FileUploadUtil $fileUploaderUtil, SmileyTwigExtension $smileyTwigExtension)
+    public function __construct(ThreadUtil $threadUtil, FileUploadUtil $fileUploaderUtil, SmileyTwigExtension $smileyTwigExtension, ThreadService $threadService)
     {
        $this->threadUtil = $threadUtil;
        $this->fileUploaderUtil = $fileUploaderUtil;
        $this->smileyTwigExtension = $smileyTwigExtension;
+       $this->threadService = $threadService;
     }
+
     /**
      * Display a thread, save a post
      *
@@ -397,24 +401,8 @@ class ThreadController extends BaseController
      */
     function pinAction($forum_slug, $subforum_slug, $thread_slug)
     {
-        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
 
-        if (is_null($thread)) {
-            throw new \Exception("Thread error",
-                500
-            );
-
-        }
-
-        if ($thread->getPin())
-        {
-            throw new \Exception("Thread already pinned",500);
-        }
-
-        $thread->setPin(true);
-        $this->em->persist($thread);
-        $this->em->flush();
-
+        $this->threadService->pin($thread_slug);
         $this->flashbag
             ->add(
                 'success',

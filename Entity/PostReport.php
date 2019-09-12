@@ -83,7 +83,7 @@ class PostReport
      *
      * @return PostReport
      */
-    public function setPost($post)
+    public function setPost(Post $post)
     {
         $this->post = $post;
 

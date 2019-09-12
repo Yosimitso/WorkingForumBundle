@@ -3,27 +3,28 @@
 namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Entity\PostVote;
-use Yosimitso\WorkingForumBundle\Util\Thread as ThreadUtil;
+use Yosimitso\WorkingForumBundle\Service\ThreadService;
 
 /**
- * Class ThreadController
+ * Class PostController
  *
  * @package Yosimitso\WorkingForumBundle\Controller
  */
 class PostController extends BaseController
 {
-    protected $threadUtil;
+    protected $threadService;
 
-    public function __construct(ThreadUtil $threadUtil)
+    public function __construct(ThreadService $threadService)
     {
-         $this->threadUtil = $threadUtil;
+         $this->threadService = $threadService;
     }
+
     /**
      * @param Request $request
      * @return Response
+     * @throws \Exception
      * vote for a post
      */
     public function voteUpAction(Request $request)
@@ -40,7 +41,7 @@ class PostController extends BaseController
         if ($post->getUser()->getId() == $this->user->getId()) { // CAN'T VOTE FOR YOURSELF
             return new Response(json_encode(['res' => 'false', 'errMsg' => 'An user can\'t vote for his post'], 403));
         }
-        if (!empty($post->getModerateReason()) || $post->getThread()->getLocked() || $this->threadUtil->isAutolock($post->getThread()) ) {
+        if (!empty($post->getModerateReason()) || $post->getThread()->getLocked() || $this->threadService->isAutolock($post->getThread()) ) {
             return new Response(json_encode(['res' => 'false', 'errMsg' => 'You can\'t vote for this post'], 403));
         }
 

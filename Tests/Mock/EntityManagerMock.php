@@ -5,7 +5,8 @@ namespace Yosimitso\WorkingForumBundle\Tests\Mock;
 //use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class EntityManagerMock extends WebTestCase //implements EntityManagerInterface
+
+class EntityManagerMock
 {
     public $persistedEntities;
     public $flushedEntities;

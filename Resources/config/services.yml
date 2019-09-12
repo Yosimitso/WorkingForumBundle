@@ -17,7 +17,6 @@ services:
         parent: yosimitso_workingforum_base_controller
         public: true
         arguments:
-          - "@yosimitso_workingforum_util_thread"
           - "@yosimitso_workingforum_util_fileuploader"
           - "@yosimitso_workingforum_smiley"
           - "@yosimitso_workingforum_service_thread"
@@ -59,7 +58,7 @@ services:
         parent: yosimitso_workingforum_base_controller
         public: true
         arguments:
-          - "@yosimitso_workingforum_util_thread"
+          - "@yosimitso_workingforum_service_thread"
 
     yosimitso_workingforum_smiley:
         class: Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension
@@ -84,14 +83,6 @@ services:
             - "@security.authorization_checker"
             - "@security.token_storage"
             - "%yosimitso_working_forum.allow_anonymous_read%"
-
-    yosimitso_workingforum_util_thread:
-        class: Yosimitso\WorkingForumBundle\Util\Thread
-        arguments:
-            - "%yosimitso_working_forum.lock_thread_older_than%"
-            - "@knp_paginator"
-            - "%yosimitso_working_forum.post_per_page%"
-            - "@request_stack"
 
     yosimitso_workingforum_util_fileuploader:
         class: Yosimitso\WorkingForumBundle\Util\FileUploader
@@ -126,5 +117,10 @@ services:
     yosimitso_workingforum_service_thread:
         class: Yosimitso\WorkingForumBundle\Service\ThreadService
         arguments:
+            - "%yosimitso_working_forum.lock_thread_older_than%"
+            - "@knp_paginator"
+            - "%yosimitso_working_forum.post_per_page%"
+            - "@request_stack"
             - "@doctrine.orm.entity_manager"
+            - "@@yosimitso_workingforum_authorization"
 

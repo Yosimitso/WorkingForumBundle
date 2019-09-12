@@ -62,5 +62,7 @@ class EntityManagerMock
                 return $entity;
             }
         }
+
+        throw new \Exception('Class '.$className.' not found in flushed entities');
     }
 }

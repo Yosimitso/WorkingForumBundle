@@ -173,7 +173,10 @@ class ThreadServiceTest extends TestCase
             ->setMethods(['getRepository'])
             ->getMock();
 
-        $testedClass = $this->getTestedClass($em);
+        $user = $this->createMock(User::class);
+        $user->setUsername = 'toto';
+
+        $testedClass = $this->getTestedClass($em, $user);
 
         $form = $this->getMockBuilder(ThreadType::class)
                 ->disableOriginalConstructor()
@@ -193,6 +196,8 @@ class ThreadServiceTest extends TestCase
             }
         };
 
+
+
         $form->method('getData')->willReturn($class);
         $thread = new Thread;
 
@@ -203,13 +208,14 @@ class ThreadServiceTest extends TestCase
         $post = new Post;
 
         $this->assertTrue($testedClass->create($form, $post, $thread, $subforum));
-        $user = $em->getFlushedEntity(User::class);
+        $user = $em->getFlushedEntity(get_class($user));
         $subforum = $em->getFlushedEntity(Subforum::class);
         $thread = $em->getFlushedEntity(Thread::class);
         $post = $em->getFlushedEntity(Post::class);
 
         $this->assertEquals(21, $subforum->getNbThread());
         $this->assertEquals(1, $thread->getNbReplies());
+        $this->assertEquals(1, $user->getNbPost());
 
     }
 

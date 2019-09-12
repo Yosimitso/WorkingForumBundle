@@ -2,10 +2,14 @@
 
 namespace Yosimitso\WorkingForumBundle\Service;
 
+use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
+use Yosimitso\WorkingForumBundle\Form\PostType;
+use Yosimitso\WorkingForumBundle\Form\ThreadType;
+use Yosimitso\WorkingForumBundle\Util\FileUploader;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
 
 class ThreadService
@@ -16,8 +20,9 @@ class ThreadService
     private $requestStack;
     protected $em;
     protected $user;
+    protected $fileUploadUtil;
 
-    public function __construct($lockThreadOlderThan, $paginator, $postPerPage, $requestStack, $em, $user)
+    public function __construct($lockThreadOlderThan, $paginator, $postPerPage, $requestStack, $em, $user, FileUploader $fileUploadUtil)
     {
         $this->lockThreadOlderThan = $lockThreadOlderThan;
         $this->paginator = $paginator;
@@ -25,6 +30,8 @@ class ThreadService
         $this->requestStack = $requestStack;
         $this->em = $em;
         $this->user = $user;
+        $this->fileUploadUtil = $fileUploadUtil;
+
     }
 
     /**
@@ -164,6 +171,45 @@ class ThreadService
 
         $this->em->persist($subforum);
         $this->em->remove($thread);
+        $this->em->flush();
+
+        return true;
+    }
+
+    /**
+     * @param ThreadType $form
+     * @param Post $post
+     * @param Thread $thread
+     * @param Subforum $subforum
+     * @return bool
+     * @throws \Exception
+     * Create a thread
+     */
+    public function create(ThreadType $form, Post $post, Thread $thread, Subforum $subforum)
+    {
+        $subforum->newThread($this->user); // UPDATE STATISTIC
+
+        $this->user->addNbPost(1);
+        $this->em->persist($this->user);
+
+        $post->setThread($thread); // ATTACH TO THREAD
+        $this->em->persist($thread);
+        $this->em->persist($subforum);
+        $this->em->flush(); // GET THREAD ID
+
+        $thread->setSlug($this->slugify($thread)); // SLUG NEEDS THE ID
+        $this->em->persist($thread);
+
+        if (!empty($form->getData()->getPost()[0]->getFilesUploaded())) {
+            $file = $this->fileUploadUtil->upload($form->getData()->getPost()[0]->getFilesUploaded(), $post);
+            if (!$file) { // FILE UPLOAD FAILED
+                throw new \Exception($this->fileUploadUtil->getErrorMessage());
+            }
+
+            $post->addFiles($file);
+        }
+
+        $this->em->persist($post);
         $this->em->flush();
 
         return true;

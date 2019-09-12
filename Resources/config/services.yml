@@ -122,5 +122,6 @@ services:
             - "%yosimitso_working_forum.post_per_page%"
             - "@request_stack"
             - "@doctrine.orm.entity_manager"
-            - "@@yosimitso_workingforum_authorization"
+            - "@yosimitso_workingforum_authorization"
+            - "@yosimitso_workingforum_util_fileuploader"
 

@@ -53,4 +53,14 @@ class EntityManagerMock
     {
         return $this->flushedEntities;
     }
+
+    public function getFlushedEntity($className)
+    {
+        $flushed = array_reverse($this->flushedEntities);
+        foreach ($flushed as $entity) {
+            if (get_class($entity) === $className) {
+                return $entity;
+            }
+        }
+    }
 }

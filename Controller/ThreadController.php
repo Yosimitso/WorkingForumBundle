@@ -266,55 +266,43 @@ class ThreadController extends BaseController
 
         }
 
-        $my_thread = new Thread($this->user, $subforum);
-        $my_post = new Post($this->user);
-        $my_thread->addPost($my_post);
+        $thread = new Thread($this->user, $subforum);
+        $post = new Post($this->user);
+        $thread->addPost($post);
 
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
-        $form = $this->createForm(ThreadType::class, $my_thread, ['hasModeratorAuthorization' => $this->authorization->hasModeratorAuthorization()]);
+        $form = $this->createForm(ThreadType::class, $thread, ['hasModeratorAuthorization' => $this->authorization->hasModeratorAuthorization()]);
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $this->threadService->create($form, $post, $thread, $subforum);
+            } catch (\Exception $e) {
+                $this->flashbag->add(
+                    'error',
+                    $e->getMessage()
+                );
 
-            $subforum->newThread($this->user); // UPDATE STATISTIC
-
-            $this->user->addNbPost(1);
-            $this->em->persist($this->user);
-
-            $my_post->setThread($my_thread); // ATTACH TO THREAD
-            $this->em->persist($my_thread);
-            $this->em->persist($subforum);
-
-            $this->em->flush();
-
-            $my_thread->setSlug($this->threadService->slugify($my_thread)); // SLUG NEEDS THE ID
-            $this->em->persist($my_thread);
-
-            if (!empty($form->getData()->getPost()[0]->getFilesUploaded())) {
-                $file = $this->fileUploaderUtil->upload($form->getData()->getPost()[0]->getFilesUploaded(), $my_post);
-                if (!$file) { // FILE UPLOAD FAILED
-
-                    $this->flashbag->add(
-                        'error',
-                        $this->fileUploaderUtil->getErrorMessage()
-                    );
-                    return $this->redirect(
-                        $this->generateUrl(
-                            'workingforum_new_thread',
-                            ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug]
-                        ));
-                }
-                $my_post->addFiles($file);
+                return $this->redirect(
+                    $this->generateUrl(
+                        'workingforum_new_thread',
+                        ['form' => $form->createView(), 'forum_slug' => $forum->getSlug(), 'subforum_slug' => $subforum->getSlug()]
+                    ));
             }
-            $this->em->flush();
 
             $this->flashbag->add(
                 'success',
                 $this->translator->trans('message.threadCreated', [], 'YosimitsoWorkingForumBundle')
             );
 
-            return $this->redirect($this->generateUrl('workingforum_thread', ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug, 'thread_slug' => $my_thread->getSlug()])); // REDIRECT TO THE NEW THREAD
+            return $this->redirect($this->generateUrl('workingforum_thread',
+                [
+                    'forum_slug' => $forum_slug,
+                    'subforum_slug' => $subforum_slug,
+                    'thread_slug' => $thread->getSlug()
+                ]
+            )); // REDIRECT TO THE NEW THREAD
 
         }
 
@@ -446,8 +434,7 @@ class ThreadController extends BaseController
 
         $post = $this->em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($post_id);
 
-        if ($this->threadService->report($post))
-        {
+        if ($this->threadService->report($post)) {
             return new Response(json_encode('true'), 200);
 
         } else {

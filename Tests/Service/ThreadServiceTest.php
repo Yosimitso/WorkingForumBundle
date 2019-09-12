@@ -105,7 +105,7 @@ class ThreadServiceTest extends TestCase
     }
 
 
-    public function testMoveThread()
+    public function testMove()
     {
         $em = $this->getMockBuilder(EntityManagerMock::class)
             ->setMethods(['getRepository'])
@@ -122,14 +122,15 @@ class ThreadServiceTest extends TestCase
         $currentSubforum->setNbThread(20);
         $currentSubforum->setNbPost(50);
 
-
         $targetSubforum = new Subforum;
         $targetSubforum->setName('new');
         $targetSubforum->setNbThread(20);
         $targetSubforum->setNbPost(50);
 
-        $this->assertTrue($testedClass->moveThread($thread, $currentSubforum, $targetSubforum));
+        $this->assertTrue($testedClass->move($thread, $currentSubforum, $targetSubforum));
         $this->assertTrue($em->getFlushedEntities()[0] instanceof Thread);
+        $this->assertTrue($em->getFlushedEntities()[1] instanceof Subforum);
+        $this->assertTrue($em->getFlushedEntities()[2] instanceof Subforum);
 
         $this->assertEquals('new', $em->getFlushedEntities()[0]->getSubforum()->getName()); // THREAD MOVE TO THE RIGHT SUBFORUM
         $this->assertEquals(19, $em->getFlushedEntities()[1]->getNbThread()); // STATISTICS ARE UPDATED
@@ -137,7 +138,28 @@ class ThreadServiceTest extends TestCase
 
         $this->assertEquals(45, $em->getFlushedEntities()[1]->getNbPost()); // STATISTICS ARE UPDATED
         $this->assertEquals(55, $em->getFlushedEntities()[2]->getNbPost()); // STATISTICS ARE UPDATED
+    }
 
+    public function testDelete()
+    {
+        $em = $this->getMockBuilder(EntityManagerMock::class)
+            ->setMethods(['getRepository'])
+            ->getMock();
+
+        $testedClass = $this->getTestedClass($em);
+
+        $thread = new Thread;
+        $thread->setNbReplies(20);
+
+        $subforum = new Subforum;
+        $subforum->setNbThread(20);
+        $subforum->setNbPost(50);
+
+        $this->assertTrue($testedClass->delete($thread, $subforum));
+        $this->assertEquals(19, $em->getFlushedEntities()[0]->getNbThread());
+        $this->assertEquals(30, $em->getFlushedEntities()[0]->getNbPost());
+        $this->assertTrue($em->getRemovedEntities()[0] instanceof Thread);
+        $this->assertTrue($em->getFlushedEntities()[1] instanceof Thread);
     }
 
 }

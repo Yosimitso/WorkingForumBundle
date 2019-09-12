@@ -513,7 +513,7 @@ class ThreadController extends BaseController
             return new Response(null, 500);
         }
 
-        $this->threadService->moveThread($thread, $currentSubforum, $targetSubforum);
+        $this->threadService->move($thread, $currentSubforum, $targetSubforum);
 
         return new Response(json_encode(['res' => 'true', 'targetLabel' => $targetSubforum->getName()]), 200);
     }
@@ -540,12 +540,7 @@ class ThreadController extends BaseController
             throw new Exception('Thread cannot be found');
         }
 
-        $subforum->addNbThread(-1);
-        $subforum->addNbPost(-$thread->getnbReplies());
-
-        $this->em->persist($subforum);
-        $this->em->remove($thread);
-        $this->em->flush();
+        $this->threadService->delete($thread, $subforum);
 
         $this->flashbag->add(
             'success',
@@ -609,8 +604,10 @@ class ThreadController extends BaseController
             $subscription = new EntitySubscription($thread, $this->user);
             $this->em->persist($subscription);
             $this->em->flush();
+
             return new Response(null, 200);
         } else {
+
             return new Response(null, 500);
         }
 

@@ -139,7 +139,7 @@ class ThreadService
      * @return bool
      * Move thread to an another subforum
      */
-    public function moveThread(Thread $thread, Subforum $currentSubforum, Subforum $targetSubforum)
+    public function move(Thread $thread, Subforum $currentSubforum, Subforum $targetSubforum)
     {
         $currentSubforum->setNbThread($currentSubforum->getNbThread() - 1);
         $currentSubforum->setNbPost($currentSubforum->getNbPost() - $thread->getNbReplies());
@@ -156,6 +156,20 @@ class ThreadService
 
         return true;
     }
+
+    public function delete(Thread $thread, Subforum $subforum)
+    {
+        $subforum->addNbThread(-1);
+        $subforum->addNbPost(-$thread->getnbReplies());
+
+        $this->em->persist($subforum);
+        $this->em->remove($thread);
+        $this->em->flush();
+
+        return true;
+    }
+
+
 
 
 }

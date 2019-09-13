@@ -158,15 +158,8 @@ class ThreadController extends BaseController
         ];
         $parameters['fileUpload']['maxSize'] = $this->fileUploaderUtil->getMaxSize();
 
-        $actionsAvailables = [
-            'setResolved' => (!$anonymousUser) && (($this->user->getId() == $thread->getAuthor()->getId()) || $this->authorization->hasModeratorAuthorization()),
-            'quote' => (!$anonymousUser && !$thread->getLocked()),
-            'report' => (!$anonymousUser),
-            'post' => (!$anonymousUser && !$autolock),
-            'subscribe' => $canSubscribeThread,
-            'moveThread' => ($this->authorization->hasModeratorAuthorization()) ? $this->createForm(MoveThreadType::class)->createView() : false,
-            'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')
-        ];
+
+        $actionsAvailables = $this->threadService->getAvailableActions($this->user, $thread, $autolock, $canSubscribeThread);
 
         return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/thread.html.twig',
             [

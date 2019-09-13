@@ -124,4 +124,6 @@ services:
             - "@doctrine.orm.entity_manager"
             - "@yosimitso_workingforum_authorization"
             - "@yosimitso_workingforum_util_fileuploader"
+            - "@yosimitso_workingforum_authorization"
+            - "%yosimitso_working_forum%"
 

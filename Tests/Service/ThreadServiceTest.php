@@ -12,6 +12,7 @@ use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\User;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
+use Yosimitso\WorkingForumBundle\Security\Authorization;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
 use Yosimitso\WorkingForumBundle\Tests\Mock\EntityManagerMock;
 use Knp\Component\Pager\Paginator;
@@ -38,7 +39,9 @@ class ThreadServiceTest extends TestCase
             $this->createMock(RequestStack::class),
             $em,
             $user,
-            $this->createMock(FileUploader::class)
+            $this->createMock(FileUploader::class),
+            $this->createMock(Authorization::class),
+            ['allow_moderator_delete_thread' => false]
         );
 
         return $testedClass;

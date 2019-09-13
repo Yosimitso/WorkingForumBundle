@@ -2,28 +2,41 @@
 
 namespace Yosimitso\WorkingForumBundle\Service;
 
-use Symfony\Component\Form\Form;
-use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\UserInterface;
+use Yosimitso\WorkingForumBundle\Form\MoveThreadType;
+use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
+use Yosimitso\WorkingForumBundle\Security\Authorization;
 use Yosimitso\WorkingForumBundle\Util\FileUploader;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
 
 class ThreadService
 {
-    private $lockThreadOlderThan;
-    private $paginator;
-    private $postPerPage;
-    private $requestStack;
+    protected $lockThreadOlderThan;
+    protected $paginator;
+    protected $postPerPage;
+    protected $requestStack;
     protected $em;
     protected $user;
     protected $fileUploaderUtil;
+    protected $authorization;
+    protected $bundleParameters;
 
-    public function __construct($lockThreadOlderThan, $paginator, $postPerPage, $requestStack, $em, $user, FileUploader $fileUploaderUtil)
+    public function __construct(
+        $lockThreadOlderThan,
+        $paginator,
+        $postPerPage,
+        $requestStack,
+        $em,
+        $user,
+        FileUploader $fileUploaderUtil,
+        Authorization $authorization,
+        array $bundleParameters
+    )
     {
         $this->lockThreadOlderThan = $lockThreadOlderThan;
         $this->paginator = $paginator;
@@ -32,7 +45,8 @@ class ThreadService
         $this->em = $em;
         $this->user = $user;
         $this->fileUploaderUtil = $fileUploaderUtil;
-
+        $this->authorization = $authorization;
+        $this->bundleParameters = $bundleParameters;
     }
 
     /**
@@ -201,7 +215,6 @@ class ThreadService
         $this->user->addNbPost(1);
         $this->em->persist($this->user);
 
-
         $this->em->persist($thread);
         $this->em->persist($subforum);
         $this->em->flush(); // GET THREAD ID
@@ -226,13 +239,13 @@ class ThreadService
      * @param Thread $thread
      * @param Post $post
      * @param UserInterface $user
-     * @param Form $form
+     * @param PostType $form
      * @return bool
      * @throws \Exception
      *
      * Create a post
      */
-    public function post(Subforum $subforum, Thread $thread, Post $post, UserInterface $user, Form $form)
+    public function post(Subforum $subforum, Thread $thread, Post $post, UserInterface $user, PostType $form)
     {
         $subforum->newPost($user); // UPDATE SUBFORUM STATISTIC
         $thread->addReply($user); // UPDATE THREAD STATISTIC
@@ -256,6 +269,27 @@ class ThreadService
         return true;
     }
 
+    /**
+     * @param UserInterface $user
+     * @param Thread $thread
+     * @param $autolock
+     * @param $canSubscribeThread
+     * @return array
+     */
+    public function getAvailableActions(UserInterface $user, Thread $thread, $autolock, $canSubscribeThread)
+    {
+        $anonymousUser = (is_null($user)) ? true : false;
+
+        return [
+            'setResolved' => (!$anonymousUser) && (($user->getId() == $thread->getAuthor()->getId()) || $this->authorization->hasModeratorAuthorization()),
+            'quote' => (!$anonymousUser && !$thread->getLocked()),
+            'report' => (!$anonymousUser),
+            'post' => (!$anonymousUser && !$autolock),
+            'subscribe' => $canSubscribeThread,
+            'moveThread' => ($this->authorization->hasModeratorAuthorization()) ? $this->createForm(MoveThreadType::class)->createView() : false,
+            'allowModeratorDeleteThread' => $this->bundleParameters['allow_moderator_delete_thread']
+        ];
+    }
 
 
 

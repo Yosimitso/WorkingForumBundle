@@ -192,20 +192,17 @@ class ThreadService
         $this->user->addNbPost(1);
         $this->em->persist($this->user);
 
-        $post->setThread($thread); // ATTACH TO THREAD
+
         $this->em->persist($thread);
         $this->em->persist($subforum);
         $this->em->flush(); // GET THREAD ID
 
         $thread->setSlug($this->slugify($thread)); // SLUG NEEDS THE ID
+        $post->setThread($thread); // ATTACH TO THREAD
         $this->em->persist($thread);
 
         if (!empty($form->getData()->getPost()[0]->getFilesUploaded())) {
             $file = $this->fileUploadUtil->upload($form->getData()->getPost()[0]->getFilesUploaded(), $post);
-            if (!$file) { // FILE UPLOAD FAILED
-                throw new \Exception($this->fileUploadUtil->getErrorMessage());
-            }
-
             $post->addFiles($file);
         }
 

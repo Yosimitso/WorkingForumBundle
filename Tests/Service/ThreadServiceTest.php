@@ -4,6 +4,7 @@ namespace Yosimitso\WorkingForumBundle\Tests\Service;
 
 //use Symfony\Bundle\FrameworkBundle\Test\TestCase;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
@@ -196,8 +197,6 @@ class ThreadServiceTest extends TestCase
             }
         };
 
-
-
         $form->method('getData')->willReturn($class);
         $thread = new Thread;
 
@@ -206,6 +205,7 @@ class ThreadServiceTest extends TestCase
         $subforum->setNbPost(50);
 
         $post = new Post;
+        $post->setContent('test');
 
         $this->assertTrue($testedClass->create($form, $post, $thread, $subforum));
         $user = $em->getFlushedEntity(get_class($user));
@@ -215,7 +215,59 @@ class ThreadServiceTest extends TestCase
 
         $this->assertEquals(21, $subforum->getNbThread());
         $this->assertEquals(1, $thread->getNbReplies());
-        $this->assertEquals(1, $user->getNbPost());
+        $this->assertEquals('test', $post->getContent());
+//        $this->assertEquals(1, $user->getNbPost());
+    }
+
+    public function testCreateWithFiles()
+    {
+        $em = $this->getMockBuilder(EntityManagerMock::class)
+            ->setMethods(['getRepository'])
+            ->getMock();
+
+        $user = $this->createMock(User::class);
+        $user->setUsername = 'toto';
+
+        $testedClass = $this->getTestedClass($em, $user);
+
+        $form = $this->getMockBuilder(ThreadType::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getData'])
+            ->getMock();
+
+        $class = new class {
+            function getPost() {
+                $secondClass = new class {
+                    function getFilesUploaded() {
+                        $file = new UploadedFile(__DIR__.'/../Mock/file_test.jpg', "file_test.jpg");
+                        return [$file];
+                    }
+                };
+
+                return [0 => $secondClass];
+
+            }
+        };
+
+        $form->method('getData')->willReturn($class);
+        $thread = new Thread;
+
+        $subforum = new Subforum;
+        $subforum->setNbThread(20);
+        $subforum->setNbPost(50);
+
+        $post = new Post;
+        $post->setContent('test');
+
+        $this->assertTrue($testedClass->create($form, $post, $thread, $subforum));
+        $user = $em->getFlushedEntity(get_class($user));
+        $subforum = $em->getFlushedEntity(Subforum::class);
+        $thread = $em->getFlushedEntity(Thread::class);
+        $post = $em->getFlushedEntity(Post::class);
+
+        $this->assertEquals(21, $subforum->getNbThread());
+        $this->assertEquals(1, $thread->getNbReplies());
+//        $this->assertEquals(1, $user->getNbPost());
 
     }
 

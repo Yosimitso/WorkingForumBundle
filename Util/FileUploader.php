@@ -16,7 +16,6 @@ class FileUploader
     private $em;
     private $configFileUpload;
     private $translator;
-    private $errorMessage;
 
     public function __construct($em, $configFileUpload, $translator)
     {
@@ -34,54 +33,47 @@ class FileUploader
      */
     public function upload(array $filesSubmitted, $post)
     {
-        $this->errorMessage = '';
         $fileList = [];
         $totalSize = 0;
-
         foreach ($filesSubmitted as $fileSubmitted) {
             $totalSize += $fileSubmitted->getSize() / 1000;
         }
         $maxSize = $this->getMaxSize();
         if ($totalSize > $maxSize) {
-            $this->errorMessage = $this->translator->trans(
+            throw new \Exception($this->translator->trans(
                 'forum.file_upload.error.max_size_exceeded',
                 ['%max_size%' => $maxSize],
                 'YosimitsoWorkingForumBundle'
-            );
-            return false;
+            ));
         }
         
 
         foreach ($filesSubmitted as $fileSubmitted) {
             if ($fileSubmitted->getError()) {
-
-                $this->errorMessage = $this->translator->trans(
+                throw new \Exception($this->translator->trans(
                     'forum.file_upload.error.default',
                     [],
                     'YosimitsoWorkingForumBundle'
-                );
-                return false;
+                ));
             }
 
             if (!in_array($fileSubmitted->getMimeType(), $this->configFileUpload['accepted_format'])) {
-                $this->errorMessage = $this->translator->trans(
+                throw new \Exception($this->translator->trans(
                     'forum.file_upload.error.invalid_format',
                     ['%format%' => $fileSubmitted->getMimeType()],
                     'YosimitsoWorkingForumBundle'
-                );
-                return false;
+                ));
             }
 
             $file = new File;
             $originalFilename = [];
             preg_match('/^([A-z0-9_-]+?)\.[A-z]+/', $fileSubmitted->getClientOriginalName(), $originalFilename);
             if (!isset($originalFilename[1])) { // FILENAME IS INVALID
-                $this->errorMessage = $this->translator->trans(
+                throw new \Exception($this->translator->trans(
                     'forum.file_upload.error.invalid_filename',
                     ['%filename%' => $originalFilename],
                     'YosimitsoWorkingForumBundle'
-                );
-                return false;
+                ));
             }
 
             $filename = htmlentities(substr($originalFilename[1], 0, 10));
@@ -97,12 +89,11 @@ class FileUploader
                 $this->em->persist($file);
                 $fileList[] = $file;
             } catch (\Exception $e) {
-                $this->errorMessage = $this->translator->trans(
+                throw new \Exception($this->translator->trans(
                     'forum.file_upload.error.default',
                     [],
                     'YosimitsoWorkingForumBundle'
-                );
-                return false;
+                ));
             }
         }
 
@@ -111,18 +102,6 @@ class FileUploader
         return $fileList;
     }
 
-    /**
-     * @return string
-     * Get latest error message if upload failed
-     */
-    public function getErrorMessage()
-    {
-        if (!empty($this->errorMessage)) {
-            return $this->errorMessage;
-        } else {
-            return false;
-        }
-    }
 
     /**
      * @return float

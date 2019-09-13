@@ -65,4 +65,14 @@ class EntityManagerMock
 
         throw new \Exception('Class '.$className.' not found in flushed entities');
     }
+
+    public function getListFlushedEntities()
+    {
+        $list = [];
+        foreach ($this->flushedEntities as $entity) {
+            $list[] = get_class($entity);
+        }
+
+        return $list;
+    }
 }

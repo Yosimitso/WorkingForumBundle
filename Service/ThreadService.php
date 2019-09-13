@@ -2,12 +2,13 @@
 
 namespace Yosimitso\WorkingForumBundle\Service;
 
+use Symfony\Component\Form\Form;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
-use Yosimitso\WorkingForumBundle\Form\PostType;
+use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Yosimitso\WorkingForumBundle\Util\FileUploader;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
@@ -20,9 +21,9 @@ class ThreadService
     private $requestStack;
     protected $em;
     protected $user;
-    protected $fileUploadUtil;
+    protected $fileUploaderUtil;
 
-    public function __construct($lockThreadOlderThan, $paginator, $postPerPage, $requestStack, $em, $user, FileUploader $fileUploadUtil)
+    public function __construct($lockThreadOlderThan, $paginator, $postPerPage, $requestStack, $em, $user, FileUploader $fileUploaderUtil)
     {
         $this->lockThreadOlderThan = $lockThreadOlderThan;
         $this->paginator = $paginator;
@@ -30,7 +31,7 @@ class ThreadService
         $this->requestStack = $requestStack;
         $this->em = $em;
         $this->user = $user;
-        $this->fileUploadUtil = $fileUploadUtil;
+        $this->fileUploaderUtil = $fileUploaderUtil;
 
     }
 
@@ -38,6 +39,7 @@ class ThreadService
      * @param $thread
      * @return bool
      * @throws \Exception
+     *
      * Is the thread autolocked ?
      */
     public function isAutolock($thread)
@@ -58,6 +60,7 @@ class ThreadService
     /**
      * @param $postQuery
      * @return mixed
+     *
      * Return the post list according to pagination parameters and query
      */
     public function paginate($postQuery)
@@ -72,6 +75,7 @@ class ThreadService
     /**
      * @param Thread $thread
      * @return string
+     *
      * Generates a slug for a thread
      */
     public function slugify(Thread $thread)
@@ -92,6 +96,7 @@ class ThreadService
     /**
      * @param Thread $thread
      * @return bool
+     *
      * Resolve thread
      */
     public function resolve(Thread $thread)
@@ -106,6 +111,7 @@ class ThreadService
     /**
      * @param Thread $thread
      * @return bool
+     *
      * Lock thread
      */
     public function lock(Thread $thread)
@@ -120,6 +126,7 @@ class ThreadService
     /**
      * @param Post $post
      * @return bool
+     *
      * Report a thread
      */
     public function report(Post $post)
@@ -144,6 +151,7 @@ class ThreadService
      * @param Subforum $currentSubforum
      * @param Subforum $targetSubforum
      * @return bool
+     *
      * Move thread to an another subforum
      */
     public function move(Thread $thread, Subforum $currentSubforum, Subforum $targetSubforum)
@@ -183,6 +191,7 @@ class ThreadService
      * @param Subforum $subforum
      * @return bool
      * @throws \Exception
+     *
      * Create a thread
      */
     public function create(ThreadType $form, Post $post, Thread $thread, Subforum $subforum)
@@ -202,7 +211,42 @@ class ThreadService
         $this->em->persist($thread);
 
         if (!empty($form->getData()->getPost()[0]->getFilesUploaded())) {
-            $file = $this->fileUploadUtil->upload($form->getData()->getPost()[0]->getFilesUploaded(), $post);
+            $file = $this->fileUploaderUtil->upload($form->getData()->getPost()[0]->getFilesUploaded(), $post);
+            $post->addFiles($file);
+        }
+
+        $this->em->persist($post);
+        $this->em->flush();
+
+        return true;
+    }
+
+    /**
+     * @param Subforum $subforum
+     * @param Thread $thread
+     * @param Post $post
+     * @param UserInterface $user
+     * @param Form $form
+     * @return bool
+     * @throws \Exception
+     *
+     * Create a post
+     */
+    public function post(Subforum $subforum, Thread $thread, Post $post, UserInterface $user, Form $form)
+    {
+        $subforum->newPost($user); // UPDATE SUBFORUM STATISTIC
+        $thread->addReply($user); // UPDATE THREAD STATISTIC
+
+
+        $user->addNbPost(1);
+
+        $this->em->persist($user);
+        $this->em->persist($thread);
+        $this->em->persist($post); // COULD FAILED IF EVENTS THROW EXCEPTIONS
+        $this->em->persist($subforum);
+
+        if (!empty($form->getData()->getFilesUploaded())) {
+            $file = $this->fileUploaderUtil->upload($form->getData()->getFilesUploaded(), $post);
             $post->addFiles($file);
         }
 

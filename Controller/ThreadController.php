@@ -4,11 +4,9 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
-use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\Subscription as EntitySubscription;
 use Yosimitso\WorkingForumBundle\Form\MoveThreadType;
 use Yosimitso\WorkingForumBundle\Form\PostType;
@@ -16,8 +14,6 @@ use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Yosimitso\WorkingForumBundle\Util\Slugify;
-use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Yosimitso\WorkingForumBundle\Util\FileUploader as FileUploadUtil;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
@@ -81,7 +77,7 @@ class ThreadController extends BaseController
         $autolock = $this->threadService->isAutolock($thread); // CHECK IF THREAD IS AUTOMATICALLY LOCKED (TOO OLD?)
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
 
-        $my_post = new Post($this->user, $thread);
+        $post = new Post($this->user, $thread);
 
         if (!$this->container->getParameter('yosimitso_working_forum.thread_subscription')['enable']) { // SUBSCRIPTION SYSTEM DISABLED
             $canSubscribeThread = false;
@@ -89,7 +85,7 @@ class ThreadController extends BaseController
             $canSubscribeThread = (empty($this->em->getRepository('YosimitsoWorkingForumBundle:Subscription')->findBy(['thread' => $thread, 'user' => $this->user]))); // HAS ALREADY SUBSCRIBED ?
         }
 
-        $form = $this->createForm(PostType::class, $my_post, ['canSubscribeThread' => $canSubscribeThread]); // create form for posting
+        $form = $this->createForm(PostType::class, $post, ['canSubscribeThread' => $canSubscribeThread]); // create form for posting
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) { // USER SUBMIT HIS POST
@@ -116,65 +112,28 @@ class ThreadController extends BaseController
 
             if ($form->isValid() && !$anonymousUser) {
 
-                $subforum->newPost($this->user); // UPDATE SUBFORUM STATISTIC
-                $thread->addReply($this->user); // UPDATE THREAD STATISTIC
-                $postQuery = $this->em
-                    ->getRepository('YosimitsoWorkingForumBundle:Post')
-                    ->findByThread($thread->getId());
-                $post_list = $this->threadService->paginate($postQuery);
+                try {
+                    $this->threadService->post($subforum, $thread, $post, $this->user, $form);
+                    $this->flashbag->add(
+                        'success',
+                        $this->translator->trans('message.posted', [], 'YosimitsoWorkingForumBundle')
+                    );
+                    $postQuery = $this->em
+                        ->getRepository(Post::class)
+                        ->findByThread($thread->getId());
 
-                if (!$anonymousUser) {
-                    $this->user->addNbPost(1);
-                    $this->em->persist($this->user);
-                }
+                    $post_list = $this->threadService->paginate($postQuery);
 
-                $this->em->persist($thread);
-                try { // COULD FAILED IF EVENTS THROW EXCEPTIONS
-                    $this->em->persist($my_post);
+                    return $this->redirect($this->generateUrl('workingforum_thread',
+                        ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount()]
+                    )
+                    );
                 } catch (\Exception $e) {
                     $this->flashbag->add(
                         'error',
                         $e->getMessage()
                     );
-
-                    return $this->redirect(
-                        $this->generateUrl(
-                            'workingforum_thread',
-                            ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount()]
-                        ));
                 }
-
-                $this->em->persist($my_post);
-                $this->em->persist($subforum);
-
-                if (!empty($form->getData()->getFilesUploaded())) {
-                    $file = $this->fileUploaderUtil->upload($form->getData()->getFilesUploaded(), $my_post);
-                    if (!$file) { // FILE UPLOAD FAILED
-
-                        $this->flashbag->add(
-                            'error',
-                            $this->fileUploaderUtil->getErrorMessage()
-                        );
-                        return $this->redirect(
-                            $this->generateUrl(
-                                'workingforum_thread',
-                                ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount()]
-                            ));
-                    }
-                    $my_post->addFiles($file);
-                }
-
-                $this->em->flush();
-
-                $this->flashbag->add(
-                    'success',
-                    $this->translator->trans('message.posted', [], 'YosimitsoWorkingForumBundle')
-                );
-
-                return $this->redirect($this->generateUrl('workingforum_thread',
-                    ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount()]
-                )
-                );
             } else {
                 $this->flashbag->add(
                     'error',
@@ -237,13 +196,10 @@ class ThreadController extends BaseController
      * @param Request $request
      * @return RedirectResponse|Response
      * @throws \Exception
+     * @Security("has_role('ROLE_USER')")
      */
     public function newAction($forum_slug, $subforum_slug, Request $request)
     {
-        if (is_null($this->user)) {
-            throw new \Exception("Anonymous user aren't allowed to create threads",
-                403);
-        }
 
         $forum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findOneBySlug($forum_slug);
 

@@ -26,7 +26,14 @@ class EntityManagerMock
 
     public function persist($entity)
     {
-        $this->persistedEntities[] = $entity;
+        foreach ($this->persistedEntities as $index => $entityPersisted) {
+            if (spl_object_id($entityPersisted) === spl_object_id($entity)) { // UPDATE OBJECT IF IT EXISTS
+                $this->persistedEntities[$index] = $entity;
+                return;
+            }
+        }
+
+        $this->persistedEntities[] = $entity; // ENTITY WASN'T PERSISTED YET
     }
 
     public function remove($entity)

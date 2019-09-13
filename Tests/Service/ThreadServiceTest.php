@@ -137,6 +137,7 @@ class ThreadServiceTest extends TestCase
         $this->assertTrue($em->getFlushedEntities()[1] instanceof Subforum);
         $this->assertTrue($em->getFlushedEntities()[2] instanceof Subforum);
 
+
         $this->assertEquals('new', $em->getFlushedEntities()[0]->getSubforum()->getName()); // THREAD MOVE TO THE RIGHT SUBFORUM
         $this->assertEquals(19, $em->getFlushedEntities()[1]->getNbThread()); // STATISTICS ARE UPDATED
         $this->assertEquals(21, $em->getFlushedEntities()[2]->getNbThread()); // STATISTICS ARE UPDATED
@@ -170,6 +171,9 @@ class ThreadServiceTest extends TestCase
 
     public function testCreate()
     {
+        /**
+         * @var EntityManagerMock
+         */
         $em = $this->getMockBuilder(EntityManagerMock::class)
             ->setMethods(['getRepository'])
             ->getMock();
@@ -208,6 +212,7 @@ class ThreadServiceTest extends TestCase
         $post->setContent('test');
 
         $this->assertTrue($testedClass->create($form, $post, $thread, $subforum));
+
         $user = $em->getFlushedEntity(get_class($user));
         $subforum = $em->getFlushedEntity(Subforum::class);
         $thread = $em->getFlushedEntity(Thread::class);
@@ -260,6 +265,7 @@ class ThreadServiceTest extends TestCase
         $post->setContent('test');
 
         $this->assertTrue($testedClass->create($form, $post, $thread, $subforum));
+
         $user = $em->getFlushedEntity(get_class($user));
         $subforum = $em->getFlushedEntity(Subforum::class);
         $thread = $em->getFlushedEntity(Thread::class);

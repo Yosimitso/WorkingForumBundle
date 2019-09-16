@@ -130,15 +130,16 @@ services:
 
   yosimitso_workingforum_service_bundle_parameters:
     class: Yosimitso\WorkingForumBundle\Service\BundleParametersService
-    - ["thread_per_page", "%yosimitso_working_forum.thread_per_page%"]
-    - ["post_per_page", "%yosimitso_working_forum.post_per_page%"]
-    - ["date_format", "%yosimitso_working_forum.date_format%"]
-    - ["allow_anonymous_read", "%yosimitso_working_forum.allow_anonymous_read%"]
-    - ["allow_moderator_delete_thread", "%yosimitso_working_forum.allow_moderator_delete_thread%"]
-    - ["theme_color", "%yosimitso_working_forum.theme_color%"]
-    - ["lock_thread_older_than", "%yosimitso_working_forum.lock_thread_older_than%"]
-    - ["vote", "%yosimitso_working_forum.vote%"]
-    - ["file_upload", "%yosimitso_working_forum.file_upload%"]
-    - ["post_flood_sec", "%yosimitso_working_forum.post_flood_sec%"]
-    - ["site_title", "%yosimitso_working_forum.site_title%"]
-    - ["thread_subscription", "%yosimitso_working_forum.thread_subscription%"]
+    arguments:
+      - ["thread_per_page", "%yosimitso_working_forum.thread_per_page%"]
+      - ["post_per_page", "%yosimitso_working_forum.post_per_page%"]
+      - ["date_format", "%yosimitso_working_forum.date_format%"]
+      - ["allow_anonymous_read", "%yosimitso_working_forum.allow_anonymous_read%"]
+      - ["allow_moderator_delete_thread", "%yosimitso_working_forum.allow_moderator_delete_thread%"]
+      - ["theme_color", "%yosimitso_working_forum.theme_color%"]
+      - ["lock_thread_older_than", "%yosimitso_working_forum.lock_thread_older_than%"]
+      - ["vote", "%yosimitso_working_forum.vote%"]
+      - ["file_upload", "%yosimitso_working_forum.file_upload%"]
+      - ["post_flood_sec", "%yosimitso_working_forum.post_flood_sec%"]
+      - ["site_title", "%yosimitso_working_forum.site_title%"]
+      - ["thread_subscription", "%yosimitso_working_forum.thread_subscription%"]

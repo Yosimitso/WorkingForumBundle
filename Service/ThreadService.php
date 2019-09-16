@@ -2,6 +2,7 @@
 
 namespace Yosimitso\WorkingForumBundle\Service;
 
+use Symfony\Component\Form\Forms;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
@@ -13,6 +14,7 @@ use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Yosimitso\WorkingForumBundle\Security\Authorization;
 use Yosimitso\WorkingForumBundle\Util\FileUploader;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
+use Symfony\Component\Form\FormFactory;
 
 class ThreadService
 {
@@ -25,6 +27,7 @@ class ThreadService
     protected $fileUploaderUtil;
     protected $authorization;
     protected $bundleParameters;
+    protected $formFactory;
 
     public function __construct(
         $lockThreadOlderThan,
@@ -35,7 +38,9 @@ class ThreadService
         $user,
         FileUploader $fileUploaderUtil,
         Authorization $authorization,
-        array $bundleParameters
+        array $bundleParameters,
+        FormFactory $formFactory
+
     )
     {
         $this->lockThreadOlderThan = $lockThreadOlderThan;
@@ -47,6 +52,7 @@ class ThreadService
         $this->fileUploaderUtil = $fileUploaderUtil;
         $this->authorization = $authorization;
         $this->bundleParameters = $bundleParameters;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -278,15 +284,15 @@ class ThreadService
      */
     public function getAvailableActions(UserInterface $user, Thread $thread, $autolock, $canSubscribeThread)
     {
-        $anonymousUser = (is_null($user)) ? true : false;
+        $anonymousUser = (is_null($user) || $user->getId() === null) ? true : false;
 
         return [
             'setResolved' => (!$anonymousUser) && (($user->getId() == $thread->getAuthor()->getId()) || $this->authorization->hasModeratorAuthorization()),
             'quote' => (!$anonymousUser && !$thread->getLocked()),
             'report' => (!$anonymousUser),
             'post' => (!$anonymousUser && !$autolock),
-            'subscribe' => $canSubscribeThread,
-            'moveThread' => ($this->authorization->hasModeratorAuthorization()) ? $this->createForm(MoveThreadType::class)->createView() : false,
+            'subscribe' => (!$anonymousUser && $canSubscribeThread),
+            'moveThread' => ($this->authorization->hasModeratorAuthorization()) ? $this->formFactory->create(MoveThreadType::class)->createView() : false,
             'allowModeratorDeleteThread' => $this->bundleParameters['allow_moderator_delete_thread']
         ];
     }

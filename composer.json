@@ -1,11 +1,11 @@
 {
     "name": "yosimitso/workingforumbundle",
-    "description": "A full Symfony system",
+    "description": "A complete forum bundle",
     "type": "symfony-bundle",
     "require": {
         "knplabs/knp-paginator-bundle": "~2.7.2",
         "knplabs/knp-markdown-bundle": "^1.7.0",
-	    "symfony/framework-bundle": ">=2.7",
+	    "symfony/framework-bundle": ">=3.0",
         "sensio/framework-extra-bundle": ">=3.0",
         "swiftmailer/swiftmailer": ">=5.4.9",
         "symfony/form": ">=3.0"
@@ -17,7 +17,7 @@
             "email": "contactportfolio@charlymartins.fr"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
 	 "autoload": {
 		"psr-4": {
             "Yosimitso\\WorkingForumBundle\\": ""
@@ -25,6 +25,6 @@
         }
 		},
     "require-dev": {
-        "phpunit/phpunit": "^6"
+        "phpunit/phpunit": "^6.0"
     }
 }

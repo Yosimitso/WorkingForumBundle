@@ -4,6 +4,7 @@ namespace Yosimitso\WorkingForumBundle\Tests\Service;
 
 //use Symfony\Bundle\FrameworkBundle\Test\TestCase;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Yosimitso\WorkingForumBundle\Entity\Post;
@@ -11,12 +12,14 @@ use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\User;
+use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Yosimitso\WorkingForumBundle\Security\Authorization;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
 use Yosimitso\WorkingForumBundle\Tests\Mock\EntityManagerMock;
 use Knp\Component\Pager\Paginator;
 use Yosimitso\WorkingForumBundle\Util\FileUploader;
+use Symfony\Component\Form\FormFactory;
 
 /**
  * Class ThreadControllerTest
@@ -26,12 +29,18 @@ use Yosimitso\WorkingForumBundle\Util\FileUploader;
 class ThreadServiceTest extends TestCase
 {
 
-    public function getTestedClass($em, $user = null)
+    public function getTestedClass($em = null, $user = null, $authorization = null)
     {
         if (is_null($user)) {
             $user = $this->createMock(User::class);
             $user->setUsername = 'toto';
         }
+
+        if (is_null($authorization)) {
+            $authorization = $this->createMock(Authorization::class);
+        }
+
+
         $testedClass = new ThreadService(
             0,
             $this->createMock(Paginator::class),
@@ -40,20 +49,41 @@ class ThreadServiceTest extends TestCase
             $em,
             $user,
             $this->createMock(FileUploader::class),
-            $this->createMock(Authorization::class),
-            ['allow_moderator_delete_thread' => false]
+            $authorization,
+            ['allow_moderator_delete_thread' => false],
+            $this->getFormFactory()
         );
 
         return $testedClass;
     }
 
+    private function getFormFactory()
+    {
+        $formFactory = $this->createMock(FormFactory::class);
+        $formView = $this->createMock(FormView::class);
+        $classFormFactory = new class($formView)
+        {
+            public function __construct($formView)
+            {
+                $this->formView = $formView;
+            }
+
+            function createView()
+            {
+
+                return $this->formView;
+            }
+        };
+        $formFactory->method('create')->willReturn($classFormFactory);
+
+        return $formFactory;
+    }
 
     public function testPin()
     {
         $em = $this->getMockBuilder(EntityManagerMock::class)
             ->setMethods(['getRepository'])
-            ->getMock()
-        ;
+            ->getMock();
 
 //        $entity = new class extends TestCase  {
 //            public function findOneBySlug($a) {
@@ -74,8 +104,7 @@ class ThreadServiceTest extends TestCase
     {
         $em = $this->getMockBuilder(EntityManagerMock::class)
             ->setMethods(['getRepository'])
-            ->getMock()
-        ;
+            ->getMock();
         $testedClass = $this->getTestedClass($em);
 
         $thread = new Thread;
@@ -88,8 +117,7 @@ class ThreadServiceTest extends TestCase
     {
         $em = $this->getMockBuilder(EntityManagerMock::class)
             ->setMethods(['getRepository'])
-            ->getMock()
-        ;
+            ->getMock();
         $testedClass = $this->getTestedClass($em);
 
         $thread = new Thread;
@@ -102,8 +130,7 @@ class ThreadServiceTest extends TestCase
     {
         $em = $this->getMockBuilder(EntityManagerMock::class)
             ->setMethods(['getRepository'])
-            ->getMock()
-        ;
+            ->getMock();
 
         $testedClass = $this->getTestedClass($em);
 
@@ -117,8 +144,7 @@ class ThreadServiceTest extends TestCase
     {
         $em = $this->getMockBuilder(EntityManagerMock::class)
             ->setMethods(['getRepository'])
-            ->getMock()
-        ;
+            ->getMock();
 
         $testedClass = $this->getTestedClass($em);
 
@@ -187,14 +213,18 @@ class ThreadServiceTest extends TestCase
         $testedClass = $this->getTestedClass($em, $user);
 
         $form = $this->getMockBuilder(ThreadType::class)
-                ->disableOriginalConstructor()
-                ->setMethods(['getData'])
-                ->getMock();
+            ->disableOriginalConstructor()
+            ->setMethods(['getData'])
+            ->getMock();
 
-        $class = new class {
-            function getPost() {
-                $secondClass = new class {
-                    function getFilesUploaded() {
+        $class = new class
+        {
+            function getPost()
+            {
+                $secondClass = new class
+                {
+                    function getFilesUploaded()
+                    {
                         return [];
                     }
                 };
@@ -243,10 +273,14 @@ class ThreadServiceTest extends TestCase
             ->setMethods(['getData'])
             ->getMock();
 
-        $class = new class {
-            function getPost() {
-                $secondClass = new class {
-                    function getFilesUploaded() {
+        $class = new class
+        {
+            function getPost()
+            {
+                $secondClass = new class
+                {
+                    function getFilesUploaded()
+                    {
                         $file = new UploadedFile(__DIR__.'/../Mock/file_test.jpg', "file_test.jpg");
                         return [$file];
                     }
@@ -278,6 +312,151 @@ class ThreadServiceTest extends TestCase
         $this->assertEquals(1, $thread->getNbReplies());
 //        $this->assertEquals(1, $user->getNbPost());
 
+    }
+
+    public function testPost()
+    {
+        $em = $this->getMockBuilder(EntityManagerMock::class)
+            ->setMethods(['getRepository'])
+            ->getMock();
+
+        $user = $this->createMock(User::class);
+        $user->setUsername = 'toto';
+
+        $testedClass = $this->getTestedClass($em, $user);
+
+        $subforum = new Subforum;
+        $subforum->setNbThread(20);
+        $subforum->setNbPost(50);
+
+        $thread = new Thread;
+        $thread->setNbReplies(20);
+
+        $post = new Post;
+        $post->setContent('test');
+
+        $form = $this->getMockBuilder(PostType::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getData'])
+            ->getMock();
+
+        $class = new class
+        {
+            function getFilesUploaded()
+            {
+                return [];
+            }
+        };
+
+        $form->method('getData')->willReturn($class);
+
+        $this->assertTrue($testedClass->post($subforum, $thread, $post, $user, $form));
+
+        $user = $em->getFlushedEntity(get_class($user));
+        $subforum = $em->getFlushedEntity(Subforum::class);
+        $thread = $em->getFlushedEntity(Thread::class);
+        $post = $em->getFlushedEntity(Post::class);
+
+        $this->assertEquals(20, $subforum->getNbThread());
+        $this->assertEquals(51, $subforum->getNbPost());
+        $this->assertEquals(21, $thread->getNbReplies());
+        $this->assertEquals('test', $post->getContent());
+
+    }
+
+    public function testGetAvailableActionsClassicUser()
+    {
+        $testedClass = $this->getTestedClass();
+
+        // CLASSIC USER, NOT THREAD'S AUTHOR
+        $user = $this->createMock(User::class);
+        $user->method('getId')->willReturn(1);
+
+        $author = $this->createMock(User::class);
+        $author->method('getId')->willReturn(2);
+        $thread = new Thread;
+        $thread->setAuthor($author);
+
+        $result = $testedClass->getAvailableActions($user, $thread, false, true);
+
+        $this->assertFalse($result['setResolved']);
+        $this->assertTrue($result['quote']);
+        $this->assertTrue($result['report']);
+        $this->assertTrue($result['post']);
+        $this->assertTrue($result['subscribe']);
+        $this->assertFalse($result['moveThread']);
+        $this->assertFalse($result['allowModeratorDeleteThread']);
+
+        // USER IS THE THREAD'S AUTHOR
+        $thread->setAuthor($user);
+
+        $result = $testedClass->getAvailableActions($user, $thread, false, true);
+        $this->assertTrue($result['setResolved']); // THREAD'S AUTHOR CAN "RESOLVE" HIS THREAD
+
+
+    }
+
+    public function testGetAvailableActionsAnonymousUser()
+    {
+        $testedClass = $this->getTestedClass();
+
+        // ANONYMOUS USER
+        $user = $this->createMock(User::class);
+        $user->method('getId')->willReturn(null);
+        $thread = new Thread;
+
+        $result = $testedClass->getAvailableActions($user, $thread, false, true);
+        $this->assertFalse($result['setResolved']);
+        $this->assertFalse($result['quote']);
+        $this->assertFalse($result['report']);
+        $this->assertFalse($result['post']);
+        $this->assertFalse($result['subscribe']);
+        $this->assertFalse($result['moveThread']);
+        $this->assertFalse($result['allowModeratorDeleteThread']);
+    }
+
+    public function testGetAvailableActionsModerator()
+    {
+        $authorization = $this->createMock(Authorization::class);
+        $authorization->method('hasModeratorAuthorization')->willReturn(true);
+
+        $testedClass = $this->getTestedClass(null, null, $authorization);
+
+
+        // MODERATOR
+        $user = $this->createMock(User::class);
+        $thread = new Thread;
+
+        $result = $testedClass->getAvailableActions($user, $thread, false, true);
+        $this->assertFalse($result['setResolved']);
+        $this->assertFalse($result['quote']);
+        $this->assertFalse($result['report']);
+        $this->assertFalse($result['post']);
+        $this->assertFalse($result['subscribe']);
+        $this->assertTrue($result['moveThread'] instanceof FormView);
+        $this->assertFalse($result['allowModeratorDeleteThread']);
+    }
+
+    public function testGetAvailableActionsAdmin()
+    {
+        $authorization = $this->createMock(Authorization::class);
+        $authorization->method('hasModeratorAuthorization')->willReturn(true);
+
+        $testedClass = $this->getTestedClass(null, null, $authorization);
+
+
+        // MODERATOR
+        $user = $this->createMock(User::class);
+        $thread = new Thread;
+
+        $result = $testedClass->getAvailableActions($user, $thread, false, true);
+        $this->assertFalse($result['setResolved']);
+        $this->assertFalse($result['quote']);
+        $this->assertFalse($result['report']);
+        $this->assertFalse($result['post']);
+        $this->assertFalse($result['subscribe']);
+        $this->assertTrue($result['moveThread'] instanceof FormView);
+        $this->assertFalse($result['allowModeratorDeleteThread']);
     }
 
 }

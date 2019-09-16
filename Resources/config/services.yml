@@ -126,4 +126,5 @@ services:
             - "@yosimitso_workingforum_util_fileuploader"
             - "@yosimitso_workingforum_authorization"
             - "%yosimitso_working_forum%"
+            - "@form.factory"
 

@@ -51,7 +51,7 @@ class ThreadService
      */
     protected $authorization;
     /**
-     * @var array
+     * @var BundleParametersService
      */
     protected $bundleParameters;
     /**
@@ -68,7 +68,7 @@ class ThreadService
         UserInterface $user,
         FileUploader $fileUploaderUtil,
         Authorization $authorization,
-        array $bundleParameters,
+        BundleParametersService $bundleParameters,
         FormFactory $formFactory
 
     )
@@ -338,7 +338,7 @@ class ThreadService
             'post' => (!$anonymousUser && !$autolock),
             'subscribe' => (!$anonymousUser && $canSubscribeThread),
             'moveThread' => ($this->authorization->hasModeratorAuthorization()) ? $this->formFactory->create(MoveThreadType::class)->createView() : false,
-            'allowModeratorDeleteThread' => $this->bundleParameters['allow_moderator_delete_thread']
+            'allowModeratorDeleteThread' => $this->bundleParameters->allow_moderator_delete_thread
         ];
     }
 

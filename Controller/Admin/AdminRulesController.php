@@ -1,6 +1,6 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\Controller;
+namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Yosimitso\WorkingForumBundle\Entity\Rules;
@@ -13,7 +13,7 @@ use Yosimitso\WorkingForumBundle\Form\RulesEditType;
 /**
  * Class AdminRulesController
  *
- * @package Yosimitso\WorkingForumBundle\Controller
+ * @package Yosimitso\WorkingForumBundle\Controller\Admin
  *
  * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
  */

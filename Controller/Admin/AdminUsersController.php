@@ -1,6 +1,6 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\Controller;
+namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class AdminUsersController
  *
- * @package Yosimitso\WorkingForumBundle\Controller
+ * @package Yosimitso\WorkingForumBundle\Controller\Admin
  *
  * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
  */

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\Controller;
+namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Yosimitso\WorkingForumBundle\Entity\Rules;
@@ -15,7 +15,7 @@ use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 /**
  * Class AdminReportController
  *
- * @package Yosimitso\WorkingForumBundle\Controller
+ * @package Yosimitso\WorkingForumBundle\Controller\Admin
  *
  * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
  */

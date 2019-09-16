@@ -2,15 +2,11 @@
 
 namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Yosimitso\WorkingForumBundle\Entity\Rules;
+use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Yosimitso\WorkingForumBundle\Form\AdminForumType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
-use Yosimitso\WorkingForumBundle\Form\RulesType;
-use Yosimitso\WorkingForumBundle\Form\RulesEditType;
-use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 
 /**
  * Class AdminForumController

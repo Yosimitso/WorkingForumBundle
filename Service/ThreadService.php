@@ -2,7 +2,9 @@
 
 namespace Yosimitso\WorkingForumBundle\Service;
 
+use Knp\Component\Pager\Paginator;
 use Symfony\Component\Form\Forms;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
@@ -16,26 +18,54 @@ use Yosimitso\WorkingForumBundle\Util\FileUploader;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
 use Symfony\Component\Form\FormFactory;
 
+
 class ThreadService
 {
+    /**
+     * @var int
+     */
     protected $lockThreadOlderThan;
+    /**
+     * @var Paginator
+     */
     protected $paginator;
+    /**
+     * @var int
+     */
     protected $postPerPage;
+    /**
+     * @var RequestStack
+     */
     protected $requestStack;
     protected $em;
+    /**
+     * @var UserInterface
+     */
     protected $user;
+    /**
+     * @var FileUploader
+     */
     protected $fileUploaderUtil;
+    /**
+     * @var Authorization
+     */
     protected $authorization;
+    /**
+     * @var array
+     */
     protected $bundleParameters;
+    /**
+     * @var FormFactory
+     */
     protected $formFactory;
 
     public function __construct(
         $lockThreadOlderThan,
-        $paginator,
+        Paginator $paginator,
         $postPerPage,
-        $requestStack,
+        RequestStack $requestStack,
         $em,
-        $user,
+        UserInterface $user,
         FileUploader $fileUploaderUtil,
         Authorization $authorization,
         array $bundleParameters,
@@ -103,6 +133,12 @@ class ThreadService
         return $thread->getId().'-'.Slugify::convert($thread->getLabel());
     }
 
+    /**
+     * @param Thread $thread
+     * @return bool
+     *
+     * Pin a thread
+     */
     public function pin(Thread $thread)
     {
         $thread->setPin(true);
@@ -192,6 +228,13 @@ class ThreadService
         return true;
     }
 
+    /**
+     * @param Thread $thread
+     * @param Subforum $subforum
+     * @return bool
+     *
+     * Delete a thread
+     */
     public function delete(Thread $thread, Subforum $subforum)
     {
         $subforum->addNbThread(-1);
@@ -281,6 +324,8 @@ class ThreadService
      * @param $autolock
      * @param $canSubscribeThread
      * @return array
+     *
+     * Get available actions for a given user
      */
     public function getAvailableActions(UserInterface $user, Thread $thread, $autolock, $canSubscribeThread)
     {

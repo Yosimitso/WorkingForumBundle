@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap="./Tests/bootstrap.php" colors="true">
+<phpunit bootstrap="./vendor/autoload.php" colors="true">
     <!-- Les fichiers de tests à lancer -->
     <testsuites>
-        <testsuite name="KitpagesDataGridBundle test suite">
-            <directory suffix="Test.php">./Tests</directory>
+        <testsuite name="tests">
+            <directory suffix="Test.php">./Tests/Service</directory>
         </testsuite>
     </testsuites>
     <!-- Quels fichiers sont concernés par l'évaluation du code coverage -->

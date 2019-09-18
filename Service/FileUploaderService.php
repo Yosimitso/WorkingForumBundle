@@ -1,16 +1,16 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\Util;
+namespace Yosimitso\WorkingForumBundle\Service;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Yosimitso\WorkingForumBundle\Entity\File;
 
 /**
- * Class FileUploader
- * @package Yosimitso\WorkingForumBundle\Util
+ * Class FileUploaderService
+ * @package Yosimitso\WorkingForumBundle\Service
  * Handle file upload system
  */
-class FileUploader
+class FileUploaderService
 {
     private $path;
     private $em;

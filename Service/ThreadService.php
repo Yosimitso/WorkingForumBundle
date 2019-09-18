@@ -14,7 +14,7 @@ use Yosimitso\WorkingForumBundle\Form\MoveThreadType;
 use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Yosimitso\WorkingForumBundle\Security\Authorization;
-use Yosimitso\WorkingForumBundle\Util\FileUploader;
+use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
 use Symfony\Component\Form\FormFactory;
 
@@ -43,9 +43,9 @@ class ThreadService
      */
     protected $user;
     /**
-     * @var FileUploader
+     * @var FileUploaderService
      */
-    protected $fileUploaderUtil;
+    protected $fileUploaderService;
     /**
      * @var Authorization
      */
@@ -66,7 +66,7 @@ class ThreadService
         RequestStack $requestStack,
         $em,
         UserInterface $user,
-        FileUploader $fileUploaderUtil,
+        FileUploaderService $fileUploaderService,
         Authorization $authorization,
         BundleParametersService $bundleParameters,
         FormFactory $formFactory
@@ -79,7 +79,7 @@ class ThreadService
         $this->requestStack = $requestStack;
         $this->em = $em;
         $this->user = $user;
-        $this->fileUploaderUtil = $fileUploaderUtil;
+        $this->fileUploaderService = $fileUploaderService;
         $this->authorization = $authorization;
         $this->bundleParameters = $bundleParameters;
         $this->formFactory = $formFactory;
@@ -273,7 +273,7 @@ class ThreadService
         $this->em->persist($thread);
 
         if (!empty($form->getData()->getPost()[0]->getFilesUploaded())) {
-            $file = $this->fileUploaderUtil->upload($form->getData()->getPost()[0]->getFilesUploaded(), $post);
+            $file = $this->fileUploaderService->upload($form->getData()->getPost()[0]->getFilesUploaded(), $post);
             $post->addFiles($file);
         }
 
@@ -308,7 +308,7 @@ class ThreadService
         $this->em->persist($subforum);
 
         if (!empty($form->getData()->getFilesUploaded())) {
-            $file = $this->fileUploaderUtil->upload($form->getData()->getFilesUploaded(), $post);
+            $file = $this->fileUploaderService->upload($form->getData()->getFilesUploaded(), $post);
             $post->addFiles($file);
         }
 

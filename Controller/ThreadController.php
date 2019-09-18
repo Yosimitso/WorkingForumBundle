@@ -14,7 +14,7 @@ use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Yosimitso\WorkingForumBundle\Util\FileUploader as FileUploadUtil;
+use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
 
@@ -25,13 +25,13 @@ use Yosimitso\WorkingForumBundle\Service\ThreadService;
  */
 class ThreadController extends BaseController
 {
-    protected $fileUploaderUtil;
+    protected $fileUploaderService;
     protected $smileyTwigExtension;
     protected $threadService;
 
-    public function __construct(FileUploadUtil $fileUploaderUtil, SmileyTwigExtension $smileyTwigExtension, ThreadService $threadService)
+    public function __construct(FileUploaderService $fileUploaderService, SmileyTwigExtension $smileyTwigExtension, ThreadService $threadService)
     {
-        $this->fileUploaderUtil = $fileUploaderUtil;
+        $this->fileUploaderService = $fileUploaderService;
         $this->smileyTwigExtension = $smileyTwigExtension;
         $this->threadService = $threadService;
     }
@@ -156,7 +156,7 @@ class ThreadController extends BaseController
             'fileUpload' => $this->container->getParameter('yosimitso_working_forum.file_upload'),
             'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')
         ];
-        $parameters['fileUpload']['maxSize'] = $this->fileUploaderUtil->getMaxSize();
+        $parameters['fileUpload']['maxSize'] = $this->fileUploaderService->getMaxSize();
 
 
         $actionsAvailables = $this->threadService->getAvailableActions($this->user, $thread, $autolock, $canSubscribeThread);
@@ -258,7 +258,7 @@ class ThreadController extends BaseController
         $parameters = [ // PARAMETERS USED BY TEMPLATE
             'fileUpload' => $this->getParameter('yosimitso_working_forum.file_upload')
         ];
-        $parameters['fileUpload']['maxSize'] = $this->fileUploaderUtil->getMaxSize();
+        $parameters['fileUpload']['maxSize'] = $this->fileUploaderService->getMaxSize();
 
         return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/new.html.twig',
             [

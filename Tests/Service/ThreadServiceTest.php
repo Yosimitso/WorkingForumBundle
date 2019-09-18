@@ -2,7 +2,6 @@
 
 namespace Yosimitso\WorkingForumBundle\Tests\Service;
 
-//use Symfony\Bundle\FrameworkBundle\Test\TestCase;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -19,13 +18,13 @@ use Yosimitso\WorkingForumBundle\Service\BundleParametersService;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
 use Yosimitso\WorkingForumBundle\Tests\Mock\EntityManagerMock;
 use Knp\Component\Pager\Paginator;
-use Yosimitso\WorkingForumBundle\Util\FileUploader;
+use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Symfony\Component\Form\FormFactory;
 
 /**
  * Class ThreadControllerTest
  *
- * @package Yosimitso\WorkingForumBundle\Tests\Controller
+ * @package Yosimitso\WorkingForumBundle\Tests\Service
  */
 class ThreadServiceTest extends TestCase
 {
@@ -50,7 +49,7 @@ class ThreadServiceTest extends TestCase
             $this->createMock(RequestStack::class),
             $em,
             $user,
-            $this->createMock(FileUploader::class),
+            $this->createMock(FileUploaderService::class),
             $authorization,
             $bundleParameters,
             $this->getFormFactory()

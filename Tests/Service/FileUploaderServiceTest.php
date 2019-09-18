@@ -1,13 +1,10 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\Tests\Controller;
+namespace Yosimitso\WorkingForumBundle\Tests\Service;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Yosimitso\WorkingForumBundle\Util\Thread as ThreadUtil;
-use Yosimitso\WorkingForumBundle\Entity\Thread as ThreadEntity;
-use Knp\Component\Pager\Paginator;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Yosimitso\WorkingForumBundle\Util\FileUploader;
+use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Translation\Translator;
 use Yosimitso\WorkingForumBundle\Entity\Post;
@@ -17,10 +14,10 @@ use Yosimitso\WorkingForumBundle\Entity\Post;
  *
  * @package Yosimitso\WorkingForumBundle\Tests\Util
  */
-class FileUploaderTest extends WebTestCase
+class FileUploaderServiceTest extends WebTestCase
 {
     private $files;
-    private $fileUploader;
+    private $fileUploaderService;
     private $em;
     private $translator;
     private $post;
@@ -62,9 +59,9 @@ class FileUploaderTest extends WebTestCase
             'preview_file' => true
         ];
         $file = $this->getFileMock('C:\Users\MyUser\AppData\Local\Temp\php6BA8.tmp', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg');
-        $fileUploader = new FileUploader($this->em, $config, $this->translator);
+        $fileUploaderService = new FileUploaderService($this->em, $config, $this->translator);
 
-        $test = $fileUploader->upload([$file], $this->post);
+        $test = $fileUploaderService->upload([$file], $this->post);
         $this->assertNotFalse($test);
     }
 
@@ -77,10 +74,10 @@ class FileUploaderTest extends WebTestCase
             'preview_file' => true
         ];
         $file = $this->getFileMock('C:\Users\MyUser\AppData\Local\Temp\php6BA8.tmp', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg');
-        $fileUploader = new FileUploader($this->em, $config, $this->translator);
+        $fileUploaderService = new FileUploaderService($this->em, $config, $this->translator);
 
-        $test = $fileUploader->upload([$file], $this->post);
-        $this->assertFalse($test); // FILE EXTENSION SHOULD NOT BE ACCEPTED
+        $this->expectException(\Exception::class); // FILE EXTENSION SHOULD NOT BE ACCEPTED
+        $fileUploaderService->upload([$file], $this->post);
     }
 
     public function testUploadWithTwoFilesTooBig()
@@ -92,11 +89,12 @@ class FileUploaderTest extends WebTestCase
             'accepted_format' => ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/tiff', 'application/pdf'],
             'preview_file' => true
         ];
-        $file = $this->getFileMock('C:\Users\MyUser\AppData\Local\Temp\php6BA8.tmp', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg', 6294899);
 
-        $fileUploader = new FileUploader($this->em, $config, $this->translator);
-        $test = $fileUploader->upload([$file, $file], $this->post);
-        $this->assertFalse($test);
+        $file = $this->getFileMock('C:\Users\MyUser\AppData\Local\Temp\php6BA8.tmp', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg', 6294899);
+        $fileUploaderService = new FileUploaderService($this->em, $config, $this->translator);
+
+        $this->expectException(\Exception::class);
+        $fileUploaderService->upload([$file, $file], $this->post);
     }
 
     public function testUploadWithInvalidName()
@@ -109,13 +107,11 @@ class FileUploaderTest extends WebTestCase
             'preview_file' => true
         ];
         $file = $this->getFileMock('C:\Users\MyUser\AppData\Local\Temp\php6BA8.tmp', 'picture/10201115386585046_1320686413_n.jpg', 'image/jpeg'); //INVALID ORIGINAL NAME
-        $fileUploader = new FileUploader($this->em, $config, $this->translator);
+        $fileUploaderService = new FileUploaderService($this->em, $config, $this->translator);
 
-        $test = $fileUploader->upload([$file], $this->post);
-        $this->assertFalse($test);
+        $this->expectException(\Exception::class);
+        $test = $fileUploaderService->upload([$file], $this->post);
     }
-
-
 
 
     private function getFileMock($path, $originalName, $mimeType, $size = 629489)

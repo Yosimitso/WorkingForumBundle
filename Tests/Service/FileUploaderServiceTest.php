@@ -17,7 +17,6 @@ use Yosimitso\WorkingForumBundle\Entity\Post;
 class FileUploaderServiceTest extends WebTestCase
 {
     private $files;
-    private $fileUploaderService;
     private $em;
     private $translator;
     private $post;
@@ -41,7 +40,7 @@ class FileUploaderServiceTest extends WebTestCase
                                 ->disableOriginalConstructor()
                                 ->setMethods(['trans'])
                                 ->getMock();
-        $this->translator->method('trans')->willReturn('a string');
+        $this->translator->method('trans')->willReturn('an error occured');
 
         $this->post = $this->getMockBuilder(Post::class)
                                 ->disableOriginalConstructor()

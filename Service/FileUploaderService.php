@@ -29,6 +29,8 @@ class FileUploaderService
      * @param array $filesSubmitted
      * @param $post
      * @return array|bool
+     * @throws \Exception
+     *
      * Upload submitted files on server
      */
     public function upload(array $filesSubmitted, $post)
@@ -46,7 +48,7 @@ class FileUploaderService
                 'YosimitsoWorkingForumBundle'
             ));
         }
-        
+
 
         foreach ($filesSubmitted as $fileSubmitted) {
             if ($fileSubmitted->getError()) {
@@ -105,6 +107,7 @@ class FileUploaderService
 
     /**
      * @return float
+     *
      * Determine the max size allowed, the "max size file upload" parameter in application config can't be superior to PHP config
      */
     public function getMaxSize()
@@ -118,6 +121,12 @@ class FileUploaderService
             : $this->configFileUpload['max_size_ko']; // THE APPLICATION MAX SIZE VALUE IS OK
     }
 
+    /**
+     * @param $value
+     * @return int
+     *
+     * Parse size from a string
+     */
     private function extractSize($value)
     {
         preg_match('/([0-9]+)([A-Z]?)/', $value, $sizeRegex);

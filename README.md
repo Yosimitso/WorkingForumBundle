@@ -36,9 +36,26 @@ Features
 
 Setup
 ------------------
-See SETUP-SF2-SF3.md or SETUP-SF4-FLEX if you use Symfony 4 with Flex structure
+See SETUP-SF3.md or SETUP-SF4-FLEX if you use Symfony 4 with Flex structure
 
 
 Configuration
 -----------------
 Refer to CONFIGURATION.md
+
+Contribute
+----------------
+About a fix : 
+Make a PR !
+
+About a feature :
+please open an issue, to talk about it and share the work
+
+To launch tests, go to the bundle's directory and execute 
+````
+composer install
+vendor/phpunit/phpunit/phpunit
+````
+
+
+

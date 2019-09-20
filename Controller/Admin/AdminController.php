@@ -5,6 +5,8 @@ namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
+use Yosimitso\WorkingForumBundle\Entity\Forum;
+use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 
 /**
@@ -31,7 +33,7 @@ class AdminController extends BaseController
      */
     public function indexAction()
     {
-        $list_forum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findAll();
+        $list_forum = $this->em->getRepository(Forum::class)->findAll();
 
         $settingsList = [
             ['label' => 'allow_anonymous_read', 'varType' => 'boolean'],
@@ -51,7 +53,7 @@ class AdminController extends BaseController
 
         $settings_render = $this->renderSettings($settingsList);
         $newPostReported = count(
-            $this->em->getRepository('YosimitsoWorkingForumBundle:PostReport')
+            $this->em->getRepository(PostReport::class)
                 ->findBy(['processed' => null])
         );
 

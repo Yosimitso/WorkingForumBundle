@@ -2,17 +2,22 @@
 
 namespace Yosimitso\WorkingForumBundle\Service;
 
+use Psr\Container\ContainerInterface;
+
 class BundleParametersService
 {
-    public function __construct(...$args)
+    private $container;
+    public function __construct(ContainerInterface $container /*...$args*/)
     {
-        foreach ($args as $arg) {
-           $this->$arg[0] = $arg[1];
-        }
+//        foreach ($args as $arg) {
+//           $this->$arg[0] = $arg[1];
+//        }
+        $this->container = $container;
+
     }
 
     public function __get($name)
     {
-        return $this->$name;
+        return $this->container->getParameter($name);
     }
 }

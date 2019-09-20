@@ -6,7 +6,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
+use Yosimitso\WorkingForumBundle\Entity\Forum;
+use Yosimitso\WorkingForumBundle\Entity\Rules;
+use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Form\RulesType;
+use Yosimitso\WorkingForumBundle\Util\Thread;
+
 /**
  * Class ForumController
  *
@@ -24,7 +29,7 @@ class ForumController extends BaseController
     {
         $list_forum = $this
             ->em
-            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')
+            ->getRepository(Forum::class)
             ->findAll();
 
         $parameters  = [ // PARAMETERS USED BY TEMPLATE
@@ -53,7 +58,7 @@ class ForumController extends BaseController
     {
         $forum = $this
             ->em
-            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')
+            ->getRepository(Forum::class)
             ->findOneBySlug($forum_slug);
 
         if (is_null($forum)) {
@@ -62,7 +67,7 @@ class ForumController extends BaseController
 
         $subforum = $this
             ->em
-            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')
+            ->getRepository(Subforum::class)
             ->findOneBy(['forum' => $forum->getId(), 'slug' => $subforum_slug]);
 
         if (is_null($subforum)) {
@@ -84,7 +89,7 @@ class ForumController extends BaseController
 
         $list_subforum_query = $this
             ->em
-            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')
+            ->getRepository(Thread::class)
             ->findBySubforum(
                 $subforum->getId(),
                 ['pin' => 'DESC', 'lastReplyDate' => 'DESC']
@@ -116,7 +121,7 @@ class ForumController extends BaseController
     public function rulesAction($locale = null)
     {
         if (is_null($locale)) {
-            $rulesList = $this->em->getRepository('Yosimitso\WorkingForumBundle\Entity\Rules')->findAll();
+            $rulesList = $this->em->getRepository(Rules::class)->findAll();
 
             if (!empty($rulesList)) {
                 $rules = $rulesList[0];
@@ -124,7 +129,7 @@ class ForumController extends BaseController
                 $rules = null;
             }
         } else {
-            $rules = $this->em->getRepository('Yosimitso\WorkingForumBundle\Entity\Rules')->findOneByLang($locale);
+            $rules = $this->em->getRepository(Rules::class)->findOneByLang($locale);
         }
 
         $form = $this->createForm(RulesType::class, null);

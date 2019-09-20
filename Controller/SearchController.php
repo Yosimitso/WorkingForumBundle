@@ -5,6 +5,8 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Yosimitso\WorkingForumBundle\Entity\Forum;
+use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Form\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
@@ -22,7 +24,7 @@ class SearchController extends BaseController
      */
     public function indexAction(Request $request)
     {
-        $listForum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findAll();
+        $listForum = $this->em->getRepository(Forum::class)->findAll();
         $form = $this->get('form.factory')
             ->createNamedBuilder('', SearchType::class, null, array('csrf_protection' => false,))
             ->add('page', HiddenType::class, ['data' => 1])
@@ -36,7 +38,7 @@ class SearchController extends BaseController
             {
                 $whereSubforum = (array) $this->authorization->hasSubforumAccessList($form['forum']->getData());
 
-                $thread_list_query = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')
+                $thread_list_query = $this->em->getRepository(Thread::class)
                                         ->search($form['keywords']->getData(), 0, 100, $whereSubforum)
                 ;
                 $date_format = $this->getParameter('yosimitso_working_forum.date_format');

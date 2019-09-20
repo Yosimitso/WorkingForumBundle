@@ -3,6 +3,8 @@
 namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
+use Yosimitso\WorkingForumBundle\Entity\Forum;
+use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Form\AdminForumType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -27,7 +29,7 @@ class AdminForumController extends BaseController
      */
     public function editAction(Request $request, $id)
     {
-        $forum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->find($id);
+        $forum = $this->em->getRepository(Forum::class)->find($id);
 
         $statistics = ['nbThread' => 0, 'nbPost' => 0];
         foreach ($forum->getSubforum() as $subforum) {
@@ -76,8 +78,8 @@ class AdminForumController extends BaseController
      */
     public function addAction(Request $request)
     {
-        $forum = new \Yosimitso\WorkingForumBundle\Entity\Forum;
-        $forum->addSubForum(new \Yosimitso\WorkingForumBundle\Entity\Subforum);
+        $forum = new Forum;
+        $forum->addSubForum(new Subforum);
 
         $form = $this->createForm(AdminForumType::class, $forum);
 
@@ -116,7 +118,7 @@ class AdminForumController extends BaseController
      */
     public function deleteForumAction($forum_id)
     {
-        $forum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findOneById($forum_id);
+        $forum = $this->em->getRepository(Forum::class)->findOneById($forum_id);
 
         if (!is_null($forum)) {
             $this->em->remove($forum);

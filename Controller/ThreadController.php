@@ -5,10 +5,14 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
+use Yosimitso\WorkingForumBundle\Entity\PostReport;
+use Yosimitso\WorkingForumBundle\Entity\PostVote;
+use Yosimitso\WorkingForumBundle\Entity\Subforum;
+use Yosimitso\WorkingForumBundle\Entity\Subscription;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\Subscription as EntitySubscription;
-use Yosimitso\WorkingForumBundle\Form\MoveThreadType;
 use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,13 +52,13 @@ class ThreadController extends BaseController
      */
     public function indexAction($forum_slug, $subforum_slug, $thread_slug, Request $request)
     {
-        $forum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findOneBySlug($forum_slug);
+        $forum = $this->em->getRepository(Forum::class)->findOneBySlug($forum_slug);
         if (is_null($forum)) {
             throw new NotFoundHttpException('Forum not found');
         }
 
-        $subforum = $this->em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneBy(['slug' => $subforum_slug, 'forum' => $forum]);
-        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
+        $subforum = $this->em->getRepository(Subforum::class)->findOneBy(['slug' => $subforum_slug, 'forum' => $forum]);
+        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($thread_slug);
 
         if (is_null($thread) || is_null($subforum)) {
             throw new NotFoundHttpException('Thread not found');
@@ -82,7 +86,7 @@ class ThreadController extends BaseController
         if (!$this->container->getParameter('yosimitso_working_forum.thread_subscription')['enable']) { // SUBSCRIPTION SYSTEM DISABLED
             $canSubscribeThread = false;
         } else {
-            $canSubscribeThread = (empty($this->em->getRepository('YosimitsoWorkingForumBundle:Subscription')->findBy(['thread' => $thread, 'user' => $this->user]))); // HAS ALREADY SUBSCRIBED ?
+            $canSubscribeThread = (empty($this->em->getRepository(Subscription::class)->findBy(['thread' => $thread, 'user' => $this->user]))); // HAS ALREADY SUBSCRIBED ?
         }
 
         $form = $this->createForm(PostType::class, $post, ['canSubscribeThread' => $canSubscribeThread]); // create form for posting
@@ -144,11 +148,11 @@ class ThreadController extends BaseController
         }
 
         $postQuery = $this->em
-            ->getRepository('YosimitsoWorkingForumBundle:Post')
+            ->getRepository(Post::class)
             ->findByThread($thread->getId());
         $post_list = $this->threadService->paginate($postQuery);
 
-        $hasAlreadyVoted = $this->em->getRepository('YosimitsoWorkingForumBundle:PostVote')->getThreadVoteByUser($thread, $this->user);
+        $hasAlreadyVoted = $this->em->getRepository(PostVote::class)->getThreadVoteByUser($thread, $this->user);
 
         $parameters = [ // PARAMETERS USED BY TEMPLATE
             'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format'),
@@ -194,13 +198,13 @@ class ThreadController extends BaseController
     public function newAction($forum_slug, $subforum_slug, Request $request)
     {
 
-        $forum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findOneBySlug($forum_slug);
+        $forum = $this->em->getRepository(Forum::class)->findOneBySlug($forum_slug);
 
         if (is_null($forum)) {
             throw new NotFoundHttpException('Forum not found');
         }
 
-        $subforum = $this->em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneBySlug($subforum_slug);
+        $subforum = $this->em->getRepository(Subforum::class)->findOneBySlug($subforum_slug);
 
         if (is_null($subforum)) {
             throw new NotFoundHttpException('Subforum not found');
@@ -285,7 +289,7 @@ class ThreadController extends BaseController
     function resolveAction($forum_slug, $subforum_slug, $thread_slug)
     {
 
-        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
+        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($thread_slug);
 
         if (is_null($thread)) {
             throw new \Exception("Thread error",
@@ -328,7 +332,7 @@ class ThreadController extends BaseController
      */
     function pinAction($forum_slug, $subforum_slug, $thread_slug)
     {
-        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
+        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($thread_slug);
 
         if (is_null($thread)) {
             throw new \Exception("Thread error",
@@ -374,21 +378,21 @@ class ThreadController extends BaseController
 
         }
 
-        $check_already = $this->em->getRepository('YosimitsoWorkingForumBundle:PostReport')
+        $check_already = $this->em->getRepository(PostReport::class)
             ->findOneBy(['user' => $this->user->getId(), 'post' => $post_id]);
 
         if (!is_null($check_already)) { // ALREADY WARNED BUT THAT'S OK, THANKS ANYWAY
-            return new Response(json_encode('true'), 200);
+            return new JsonResponse('true', 200);
         }
 
-        $post = $this->em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($post_id);
+        $post = $this->em->getRepository(Post::class)->findOneById($post_id);
 
         if ($this->threadService->report($post)) {
-            return new Response(json_encode('true'), 200);
+            return new JsonResponse('true', 200);
 
         } else {
 
-            return new Response(json_encode('false'), 200);
+            return new JsonResponse('false', 200);
         }
     }
 
@@ -405,7 +409,7 @@ class ThreadController extends BaseController
      */
     function lockAction($forum_slug, $subforum_slug, $thread_slug)
     {
-        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
+        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($thread_slug);
 
         if (is_null($thread)) {
             throw new Exception("Thread can't be found", 500);
@@ -441,9 +445,9 @@ class ThreadController extends BaseController
         $threadId = $request->get('threadId');
         $targetId = $request->get('target');
 
-        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneById($threadId);
+        $thread = $this->em->getRepository(Thread::class)->findOneById($threadId);
         $currentSubforum = $thread->getSubforum();
-        $targetSubforum = $this->em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneById($targetId);
+        $targetSubforum = $this->em->getRepository(Subforum::class)->findOneById($targetId);
 
         if (is_null($thread) || is_null($targetSubforum)) {
             return new Response(null, 500);
@@ -451,7 +455,7 @@ class ThreadController extends BaseController
 
         $this->threadService->move($thread, $currentSubforum, $targetSubforum);
 
-        return new Response(json_encode(['res' => 'true', 'targetLabel' => $targetSubforum->getName()]), 200);
+        return new JsonResponse(['res' => 'true', 'targetLabel' => $targetSubforum->getName()], 200);
     }
 
     /**
@@ -466,8 +470,8 @@ class ThreadController extends BaseController
             throw new Exception('Thread deletion is not allowed');
         }
 
-        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($threadSlug);
-        $subforum = $this->em->getRepository('YosimitsoWorkingForumBundle:Subforum')->findOneById($thread->getSubforum()->getId());
+        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($threadSlug);
+        $subforum = $this->em->getRepository(Subforum::class)->findOneById($thread->getSubforum()->getId());
 
         if (is_null($thread)) {
             throw new Exception('Thread cannot be found');
@@ -502,12 +506,12 @@ class ThreadController extends BaseController
         if (is_null($this->user)) {
             return new Response(null, 500);
         }
-        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneById($threadId);
+        $thread = $this->em->getRepository(Thread::class)->findOneById($threadId);
         if (is_null($thread)) {
             return new Response(null, 500);
         }
 
-        $subscription = $this->em->getRepository('YosimitsoWorkingForumBundle:Subscription')->findOneBy(['user' => $this->user, 'thread' => $thread]);
+        $subscription = $this->em->getRepository(Subscription::class)->findOneBy(['user' => $this->user, 'thread' => $thread]);
 
         if (!is_null($subscription)) {
             $this->em->remove($subscription);
@@ -529,12 +533,12 @@ class ThreadController extends BaseController
         if (is_null($this->user)) {
             return new Response(null, 500);
         }
-        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneById($threadId);
+        $thread = $this->em->getRepository(Thread::class)->findOneById($threadId);
         if (is_null($thread)) {
             return new Response(null, 500);
         }
 
-        $checkSubscription = $this->em->getRepository('YosimitsoWorkingForumBundle:Subscription')->findOneBy(['user' => $this->user, 'thread' => $thread]);
+        $checkSubscription = $this->em->getRepository(Subscription::class)->findOneBy(['user' => $this->user, 'thread' => $thread]);
 
         if (is_null($checkSubscription)) {
             $subscription = new EntitySubscription($thread, $this->user);

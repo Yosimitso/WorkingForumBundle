@@ -328,7 +328,7 @@ class ThreadService
      *
      * Get available actions for a given user
      */
-    public function getAvailableActions(UserInterface $user, Thread $thread, $autolock, $canSubscribeThread)
+    public function getAvailableActions(?UserInterface $user, Thread $thread, $autolock, $canSubscribeThread)
     {
         $anonymousUser = (is_null($user) || $user->getId() === null) ? true : false;
 

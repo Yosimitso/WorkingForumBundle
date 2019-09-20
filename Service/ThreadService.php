@@ -15,6 +15,7 @@ use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Yosimitso\WorkingForumBundle\Security\Authorization;
 use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
 use Symfony\Component\Form\FormFactory;
 
@@ -65,7 +66,7 @@ class ThreadService
         $postPerPage,
         RequestStack $requestStack,
         $em,
-        UserInterface $user,
+        TokenStorageInterface $tokenStorage,
         FileUploaderService $fileUploaderService,
         Authorization $authorization,
         BundleParametersService $bundleParameters,
@@ -78,7 +79,7 @@ class ThreadService
         $this->postPerPage = $postPerPage;
         $this->requestStack = $requestStack;
         $this->em = $em;
-        $this->user = $user;
+        $this->user = $tokenStorage->getToken()->getUser();
         $this->fileUploaderService = $fileUploaderService;
         $this->authorization = $authorization;
         $this->bundleParameters = $bundleParameters;

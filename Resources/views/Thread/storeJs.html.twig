@@ -27,6 +27,8 @@
             'workingforum_add_subscription': '{{ path('workingforum_add_subscription', {'threadId': '%thread.id%'}) }}',
             'workingforum_cancel_subscription': '{{ path('workingforum_cancel_subscription', {'threadId': '%thread.id%'}) }}'
         }
+    {% if thread.id is defined %}
+        , 'threadId': '{{ thread.id }}'
     }
 
 </script>

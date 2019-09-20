@@ -1,7 +1,5 @@
 jQuery(document).ready(function () {
 
-    storeJs.threadId = document.getElementsByClassName('wf_thread')[0].getAttribute('data-id');
-
     /**
      * Initialize the post editor
      */
@@ -58,11 +56,9 @@ jQuery(document).ready(function () {
      * Clear post editor content draft
      */
     jQuery('#wf_form_post').submit(function (e) {
-        console.log('erase1');
         if (getCookie('post_editor_' + storeJs.threadId)) {
             e.preventDefault();
             clearInterval(saveTimeout);
-            console.log('erase');
             eraseCookie('post_editor_' + storeJs.threadId);
             this.submit();
         }

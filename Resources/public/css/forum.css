@@ -515,7 +515,6 @@ code {
 }
 
 .wf_admin_subforum_statistic {
-  margin-left: 60%;
 }
 
 #wf_forum_content h1 {
@@ -618,8 +617,6 @@ code {
 }
 
 .wf_admin_left {
-    float: left;
-    width: 50%;
 }
 
 #wf_search {
@@ -815,8 +812,7 @@ code {
     }
 
     .wf_admin_subforum_statistic {
-        clear: both;
-        margin-left: 0;
+
     }
 
     .wf_post .wf_post-left {
@@ -925,8 +921,6 @@ code {
     }
 
     .wf_admin_subforum_statistic {
-        clear: both;
-        margin-left: 0;
     }
 }
 

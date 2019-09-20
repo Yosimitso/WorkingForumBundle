@@ -5,10 +5,9 @@ namespace Yosimitso\WorkingForumBundle\Event;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\Translation\TranslatorInterface;
-use Yosimitso\WorkingForumBundle\Entity\User;
+use Yosimitso\WorkingForumBundle\Entity\Subscription;
 use Yosimitso\WorkingForumBundle\Entity\Post;
-use Yosimitso\WorkingForumBundle\Entity\Subscription as SubscriptionEntity;
-use Yosimitso\WorkingForumBundle\Util\Subscription;
+use Yosimitso\WorkingForumBundle\Service\SubscriptionService;
 
 /**
  * Class PostEvent
@@ -29,9 +28,9 @@ class PostEvent
      */
     private $em;
     /**
-     * @var Subscription
+     * @var SubscriptionService
      */
-    private $notificationUtil;
+    private $subscriptionService;
 
     /**
      * @var array
@@ -42,13 +41,13 @@ class PostEvent
      * PostEvent constructor.
      * @param int $floodLimit
      * @param TranslatorInterface $translator
-     * @param Subscription $notificationUtil
+     * @param SubscriptionService $subscriptionService
      */
-    public function __construct(int $floodLimit, TranslatorInterface $translator, Subscription $notificationUtil, $paramSubscription)
+    public function __construct(int $floodLimit, TranslatorInterface $translator, SubscriptionService $subscriptionService, $paramSubscription)
     {
         $this->floodLimit = $floodLimit;
         $this->translator = $translator;
-        $this->notificationUtil = $notificationUtil;
+        $this->subscriptionService = $subscriptionService;
         $this->paramSubscription = $paramSubscription;
     }
 
@@ -85,7 +84,7 @@ class PostEvent
         }
 
         if ($this->paramSubscription['enable']) {
-            $this->notificationUtil->notifySubscriptions($entity);
+            $this->subscriptionService->notifySubscriptions($entity);
 
             if ($entity->getAddSubscription()) {
                 $this->addSubscription($entity);
@@ -120,9 +119,9 @@ class PostEvent
      */
     public function addSubscription($entity)
     {
-        $checkSubscription = $this->em->getRepository('YosimitsoWorkingForumBundle:Subscription')->findBy(['thread' => $entity->getThread(), 'user' => $entity->getUser()]);
+        $checkSubscription = $this->em->getRepository(Subscription::class)->findBy(['thread' => $entity->getThread(), 'user' => $entity->getUser()]);
         if (empty($checkSubscription) || is_null($checkSubscription)) { // NOT ALREADY SUBSCRIBED
-            $subscription = new SubscriptionEntity($entity->getThread(), $entity->getUser());
+            $subscription = new Subscription($entity->getThread(), $entity->getUser());
             $this->em->persist($subscription);
             $this->em->flush();
         }

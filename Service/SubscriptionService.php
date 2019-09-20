@@ -1,11 +1,10 @@
 <?php
 
 
-namespace Yosimitso\WorkingForumBundle\Util;
+namespace Yosimitso\WorkingForumBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Translation\TranslatorInterface;
-use Yosimitso\WorkingForumBundle\Entity\Subscription as SubscriptionEntity;
 use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Templating;
 use Symfony\Component\Templating\EngineInterface;
@@ -13,9 +12,9 @@ use Symfony\Component\Templating\EngineInterface;
 /**
  * Class Subscription
  *
- * @package Yosimitso\WorkingForumBundle\Util
+ * @package Yosimitso\WorkingForumBundle\Service
  */
-class Subscription
+class SubscriptionService
 {
     /**
      * @var EntityManager
@@ -73,12 +72,12 @@ class Subscription
         if (is_null($post->getThread())) {
             return;
         }
-        $notifs = $this->em->getRepository('YosimitsoWorkingForumBundle:Subscription')->findByThread($post->getThread()->getId());
+        $notifs = $this->em->getRepository(Subscription::class)->findByThread($post->getThread()->getId());
         if (!count($notifs)) {
             return;
         }
         $emailTranslation = $this->getEmailTranslation($post->getThread()->getSubforum(), $post->getThread(), $post, $post->getUser());
-        
+
         if (!is_null($notifs)) {
             foreach ($notifs as $notif) {
                 try {

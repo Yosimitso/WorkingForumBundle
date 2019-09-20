@@ -17,7 +17,7 @@ services:
     parent: yosimitso_workingforum_base_controller
     public: true
     arguments:
-      - "@yosimitso_workingforum_service_subscription"
+      - "@yosimitso_workingforum_service_fileuploader"
       - "@yosimitso_workingforum_smiley"
       - "@yosimitso_workingforum_service_thread"
 
@@ -84,15 +84,15 @@ services:
       - "@security.token_storage"
       - "%yosimitso_working_forum.allow_anonymous_read%"
 
-  yosimitso_workingforum_service_subscription:
-    class: Yosimitso\WorkingForumBundle\Service\FileUploader
+  yosimitso_workingforum_service_fileuploder:
+    class: Yosimitso\WorkingForumBundle\Service\FileUploaderService
     arguments:
       - "@doctrine.orm.entity_manager"
       - "%yosimitso_working_forum.file_upload%"
       - "@translator"
 
-  yosimitso_workingforum_util_subscription:
-    class: Yosimitso\WorkingForumBundle\Util\Subscription
+  yosimitso_workingforum_service_subscription:
+    class: Yosimitso\WorkingForumBundle\Service\Subscription
     arguments:
       - "@doctrine.orm.entity_manager"
       - "@mailer"
@@ -107,7 +107,7 @@ services:
     arguments:
       - "%yosimitso_working_forum.post_flood_sec%"
       - "@translator"
-      - "@yosimitso_workingforum_util_subscription"
+      - "@yosimitso_workingforum_service_subscription"
       - "%yosimitso_working_forum.thread_subscription%"
     tags:
       - { name: doctrine.event_listener, event: prePersist}
@@ -123,7 +123,7 @@ services:
       - "@request_stack"
       - "@doctrine.orm.entity_manager"
       - "@yosimitso_workingforum_authorization"
-      - "@yosimitso_workingforum_service_subscription"
+      - "@yosimitso_workingforum_service_fileuploader"
       - "@yosimitso_workingforum_authorization"
       - "@yosimitso_workingforum_service_bundle_parameters"
       - "@form.factory"

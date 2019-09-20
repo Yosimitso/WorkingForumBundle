@@ -18,6 +18,6 @@ class BundleParametersService
 
     public function __get($name)
     {
-        return $this->container->getParameter($name);
+        return $this->container->getParameter('yosimitso_working_forum.'.$name);
     }
 }

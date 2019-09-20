@@ -93,7 +93,7 @@ services:
       - "@translator"
 
   yosimitso_workingforum.service.subscription:
-    class: Yosimitso\WorkingForumBundle\Service\Subscription
+    class: Yosimitso\WorkingForumBundle\Service\SubscriptionService
     arguments:
       - "@doctrine.orm.entity_manager"
       - "@mailer"

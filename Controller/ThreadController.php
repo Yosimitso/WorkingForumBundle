@@ -12,7 +12,6 @@ use Yosimitso\WorkingForumBundle\Entity\PostVote;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Subscription;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
-use Yosimitso\WorkingForumBundle\Entity\Subscription as EntitySubscription;
 use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Symfony\Component\HttpFoundation\Request;
@@ -541,7 +540,7 @@ class ThreadController extends BaseController
         $checkSubscription = $this->em->getRepository(Subscription::class)->findOneBy(['user' => $this->user, 'thread' => $thread]);
 
         if (is_null($checkSubscription)) {
-            $subscription = new EntitySubscription($thread, $this->user);
+            $subscription = new Subscription($thread, $this->user);
             $this->em->persist($subscription);
             $this->em->flush();
 

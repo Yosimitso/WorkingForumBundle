@@ -8,6 +8,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Templating;
 use Symfony\Component\Templating\EngineInterface;
+use Yosimitso\WorkingForumBundle\Entity\Subscription;
 
 /**
  * Class Subscription

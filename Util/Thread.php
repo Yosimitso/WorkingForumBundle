@@ -8,7 +8,7 @@ namespace Yosimitso\WorkingForumBundle\Util;
  *
  * @package Yosimitso\WorkingForumBundle\Util
  */
-class Thread
+class ThreadUtil
 {
     private $lockThreadOlderThan;
     private $paginator;

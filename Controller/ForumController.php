@@ -9,8 +9,8 @@ use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Rules;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
+use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Form\RulesType;
-use Yosimitso\WorkingForumBundle\Util\Thread;
 
 /**
  * Class ForumController

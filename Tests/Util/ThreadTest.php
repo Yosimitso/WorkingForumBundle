@@ -3,7 +3,7 @@
 namespace Yosimitso\WorkingForumBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Yosimitso\WorkingForumBundle\Util\Thread as ThreadUtil;
+use Yosimitso\WorkingForumBundle\Util\ThreadUtil;
 use Yosimitso\WorkingForumBundle\Entity\Thread as ThreadEntity;
 use Knp\Component\Pager\Paginator;
 

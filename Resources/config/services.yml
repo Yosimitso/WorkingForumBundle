@@ -84,7 +84,7 @@ services:
       - "@security.token_storage"
       - "%yosimitso_working_forum.allow_anonymous_read%"
 
-  yosimitso_workingforum_service_fileuploder:
+  yosimitso_workingforum_service_fileuploader:
     class: Yosimitso\WorkingForumBundle\Service\FileUploaderService
     arguments:
       - "@doctrine.orm.entity_manager"

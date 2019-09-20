@@ -3,6 +3,7 @@
 namespace Yosimitso\WorkingForumBundle\Tests\Service;
 
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -20,6 +21,7 @@ use Yosimitso\WorkingForumBundle\Tests\Mock\EntityManagerMock;
 use Knp\Component\Pager\Paginator;
 use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class ThreadControllerTest
@@ -34,7 +36,25 @@ class ThreadServiceTest extends TestCase
         if (is_null($user)) {
             $user = $this->createMock(User::class);
             $user->setUsername = 'toto';
+
         }
+            $tokenStorage = $this->createMock(TokenStorageInterface::class);
+
+
+            $class = new class($user)
+            {
+                public function __construct($user)
+                {
+                    $this->user = $user;
+                }
+
+                function getUser()
+                {
+                    return $this->user;
+                }
+            };
+
+        $tokenStorage->method('getToken')->willReturn($class);
 
         if (is_null($authorization)) {
             $authorization = $this->createMock(Authorization::class);
@@ -48,7 +68,7 @@ class ThreadServiceTest extends TestCase
             10,
             $this->createMock(RequestStack::class),
             $em,
-            $user,
+            $tokenStorage,
             $this->createMock(FileUploaderService::class),
             $authorization,
             $bundleParameters,
@@ -336,7 +356,7 @@ class ThreadServiceTest extends TestCase
         $post = new Post;
         $post->setContent('test');
 
-        $form = $this->getMockBuilder(PostType::class)
+        $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
             ->setMethods(['getData'])
             ->getMock();
@@ -402,8 +422,7 @@ class ThreadServiceTest extends TestCase
         $testedClass = $this->getTestedClass();
 
         // ANONYMOUS USER
-        $user = $this->createMock(User::class);
-        $user->method('getId')->willReturn(null);
+        $user = null;
         $thread = new Thread;
 
         $result = $testedClass->getAvailableActions($user, $thread, false, true);
@@ -429,11 +448,11 @@ class ThreadServiceTest extends TestCase
         $thread = new Thread;
 
         $result = $testedClass->getAvailableActions($user, $thread, false, true);
-        $this->assertFalse($result['setResolved']);
-        $this->assertFalse($result['quote']);
-        $this->assertFalse($result['report']);
-        $this->assertFalse($result['post']);
-        $this->assertFalse($result['subscribe']);
+        $this->assertTrue($result['setResolved']);
+        $this->assertTrue($result['quote']);
+        $this->assertTrue($result['report']);
+        $this->assertTrue($result['post']);
+        $this->assertTrue($result['subscribe']);
         $this->assertTrue($result['moveThread'] instanceof FormView);
         $this->assertFalse($result['allowModeratorDeleteThread']);
     }
@@ -451,11 +470,11 @@ class ThreadServiceTest extends TestCase
         $thread = new Thread;
 
         $result = $testedClass->getAvailableActions($user, $thread, false, true);
-        $this->assertFalse($result['setResolved']);
-        $this->assertFalse($result['quote']);
-        $this->assertFalse($result['report']);
-        $this->assertFalse($result['post']);
-        $this->assertFalse($result['subscribe']);
+        $this->assertTrue($result['setResolved']);
+        $this->assertTrue($result['quote']);
+        $this->assertTrue($result['report']);
+        $this->assertTrue($result['post']);
+        $this->assertTrue($result['subscribe']);
         $this->assertTrue($result['moveThread'] instanceof FormView);
         $this->assertFalse($result['allowModeratorDeleteThread']);
     }

@@ -3,6 +3,7 @@
 namespace Yosimitso\WorkingForumBundle\Service;
 
 use Knp\Component\Pager\Paginator;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Yosimitso\WorkingForumBundle\Entity\Post;
@@ -295,7 +296,7 @@ class ThreadService
      *
      * Create a post
      */
-    public function post(Subforum $subforum, Thread $thread, Post $post, UserInterface $user, PostType $form)
+    public function post(Subforum $subforum, Thread $thread, Post $post, UserInterface $user, Form $form)
     {
         $subforum->newPost($user); // UPDATE SUBFORUM STATISTIC
         $thread->addReply($user); // UPDATE THREAD STATISTIC
@@ -330,10 +331,10 @@ class ThreadService
      */
     public function getAvailableActions(?UserInterface $user, Thread $thread, $autolock, $canSubscribeThread)
     {
-        $anonymousUser = (is_null($user) || $user->getId() === null) ? true : false;
+        $anonymousUser = (is_null($user)) ? true : false;
 
         return [
-            'setResolved' => (!$anonymousUser) && (($user->getId() == $thread->getAuthor()->getId()) || $this->authorization->hasModeratorAuthorization()),
+            'setResolved' => $this->authorization->hasModeratorAuthorization() || (!$anonymousUser && $user->getId() == $thread->getAuthor()->getId()),
             'quote' => (!$anonymousUser && !$thread->getLocked()),
             'report' => (!$anonymousUser),
             'post' => (!$anonymousUser && !$autolock),

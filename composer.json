@@ -6,6 +6,7 @@
         "knplabs/knp-paginator-bundle": "~2.7.2",
         "knplabs/knp-markdown-bundle": "^1.7.0",
 	    "symfony/framework-bundle": ">=3.0",
+        "symfony/security": ">=3.0",
         "sensio/framework-extra-bundle": ">=3.0",
         "swiftmailer/swiftmailer": ">=5.4.9",
         "symfony/form": ">=3.0"

@@ -7,7 +7,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
-use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 
 /**
  * Class AdminController
@@ -18,14 +17,6 @@ use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
  */
 class AdminController extends BaseController
 {
-
-    private $smileyTwigExtension;
-
-    public function __construct(SmileyTwigExtension $smileyTwigExtension)
-    {
-        $this->smileyTwigExtension = $smileyTwigExtension;
-    }
-
 
     /** @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
      * @return Response

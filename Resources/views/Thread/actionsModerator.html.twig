@@ -20,7 +20,7 @@
             <a class="wf_button wf_icon-remove"
                rel="nofollow"
                onclick="if (!confirm('{{ 'forum.confirm_delete_thread' | trans }}')) { return false; }"
-               href="{{ path('workingforum_delete_thread',{'threadSlug': thread.slug}) }}">
+               href="{{ path('workingforum_delete_thread',{'forum_slug': forum.slug, 'subforum_slug' : subforum.slug, 'thread_slug': thread.slug}) }}">
                 {{ 'forum.delete_thread' | trans }}
             </a>
         </li>

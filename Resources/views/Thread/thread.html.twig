@@ -69,7 +69,7 @@
             <h2>{{ thread.sublabel }}</h2>
 
             {% for post in post_list %}
-                {% include '@YosimitsoWorkingForum/Post/post.html.twig' with {'post': post, 'thread': thread, 'parameters': parameters, 'hasAlreadyVoted': hasAlreadyVoted, 'autolock': autolock, 'loop': loop, 'actionsAvailables': actionsAvailables} only %}
+                {% include '@YosimitsoWorkingForum/Post/post.html.twig' with {'forum': forum, 'subforum' : subforum, 'post': post, 'thread': thread, 'parameters': parameters, 'hasAlreadyVoted': hasAlreadyVoted, 'autolock': autolock, 'loop': loop, 'actionsAvailables': actionsAvailables} only %}
             {% endfor %}
 
             {{ knp_pagination_render(post_list) }}

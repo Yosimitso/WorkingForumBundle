@@ -2,12 +2,22 @@ workingforum_forum:
     path:     /
     defaults: { _controller: yosimitso_workingforum.controller.forum:indexAction }
 
+workingforum_rules:
+    path: /rules
+    defaults: { _controller: yosimitso_workingforum.controller.forum:rulesAction}
+
+workingforum_rules_locale:
+    path: /rules/{locale}
+    defaults: { _controller: yosimitso_workingforum.controller.forum:rulesAction}
+    requirements:
+      locale: '\D+'
+
 workingforum_subforum:
-    path: /{forum_slug}/{subforum_slug}
+    path: /{forum_slug}/{subforum_slug}/view
     defaults: { _controller: yosimitso_workingforum.controller.forum:subforumAction }
 
 workingforum_thread:
-    path: /{forum_slug}/{subforum_slug}/{thread_slug}
+    path: /{forum_slug}/{subforum_slug}/{thread_slug}/view
     defaults: { _controller: yosimitso_workingforum.controller.thread:indexAction }
 
 workingforum_new_thread:
@@ -27,15 +37,29 @@ workingforum_resolve_thread:
     defaults: { _controller: yosimitso_workingforum.controller.thread:resolveAction }
 
 workingforum_report_post:
-    path: /report/{post_id}
+    path: /{forum_slug}/{subforum_slug}/report/{post_id}
     defaults: { _controller: yosimitso_workingforum.controller.thread:reportAction }
+    requirements:
+        post_id: '\d+'
+
+workingforum_add_subscription:
+    path: /{forum_slug}/{subforum_slug}/addsubscription/{thread_id}
+    defaults: { _controller: yosimitso_workingforum.controller.thread:addSubscriptionAction}
+    requirements:
+        thread_id: '\d+'
+
+workingforum_cancel_subscription:
+    path: /{forum_slug}/{subforum_slug}/cancelsubscription/{thread_id}
+    defaults: { _controller: yosimitso_workingforum.controller.thread:cancelSubscriptionAction}
+    requirements:
+        thread_id: '\d+'
 
 workingforum_move_thread:
     path: /movethread
     defaults: { _controller: yosimitso_workingforum.controller.thread:moveThreadAction }
 
 workingforum_delete_thread:
-    path: /deletethread/{threadSlug}
+    path: /{forum_slug}/{subforum_slug}/deletethread/{thread_slug}
     defaults: { _controller: yosimitso_workingforum.controller.thread:deleteThreadAction }
 
 workingforum_admin:
@@ -45,6 +69,8 @@ workingforum_admin:
 workingforum_admin_forum_edit:
     path: /admin/forum/edit/{id}
     defaults: {_controller: yosimitso_workingforum.controller.admin_forum:editAction }
+    requirements:
+        id: '\d+'
 
 workingforum_admin_forum_add:
     path: /admin/forum/add
@@ -53,6 +79,8 @@ workingforum_admin_forum_add:
 workingforum_admin_delete_forum:
     path: /admin/forum/delete/{forum_id}
     defaults: {_controller: yosimitso_workingforum.controller.admin_forum:deleteForumAction }
+    requirements:
+        forum_id: '\d+'
 
 workingforum_admin_forum_rules:
     path: /admin/rules
@@ -75,6 +103,7 @@ workingforum_admin_install_settings:
 workingforum_admin_report:
     path: /admin/report
     defaults: {_controller: yosimitso_workingforum.controller.admin_report:reportAction }
+
 workingforum_admin_report_history:
     path: /admin/report/history
     defaults: {_controller: yosimitso_workingforum.controller.admin_report:reportHistoryAction }
@@ -98,19 +127,3 @@ workingforum_search:
 workingforum_vote_up:
     path: /voteup
     defaults: { _controller: yosimitso_workingforum.controller.post:voteUpAction }
-
-workingforum_rules:
-    path: rules
-    defaults: { _controller: yosimitso_workingforum.controller.forum:rulesAction}
-
-workingforum_rules_locale:
-    path: rules/{locale}
-    defaults: { _controller: yosimitso_workingforum.controller.forum:rulesAction}
-
-workingforum_add_subscription:
-    path: addsubscription/{threadId}
-    defaults: { _controller: yosimitso_workingforum.controller.thread:addSubscriptionAction}
-
-workingforum_cancel_subscription:
-    path: cancelsubscription/{threadId}
-    defaults: { _controller: yosimitso_workingforum.controller.thread:cancelSubscriptionAction}

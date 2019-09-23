@@ -8,7 +8,7 @@
     <div id="wf_forum">
         <p>
         {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN")) or is_granted("ROLE_MODERATOR") %}
-            <a class="wf_button" href="{{ path('workingforum_admin') }}">{{ 'forum.admin_access' | trans }}</a>
+            <a class="wf_button" href="{{ path('workingforum_admin') }}">{{ 'forum.admin_access' |trans }}</a>
             {% endif %}
         {% include '@YosimitsoWorkingForum/Common/search_button.html.twig' %}
          <a href="{{ path('workingforum_rules') }}" class="wf_button">{{ 'forum.forum_rules' |trans }}</a>
@@ -22,7 +22,7 @@
     {% for subforum in forum.subForum %}
        <tr>
            <td class="wf_sub_name"><a href="{{ path('workingforum_subforum', {'forum_slug': subforum.forum.slug, 'subforum_slug' : subforum.slug }) }}">{{ subforum.name }}</a></td>
-           <td class="wf_sub_stat">{{ subforum.nbThread | number_format }} {{ 'forum.nbThread' | trans }}<br />{{ subforum.nbPost | number_format }} {{ 'forum.nbPost' | trans }}</td>
+           <td class="wf_sub_stat">{{ subforum.nbThread | number_format }} {{ 'forum.nbThread' |trans }}<br />{{ subforum.nbPost | number_format }} {{ 'forum.nbPost' |trans }}</td>
            <td class="wf_sub_lastreply">
                {% if subforum.nbPost > 0 %}
                {{ 'forum.last_reply_date' |trans }}

@@ -434,6 +434,53 @@ class ThreadController extends BaseController
     }
 
     /**
+     * A moderator unpin a thread
+     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @param $forum_slug
+     * @param $subforum_slug
+     * @param $thread_slug
+     * @return RedirectResponse
+     * @throws \Exception
+     */
+    function unpinAction($forum_slug, $subforum_slug, $thread_slug)
+    {
+        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
+
+        if (is_null($thread)) {
+            throw new \Exception("Thread error",
+                500
+            );
+
+        }
+
+        if (!$thread->getPin())
+        {
+            throw new \Exception("Thread not pinned",500);
+        }
+
+        $thread->setPin(false);
+        $this->em->persist($thread);
+        $this->em->flush();
+
+        $this->flashbag
+            ->add(
+                'success',
+                $this->translator->trans('message.threadUnpinned', [], 'YosimitsoWorkingForumBundle')
+            )
+        ;
+
+        return $this->redirect(
+            $this->generateUrl('workingforum_thread',
+                [
+                    'forum_slug' => $forum_slug,
+                    'subforum_slug' => $subforum_slug,
+                    'thread_slug'   => $thread_slug,
+                ]
+            )
+        );
+    }
+
+    /**
      * A user report a thread
      * @param $post_id
      * @return Response

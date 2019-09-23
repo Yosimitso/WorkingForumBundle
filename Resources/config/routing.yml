@@ -21,6 +21,10 @@ workingforum_pin_thread:
     path: /pin/{forum_slug}/{subforum_slug}/{thread_slug}
     defaults: { _controller: yosimitso_workingforum_thread_controller:pinAction }
 
+workingforum_unpin_thread:
+    path: /unpin/{forum_slug}/{subforum_slug}/{thread_slug}
+    defaults: { _controller: yosimitso_workingforum_thread_controller:unpinAction }
+
 workingforum_resolve_thread:
     path: /resolved/{forum_slug}/{subforum_slug}/{thread_slug}
     defaults: { _controller: yosimitso_workingforum_thread_controller:resolveAction }

@@ -262,7 +262,7 @@ code {
 }
 
 .wf_admin_table tbody tr:nth-child(even) {
-    background-color: white;
+    background-color: #efebeb;
 }
 
 #wf_new_post .md-editor > .md-preview {

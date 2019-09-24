@@ -16,17 +16,17 @@
    {{ form_start(form) }}
    <p>{{ form_label(form.name) }}</p>
    <p>{{ form_widget(form.name) }}</p>
-   <p class="wf_label">{{ 'admin.list_subforum' | trans }}</p>
-   <p><a class="wf_button" onclick="NewSubforum()"><span class="wf_add-plus"></span>{{ 'admin.new_subforum' | trans }}</a></p>
+   <p class="wf_label">{{ 'admin.list_subforum' |trans }}</p>
+   <p><a class="wf_button" onclick="NewSubforum()"><span class="wf_add-plus"></span>{{ 'admin.new_subforum' |trans }}</a></p>
 
 	<div id="wf_list_subforum">
         <table class="wf_admin_table">
             <thead>
             <tr>
-                <th>{{ 'forum.subforum_name' | trans | capitalize }}</th>
-                <th>{{ 'forum.allowed_roles' | trans | capitalize }}</th>
-                <th>{{ 'forum.nbThread' | trans | capitalize }}</th>
-                <th>{{ 'forum.nbPost' | trans | capitalize }}</th>
+                <th>{{ 'forum.subforum_name' |trans | capitalize }}</th>
+                <th>{{ 'forum.allowed_roles' |trans | capitalize }}</th>
+                <th>{{ 'forum.nbThread' |trans | capitalize }}</th>
+                <th>{{ 'forum.nbPost' |trans | capitalize }}</th>
                 <th></th>
             </tr>
             </thead>
@@ -50,7 +50,7 @@
    <script>
        function deleteSubforum(index)
        {
-             if (!confirm("{{ 'admin.delete_subforum' | trans }}"))
+             if (!confirm("{{ 'admin.delete_subforum' |trans }}"))
           {
               return false;
           }
@@ -60,10 +60,9 @@
        function NewSubforum() {
         
            var length = jQuery('.wf_admin_table tbody').children().length;
-           var content = '<tr id="wf_sub_'+length+'">'+
-                         '<td><input type="text" value="" required="required" name="admin_forum[subforum]['+length+'][name]" placeholder="{{ 'forum.subforum_name' | trans | capitalize  }}" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"></td>' +
+           var content = '<tr id="wf_sub_'+length+'"><td><input type="text" value="" required="required" name="admin_forum[subforum]['+length+'][name]" placeholder="{{ 'forum.subforum_name' |trans | capitalize  }}" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"></td>' +
                          '<td><input type="text" placeholder="{{ 'admin.empty_means_all' |trans }}" value="" name="admin_forum[subforum]['+length+'][allowedRoles]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_allowedRoles"></td>' +
-                         '<td></td><td></td><td><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></td></tr>';
+                         '<td></td></td><td><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></td></tr>';
 			jQuery('.wf_admin_table tbody').append(content);
            return true;
        }
@@ -75,12 +74,12 @@
 </div>
 {% if statistics is defined %}
 <div class="wf_admin_subforum_statistic">
-   <p class="wf_label">{{ 'admin.statistics' | trans }}</p>
-   <p>{{ 'forum.nbThread' | trans | capitalize }} : {{ statistics.nbThread  }}</p>
-   <p>{{ 'forum.nbPost' | trans | capitalize }} : {{ statistics.nbPost }}</p>
-   <p>{{ 'forum.averagePostThread' | trans }} : {{ statistics.averagePostThread | round(2) }}
+   <p class="wf_label">{{ 'admin.statistics' |trans }}</p>
+   <p>{{ 'forum.nbThread' |trans | capitalize }} : {{ statistics.nbThread  }}</p>
+   <p>{{ 'forum.nbPost' |trans | capitalize }} : {{ statistics.nbPost }}</p>
+   <p>{{ 'forum.averagePostThread' |trans }} : {{ statistics.averagePostThread | round(2) }}
         <p>
-   <a href="{{ path('workingforum_admin_delete_forum', {forum_id: forum.id}) }}" onclick="if (!confirm('{{'admin.confirmDeleteForum'|trans}}')) { return false; }" class="wf_button wf_button-red">{{ 'admin.delete_forum' | trans}}</a>
+   <a href="{{ path('workingforum_admin_delete_forum', {forum_id: forum.id}) }}" onclick="if (!confirm('{{'admin.confirmDeleteForum'|trans}}')) { return false; }" class="wf_button wf_button-red">{{ 'admin.delete_forum' |trans}}</a>
    </p>
 </div>
 {% endif %}

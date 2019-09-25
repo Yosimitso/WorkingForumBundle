@@ -45,7 +45,7 @@ let config = {
                 test: /\.(ttf|woff|eot)$/,
                 use: [
                     {
-                        loader: 'file-loader',
+                        loader: 'url-loader',
                         options: {
                             name: './font/[name].[ext]',
                         },

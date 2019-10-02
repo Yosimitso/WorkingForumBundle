@@ -258,7 +258,7 @@ jQuery(document).ready(function () {
     addSubscription = function () {
         jQuery.ajax({
             type: "GET",
-            url: storeJs.routes.workingforum_add_subscription.replace('%thread_id%', storeJs.thread_id).replace('%subforum_slug%', storeJs.subforum_slug).replace('%forum_slug%', storeJs.forum_slug),
+            url: storeJs.routes.workingforum_add_subscription,
             crossDomain: false,
             dataType: 'json',
             async: false,
@@ -277,7 +277,7 @@ jQuery(document).ready(function () {
     cancelSubscription = function () {
         jQuery.ajax({
             type: "GET",
-            url: storeJs.routes.workingforum_cancel_subscription.replace('%thread_id%', storeJs.thread_id).replace('%subforum_slug%', storeJs.subforum_slug).replace('%forum_slug%', storeJs.forum_slug),
+            url: storeJs.routes.workingforum_cancel_subscription,
             crossDomain: false,
             dataType: 'json',
             async: false,

@@ -24,8 +24,8 @@
             'workingforum_move_thread': '{{ path('workingforum_move_thread') }}',
             'workingforum_admin_report_action_moderate': '{{ path('workingforum_admin_report_action_moderate') }}',
             'workingforum_vote_up': '{{ path('workingforum_vote_up') }}',
-            'workingforum_add_subscription': '{{ path('workingforum_add_subscription', {'forum_slug': '%forum_slug%', 'subforum_slug' : '%subforum_slug%', 'thread_id': '%thread_id%'}) }}',
-            'workingforum_cancel_subscription': '{{ path('workingforum_cancel_subscription', {'forum_slug': '%forum_slug%', 'subforum_slug' : '%subforum_slug%', 'thread_id': '%thread_id%'}) }}'
+            'workingforum_add_subscription': '{{ path('workingforum_add_subscription', {'forum_slug': forum.slug, 'subforum_slug' : subforum.slug, 'thread_id': thread.id }) }}',
+            'workingforum_cancel_subscription': '{{ path('workingforum_cancel_subscription', {'forum_slug': forum.slug, 'subforum_slug' : subforum.slug, 'thread_id': thread.id}) }}'
         }
     {% if thread is defined %}
         , 'thread_id': '{{ thread.id }}'

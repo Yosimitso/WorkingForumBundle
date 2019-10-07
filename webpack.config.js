@@ -30,17 +30,6 @@ let config = {
                     'sass-loader'
                 ]
             },
-            // {
-            //     test: /\.ttf$/,
-            //     use: [
-            //         {
-            //             loader: 'ttf-loader',
-            //             options: {
-            //                 name: './font/[name].[ext]',
-            //             },
-            //         }
-            //         ]
-            // },
             {
                 test: /\.(ttf|woff|eot)$/,
                 use: [

@@ -19,10 +19,11 @@
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
     "ttf-loader": "^1.0.2",
-    "url-loader": "^2.1.0"
+    "url-loader": "^2.1.0",
+    "webpack": "^4.41.0"
   },
   "scripts": {
-    "dev": "webpack-cli",
+    "dev": "webpack-cli --mode=development",
     "prod": "cross-env NODE_ENV=production webpack-cli --progress --mode=production"
   },
   "dependencies": {

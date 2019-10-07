@@ -30,8 +30,8 @@
                 <th></th>
             </tr>
             </thead>
+            <tbody>
    {% for subforum in form.subforum %}
-               <tbody>
                <tr id="wf_sub_{{ loop.index-1 }}">
                    <td>{{ form_widget(subforum.name) }}</td>
                    <td>{{ form_widget(subforum.allowedRoles) }}</td>
@@ -42,8 +42,8 @@
                             src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24"/>
                        </a></td>
                </tr>
-               </tbody>
        {% endfor %}
+            </tbody>
         </table>
 		</div>
   <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
@@ -60,9 +60,10 @@
        function NewSubforum() {
         
            var length = jQuery('.wf_admin_table tbody').children().length;
-           var content = '<tr id="wf_sub_'+length+'"><td><input type="text" value="" required="required" name="admin_forum[subforum]['+length+'][name]" placeholder="{{ 'forum.subforum_name' |trans | capitalize  }}" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"></td>' +
+           var content = '<tr id="wf_sub_'+length+'">'+
+                         '<td><input type="text" value="" required="required" name="admin_forum[subforum]['+length+'][name]" placeholder="{{ 'forum.subforum_name' | trans | capitalize  }}" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_name"></td>' +
                          '<td><input type="text" placeholder="{{ 'admin.empty_means_all' |trans }}" value="" name="admin_forum[subforum]['+length+'][allowedRoles]" id="yosimitso_workingforumbundle_forum_subforum_'+length+'_allowedRoles"></td>' +
-                         '<td></td></td><td><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></td></tr>';
+                         '<td></td><td></td><td><a href="#" onclick="deleteSubforum('+length+')"><img style="vertical-align:middle" src="{{ asset('bundles/yosimitsoworkingforum/images/remove.png') }}" width="24" /></td></tr>';
 			jQuery('.wf_admin_table tbody').append(content);
            return true;
        }

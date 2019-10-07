@@ -27,19 +27,10 @@
             <div class="wf_empty_forum">{{ forbiddenMsg | trans }}</div>
         </div>
     {% else %}
+
         {% include '@YosimitsoWorkingForum/Thread/storeJs.html.twig' %}
-        <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/js/smiley.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/js/thread.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/twitter.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/github.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/js/nicefileinput/jquery.nicefileinput.min.js') }}"></script>
-        <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}"
-          type="text/css" media="all"/>
-        <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}"
-          type="text/css" media="all"/>
+        <script src="{{ asset('bundles/yosimitsoworkingforum/thread.min.js') }}"></script>
+        <style href="{{ asset('bundles/yosimitsoworkingforum/css/thread.css') }}"></style>
 
         {# LOCK #}
     {% if thread.locked %}

@@ -26,6 +26,7 @@ forum:
     empty_forum: No message
     no_subforum: No subforum
     pin: Pin
+    unpin: Unpin
     wrote: wrote
     user:
         ROLE_SUPER_ADMIN: Super Admin
@@ -55,6 +56,7 @@ forum:
     delete_thread: Delete thread
     confirm_delete_thread: Are you sure to delete this thread ?
     pin_thread: Pin thread
+    unpin_thread: Unpin thread
     thread_too_old_locked: This thread is too old to reply
     quote: Quote this post
     enclosed_files: Enclosed file(s)
@@ -149,6 +151,7 @@ message:
     threadLocked: The thread has been successfully locked
     threadResolved: The thread is now solved, thanks for your feedback
     threadPinned: The thread has been succesfully pinned
+    threadUnpinned: The thread has been unpinned
     banned: Sorry but you are banned
     error:
         must_be_logged: You have to be logged in to access this

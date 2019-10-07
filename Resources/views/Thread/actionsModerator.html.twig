@@ -33,5 +33,13 @@
             {{ 'forum.pin_thread' | trans }}
         </a>
     </li>
+        {% else %}
+            <li>
+                <a class="wf_button wf_icon-pin"
+                   rel="nofollow"
+                   href="{{ path('workingforum_unpin_thread',{'forum_slug': forum.slug, 'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
+                    {{ 'forum.unpin_thread' | trans }}
+                </a>
+            </li>
     {% endif %}
 </ul>

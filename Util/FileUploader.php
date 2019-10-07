@@ -78,7 +78,7 @@ class FileUploader
             if (!isset($originalFilename[1])) { // FILENAME IS INVALID
                 $this->errorMessage = $this->translator->trans(
                     'forum.file_upload.error.invalid_filename',
-                    ['%filename%' => $originalFilename],
+                    ['%filename%' => $originalFilename[1]],
                     'YosimitsoWorkingForumBundle'
                 );
                 return false;

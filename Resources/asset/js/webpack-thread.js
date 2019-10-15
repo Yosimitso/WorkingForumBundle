@@ -1,6 +1,6 @@
 require('./jquery.min')
-require('./thread.js')
-require('./smiley.js')
+require('./thread')
+require('./smiley')
 require('../markdown/js/bootstrap-markdown')    
 require('../showdown/src/showdown')    
 require('../showdown/src/extensions/twitter')    
@@ -8,3 +8,4 @@ require('../showdown/src/extensions/github')
 require('./nicefileinput/jquery.nicefileinput.min')
 require('../markdown/css/bootstrap.min.css')    
 require('../markdown/css/bootstrap-markdown.min.css')
+

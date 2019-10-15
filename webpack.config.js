@@ -3,6 +3,7 @@ const path = require("path");
 const glob = require('glob');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 let config = {
     entry: {
@@ -10,6 +11,8 @@ let config = {
         forum: './Resources/asset/js/webpack-forum.js',
         theme_green: './Resources/asset/scss/theme_green.scss',
         theme_dark_blue: './Resources/asset/scss/theme_dark_blue.scss'
+        // bootstrap: './Resources/asset/scss/bootstrap.scss',
+        // bootstrap_markdown: './Resources/asset/scss/bootstrap-markdown.scss',
     },
     output: {
         path: path.resolve(__dirname, "./Resources/public"),
@@ -18,12 +21,22 @@ let config = {
     module: {
         rules: [
             {
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
+            },
+            {
                 test: /\.(scss|css)$/,
                 use: [
                     {
                         loader: MiniCssExtractPlugin.loader,
                         options: {
-                            name: './css/[name].[ext]'
+                            name: 'css/[name].[ext]'
                         }
                     },
                     'css-loader',
@@ -34,9 +47,11 @@ let config = {
                 test: /\.(ttf|woff|eot)$/,
                 use: [
                     {
-                        loader: 'url-loader',
+                        loader: 'file-loader',
                         options: {
-                            name: './font/[name].[ext]',
+                            name: '[name].[ext]',
+                            outputPath: 'font/',
+                            publicPath: '../font'
                         },
                     }
                 ]
@@ -69,7 +84,8 @@ module.exports = config;
 if (process.env.NODE_ENV === 'production') {
     const OptimizeCSSAssets = require("optimize-css-assets-webpack-plugin");
     module.exports.plugins.push(
-        // new webpack.optimize.UglifyJsPlugin(),
-        new OptimizeCSSAssets()
+        new OptimizeCSSAssets(),
+        new UglifyJsPlugin
     );
 }
+

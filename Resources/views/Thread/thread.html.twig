@@ -30,7 +30,7 @@
 
         {% include '@YosimitsoWorkingForum/Thread/storeJs.html.twig' %}
         <script src="{{ asset('bundles/yosimitsoworkingforum/thread.min.js') }}"></script>
-        <style href="{{ asset('bundles/yosimitsoworkingforum/css/thread.css') }}"></style>
+        <link rel="stylesheet" media="all" href="{{ asset('bundles/yosimitsoworkingforum/css/thread.css') }}" />
 
         {# LOCK #}
     {% if thread.locked %}

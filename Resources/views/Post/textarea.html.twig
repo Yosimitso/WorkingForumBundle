@@ -52,9 +52,11 @@
         </div>
     {% endif %}
     {% if form.addSubscription is defined %}
-        <p>{{ form_widget(form.addSubscription) }} {{ form_label(form.addSubscription) }}</p>
-    {% else %}
-        <p id="cancel_subscription">{{ 'forum.already_subscribed' | trans }}, <a href="#" onclick="cancelSubscription(); return false;">{{ 'forum.cancel_subscription' | trans }}</a></p>
+        {%  if hasSubscribed %}
+            <p id="cancel_subscription">{{ 'forum.already_subscribed' | trans }}, <a href="#" onclick="cancelSubscription(); return false;">{{ 'forum.cancel_subscription' | trans }}</a></p>
+        {% else %}
+            <p>{{ form_widget(form.addSubscription) }} {{ form_label(form.addSubscription) }}</p>
+        {% endif %}
     {% endif %}
 
     {% block extraInput %}

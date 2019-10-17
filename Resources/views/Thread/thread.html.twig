@@ -30,7 +30,8 @@
 
         {% include '@YosimitsoWorkingForum/Thread/storeJs.html.twig' %}
         <script src="{{ asset('bundles/yosimitsoworkingforum/thread.min.js') }}"></script>
-        <link rel="stylesheet" media="all" href="{{ asset('bundles/yosimitsoworkingforum/css/thread.css') }}" />
+        <script src="{{ asset('bundles/yosimitsoworkingforum/post.min.js') }}"></script>
+        <link rel="stylesheet" media="all" href="{{ asset('bundles/yosimitsoworkingforum/css/post.min.css') }}" />
 
         {# LOCK #}
     {% if thread.locked %}
@@ -76,7 +77,9 @@
                     </div>
                 {% else %}
                     {{ form_start(form, {'attr': {'id': 'wf_form_post'}}) }}
-                    {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'form': form, 'parameters': parameters, 'submitLabelKey': 'forum.submit_post'} only %}
+                    {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with
+                        {'listSmiley': listSmiley, 'form': form, 'parameters': parameters, 'submitLabelKey': 'forum.submit_post', 'hasSubscribed': hasSubscribed}
+                        only %}
                         {% block header %}
                             <p class="wf_post_a_message">{{ 'forum.post_a_message' | trans([], 'YosimitsoWorkingForumBundle') }}</p>
                         {% endblock %}

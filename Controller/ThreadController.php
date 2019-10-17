@@ -164,7 +164,8 @@ class ThreadController extends BaseController
 
 
         $actionsAvailables = $this->threadService->getAvailableActions($this->user, $thread, $autolock, $canSubscribeThread);
-
+        $subscripted = $this->em->getRepository(Subscription::class)->findOneBy(['thread' => $thread, 'user' => $this->user]);
+        
         return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/thread.html.twig',
             [
                 'forum' => $forum,
@@ -178,7 +179,8 @@ class ThreadController extends BaseController
                 'request' => $request,
                 'autolock' => $autolock,
                 'hasAlreadyVoted' => $hasAlreadyVoted,
-                'actionsAvailables' => $actionsAvailables
+                'actionsAvailables' => $actionsAvailables,
+                'hasSubscribed' => (is_null($subscripted)) ? false : true
             ]
         );
 

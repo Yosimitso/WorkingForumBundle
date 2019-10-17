@@ -7,12 +7,12 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 let config = {
     entry: {
-        thread: "./Resources/asset/js/webpack-thread.js",
+        app: './Resources/asset/js/webpack-app.js',
         forum: './Resources/asset/js/webpack-forum.js',
+        thread: "./Resources/asset/js/webpack-thread.js",
+        post: './Resources/asset/js/webpack-post.js',
         theme_green: './Resources/asset/scss/theme_green.scss',
         theme_dark_blue: './Resources/asset/scss/theme_dark_blue.scss'
-        // bootstrap: './Resources/asset/scss/bootstrap.scss',
-        // bootstrap_markdown: './Resources/asset/scss/bootstrap-markdown.scss',
     },
     output: {
         path: path.resolve(__dirname, "./Resources/public"),
@@ -71,7 +71,7 @@ let config = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-          filename: 'css/[name].css'  
+          filename: 'css/[name].min.css'
         }),
         new CopyPlugin([
             { from: './Resources/asset/images', to: './images/' }

@@ -29,6 +29,7 @@
         }
     {% if thread is defined %}
         , 'thread_id': '{{ thread.id }}'
+        , 'postEditorId': '{{ thread.id }}'
     {% endif %}
     {% if subforum is defined %}
         , 'subforum_slug': '{{ subforum.slug }}'

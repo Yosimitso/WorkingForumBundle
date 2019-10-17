@@ -6,12 +6,13 @@ use Psr\Container\ContainerInterface;
 
 class BundleParametersService
 {
+    /**
+     * @var ContainerInterface 
+     */
     private $container;
-    public function __construct(ContainerInterface $container /*...$args*/)
+    
+    public function __construct(ContainerInterface $container)
     {
-//        foreach ($args as $arg) {
-//           $this->$arg[0] = $arg[1];
-//        }
         $this->container = $container;
 
     }

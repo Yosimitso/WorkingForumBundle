@@ -88,7 +88,6 @@ if (process.env.NODE_ENV === 'production') {
     const OptimizeCSSAssets = require("optimize-css-assets-webpack-plugin");
     module.exports.plugins.push(
         new OptimizeCSSAssets(),
-        new UglifyJsPlugin
+        new UglifyJsPlugin()
     );
 }
-

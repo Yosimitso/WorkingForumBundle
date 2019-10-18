@@ -1,4 +1,7 @@
+
 jQuery(document).ready(() => {
+    // require('../showdown/src/extensions/twitter')
+    // var Showdown = require('../showdown/src/showdown');
     /**
      * Initialize the post editor
      */

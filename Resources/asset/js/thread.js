@@ -1,5 +1,4 @@
 jQuery(document).ready(() => {
-
     /**
      * A modo/admin move the thread
      */

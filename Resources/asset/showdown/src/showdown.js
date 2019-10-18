@@ -121,7 +121,7 @@ Showdown.converter = function (converter_options) {
 //
 //         if (fs) {
 //             // Search extensions folder
-//             var extensions = fs.readdirSync((__dirname || '.') + '/extensions').filter(function (file) {
+//             var extensions = fs.readdirSync(__dirname+'/extensions').filter(function (file) {
 //                 return ~file.indexOf('.js');
 //             }).map(function (file) {
 //                 return file.replace(/\.js$/, '');
@@ -291,6 +291,7 @@ Showdown.converter = function (converter_options) {
                     }
                 });
             } else {
+                console.log(plugin);
                 throw "Extension '" + plugin + "' could not be loaded.  It was either not found or is not a valid extension.";
             }
         });
@@ -1489,7 +1490,10 @@ Showdown.converter = function (converter_options) {
 
 
 // export
-if (typeof module !== 'undefined') module.exports = Showdown;
+if (typeof module !== 'undefined') {
+    module.exports = Showdown;
+}
+window.Showdown = Showdown;
 
 // stolen from AMD branch of underscore
 // AMD define happens at the end for compatibility with AMD loaders

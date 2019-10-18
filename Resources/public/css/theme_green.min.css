@@ -1,4 +1,6 @@
-@import url(/.common);
+@mixin td {
+
+}
 .wf_subforum {
   background-color: white;
   margin-left: 1%; }

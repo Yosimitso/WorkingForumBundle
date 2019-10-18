@@ -1,34 +1,19 @@
-@import url('/.common');
-
-$main-color-dark: rgba(21, 141, 64, 0.7);
-$main-color-dark-border: #188d40;
-$main-color-light-border: #CCCCCC;
-//$main-color-light: #dfeae2;
-$main-color-light: #dfeae2;
-$main-font: Roboto, Arial;
-$light-grey: #f3f3f3;
-$red-gradient: linear-gradient(to bottom, #8E0604 0px, #E20602 100%);
-$red: #8E0604;
-$light-red: #F7B5B5;
-$color-button: #8bcaa6;
-
 .wf_forum {
-  //border-left-color: $main-color-dark;
-  //background-color: white;
+  border-left-color: #188d40;
+  background-color: white;
 }
 
 .wf_subforum {
   background-color: white;
-  margin-left: 1%;
 
   td {
-    border-bottom-color: $light-grey;
+    border-bottom-color: #f3f3f3;
   }
 }
 
 .wf_thread_list {
   td {
-    border-bottom-color: $light-grey;
+    border-bottom-color: #f3f3f3;
   }
 
   background-color: white;
@@ -43,8 +28,6 @@ $color-button: #8bcaa6;
   h1 {
     color: white;
     background-color: #3fa757;
-    margin-top: 20px;
-    font-family: Arial;
   }
 
   h2 {
@@ -133,17 +116,13 @@ h2 {
 }
 
 #wf_forum_content h1 {
-  border-bottom-color: $main-color-light-border;
-  background-color: $main-color-light;
-  border-bottom: 5px solid $main-color-dark;
-  border-left: 2px solid $main-color-dark;
-  color: #3b9a50;
-  text-align: left;
-  padding-left: 5%;
+  border-bottom-color: #CCCCCC;
+  background-color: rgba(21, 141, 64, 0.7);
+  border-left: 5px solid #188D40;
+  color: white;
+  text-align: center;
   height: 1.3em;
-  font-size: 1.5em;
-  text-shadow: 1px 2px 0 rgb(193, 187, 187);
-  font-family: $main-font;
+  text-shadow: 1px 2px 0 rgba(0, 0, 0, 1);
 }
 
 .wf_forum_block_title {
@@ -152,11 +131,10 @@ h2 {
 }
 
 .wf_button {
-  background-color: #8bcaa6;
-  /* background-image: linear-gradient(to bottom, #44e567 0px, #00a547 100%); */
+  background-color: #00a547;
+  background-image: linear-gradient(to bottom, #44e567 0px, #00a547 100%);
   border-color: #00a547;
   color: #fff;
-  border-bottom: 5px solid #00a547;
 }
 
 .wf_locked {
@@ -165,7 +143,7 @@ h2 {
 
 .wf_button-red {
   background-color: #8E0604;
-  background-image: $red-gradient;
+  background-image: linear-gradient(to bottom, #8E0604 0px, #E20602 100%);
   border-color: #8E0604;
 }
 
@@ -280,7 +258,7 @@ code {
 
 #wf_search {
   background-color: white;
-  border-left-color: $main-color-dark;
+  border-left-color: #188d40;
   border-bottom-color: silver;
 
   input, select {
@@ -291,7 +269,7 @@ code {
 .wf_admin_table {
   thead tr th {
     color: white;
-    background-color: $main-color-dark;
+    background-color: #188D40;
   }
 
   tbody tr {
@@ -330,21 +308,21 @@ code {
 }
 
 .wf_icon-pin {
-  background: url('../images/pin-btn.png') 5% no-repeat $color-button;
+  background: url('../images/pin-btn.png') 5% no-repeat, linear-gradient(to bottom, #44e567 0px, #00a547 100%);
   padding-left: 25px;
 }
 
 .wf_icon-lock {
-  background: url('../images/lock-btn.png') 5% no-repeat $color-button;
+  background: url('../images/lock-btn.png') 5% no-repeat, linear-gradient(to bottom, #44e567 0px, #00a547 100%);
   padding-left: 25px;
 }
 
 .wf_icon-remove {
-  background: url('../images/remove-btn.png') 5% no-repeat $color-button;
+  background: url('../images/remove-btn.png') 5% no-repeat, linear-gradient(to bottom, #44e567 0px, #00a547 100%);
   padding-left: 25px;
 }
 
 .wf_icon-reply {
-  background: url('../images/reply.png') 5% no-repeat $color-button;
+  background: url('../images/reply.png') 5% no-repeat, linear-gradient(to bottom, #44e567 0px, #00a547 100%);
   padding-left: 25px;
 }

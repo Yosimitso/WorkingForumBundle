@@ -51,7 +51,7 @@ class SubscriptionService
      * @param string $senderAddress
      * @param EngineInterface $templating
      */
-    public function __construct(EntityManager $em, Swift_Mailer $mailer, TranslatorInterface $translator, string $siteTitle, string $senderAddress, EngineInterface $templating)
+    public function __construct(EntityManager $em, Swift_Mailer $mailer, TranslatorInterface $translator, string $siteTitle, EngineInterface $templating, ?string $senderAddress)
     {
         $this->em = $em;
         $this->mailer = $mailer;
@@ -59,6 +59,10 @@ class SubscriptionService
         $this->siteTitle = $siteTitle;
         $this->senderAddress = $senderAddress;
         $this->templating = $templating;
+
+        if (empty($this->senderAddress)) {
+            trigger_error('The parameter "swiftmailer.sender_address" is empty, email delivering might failed');
+        }
 
     }
 
@@ -78,7 +82,7 @@ class SubscriptionService
             return;
         }
         $emailTranslation = $this->getEmailTranslation($post->getThread()->getSubforum(), $post->getThread(), $post, $post->getUser());
-
+        
         if (!is_null($notifs)) {
             foreach ($notifs as $notif) {
                 try {

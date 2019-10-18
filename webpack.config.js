@@ -6,6 +6,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 let config = {
+    watch: (process.env.NODE_ENV !== true) ? true : false,
     entry: {
         app: './Resources/asset/js/webpack-app.js',
         forum: './Resources/asset/js/webpack-forum.js',
@@ -63,6 +64,8 @@ let config = {
                         loader: 'file-loader',
                         options: {
                             name: 'images/[name].[ext]',
+                            outputPath: 'images/',
+                            publicPath: '../images'
                         },
                     }
                 ]

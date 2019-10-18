@@ -4,6 +4,11 @@
   src: url(../fonts/roboto-regular.ttf);
 }
 
+@font-face {
+  font-family: RobotoCondensed;
+  src: url(../fonts/roboto-condensed.ttf);
+}
+
 .wf_breadcrumb {
   margin: 0 0 10px 10px;
   font-family: 'Helvetica Neue', Helvetica, Arial;
@@ -71,6 +76,41 @@ a.wf_button:visited {
 
 /***************** FORUM LIST *******************/
 
+#wf_forum_content {
+  h1 {
+    height: 3rem;
+    text-align: center;
+    border-bottom: 1px solid;
+    font-family: Arial;
+    font-size: 1.6em;
+    padding: 5px 0 5px 0;
+    margin-bottom: 0;
+    margin-top: 0;
+    font-weight: normal;
+    word-wrap: break-word;
+  }
+
+  .wf_thread {
+    padding-bottom: 60px;
+    clear: both;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    h1 {
+      font-size: 18px;
+      padding: 10px 10px 10px 30px;
+      font-family: RobotoCondensed;
+      margin-bottom: 0;
+    }
+
+    h2 {
+      font-size: 14px;
+      padding: 5px;
+      margin: 0;
+      word-wrap: break-word;
+    }
+  }
+}
+
 #wf_forum {
   padding-bottom: 60px;
 }
@@ -78,7 +118,7 @@ a.wf_button:visited {
 .wf_forum {
   font-family: Roboto;
   border-bottom: 0.5px solid silver;
-  border-left: 1px solid;
+  //border-left: 1px solid;
 }
 
 .wf_empty {
@@ -86,7 +126,8 @@ a.wf_button:visited {
 }
 
 .wf_subforum {
-  margin: 5px;
+  //margin: 5px;
+  margin-right: 5px;
   padding: 5px;
   width: 99%;
   border-collapse: collapse;
@@ -143,25 +184,6 @@ a.wf_button:visited {
   }
 }
 
-.wf_thread {
-  padding-bottom: 60px;
-  clear: both;
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-
-  h1 {
-    font-size: 18px;
-    padding: 10px 10px 10px 30px;
-    font-family: RobotoCondensed;
-    margin-bottom: 0;
-  }
-
-  h2 {
-    font-size: 14px;
-    padding: 5px;
-    margin: 0;
-    word-wrap: break-word;
-  }
-}
 
 h2 {
   font-size: 14px;
@@ -537,19 +559,6 @@ code {
 }
 
 .wf_admin_subforum_statistic {
-}
-
-#wf_forum_content h1 {
-  height: 3rem;
-  text-align: center;
-  border-bottom: 1px solid;
-  font-family: Arial;
-  font-size: 1.6em;
-  padding: 5px 0 5px 0;
-  margin-bottom: 0;
-  margin-top: 0;
-  font-weight: normal;
-  word-wrap: break-word;
 }
 
 .wf_forum_block_admin {

@@ -99,9 +99,8 @@ services:
       - "@mailer"
       - "@translator"
       - "%yosimitso_working_forum.site_title%"
-      - "%swiftmailer.sender_address%"
       - "@templating"
-
+      -  "@=container.hasParameter('swiftmailer.sender_address') ? parameter('swiftmailer.sender_address') : null"
 
   yosimitso_workingforum.listener.post:
     class: Yosimitso\WorkingForumBundle\Event\PostEvent

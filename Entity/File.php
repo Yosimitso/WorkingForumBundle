@@ -24,14 +24,14 @@ class File
     /**
      * @var string
      *
-     * @ORM\Column(name="filename", type="string", length=255)
+     * @ORM\Column(name="filename", type="string", length=100)
      */
     private $filename;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="original_name", type="string", length=255)
+     * @ORM\Column(name="original_name", type="string", length=100)
      */
     private $originalName;
 
@@ -45,7 +45,7 @@ class File
     /**
      * @var string
      *
-     * @ORM\Column(name="extension", type="string", length=255)
+     * @ORM\Column(name="extension", type="string", length=10)
      */
     private $extension;
 
@@ -69,11 +69,12 @@ class File
      * @ORM\JoinColumn(name="post_id", referencedColumnName="id", nullable=true)
      */
     private $post;
-
-
+    
+    
     public function __construct() {
         $this->cdate = new \DateTime;
     }
+    
     /**
      * Get id
      *
@@ -131,6 +132,7 @@ class File
     {
         return $this->originalName;
     }
+    
     /**
      * Set path
      *

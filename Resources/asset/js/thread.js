@@ -61,8 +61,8 @@ jQuery(document).ready(() => {
             crossDomain: false,
             dataType: 'json',
             async: false,
-            success: (verif) => {
-                if (verif === 'true') {
+            success: (result) => {
+                if (result === 'true') {
                     alert(storeJs.trans['forum.thanks_reporting']);
                 }
                 else {
@@ -86,10 +86,10 @@ jQuery(document).ready(() => {
                 data: `reason=${reason}&postId=${id}`,
                 dataType: 'json',
                 async: false,
-                success: (res) => {
-                    if (res === 'ok') {
+                success: (result) => {
+                    if (result === 'ok') {
                         const msg = `<p class="wf_moderate">${storeJs.trans['forum.post_moderated']} ${reason}</p>`;
-                        jQuery('#wf_post\\[' + id+'\\] .wf_post_content').html();
+                        jQuery('#wf_post\\[' + id+'\\] .wf_post_content').html(msg);
                     }
                 }
             });

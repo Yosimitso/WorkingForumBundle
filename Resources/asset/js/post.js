@@ -1,7 +1,5 @@
 
 jQuery(document).ready(() => {
-    // require('../showdown/src/extensions/twitter')
-    // var Showdown = require('../showdown/src/showdown');
     /**
      * Initialize the post editor
      */
@@ -32,10 +30,9 @@ jQuery(document).ready(() => {
     /**
      * nl2br function missing in js
      * @param {string} str
-     * @param {bool} is_xhtml
      */
-    nl2br = (str, is_xhtml) =>  {
-        const breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
+    nl2br = (str) =>  {
+        const breakTag = '<br />';
         return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, `$1${breakTag}$2`);
     }
 
@@ -55,6 +52,9 @@ jQuery(document).ready(() => {
         return null;
     }
 
+    /**
+     * Timer to save post editor content
+     */
     setTimeout(() => {
         getSavedPostEditor()
     }, 1000)
@@ -112,7 +112,6 @@ jQuery(document).ready(() => {
         if (!postEditor || !postEditor.value) {
             return;
         }
-        
 
         setCookie(`post_editor_${storeJs.postEditorId}`, postEditor.value, 30);
         const dateSaved = new Date();

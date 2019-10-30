@@ -96,17 +96,19 @@ a.wf_button:visited {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
     h1 {
-      font-size: 18px;
+      font-size: 20px;
       padding: 10px 10px 10px 30px;
       font-family: RobotoCondensed;
       margin-bottom: 0;
+      text-align: center;
     }
 
     h2 {
-      font-size: 14px;
-      padding: 5px;
+      font-size: 18px;
+      padding: 10px;
       margin: 0;
       word-wrap: break-word;
+      text-align: center;
     }
   }
 }
@@ -158,6 +160,7 @@ a.wf_button:visited {
 
 .wf_thread_list {
   margin: 5px;
+  margin-top: 0;
   font-size: 13px;
   padding: 5px;
   width: 99%;
@@ -364,7 +367,7 @@ code {
 }
 
 .wf_new_thread_button {
-  margin: 5px 0 10px 5px;
+  margin: 5px 0 15px 5px;
 }
 
 .wf_new_thread {

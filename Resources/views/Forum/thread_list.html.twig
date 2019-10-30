@@ -36,12 +36,11 @@
  {% else %}
 
 {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and subforum is defined%}
-
-
- <div class="wf_new_thread_button">
+<p>
     <a class="wf_button wf_add" href="{{ path('workingforum_new_thread', {'forum_slug': forum.slug, 'subforum_slug' : subforum.slug}) }}"><span class="wf_add-plus"></span>{{ ('forum.new_thread' | trans) }}</a>
-    </div>
+</p>
     {% endif %}
+
 <div id="wf_forum">
     <div class="wf_forum">
         {% if subforum is defined %}
@@ -94,12 +93,6 @@
                     {{'forum.last_reply_date' | trans }}<br />
                     {{ thread.lastReplyDate | date(date_format)}} {{ 'forum.by' | trans }} {{ thread.lastReplyUser.username}}</td>
                 {% endif %}
-
-
-
-
-
-
     {% endfor %}
     </table>
     {% else %}
@@ -120,5 +113,4 @@
 
     {% endif %}
              </div>
-
 {% endblock %}

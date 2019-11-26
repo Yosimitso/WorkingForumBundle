@@ -2,6 +2,7 @@
 
 namespace Yosimitso\WorkingForumBundle\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\Paginator;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Forms;
@@ -66,13 +67,12 @@ class ThreadService
         Paginator $paginator,
         $postPerPage,
         RequestStack $requestStack,
-        $em,
+        EntityManagerInterface $em,
         TokenStorageInterface $tokenStorage,
         FileUploaderService $fileUploaderService,
         Authorization $authorization,
         BundleParametersService $bundleParameters,
         FormFactory $formFactory
-
     )
     {
         $this->lockThreadOlderThan = $lockThreadOlderThan;
@@ -144,7 +144,7 @@ class ThreadService
     public function pin(Thread $thread)
     {
         $thread->setPin(true);
-
+        
         $this->em->persist($thread);
         $this->em->flush();
 

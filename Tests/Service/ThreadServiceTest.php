@@ -59,6 +59,13 @@ class ThreadServiceTest extends TestCase
         if (is_null($authorization)) {
             $authorization = $this->createMock(Authorization::class);
         }
+        
+        if (is_null($em)) {
+            $em = $this->getMockBuilder(EntityManagerMock::class)
+                ->setMethods(['getRepository'])
+                ->setMockClassName('EntityManagerInterface')
+                ->getMock();
+        }
 
         $bundleParameters = $this->createMock(BundleParametersService::class);
         $bundleParameters->allow_moderator_delete_thread = false;
@@ -102,18 +109,8 @@ class ThreadServiceTest extends TestCase
 
     public function testPin()
     {
-        $em = $this->getMockBuilder(EntityManagerMock::class)
-            ->setMethods(['getRepository'])
-            ->getMock();
-
-//        $entity = new class extends TestCase  {
-//            public function findOneBySlug($a) {
-//                return new Thread;
-//            }
-//        };
-//
-//        $em->method('getRepository')->willReturn($entity);
-
+        $em = new EntityManagerMock;
+        
         $testedClass = $this->getTestedClass($em);
 
         $thread = new Thread;
@@ -123,9 +120,8 @@ class ThreadServiceTest extends TestCase
 
     public function testResolved()
     {
-        $em = $this->getMockBuilder(EntityManagerMock::class)
-            ->setMethods(['getRepository'])
-            ->getMock();
+        $em = new EntityManagerMock;
+        
         $testedClass = $this->getTestedClass($em);
 
         $thread = new Thread;
@@ -136,9 +132,7 @@ class ThreadServiceTest extends TestCase
 
     public function testLocked()
     {
-        $em = $this->getMockBuilder(EntityManagerMock::class)
-            ->setMethods(['getRepository'])
-            ->getMock();
+        $em = new EntityManagerMock;
         $testedClass = $this->getTestedClass($em);
 
         $thread = new Thread;
@@ -149,9 +143,7 @@ class ThreadServiceTest extends TestCase
 
     public function testReport()
     {
-        $em = $this->getMockBuilder(EntityManagerMock::class)
-            ->setMethods(['getRepository'])
-            ->getMock();
+        $em = new EntityManagerMock;
 
         $testedClass = $this->getTestedClass($em);
 
@@ -163,9 +155,7 @@ class ThreadServiceTest extends TestCase
 
     public function testMove()
     {
-        $em = $this->getMockBuilder(EntityManagerMock::class)
-            ->setMethods(['getRepository'])
-            ->getMock();
+        $em = new EntityManagerMock;
 
         $testedClass = $this->getTestedClass($em);
 
@@ -198,10 +188,7 @@ class ThreadServiceTest extends TestCase
 
     public function testDelete()
     {
-        $em = $this->getMockBuilder(EntityManagerMock::class)
-            ->setMethods(['getRepository'])
-            ->getMock();
-
+        $em = $em = new EntityManagerMock;
         $testedClass = $this->getTestedClass($em);
 
         $thread = new Thread;
@@ -224,9 +211,7 @@ class ThreadServiceTest extends TestCase
         /**
          * @var EntityManagerMock
          */
-        $em = $this->getMockBuilder(EntityManagerMock::class)
-            ->setMethods(['getRepository'])
-            ->getMock();
+        $em = new EntityManagerMock;
 
         $user = $this->createMock(User::class);
         $user->setUsername = 'toto';
@@ -275,14 +260,11 @@ class ThreadServiceTest extends TestCase
         $this->assertEquals(21, $subforum->getNbThread());
         $this->assertEquals(1, $thread->getNbReplies());
         $this->assertEquals('test', $post->getContent());
-//        $this->assertEquals(1, $user->getNbPost());
     }
 
     public function testCreateWithFiles()
     {
-        $em = $this->getMockBuilder(EntityManagerMock::class)
-            ->setMethods(['getRepository'])
-            ->getMock();
+        $em = new EntityManagerMock;
 
         $user = $this->createMock(User::class);
         $user->setUsername = 'toto';
@@ -331,15 +313,12 @@ class ThreadServiceTest extends TestCase
 
         $this->assertEquals(21, $subforum->getNbThread());
         $this->assertEquals(1, $thread->getNbReplies());
-//        $this->assertEquals(1, $user->getNbPost());
 
     }
 
     public function testPost()
     {
-        $em = $this->getMockBuilder(EntityManagerMock::class)
-            ->setMethods(['getRepository'])
-            ->getMock();
+        $em = new EntityManagerMock;
 
         $user = $this->createMock(User::class);
         $user->setUsername = 'toto';

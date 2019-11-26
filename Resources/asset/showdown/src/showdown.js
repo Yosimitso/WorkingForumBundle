@@ -291,7 +291,6 @@ Showdown.converter = function (converter_options) {
                     }
                 });
             } else {
-                console.log(plugin);
                 throw "Extension '" + plugin + "' could not be loaded.  It was either not found or is not a valid extension.";
             }
         });

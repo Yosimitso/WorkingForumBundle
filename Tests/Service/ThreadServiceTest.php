@@ -17,7 +17,7 @@ use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Yosimitso\WorkingForumBundle\Security\Authorization;
 use Yosimitso\WorkingForumBundle\Service\BundleParametersService;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
-use Yosimitso\WorkingForumBundle\Tests\Mock\EntityManagerMock;
+use Yosimitso\MockDoctrineManager\EntityManagerMock;
 use Knp\Component\Pager\Paginator;
 use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Symfony\Component\Form\FormFactory;
@@ -127,7 +127,7 @@ class ThreadServiceTest extends TestCase
         $thread = new Thread;
 
         $this->assertTrue($testedClass->resolve($thread));
-        $this->assertTrue($em->getFlushedEntities()[0]->getResolved());
+        $this->assertTrue($em->getFlushedEntity(Thread::class)->getResolved());
     }
 
     public function testLocked()
@@ -138,7 +138,7 @@ class ThreadServiceTest extends TestCase
         $thread = new Thread;
 
         $this->assertTrue($testedClass->lock($thread));
-        $this->assertTrue($em->getFlushedEntities()[0]->getLocked());
+        $this->assertTrue($em->getFlushedEntity(Thread::class)->getLocked());
     }
 
     public function testReport()
@@ -202,15 +202,12 @@ class ThreadServiceTest extends TestCase
 
         $this->assertEquals(19, $em->getFlushedEntity(Subforum::class)->getNbThread());
         $this->assertEquals(30, $em->getFlushedEntity(Subforum::class)->getNbPost());
-//        $this->assertTrue($em->getRemovedEntities()[0] instanceof Thread);
-//        $this->assertTrue($em->getFlushedEntities()[1] instanceof Thread);
+        $this->assertTrue($em->getRemovedEntities()[0] instanceof Thread);
+        $this->assertTrue($em->getFlushedEntities()[1] instanceof Thread);
     }
 
     public function testCreate()
     {
-        /**
-         * @var EntityManagerMock
-         */
         $em = new EntityManagerMock;
 
         $user = $this->createMock(User::class);

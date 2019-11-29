@@ -3,7 +3,7 @@
 <phpunit bootstrap="./vendor/autoload.php" colors="true">
     <!-- Les fichiers de tests à lancer -->
     <testsuites>
-        <testsuite name="tests">
+        <testsuite name="testsService">
             <directory suffix="Test.php">./Tests/Service</directory>
         </testsuite>
     </testsuites>

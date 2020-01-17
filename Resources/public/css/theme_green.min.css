@@ -7,6 +7,9 @@
   .wf_subforum td {
     border-bottom-color: #f3f3f3; }
 
+.wf_sub_name {
+  color: #3b7955; }
+
 .wf_thread_list {
   background-color: white; }
   .wf_thread_list td {
@@ -75,6 +78,7 @@ h2 {
 #wf_forum_content h1 {
   border-bottom-color: #CCCCCC;
   background-color: #8bcaa6;
+  /* #ccecda*/
   border-bottom: 5px solid rgba(21, 141, 64, 0.7);
   border-left: 2px solid rgba(21, 141, 64, 0.7);
   color: #166f3c;

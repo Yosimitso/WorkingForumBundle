@@ -81,10 +81,16 @@
                             <td class="wf_sub_stat">{{ thread.nbReplies }} {{ 'forum.nbPost' | trans }}</td>
                             <td class="wf_sub_lastreply">
                                 {% if thread.lastReplyDate is not null and thread.lastReplyUser is not null %}
-                                {{ 'forum.last_reply_date' | trans }}<br/>
-                                {{ thread.lastReplyDate | date(date_format) }} {{ 'forum.by' | trans }} {{ thread.lastReplyUser.username }}
+                                    {% if thread.lastReplyUser.avatarUrl is not empty %}
+                                        <img class="wf_cadre-img-small wf_cadre-left" src="{{ asset('bundles/yosimitsoworkingforum/'~thread.lastReplyUser.avatarUrl) }}">
+                                    {% else %}
+                                        <img class="wf_cadre-img-small wf_cadre-left" src="{{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}">
+                                    {% endif %}
+                                    <strong>{{ 'forum.last_reply_date' | trans }}</strong><br />
+                                    {{ thread.lastReplyUser.username }}
+                                    <br /><em>{{ thread.lastReplyDate | time_diff }}</em>
+                                {% endif %}
                             </td>
-                            {% endif %}
                             {% endfor %}
                     </table>
                 {% else %}

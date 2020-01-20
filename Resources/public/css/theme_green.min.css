@@ -6,9 +6,8 @@
   margin-left: 1%; }
   .wf_subforum td {
     border-bottom-color: #f3f3f3; }
-
-.wf_sub_name {
-  color: #3b7955; }
+  .wf_subforum .wf_sub_name {
+    color: #3b7955; }
 
 .wf_thread_list {
   background-color: white; }

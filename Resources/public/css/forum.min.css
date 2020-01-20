@@ -528,6 +528,10 @@ code {
 .wf_cadre-img {
   width: 9rem; }
 
+.wf_cadre-left {
+  float: left;
+  margin-right: 10px; }
+
 .wf_cadre-img-small {
   vertical-align: middle;
   width: 40px; }

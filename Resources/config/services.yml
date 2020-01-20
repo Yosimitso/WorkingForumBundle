@@ -133,3 +133,8 @@ services:
     arguments:
       - "@service_container"
 
+  twig.extension.date:
+    class: Twig_Extensions_Extension_Date
+    tags:
+      - { name: twig.extension }
+

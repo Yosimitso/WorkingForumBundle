@@ -12,7 +12,8 @@
         "swiftmailer/swiftmailer": ">=5.4.9",
         "symfony/form": ">=3.4.26",
         "doctrine/common": ">2.0.0",
-        "doctrine/orm": "^2.6"
+        "doctrine/orm": "^2.6",
+        "twig/extensions": "^1.5"
     },
     "license": "MIT",
     "authors": [
@@ -21,7 +22,7 @@
             "email": "contactportfolio@charlymartins.fr"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
 	 "autoload": {
 		"psr-4": {
             "Yosimitso\\WorkingForumBundle\\": ""

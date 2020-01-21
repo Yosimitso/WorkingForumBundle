@@ -27,61 +27,67 @@ class YosimitsoWorkingForumExtension extends Extension
 
         if (!isset($config['thread_per_page'])) {
             throw new \InvalidArgumentException(
-                'The "thread_per_page" option must be set in "yosimitso_working_forum"'
+                'The "thread_per_page" option must be set in "yosimitso_working_forum", please see CONFIGURATION.md'
             );
         }
 
         if (!isset($config['date_format'])) {
             throw new \InvalidArgumentException(
-                'The "post_per_page" option must be set in "yosimitso_working_forum", please see README.MD'
+                'The "date_format" option must be set in "yosimitso_working_forum", please see CONFIGURATION.md'
+            );
+        }
+
+        if (!isset($config['time_format'])) {
+            throw new \InvalidArgumentException(
+                'The "time_format" option must be set in "yosimitso_working_forum", please see CONFIGURATION.md'
             );
         }
 
         if (!isset($config['allow_anonymous_read'])) {
             throw new \InvalidArgumentException(
-                'The "allow_anonymous_read" option must be set in "yosimitso_working_forum", please see README.MD'
+                'The "allow_anonymous_read" option must be set in "yosimitso_working_forum", please see CONFIGURATION.md'
             );
         }
 
         if (!isset($config['theme_color'])) {
             throw new \InvalidArgumentException(
-                'The "theme_color" option must be set in "yosimitso_working_forum", please see README.MD'
+                'The "theme_color" option must be set in "yosimitso_working_forum", please see CONFIGURATION.md'
             );
         }
 
         if (!isset($config['lock_thread_older_than'])) {
             throw new \InvalidArgumentException(
-                'The "lock_thread_older_than" option must be set in "yosimitso_working_forum", please see README.MD'
+                'The "lock_thread_older_than" option must be set in "yosimitso_working_forum", please see CONFIGURATION.md'
             );
         }
 
         if (!isset($config['vote'])) {
             throw new \InvalidArgumentException(
-                'The "vote" array option must be set in "yosimitso_working_forum", please see README.MD'
+                'The "vote" array option must be set in "yosimitso_working_forum", please see CONFIGURATION.md'
             );
         }
 
         if (!isset($config['file_upload'])) {
             throw new \InvalidArgumentException(
-                'The "file_upload" array option must be set in "yosimitso_working_forum", please see README.MD'
+                'The "file_upload" array option must be set in "yosimitso_working_forum", please see CONFIGURATION.md'
             );
         }
 
         if (!isset($config['post_flood_sec'])) {
             throw new \InvalidArgumentException(
-                'The "post_flood_sec" option must be set in "yosimitso_working_forum", please see README.MD'
+                'The "post_flood_sec" option must be set in "yosimitso_working_forum", please see CONFIGURATION.md'
             ); 
         }
 
         if (!isset($config['site_title'])) {
             throw new \InvalidArgumentException(
-                'The "site_title" option must be set in "yosimitso_working_forum", please see README.MD'
+                'The "site_title" option must be set in "yosimitso_working_forum", please see CONFIGURATION.md'
             );
         }
 
         if (!isset($config['thread_subscription'])) {
             throw new \InvalidArgumentException(
-                'The "thread_subscription" option must be set in "yosimitso_working_forum", please see README.MD'
+                'The "thread_subscription" option must be set in "yosimitso_working_forum", please see CONFIGURATION.md'
             );
         }
 
@@ -94,6 +100,7 @@ class YosimitsoWorkingForumExtension extends Extension
         $container->setParameter('yosimitso_working_forum.thread_per_page', $config['thread_per_page']);
         $container->setParameter('yosimitso_working_forum.post_per_page', $config['post_per_page']);
         $container->setParameter('yosimitso_working_forum.date_format', $config['date_format']);
+        $container->setParameter('yosimitso_working_forum.time_format', $config['time_format']);
         $container->setParameter('yosimitso_working_forum.allow_anonymous_read', $config['allow_anonymous_read']);
         $container->setParameter('yosimitso_working_forum.allow_moderator_delete_thread', $config['allow_moderator_delete_thread']);
         $container->setParameter('yosimitso_working_forum.theme_color', $config['theme_color']);

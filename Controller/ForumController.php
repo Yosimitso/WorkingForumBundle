@@ -103,6 +103,9 @@ class ForumController extends BaseController
             $this->getParameter('yosimitso_working_forum.thread_per_page') /*limit per page*/
         );
 
+        $parameters  = [ // PARAMETERS USED BY TEMPLATE
+            'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format')
+        ];
 
         return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Forum/thread_list.html.twig',
@@ -113,7 +116,8 @@ class ForumController extends BaseController
                 'date_format' => $date_format,
                 'forbidden' => false,
                 'post_per_page' => $this->getParameter('yosimitso_working_forum.post_per_page'),
-                'page_prefix' => 'page'
+                'page_prefix' => 'page',
+                'parameters' => $parameters
             ]
         );
     }

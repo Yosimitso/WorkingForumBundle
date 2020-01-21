@@ -147,8 +147,9 @@ a.wf_button:visited {
 
 .wf_sub_lastreply {
   font-size: 13px;
-
-
+  p {
+    margin: 2px;
+  }
 }
 
 .wf_sub_stat {
@@ -158,6 +159,9 @@ a.wf_button:visited {
 
 .wf_sub_author {
   width: 20%;
+  p {
+    margin: 2px;
+  }
 }
 
 .wf_thread_list {

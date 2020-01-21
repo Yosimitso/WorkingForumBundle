@@ -8,9 +8,10 @@ yosimitso_working_forum_bundle:
 |            | allow_anonymous_read          | **Yes**  | Boolean                   |             | Allow or not access to anonymous user (in both cases, anonymous can't post)|
 |            | thread_per_page               | No       | Integer > 0               | 50          | Number of threads displayed per page (pagination related) |
 |            | post_per_page                 | No       | Integer > 0               | 20          | Number of posts displayed per page (pagination related)  |
-|            | date_format                   | No       | String, valid date format | d/m/Y H:i:s | Date and time with PHP format, used for rendering|
+|            | date_format                   | No       | String, valid date format | d/m/Y       | Date (without time) with PHP format, used for rendering|
+|            | time_format                   | No       | String, valid time format | H:i:s       | Time with PHP format, used for rendering|
 |            | allow_moderator_delete_thread | No       | Boolean                   | false       | Allow or not moderators to delete threads |
-|            | theme_color                   | No       | Among : blue, green       | green       | Theme color |
+|            | theme_color                   | No       | String not empty          | green       | Theme color |
 |            | lock_thread_older_than        | No       | Integer (0 = disabled)    | 365           |  Days between the last thread's post and the autolocking of the thread, 0 means disabled |
 |            | post_flood_sec                | No       | Integer > 0               | 30          | seconds minimum between each post for an user |
 |vote:|

@@ -116,6 +116,8 @@ a.wf_button:visited {
 
 .wf_sub_lastreply {
   font-size: 13px; }
+  .wf_sub_lastreply p {
+    margin: 2px; }
 
 .wf_sub_stat {
   font-size: 13px;
@@ -123,6 +125,8 @@ a.wf_button:visited {
 
 .wf_sub_author {
   width: 20%; }
+  .wf_sub_author p {
+    margin: 2px; }
 
 .wf_thread_list {
   margin: 5px;

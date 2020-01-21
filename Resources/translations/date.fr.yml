@@ -1,0 +1,6 @@
+diff.ago.second: il y a %count% seconde|il y a %count% secondes
+diff.ago.minute: il y a %count% minute|il y a %count% minutes
+diff.ago.hour: il y a %count% heure|il y a %count% heures
+diff.ago.day: il y a %count% jour|il y a %count% jours
+diff.ago.month: il y a %count% mois
+diff.ago.year: il y a %count% an|il y a %count% ans

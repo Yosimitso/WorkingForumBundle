@@ -69,26 +69,29 @@
                                 {% endif %}
                             </td>
                             <td class="wf_sub_author">
-                                <img class="wf_cadre-img-small" src="
-                  {% if thread.author.avatarUrl is not empty %}
-          {{ asset('bundles/yosimitsoworkingforum/'~thread.author.avatarUrl) }}
-          {% else %}
-           {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}
-          {% endif %}
-          "/>
-                                {{ thread.author.username |slice(0,30) }}
+                                <img class="wf_cadre-img-small wf_cadre-left" src="
+                                {% if thread.author.avatarUrl is not empty %}
+                                    {{ asset('bundles/yosimitsoworkingforum/'~thread.author.avatarUrl) }}
+                                {% else %}
+                                    {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}
+                                {% endif %}
+                                "/>
+                                <p>{{ thread.author.username |slice(0,30) }}</p>
+                                <p><em>{{ thread.cdate | time_diff }}</em></p>
                             </td>
                             <td class="wf_sub_stat">{{ thread.nbReplies }} {{ 'forum.nbPost' | trans }}</td>
                             <td class="wf_sub_lastreply">
                                 {% if thread.lastReplyDate is not null and thread.lastReplyUser is not null %}
                                     {% if thread.lastReplyUser.avatarUrl is not empty %}
-                                        <img class="wf_cadre-img-small wf_cadre-left" src="{{ asset('bundles/yosimitsoworkingforum/'~thread.lastReplyUser.avatarUrl) }}">
+                                        <img class="wf_cadre-img-small wf_cadre-left"
+                                             src="{{ asset('bundles/yosimitsoworkingforum/'~thread.lastReplyUser.avatarUrl) }}">
                                     {% else %}
-                                        <img class="wf_cadre-img-small wf_cadre-left" src="{{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}">
+                                        <img class="wf_cadre-img-small wf_cadre-left"
+                                             src="{{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}">
                                     {% endif %}
-                                    <strong>{{ 'forum.last_reply_date' | trans }}</strong><br />
+                                    <strong>{{ 'forum.last_reply_date' | trans }}</strong><br/>
                                     {{ thread.lastReplyUser.username }}
-                                    <br /><em>{{ thread.lastReplyDate | time_diff }}</em>
+                                    <br/><em>{{ thread.lastReplyDate | time_diff }}</em>
                                 {% endif %}
                             </td>
                             {% endfor %}

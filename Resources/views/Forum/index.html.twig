@@ -21,8 +21,13 @@
          <table class="wf_subforum">
     {% for subforum in forum.subForum %}
        <tr>
-           <td class="wf_sub_name"><a href="{{ path('workingforum_subforum', {'forum_slug': subforum.forum.slug, 'subforum_slug' : subforum.slug }) }}">{{ subforum.name }}</a></td>
-           <td class="wf_sub_stat">{{ subforum.nbThread | number_format }} {{ 'forum.nbThread' |trans }}<br />{{ subforum.nbPost | number_format }} {{ 'forum.nbPost' |trans }}</td>
+           <td class="wf_sub_name">
+               <a href="{{ path('workingforum_subforum', {'forum_slug': subforum.forum.slug, 'subforum_slug' : subforum.slug }) }}">{{ subforum.name }}</a>
+           </td>
+           <td class="wf_sub_stat">
+               {{ subforum.nbThread | number_format }} {{ 'forum.nbThread' |trans }}<br />
+               {{ subforum.nbPost | number_format }} {{ 'forum.nbPost' |trans }}
+           </td>
            <td class="wf_sub_lastreply">
                {% if subforum.lastReplyUser is not null and subforum.lastReplyDate %}
                    {% if subforum.lastReplyUser.avatarUrl is not empty %}
@@ -30,9 +35,9 @@
                    {% else %}
                <img class="wf_cadre-img-small wf_cadre-left" src="{{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}">
                    {% endif %}
-                   <strong>{{ 'forum.last_reply_date' | trans }}</strong><br />
-                   {{ subforum.lastReplyUser.username }}
-                   <br /><em>{{ subforum.lastReplyDate | time_diff }}</em>
+                   <p><strong>{{ 'forum.last_reply_date' | trans }}</strong></p>
+                   <p>{{ subforum.lastReplyUser.username }}</p>
+                   <p><em>{{ subforum.lastReplyDate | time_diff }}</em></p>
                {% endif %}
                </td>
        </tr>

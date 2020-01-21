@@ -70,6 +70,7 @@ forum:
             invalid_format: "Le format de votre fichier n'est pas autorisé : %format%"
             invalid_filename: "Le nom de fichier est invalide : %filename%"
     error_flood: Le flood est interdit, merci d'attendre %second% secondes entre chaque message
+    forum_rules: Règlement du forum
     no_rules_available: Les règle du forum ne sont pas encore disponibles
     switch_lang: Changer de langue
     subscribe: M'avertir des nouvelles réponses

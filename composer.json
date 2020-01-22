@@ -15,7 +15,8 @@
         "symfony/form": ">=3.4.26",
         "doctrine/common": "^2.5.1",
         "doctrine/orm": "^2.6",
-        "twig/extensions": "^1.5"
+        "twig/extensions": "^1.5",
+        "twig/twig": ">=2.7|<=3.0"
     },
     "license": "MIT",
     "authors": [

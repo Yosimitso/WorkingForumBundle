@@ -3,7 +3,7 @@ WorkingForumBundle
 
 Setup for Symfony 4 with Flex structure
 ------------------
-WARNING : TWIG 3.* CAN'T BE USED WITH THIS BUNDLE, DUE TO AN INCOMPATBILITY BETWEEN DOCTRINE AND TWIG
+WARNING : TWIG 3.* CAN'T BE USED WITH THIS BUNDLE, DUE TO AN INCOMPATBILITY BETWEEN TWIG EXTENSIONS AND TWIG
 
 This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rendering and the extra package for Symfony
 

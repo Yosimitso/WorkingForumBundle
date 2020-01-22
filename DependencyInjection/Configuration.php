@@ -33,7 +33,6 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->booleanNode('allow_anonymous_read')
                     ->defaultTrue()
-                    ->cannotBeEmpty()
                     ->end()
                 ->integerNode('thread_per_page')
                     ->min(1)

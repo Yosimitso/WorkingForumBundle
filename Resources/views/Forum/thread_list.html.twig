@@ -77,7 +77,7 @@
                                 {% endif %}
                                 "/>
                                 <p>{{ thread.author.username |slice(0,30) }}</p>
-                                <p><em>{{ thread.cdate | time_diff }}</em></p>
+                                <p><em>{{ thread.cdate | date(parameters.dateFormat) }}</em></p>
                             </td>
                             <td class="wf_sub_stat">{{ thread.nbReplies }} {{ 'forum.nbPost' | trans }}</td>
                             <td class="wf_sub_lastreply">

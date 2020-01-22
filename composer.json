@@ -3,7 +3,7 @@
     "description": "A complete forum bundle",
     "type": "symfony-bundle",
     "require": {
-        "knplabs/knp-paginator-bundle": "~2.7.2",
+        "knplabs/knp-paginator-bundle": ">=5.0",
         "knplabs/knp-markdown-bundle": "^1.7.0",
 	    "symfony/framework-bundle": ">=3.4.26",
 	    "symfony/translation": ">=3.4.26",
@@ -15,7 +15,6 @@
         "symfony/form": ">=3.4.26",
         "doctrine/common": "^2.5.1",
         "doctrine/orm": "^2.6",
-        "twig/twig": "^2.7.0",
         "twig/extensions": "^1.5"
     },
     "license": "MIT",

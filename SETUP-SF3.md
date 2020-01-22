@@ -3,12 +3,13 @@ WorkingForumBundle
 
 Setup for Symfony 2/3/4 (without Flex structure)
 ------------------
+WARNING : TWIG 3.* CAN'T BE USED WITH THIS BUNDLE, DUE TO AN INCOMPATBILITY BETWEEN DOCTRINE AND TWIG
 
 This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rendering and the extra package for Symfony
 
 1/ Run  :
 ````bash
-composer require "yosimitso/workingforumbundle":"^2.0"
+composer require "yosimitso/workingforumbundle":"^3.0"
 ````
 
 
@@ -27,7 +28,7 @@ yosimitso_working_forum:
     thread_per_page: 50
     post_per_page: 10
     date_format: 'Y/m/d H:i:s'
-    allow_anonymous_read: false             # ALLOW OR NOT ACCESS TO ANONYMOUS USERS
+    allow_anonymous_read: true             # ALLOW OR NOT ACCESS TO ANONYMOUS USERS
     allow_moderator_delete_thread: false
     theme_color: green                      # GREEN OR DARK_BLUE
     lock_thread_older_than: 0               # DAYS BETWEEN THE LAST THREAD'S POST AND THE AUTOLOCKING OF THE THREAD, 0 MEANS DISABLED
@@ -58,8 +59,10 @@ please also check if your PHP configuration allow file upload through forms and 
 
 4/ Add to you app/config.yml into 'orm' key :
 ````yml
-resolve_target_entities:
-    Yosimitso\WorkingForumBundle\Entity\User: You\YourUserBundle\Entity\YourUser
+doctrine:
+    orm:
+        resolve_target_entities:
+            Yosimitso\WorkingForumBundle\Entity\User: You\YourUserBundle\Entity\YourUser
 ````
 
 5/ Your User Entity needs to extends : \Yosimitso\WorkingForumBundle\Entity\User

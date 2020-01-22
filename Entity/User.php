@@ -20,6 +20,7 @@ abstract class User implements UserInterface
     protected $id;
 
     /**
+     * @ORM\Column(name="username", type="string", length=255, unique=true)
      * @var string
      */
     protected $username;

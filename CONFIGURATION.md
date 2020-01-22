@@ -5,7 +5,7 @@ yosimitso_working_forum_bundle:
 | Subnode    | Parameters                    | Required | Accepted                  | Default     | Explanations |
 |------------|-------------------------------|----------|---------------------------|-------------|--------------|
 |            | site_title                    | **Yes**  | String not empty          |             | Site's title, used in email |
-|            | allow_anonymous_read          | **Yes**  | Boolean                   |             | Allow or not access to anonymous user (in both cases, anonymous can't post)|
+|            | allow_anonymous_read          | No       | Boolean                   | true            | Allow or not access to anonymous user (in both cases, anonymous can't post)|
 |            | thread_per_page               | No       | Integer > 0               | 50          | Number of threads displayed per page (pagination related) |
 |            | post_per_page                 | No       | Integer > 0               | 20          | Number of posts displayed per page (pagination related)  |
 |            | date_format                   | No       | String, valid date format | d/m/Y       | Date (without time) with PHP format, used for rendering|

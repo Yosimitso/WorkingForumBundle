@@ -88,6 +88,7 @@ a.wf_button:visited {
     margin-top: 0;
     font-weight: normal;
     word-wrap: break-word;
+    //box-shadow: 0 8px 6px -6px black;
   }
 
   .wf_thread {
@@ -138,6 +139,10 @@ a.wf_button:visited {
     border-bottom: 1px solid;
     padding: 10px;
     text-align: left;
+  }
+
+  tr {
+    border-left: 1px solid rgba(21, 141, 64, 0.5);
   }
 }
 
@@ -723,7 +728,8 @@ code {
 
 .wf_cadre-img-small {
   vertical-align: middle;
-  width: 40px;
+  width: 50px;
+  height: 50px;
 }
 
 #wf_admin_header_content {

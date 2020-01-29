@@ -16,7 +16,7 @@
     <div id="wf_forum_content">
         {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'extraPath': ['forum.forum_rules' | trans] } only %}
     <div id="wf_forum">
-            <div class="wf_forum">
+            <div class="wf_forum wf_rules_wrapper">
                 <h1>{{ 'forum.forum_rules' | trans | capitalize }}</h1>
                 <div id="wf_rules">
                 {% if rules is not null %}

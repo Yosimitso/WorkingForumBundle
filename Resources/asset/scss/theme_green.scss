@@ -1,21 +1,27 @@
 @import url('./common.scss');
 
 $main-color-dark: rgba(21, 141, 64, 0.7);
+$main-color-light: #8bcaa6;
+$title-background-color: #3fa757;
+$title-border-color: rgba(21, 141, 64, 0.7);
 $main-color-dark-border: #188d40;
 $main-color-light-border: #CCCCCC;
+$main-color-font-color: #166f3c;
 //$main-color-light: #dfeae2;
-$main-color-light: #dfeae2;
 $main-font: Roboto, Arial;
 $light-grey: #f3f3f3;
 $red-gradient: linear-gradient(to bottom, #8E0604 0px, #E20602 100%);
 $red: #8E0604;
 $light-red: #F7B5B5;
 $color-button: #8bcaa6;
+$border-color-button: #00a547;
+$disabled-color: #6B6B6B;
+$disabled-color-gradient: linear-gradient(to bottom, #6B6B6B 0, #B2B7B7 100%);
+$markdown-code: #c7254e;
+$odd-color: #E2E2E2;
+$block-background: #f5f5f5;
+$input-border: #d8d8d8;
 
-.wf_forum {
-  //border-left-color: $main-color-dark;
-  //background-color: white;
-}
 
 .wf_subforum {
   background-color: white;
@@ -46,24 +52,24 @@ $color-button: #8bcaa6;
 .wf_thread {
   h1 {
     color: white;
-    background-color: #3fa757;
+    background-color: $title-background-color;
     margin-top: 20px;
     font-family: Arial;
   }
 
   h2 {
-    background-color: #F5F5F5;
+    background-color: $block-background;
     color: grey;
   }
 }
 
 h2 {
-  background-color: #F5F5F5;
+  background-color: $block-background;
   color: grey;
 }
 
 .wf_breadcrumb {
-  background-color: #f5f5f5;
+  background-color: $block-background;
 
   a:hover {
     color: #2a6496;
@@ -75,7 +81,7 @@ h2 {
   background-color: white;
 
   .wf_post-left {
-    background-color: #e2e2e2;
+    background-color: $odd-color;
   }
 
   .wf_post-admin {
@@ -88,17 +94,17 @@ h2 {
 
   h1 {
     color: white;
-    background-color: #3fa757;
+    background-color: $title-background-color;
   }
 
   input {
     &[type="text"], &[type="email"], &[type="password"] {
-      border-color: #d8d8d8;
+      border-color: $input-border;
     }
   }
 
   select {
-    border-color: #d8d8d8;
+    border-color: $input-border;
   }
 }
 
@@ -127,12 +133,12 @@ h2 {
 
   input {
     &[type="text"], &[type="email"], &[type="password"] {
-      border-color: #d8d8d8;
+      border-color: $input-border;
     }
   }
 
   select {
-    border-color: #d8d8d8;
+    border-color: $input-border;
   }
 }
 
@@ -140,26 +146,12 @@ h2 {
   border-color: silver;
 }
 
-//#wf_forum_content h1 {
-//  border-bottom-color: $main-color-light-border;
-//  background-color: $main-color-light;
-//  border-bottom: 5px solid $main-color-dark;
-//  border-left: 2px solid $main-color-dark;
-//  color: #3b9a50;
-//  text-align: left;
-//  padding-left: 5%;
-//  height: 1.3em;
-//  font-size: 1.5em;
-//  text-shadow: 1px 2px 0 rgb(193, 187, 187);
-//  font-family: $main-font;
-//}
-
 #wf_forum_content h1 {
   border-bottom-color: #CCCCCC;
-  background-color: #8bcaa6; /* #ccecda*/
-  border-bottom: 5px solid rgba(21, 141, 64, 0.7);
-  border-left: 2px solid rgba(21, 141, 64, 0.7);
-  color: #166f3c;
+  background-color: $main-color-light; /* #ccecda*/
+  border-bottom: 5px solid $title-border-color;
+  border-left: 2px solid $title-border-color;
+  color: $main-color-font-color;
   text-align: left;
   padding-left: 5%;
   height: 1.3em;
@@ -169,26 +161,25 @@ h2 {
 }
 
 .wf_forum_block_title {
-  background-color: #3fa757;
+  background-color: $title-background-color;
   color: white;
 }
 
 .wf_button {
-  background-color: #8bcaa6;
-  /* background-image: linear-gradient(to bottom, #44e567 0px, #00a547 100%); */
-  border-color: #00a547;
+  background-color: $main-color-light;
+  border-color: $border-color-button;
   color: #fff;
-  border-bottom: 5px solid #00a547;
+  border-bottom: 5px solid $border-color-button;
 }
 
 .wf_locked {
-  color: red;
+  color: $red;
 }
 
 .wf_button-red {
-  background-color: #8E0604;
+  background-color: $red;
   background-image: $red-gradient;
-  border-color: #8E0604;
+  border-color: $red;
 }
 
 a.wf_button, .wf_button:hover {
@@ -196,13 +187,8 @@ a.wf_button, .wf_button:hover {
 }
 
 .wf_button-grey {
-  background-color: #00A547;
-  background-image: -moz-linear-gradient(top, #6B6B6B 0, #B2B7B7 100%);
-  background-image: -ms-linear-gradient(top, #6B6B6B 0, #B2B7B7 100%);
-  background-image: -o-linear-gradient(top, #6B6B6B 0, #B2B7B7 100%);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #6B6B6B), color-stop(100%, #B2B7B7));
-  background-image: -webkit-linear-gradient(top, #6B6B6B 0, #B2B7B7 100%);
-  background-image: linear-gradient(to bottom, #6B6B6B 0, #B2B7B7 100%);
+  background-color: $disabled-color;
+  background-image: $disabled-color-gradient;
 }
 
 .wf_add-plus {
@@ -214,7 +200,7 @@ a.wf_button, .wf_button:hover {
 }
 
 .alert-error {
-  background-color: #F7B5B5;
+  background-color: $light-red;
   border-color: #FC3838;
   color: red;
 }
@@ -276,13 +262,13 @@ a.wf_button, .wf_button:hover {
 }
 
 .wf_thread_list tr:nth-child(even) {
-  background-color: #e2e2e2;
+  background-color: $odd-color;
 }
 
 code {
-  background-color: #f5f5f5;
+  background-color: $block-background;
   border-color: #ccc;
-  color: #c7254e;
+  color: $markdown-code;
 }
 
 .wf_post-right {
@@ -291,8 +277,8 @@ code {
   }
 
   blockquote {
-    border: 1px solid #cecece;
-    border-left: 5px solid #cecece;
+    border: 1px solid $input-border;
+    border-left: 5px solid $input-border;
   }
 }
 
@@ -303,10 +289,10 @@ code {
 #wf_search {
   background-color: white;
   border-left-color: $main-color-dark;
-  border-bottom-color: silver;
+  border-bottom-color: $input-border;
 
   input, select {
-    border-color: #d8d8d8;
+    border-color: $input-border;
   }
 }
 
@@ -318,7 +304,7 @@ code {
 
   tbody tr {
     &:nth-child(odd) {
-      background-color: #E2E2E2;
+      background-color: $odd-color;
     }
 
     &:nth-child(even) {
@@ -328,8 +314,8 @@ code {
 }
 
 #wf_new_post .md-editor > .md-preview {
-  border-bottom-color: #ddd;
-  border-top-color: #ddd;
+  border-bottom-color: $input-border;
+  border-top-color: $input-border;
 }
 
 .wf_resolved td {

@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
  * Check user's authorization
  * @package Yosimitso\WorkingForumBundle\Security
  */
-class Authorization
+class Authorization implements AuthorizationInterface
 {
     /**
      * @var AuthorizationChecker

@@ -337,7 +337,7 @@ class ThreadService
             'setResolved' => $this->authorization->hasModeratorAuthorization() || (!$anonymousUser && $user->getId() == $thread->getAuthor()->getId()),
             'quote' => (!$anonymousUser && !$thread->getLocked()),
             'report' => (!$anonymousUser),
-            'post' => (!$anonymousUser && !$autolock),
+            'post' => ( (!$anonymousUser && !$autolock) || $this->authorization->hasModeratorAuthorization()),
             'subscribe' => (!$anonymousUser && $canSubscribeThread),
             'moveThread' => ($this->authorization->hasModeratorAuthorization()) ? $this->formFactory->create(MoveThreadType::class)->createView() : false,
             'allowModeratorDeleteThread' => $this->bundleParameters->allow_moderator_delete_thread

@@ -71,7 +71,7 @@
                     <div class="wf_new_post">
                         <p class="wf_post_a_message">{{ 'forum.no_message_login' | trans }}</p>
                     </div>
-                {% elseif autolock %}
+                {% elseif autolock and not actionsAvailables.post %}
                     <div class="wf_new_post">
                         <p class="wf_post_a_message">{{ 'forum.thread_too_old_locked' | trans }}</p>
                     </div>

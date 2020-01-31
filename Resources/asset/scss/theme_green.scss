@@ -27,7 +27,7 @@ $sublabel-color: grey;
 $sucess-background: #afddaf;
 $link-hover-color: #2a6496;
 $title-font-size: 1.5em;
-
+$separator: #ededed;
 
 .wf_subforum {
   background-color: $block-background;
@@ -78,7 +78,7 @@ h2 {
 }
 
 .wf_post {
-  border-bottom-color: $block-background;
+  border-bottom-color: $separator;
   background-color: $block-background;
 
   .wf_post-left {
@@ -122,22 +122,25 @@ h2 {
 }
 
 
-#wf_forum_content h1 {
-  border-bottom-color: $main-color-light-border;
-  background-color: $main-color-light;
-  border-bottom: 5px solid $title-border-color;
-  border-left: 2px solid $title-border-color;
-  color: $main-color-font-color;
-  text-align: left;
-  padding-left: 5%;
-  height: 1.3em;
-  font-size: $title-font-size;
-  font-family: $main-font;
-}
+#wf_forum_content {
+  h1, .wf_forum_block_title {
+    border-bottom-color: $main-color-light-border;
+    background-color: $main-color-light;
+    border-bottom: 5px solid $title-border-color;
+    border-left: 2px solid $title-border-color;
+    color: $main-color-font-color;
+    padding-left: 5%;
+    font-family: $main-font;
+  }
 
-.wf_forum_block_title {
-  background-color: $title-background-color;
-  color: $title-font-color;
+  h1 {
+    color: $main-color-font-color;
+    text-align: left;
+    height: 1.3em;
+    font-size: $title-font-size;
+  }
+
+
 }
 
 .wf_thread_list tr:nth-child(even) {

@@ -104,7 +104,7 @@ class ThreadController extends BaseController
                 return $this->redirect($this->generateUrl('workingforum', []));
             }
 
-            if ($autolock) // THREAD IS LOCKED CAUSE TOO OLD ACCORDING TO PARAMETERS
+            if ($autolock && !$this->authorization->hasModeratorAuthorization()) // THREAD IS LOCKED CAUSE TOO OLD ACCORDING TO PARAMETERS
             {
                 $this->flashbag->add(
                     'error',

@@ -156,6 +156,7 @@ class ThreadController extends BaseController
 
         $parameters = [ // PARAMETERS USED BY TEMPLATE
             'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format'),
+            'timeFormat' => $this->container->getParameter('yosimitso_working_forum.time_format'),
             'thresholdUsefulPost' => $this->container->getParameter('yosimitso_working_forum.vote')['threshold_useful_post'],
             'fileUpload' => $this->container->getParameter('yosimitso_working_forum.file_upload'),
             'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')

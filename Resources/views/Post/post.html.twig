@@ -15,7 +15,7 @@
     </div>
     <div class="wf_post-right{% if post.voteUp >= parameters.thresholdUsefulPost and post.moderateReason is empty %} wf_useful_post{% endif %}">
         <p class="wf_date">
-            {{ post.cdate | date(parameters.dateFormat) }}
+            {{ post.cdate | date(parameters.dateFormat~' '~parameters.timeFormat) }}
 
             {% if post.moderateReason is empty and actionsAvailables.report %}
                 <a href="#"

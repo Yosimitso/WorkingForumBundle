@@ -1,3 +1,5 @@
+@import url('./common.scss');
+
 /***************** COMMON *******************/
 @font-face {
   font-family: Roboto;
@@ -100,6 +102,7 @@ a.wf_button:visited {
       font-size: 2.5rem;
       padding: 10px 10px 10px 30px;
       font-family: RobotoCondensed;
+      margin-top: 20px;
       margin-bottom: 0;
       text-align: center;
     }
@@ -131,11 +134,13 @@ a.wf_button:visited {
   padding: 5px;
   width: 99%;
   border-collapse: collapse;
+  margin-left: 1%;
 
   td {
     border-bottom: 1px solid;
     padding: 10px;
     text-align: left;
+    padding: 0.5rem;
   }
 }
 
@@ -284,11 +289,27 @@ h2 {
   margin-bottom: 10px;
 }
 
-#wf_forum_content .wf_textarea_post {
-  height: 300px;
-  width: 100%;
-  padding: 10px;
-  font-family: Arial;
+#wf_forum_content {
+  margin-top: 2rem;
+  margin-left: 0.1rem;
+
+  .wf_textarea_post {
+    height: 300px;
+    width: 100%;
+    padding: 10px;
+    font-family: Arial;
+  }
+
+  h1, .wf_forum_block_title {
+    border-bottom: 5px solid;
+    border-left: 2px solid;
+    padding-left: 5%;
+  }
+
+  h1 {
+    text-align: left;
+    height: 1.3em;
+  }
 }
 
 .wf_useful_post {
@@ -353,10 +374,6 @@ code {
   padding: 9.5px;
 }
 
-#wf_forum_content {
-  margin-top: 2rem;
-  margin-left: 0.1rem;
-}
 
 .wf_thread_list a {
   color: inherit;
@@ -368,10 +385,6 @@ code {
   color: inherit;
   text-decoration: inherit;
 }
-
-//.wf_new_thread_button {
-//  margin: 5px 0 15px 5px;
-//}
 
 .wf_new_thread {
   h1 {
@@ -727,6 +740,10 @@ code {
   height: 55px;
 }
 
+#wf_admin_header h2 {
+  margin: 0;
+}
+
 #wf_admin_header_content {
   padding: 10px;
 }
@@ -823,6 +840,7 @@ code {
 
   .wf_button {
     font-size: 13px;
+    border-bottom: 5px solid
   }
 
   .wf_forum_block_admin {
@@ -884,10 +902,6 @@ code {
 
   .wf_sub_name a {
     font-size: 1rem;
-  }
-
-  .wf_subforum td {
-    padding: 0.5rem;
   }
 
   .wf_sub_stat, .wf_sub_lastreply {
@@ -958,22 +972,4 @@ code {
 
   .wf_admin_subforum_statistic {
   }
-}
-
-/***************** TOOLS *******************/
-
-.wf_width50 {
-  width: 50%;
-}
-
-.wf_center {
-  margin: 0 auto;
-}
-
-.wf_width100 {
-  width: 100%;
-}
-
-.wf_clear {
-  clear: both;
 }

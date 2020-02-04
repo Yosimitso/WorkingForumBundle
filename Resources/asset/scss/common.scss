@@ -5,3 +5,85 @@
 .small-margin {
   margin:10px;
 }
+
+/***************** TOOLS *******************/
+
+.wf_width50 {
+  width: 50%;
+}
+
+.wf_center {
+  margin: 0 auto;
+}
+
+.wf_width100 {
+  width: 100%;
+}
+
+.wf_clear {
+  clear: both;
+}
+
+/*** ALERTS ***/
+
+.alert-error {
+  background-color: $light-red;
+  border-color: #FC3838;
+  color: red;
+}
+
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+
+  hr {
+    border-top-color: #c9e2b3;
+  }
+
+  li .alert-link {
+    color: #2b542c;
+  }
+}
+
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+
+  hr {
+    border-top-color: #a6e1ec;
+  }
+
+  li .alert-link {
+    color: #245269;
+  }
+}
+
+.alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+
+  hr {
+    border-top-color: #f7e1b5;
+  }
+
+  li .alert-link {
+    color: #66512c;
+  }
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+
+  hr {
+    border-top-color: #e4b9c0;
+  }
+
+  li .alert-link {
+    color: #843534;
+  }
+}

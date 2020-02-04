@@ -51,7 +51,7 @@ class BaseController extends Controller
         AuthorizationInterface $authorization,
         $user,
         SessionInterface $session,
-        DataCollectorTranslator $translator,
+        $translator,
         PaginatorInterface $paginator,
         $templating
     ) {

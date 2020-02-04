@@ -210,7 +210,7 @@ code {
 .wf_button {
   background-color: $main-color-light; // #8baaca
   color: $title-font-color;
-  border-bottom: $border-color-button; // rgba(21, 75, 141, 0.7);
+  border-bottom-color: $border-color-button; // rgba(21, 75, 141, 0.7);
 }
 
 .wf_locked {

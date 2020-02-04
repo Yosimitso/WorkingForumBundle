@@ -34,6 +34,7 @@
   padding: 5px;
   text-decoration: none;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
+  border-bottom: 5px solid;
 }
 
 a.wf_button:visited {
@@ -840,7 +841,6 @@ code {
 
   .wf_button {
     font-size: 13px;
-    border-bottom: 5px solid
   }
 
   .wf_forum_block_admin {

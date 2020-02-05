@@ -31,9 +31,9 @@
            <td class="wf_sub_lastreply">
                {% if subforum.lastReplyUser is not null and subforum.lastReplyDate %}
                    {% if subforum.lastReplyUser.avatarUrl is not empty %}
-                       <img class="wf_cadre-img-small wf_cadre-left" src="{{ asset(subforum.lastReplyUser.avatarUrl) }}">
+                       <img class="wf_cadre-img-small wf_cadre-left hide-for-small" src="{{ asset(subforum.lastReplyUser.avatarUrl) }}">
                    {% else %}
-               <img class="wf_cadre-img-small wf_cadre-left" src="{{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}">
+               <img class="wf_cadre-img-small wf_cadre-left hide-for-small" src="{{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}">
                    {% endif %}
                    <p><strong>{{ 'forum.last_reply_date' | trans }}</strong></p>
                    <p>{{ subforum.lastReplyUser.username }}</p>

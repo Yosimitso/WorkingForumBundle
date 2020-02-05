@@ -69,7 +69,7 @@
                                 {% endif %}
                             </td>
                             <td class="wf_sub_author">
-                                <img class="wf_cadre-img-small wf_cadre-left" src="
+                                <img class="wf_cadre-img-small wf_cadre-left hide-for-small" src="
                                 {% if item.author_avatarUrl is not empty %}
                                     {{ asset(item.author_avatarUrl) }}
                                 {% else %}
@@ -83,10 +83,10 @@
                             <td class="wf_sub_lastreply">
                                 {% if item.thread_lastReplyDate is not null and item.lastReplyUser_username is not null %}
                                     {% if item.lastReplyUser_avatarUrl is not empty %}
-                                        <img class="wf_cadre-img-small wf_cadre-left"
+                                        <img class="wf_cadre-img-small wf_cadre-left hide-for-small"
                                              src="{{ asset(item.lastReplyUser_avatarUrl) }}">
                                     {% else %}
-                                        <img class="wf_cadre-img-small wf_cadre-left"
+                                        <img class="wf_cadre-img-small wf_cadre-left hide-for-small"
                                              src="{{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}">
                                     {% endif %}
                                     <strong>{{ 'forum.last_reply_date' | trans }}</strong><br/>

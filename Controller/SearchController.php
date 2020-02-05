@@ -3,6 +3,7 @@
 namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
@@ -17,6 +18,13 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
  */
 class SearchController extends BaseController
 {
+    protected $formFactory;
+    
+    public function __construct(FormFactory $formFactory)
+    {
+        $this->formFactory = $formFactory;
+    }
+
     /**
      * @param Request $request
      *
@@ -25,7 +33,7 @@ class SearchController extends BaseController
     public function indexAction(Request $request)
     {
         $listForum = $this->em->getRepository(Forum::class)->findAll();
-        $form = $this->get('form.factory')
+        $form = $this->formFactory
             ->createNamedBuilder('', SearchType::class, null, array('csrf_protection' => false,))
             ->add('page', HiddenType::class, ['data' => 1])
             ->setMethod('GET')
@@ -55,13 +63,18 @@ class SearchController extends BaseController
                     $thread_list = [];
                 }
 
+                $parameters  = [ // PARAMETERS USED BY TEMPLATE
+                    'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format')
+                ];
+
                 return $this->templating->renderResponse('@YosimitsoWorkingForum/Forum/thread_list.html.twig',
                     [
                         'thread_list' => $thread_list,
                         'date_format' => $date_format,
                         'keywords'    => $form['keywords']->getData(),
                         'post_per_page' => $this->getParameter('yosimitso_working_forum.post_per_page'),
-                        'page_prefix'   => 'page'
+                        'page_prefix'   => 'page',
+                        'parameters' => $parameters
                     ]
                 );
             }

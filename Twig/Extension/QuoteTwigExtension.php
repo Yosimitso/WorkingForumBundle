@@ -72,7 +72,7 @@ class QuoteTwigExtension extends \Twig_Extension
                         . $this->translator->trans('forum.has_written', [], 'YosimitsoWorkingForumBundle')
                         . " :** \n"
                         . '>'.$this->markdownQuote($this->quote($post->getContent()))
-                        . "\n";
+                        . "\n\n";
                 }
 
                 return '';

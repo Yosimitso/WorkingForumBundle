@@ -35,6 +35,8 @@
   text-decoration: none;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6);
   border-bottom: 5px solid;
+  margin-bottom: 5px;
+  display:inline-block;
 }
 
 a.wf_button:visited {
@@ -453,6 +455,7 @@ code {
   padding: 10px 20px;
   font-size: 100%;
   background-color: white;
+  margin-bottom: 5px;
 }
 
 #wf_smiley {

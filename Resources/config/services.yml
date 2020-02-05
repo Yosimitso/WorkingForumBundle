@@ -52,6 +52,8 @@ services:
     class: Yosimitso\WorkingForumBundle\Controller\SearchController
     parent: yosimitso_workingforum.controller.base
     public: true
+    arguments:
+      - "@form.factory"
 
   yosimitso_workingforum.controller.post:
     class: Yosimitso\WorkingForumBundle\Controller\PostController

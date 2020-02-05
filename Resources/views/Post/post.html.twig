@@ -3,7 +3,7 @@
     <div class="wf_post-left">
         <img class="wf_cadre-img" src="
           {% if post.user.avatarUrl is not empty %}
-          {{ asset('bundles/yosimitsoworkingforum/'~post.user.avatarUrl) }}
+          {{ asset(post.user.avatarUrl) }}
           {% else %}
            {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}
           {% endif %}

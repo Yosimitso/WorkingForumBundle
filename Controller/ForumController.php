@@ -90,9 +90,8 @@ class ForumController extends BaseController
         $list_subforum_query = $this
             ->em
             ->getRepository(Thread::class)
-            ->findBySubforum(
-                $subforum->getId(),
-                ['pin' => 'DESC', 'lastReplyDate' => 'DESC']
+            ->getAllBySubforum(
+                $subforum
             );
 
         $date_format = $this->getParameter('yosimitso_working_forum.date_format');

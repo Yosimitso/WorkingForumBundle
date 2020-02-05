@@ -20,7 +20,7 @@
                     <td class="hide-for-small">
                            <img class="wf_cadre-img" src="
           {% if aUser.avatarUrl is not empty %}
-          {{ asset('bundles/yosimitsoworkingforum/'~aUser.avatarUrl) }}
+          {{ asset(aUser.avatarUrl) }}
           {% else %}
            {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}   
           {% endif %}
@@ -35,7 +35,8 @@
                         {% endfor %}    
                     </td>
                     <td>{{ aUser.nbPost }}</th>
-                    <td><input type="checkbox" disabled autocomplete="off" {% if aUser.banned %} checked {% endif %}/> </td>   
+                    <td><input type="checkbox" disabled autocomplete="off" {% if aUser.banned %} checked {% endif %}/> </td>
+                </tr>
                 {% endfor %}
         </tbody>
         </table>

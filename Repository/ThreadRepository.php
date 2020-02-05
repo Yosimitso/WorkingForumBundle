@@ -3,6 +3,11 @@
 namespace Yosimitso\WorkingForumBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Yosimitso\WorkingForumBundle\Entity\Forum;
+use Yosimitso\WorkingForumBundle\Entity\Post;
+use Yosimitso\WorkingForumBundle\Entity\Subforum;
+use Doctrine\ORM\Query;
+use Yosimitso\WorkingForumBundle\Entity\User;
 
 /**
  * Class ThreadRepository
@@ -24,7 +29,7 @@ class ThreadRepository extends EntityRepository
             ->select('a')
             ->addSelect('b')
             ->from($this->_entityName, 'a')
-            ->join('YosimitsoWorkingForumBundle:Post', 'b', 'WITH', 'a.id = b.thread')
+            ->join(Post::class, 'b', 'WITH', 'a.id = b.thread')
             ->orderBy('a.note', 'desc')
             ->setMaxResults($limit)
             ->getQuery()
@@ -51,29 +56,62 @@ class ThreadRepository extends EntityRepository
 
         foreach ($keywords as $word)
         {
-            $where .= "(a.label LIKE '%" . $word . "%' OR a.subLabel LIKE '%" . $word . "%' OR b.content LIKE '%" . $word . "%') OR";
+            $where .= "(thread.label LIKE '%" . $word . "%' OR thread.subLabel LIKE '%" . $word . "%' OR post.content LIKE '%" . $word . "%') OR";
         }
 
         $where = rtrim($where, ' OR');
 
         $queryBuilder = $this->_em->createQueryBuilder();
         $queryBuilder
-            ->select('a')
-            ->from($this->_entityName, 'a')
-            ->join('YosimitsoWorkingForumBundle:Post', 'b', 'WITH', 'a.id = b.thread')
-            ->join('YosimitsoWorkingForumBundle:Subforum','c','WITH','a.subforum = c.id')
+            ->select('thread')
+            ->addSelect('subforum')
+            ->addSelect('forum')
+            ->addSelect('author.avatarUrl AS author_avatarUrl, author.username AS author_username')
+            ->addSelect('lastReplyUser.avatarUrl AS lastReplyUser_avatarUrl, lastReplyUser.username AS lastReplyUser_username')
+            ->from($this->_entityName, 'thread')
+            ->join(Post::class, 'post', 'WITH', 'post.thread = thread.id')
+            ->join(User::class,'author','WITH','thread.author = author.id')
+            ->join(User::class, 'lastReplyUser', 'WITH', 'thread.lastReplyUser = lastReplyUser.id')
+            ->join(Subforum::class,'subforum','WITH','thread.subforum = subforum.id')
+            ->join(Forum::class, 'forum', 'WITH', 'subforum.forum = forum.id')
             ->where($where)
-            ->andWhere('b.moderateReason IS NULL')
+            ->andWhere('post.moderateReason IS NULL')
             ;
 
         if (!empty($whereSubforum))
         {
-            $queryBuilder->andWhere('c.id IN ('.implode(',',$whereSubforum).')');
+            $queryBuilder->andWhere('subforum.id IN ('.implode(',',$whereSubforum).')');
         }
             $queryBuilder->setMaxResults($limit)
                     
         ;
         $query = $queryBuilder;
-        return $query->getQuery()->getResult();
+        $result = $query->getQuery()->getScalarResult();
+        return $result;
+    }
+    
+    public function getAllBySubforum($subforum, $withPosts = false)
+    {
+        $query = $this->_em->createQueryBuilder()
+                ->select('thread')
+                ->addSelect('subforum')
+                ->addSelect('forum')
+                ->addSelect('author.avatarUrl AS author_avatarUrl, author.username AS author_username')
+                ->addSelect('lastReplyUser.avatarUrl AS lastReplyUser_avatarUrl, lastReplyUser.username AS lastReplyUser_username')
+                ->from($this->_entityName, 'thread')
+                ->join(User::class,'author','WITH','thread.author = author.id')
+                ->join(User::class, 'lastReplyUser', 'WITH', 'thread.lastReplyUser = lastReplyUser.id')
+                ->join(Subforum::class,'subforum','WITH','thread.subforum = subforum.id')
+                ->join(Forum::class, 'forum', 'WITH', 'subforum.forum = forum.id')
+                ->orderBy('thread.pin', 'DESC')
+                ->addOrderBy('thread.lastReplyDate', 'DESC')
+            ;
+        
+        if ($withPosts) {
+            $query->addSelect('post')
+                ->join(Post::class,'post','WITH','post.thread = thread.id');
+        }
+        $result = $query->getQuery()->getScalarResult();
+        return $result;
     }
 }

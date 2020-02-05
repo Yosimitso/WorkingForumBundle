@@ -148,6 +148,7 @@ jQuery(document).ready(() => {
             async: false,
             success: () => {
                 jQuery('#wf_add_subscription').html(storeJs.trans['forum.already_subscribed']).addClass('wf_button-grey');
+                jQuery('#wf_add_subscription').attr('onclick', '');
             },
             error: () => {
                 alert(storeJs.trans['message.generic_error']);
@@ -167,7 +168,10 @@ jQuery(document).ready(() => {
             async: false,
             success: () => {
                 jQuery('#cancel_subscription').html(storeJs.trans['message.subscription_cancelled']);
-                //jQuery('#wf_add_subscription').html(storeJs.trans['message.subscription_cancelled']).removeClass('wf_button-grey');
+                jQuery('#wf_add_subscription')
+                    .html(storeJs.trans['forum.add_subscription'])
+                    .removeClass('wf_button-grey')
+                    .attr('onclick', 'addSubscription(); return false;'));
             },
             error: () => {
                 alert(storeJs.trans['message.generic_error']);

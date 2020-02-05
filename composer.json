@@ -5,18 +5,18 @@
     "require": {
         "knplabs/knp-paginator-bundle": ">=5.0",
         "knplabs/knp-markdown-bundle": "^1.7.0",
-	    "symfony/framework-bundle": ">=3.4.26",
+	    "symfony/framework-bundle": ">=3.4.26|>=4.2.7",
 	    "symfony/translation": ">=3.4.26",
-        "symfony/security": ">=3.4.26",
+        "symfony/security": ">=3.4.26|>=4.2.7",
         "symfony/templating": ">=3.4.26",
         "sensio/framework-extra-bundle": ">=3.0",
-        "symfony/dependency-injection": ">=3.4.26",
+        "symfony/dependency-injection": ">=3.4.26|>=4.2.7",
         "swiftmailer/swiftmailer": ">=5.4.9",
-        "symfony/form": ">=3.4.26",
+        "symfony/form": ">=3.4.26|>=4.2.1",
         "doctrine/common": "^2.5.1",
         "doctrine/orm": "^2.6",
         "twig/extensions": "^1.5",
-        "twig/twig": ">=2.7|<=3.0"
+        "twig/twig": ">=2.7|<3.0"
     },
     "license": "MIT",
     "authors": [

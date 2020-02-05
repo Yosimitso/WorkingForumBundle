@@ -65,7 +65,7 @@ class ThreadController extends BaseController
         }
 
         $anonymousUser = (is_null($this->user)) ? true : false;
-
+        
         if (!$this->authorization->hasSubforumAccess($subforum)) { // CHECK IF USER HAS AUTHORIZATION TO VIEW THIS THREAD
             return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/thread.html.twig',
                 [
@@ -377,7 +377,7 @@ class ThreadController extends BaseController
      */
     function unpinAction($forum_slug, $subforum_slug, $thread_slug)
     {
-        $thread = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')->findOneBySlug($thread_slug);
+        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($thread_slug);
 
         if (is_null($thread)) {
             throw new \Exception("Thread error",
@@ -511,16 +511,16 @@ class ThreadController extends BaseController
     /**
      * The thread is deleted by modo or admin
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-     * @param $threadSlug
+     * @param $threadslug
      * @return RedirectResponse
      */
-    public function deleteThreadAction($threadSlug)
+    public function deleteThreadAction($thread_slug)
     {
         if (!$this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')) {
             throw new Exception('Thread deletion is not allowed');
         }
 
-        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($threadSlug);
+        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($thread_slug);
         $subforum = $this->em->getRepository(Subforum::class)->findOneById($thread->getSubforum()->getId());
 
         if (is_null($thread)) {
@@ -548,15 +548,15 @@ class ThreadController extends BaseController
 
     /**
      *
-     * @param $threadId
+     * @param $thread_id
      * @return Response
      */
-    public function cancelSubscriptionAction($threadId)
+    public function cancelSubscriptionAction($thread_id)
     {
         if (is_null($this->user)) {
             return new Response(null, 500);
         }
-        $thread = $this->em->getRepository(Thread::class)->findOneById($threadId);
+        $thread = $this->em->getRepository(Thread::class)->findOneById($thread_id);
         if (is_null($thread)) {
             return new Response(null, 500);
         }
@@ -575,15 +575,15 @@ class ThreadController extends BaseController
 
     /**
      * An user wants to subscribe to a thread
-     * @param $threadId
+     * @param $thread_id
      * @return Response
      */
-    public function addSubscriptionAction($threadId)
+    public function addSubscriptionAction($thread_id)
     {
         if (is_null($this->user)) {
             return new Response(null, 500);
         }
-        $thread = $this->em->getRepository(Thread::class)->findOneById($threadId);
+        $thread = $this->em->getRepository(Thread::class)->findOneById($thread_id);
         if (is_null($thread)) {
             return new Response(null, 500);
         }
@@ -602,8 +602,6 @@ class ThreadController extends BaseController
         }
 
     }
-
-
 }
 
         

@@ -5,14 +5,20 @@
     <div id="wf_forum_content">
     {% include '@YosimitsoWorkingForum/Common/flashmsg.html.twig' %}
 
+    {% if forbidden is defined and forbidden %}
+        <div class="wf_forum">
+            <div class="wf_empty_forum">{{ forbiddenMsg | trans }}</div>
+        </div>
+    {% else %}
+
     {% if thread.resolved %}
-    <div class="alert-success">
-        <ul>
-            <li><span class="wf_tick"></span>{{ 'forum.thread_resolved' | trans }}</li>
-        </ul>
-    </div>
+        <div class="alert-success">
+            <ul>
+                <li><span class="wf_tick"></span>{{ 'forum.thread_resolved' | trans }}</li>
+            </ul>
+        </div>
     {% endif %}
-    {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'subforum': subforum, 'thread': thread} only %}
+        {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'subforum': subforum, 'thread': thread} only %}
 
     {% if not thread.resolved and actionsAvailables.setResolved %}
         <p><a class="wf_button"
@@ -20,13 +26,6 @@
               href="{{ path('workingforum_resolve_thread',{'forum_slug': forum.slug, 'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a>
         </p>
     {% endif %}
-
-
-    {% if forbidden is defined and forbidden %}
-        <div class="wf_forum">
-            <div class="wf_empty_forum">{{ forbiddenMsg | trans }}</div>
-        </div>
-    {% else %}
 
         {% include '@YosimitsoWorkingForum/Thread/storeJs.html.twig' %}
 
@@ -45,7 +44,9 @@
     {% if actionsAvailables.post %}
         <p>
             <a class="wf_button wf_icon-reply" href="#wf_new_post" rel="nofollow">{{ 'forum.reply' | trans }}</a>
-            {% if actionsAvailables.subscribe %}
+            {%  if hasSubscribed %} //forum.already_subscribed
+                <a class="wf_button wf_icon-remove" id="wf_add_subscription" href="#" onclick="cancelSubscription(); return false;" rel="nofollow">{{ 'forum.cancel_subscription' | trans }}</a>
+            {% elseif actionsAvailables.subscribe %}
             <a class="wf_button" id="wf_add_subscription" href="#" onclick="addSubscription(); return false;" rel="nofollow">{{ 'forum.add_subscription' | trans }}</a>
             {% endif %}
         </p>

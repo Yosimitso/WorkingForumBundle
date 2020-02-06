@@ -259,7 +259,7 @@ class ThreadService
      *
      * Create a thread
      */
-    public function create(ThreadType $form, Post $post, Thread $thread, Subforum $subforum)
+    public function create(Form $form, Post $post, Thread $thread, Subforum $subforum)
     {
         $subforum->newThread($this->user); // UPDATE STATISTIC
 

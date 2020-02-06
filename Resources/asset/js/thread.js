@@ -171,7 +171,7 @@ jQuery(document).ready(() => {
                 jQuery('#wf_add_subscription')
                     .html(storeJs.trans['forum.add_subscription'])
                     .removeClass('wf_button-grey')
-                    .attr('onclick', 'addSubscription(); return false;'));
+                    .attr('onclick', 'addSubscription(); return false;');
             },
             error: () => {
                 alert(storeJs.trans['message.generic_error']);

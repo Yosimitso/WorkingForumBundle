@@ -406,7 +406,7 @@ code {
     padding-bottom: 60px;
   }
 
-  wf_new_thread_content p {
+  .wf_new_thread_content p {
     margin-bottom: 10px;
   }
 
@@ -922,16 +922,15 @@ code {
     width: 30%;
   }
 
-  .wf_thread_list .wf_sub_stat {
-    width: 25%;
-  }
 
   .wf_pagination .wf_center {
     width: 100%;
   }
 
-  .wf_thread_list .wf_author {
-    width: 25%;
+  .wf_thread_list  {
+    .wf_author, .wf_sub_stat {
+      width: 25%;
+    }
   }
 
   .wf_latest_page a {

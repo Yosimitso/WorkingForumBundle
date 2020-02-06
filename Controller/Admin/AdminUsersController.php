@@ -5,6 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
+use Yosimitso\WorkingForumBundle\Entity\User;
 
 /**
  * Class AdminUsersController
@@ -21,7 +22,7 @@ class AdminUsersController extends BaseController
      */
     public function userListAction()
     {
-        $usersList = $this->em->getRepository('YosimitsoWorkingForumBundle:User')->findAll();
+        $usersList = $this->em->getRepository(User::class)->findAll();
 
         return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Admin/Users/userslist.html.twig',

@@ -45,7 +45,7 @@
         <p>
             <a class="wf_button wf_icon-reply" href="#wf_new_post" rel="nofollow">{{ 'forum.reply' | trans }}</a>
             {%  if hasSubscribed %}
-                <a class="wf_button wf_icon-remove" id="wf_add_subscription" href="#" onclick="cancelSubscription(); return false;" rel="nofollow">{{ 'forum.cancel_subscription' | trans }}</a>
+                <a class="wf_button wf_icon-remove" id="wf_add_subscription" href="#" onclick="cancelSubscription(); return false;" rel="nofollow">{{ 'forum.cancel_subscription' | trans |capitalize }}</a>
             {% elseif actionsAvailables.subscribe %}
             <a class="wf_button" id="wf_add_subscription" href="#" onclick="addSubscription(); return false;" rel="nofollow">{{ 'forum.add_subscription' | trans }}</a>
             {% endif %}

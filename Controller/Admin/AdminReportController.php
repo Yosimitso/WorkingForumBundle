@@ -6,6 +6,8 @@ use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
+use Yosimitso\WorkingForumBundle\Entity\Post;
+use Yosimitso\WorkingForumBundle\Entity\PostReport;
 
 /**
  * Class AdminReportController
@@ -22,7 +24,7 @@ class AdminReportController extends BaseController
      */
     public function reportAction()
     {
-        $postReportList = $this->em->getRepository('YosimitsoWorkingForumBundle:PostReport')
+        $postReportList = $this->em->getRepository(PostReport::class)
             ->findBy(['processed' => null], ['processed' => 'ASC', 'id' => 'ASC']);
         $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
 
@@ -39,7 +41,7 @@ class AdminReportController extends BaseController
      */
     public function reportHistoryAction()
     {
-        $postReportList = $this->em->getRepository('YosimitsoWorkingForumBundle:PostReport')
+        $postReportList = $this->em->getRepository(PostReport::class)
             ->findBy(['processed' => 1], ['processed' => 'ASC', 'id' => 'DESC']);
         $date_format = $this->getParameter('yosimitso_working_forum.date_format');
 
@@ -63,7 +65,7 @@ class AdminReportController extends BaseController
         $id = (int)htmlentities($request->request->get('id'));
 
         if ($id) {
-            $report = $this->em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneById($id);
+            $report = $this->em->getRepository(PostReport::class)->findOneById($id);
             if (is_null($report)) {
                 return new Response(json_encode('fail'), 500);
             }
@@ -95,7 +97,7 @@ class AdminReportController extends BaseController
             return new Response(json_encode('fail'), 500);
         }
 
-        $post = $this->em->getRepository('YosimitsoWorkingForumBundle:Post')->findOneById($postId);
+        $post = $this->em->getRepository(Post::class)->findOneById($postId);
         if (is_null($post)) {
             return new Response(json_encode('fail'), 500);
         }
@@ -103,7 +105,7 @@ class AdminReportController extends BaseController
         $this->em->persist($post);
 
         if ($id) {
-            $report = $this->em->getRepository('YosimitsoWorkingForumBundle:PostReport')->findOneById($id);
+            $report = $this->em->getRepository(PostReport::class)->findOneById($id);
             if (is_null($report)) {
                 return new Response(json_encode('fail'), 500);
             }
@@ -112,7 +114,7 @@ class AdminReportController extends BaseController
         }
 
         if ($banuser) {
-            $postUser = $this->em->getRepository('YosimitsoWorkingForumBundle:User')->findOneById(
+            $postUser = $this->em->getRepository(User::class)->findOneById(
                 $post->getUser()->getId()
             );
             if (is_null($postUser)) {

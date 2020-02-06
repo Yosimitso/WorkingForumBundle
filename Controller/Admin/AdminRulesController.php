@@ -51,7 +51,7 @@ class AdminRulesController extends BaseController
     public function rulesEditAction(Request $request, $lang)
     {
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
-        $rules = $this->em->getRepository('YosimitsoWorkingForumBundle:Rules')->findOneBy(['lang' => $lang]);
+        $rules = $this->em->getRepository(Rules::class)->findOneBy(['lang' => $lang]);
 
         if (is_null($rules)) {
             throw new \Exception('Lang not found', 500);

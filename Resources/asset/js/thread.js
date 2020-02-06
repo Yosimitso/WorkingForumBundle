@@ -147,8 +147,8 @@ jQuery(document).ready(() => {
             dataType: 'json',
             async: false,
             success: () => {
-                jQuery('#wf_add_subscription').html(storeJs.trans['forum.already_subscribed']).addClass('wf_button-grey');
-                jQuery('#wf_add_subscription').attr('onclick', '');
+                jQuery('#wf_add_subscription').html(storeJs.trans['forum.cancel_subscription']).addClass('wf_icon-remove');
+                jQuery('#wf_add_subscription').attr('onclick', 'cancelSubscription(); return false;');
             },
             error: () => {
                 alert(storeJs.trans['message.generic_error']);
@@ -170,7 +170,7 @@ jQuery(document).ready(() => {
                 jQuery('#cancel_subscription').html(storeJs.trans['message.subscription_cancelled']);
                 jQuery('#wf_add_subscription')
                     .html(storeJs.trans['forum.add_subscription'])
-                    .removeClass('wf_button-grey')
+                    .removeClass('wf_icon-remove')
                     .attr('onclick', 'addSubscription(); return false;');
             },
             error: () => {

@@ -26,7 +26,7 @@ class AdminReportController extends BaseController
     {
         $postReportList = $this->em->getRepository(PostReport::class)
             ->findBy(['processed' => null], ['processed' => 'ASC', 'id' => 'ASC']);
-        $date_format = $this->container->getParameter('yosimitso_working_forum.date_format');
+        $date_format = $this->getParameter('yosimitso_working_forum.date_format');
 
         return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Admin/Report/report.html.twig',

@@ -83,7 +83,7 @@ class ThreadController extends BaseController
 
         $post = new Post($this->user, $thread);
 
-        if (!$this->container->getParameter('yosimitso_working_forum.thread_subscription')['enable']) { // SUBSCRIPTION SYSTEM DISABLED
+        if (!$this->getParameter('yosimitso_working_forum.thread_subscription')['enable']) { // SUBSCRIPTION SYSTEM DISABLED
             $canSubscribeThread = false;
         } else {
             $canSubscribeThread = (empty($this->em->getRepository(Subscription::class)->findBy(['thread' => $thread, 'user' => $this->user]))); // HAS ALREADY SUBSCRIBED ?
@@ -155,10 +155,10 @@ class ThreadController extends BaseController
         $hasAlreadyVoted = $this->em->getRepository(PostVote::class)->getThreadVoteByUser($thread, $this->user);
 
         $parameters = [ // PARAMETERS USED BY TEMPLATE
-            'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format'),
-            'timeFormat' => $this->container->getParameter('yosimitso_working_forum.time_format'),
-            'thresholdUsefulPost' => $this->container->getParameter('yosimitso_working_forum.vote')['threshold_useful_post'],
-            'fileUpload' => $this->container->getParameter('yosimitso_working_forum.file_upload'),
+            'dateFormat' => $this->getParameter('yosimitso_working_forum.date_format'),
+            'timeFormat' => $this->getParameter('yosimitso_working_forum.time_format'),
+            'thresholdUsefulPost' => $this->getParameter('yosimitso_working_forum.vote')['threshold_useful_post'],
+            'fileUpload' => $this->getParameter('yosimitso_working_forum.file_upload'),
             'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')
         ];
         $parameters['fileUpload']['maxSize'] = $this->fileUploaderService->getMaxSize();

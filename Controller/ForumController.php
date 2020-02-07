@@ -33,7 +33,7 @@ class ForumController extends BaseController
             ->findAll();
 
         $parameters  = [ // PARAMETERS USED BY TEMPLATE
-            'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format')
+            'dateFormat' => $this->getParameter('yosimitso_working_forum.date_format')
             ];
 
         return $this->templating->renderResponse(
@@ -103,7 +103,7 @@ class ForumController extends BaseController
         );
 
         $parameters  = [ // PARAMETERS USED BY TEMPLATE
-            'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format')
+            'dateFormat' => $this->getParameter('yosimitso_working_forum.date_format')
         ];
 
         return $this->templating->renderResponse(

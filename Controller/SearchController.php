@@ -55,7 +55,7 @@ class SearchController extends BaseController
                     $thread_list = $this->paginator->paginate(
                         $thread_list_query,
                         $request->query->get('page', 1)/*page number*/,
-                        $this->container->getParameter('yosimitso_working_forum.thread_per_page')
+                        $this->getParameter('yosimitso_working_forum.thread_per_page')
                     ); /*limit per page*/
                 }
                 else
@@ -64,7 +64,7 @@ class SearchController extends BaseController
                 }
 
                 $parameters  = [ // PARAMETERS USED BY TEMPLATE
-                    'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format')
+                    'dateFormat' => $this->getParameter('yosimitso_working_forum.date_format')
                 ];
 
                 return $this->templating->renderResponse('@YosimitsoWorkingForum/Forum/thread_list.html.twig',

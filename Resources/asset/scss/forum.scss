@@ -127,6 +127,10 @@ a.wf_button:visited {
 
 .wf_forum {
   font-family: Roboto;
+
+  h1 {
+    padding-bottom: 10px;
+  }
 }
 
 .wf_empty {
@@ -243,6 +247,10 @@ h2 {
     padding: 10px;
     border-radius: 3px;
     word-wrap: break-word;
+  }
+
+  .wf_post_content {
+    overflow: hidden;
   }
 }
 

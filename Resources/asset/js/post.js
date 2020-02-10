@@ -23,7 +23,7 @@ jQuery(document).ready(() => {
             e.preventDefault();
             clearInterval(saveTimeout);
             eraseCookie(`post_editor_${storeJs.postEditorId}`);
-            this.submit();
+            e.target.submit();
         }
     });
 
@@ -121,10 +121,10 @@ jQuery(document).ready(() => {
             jQuery('#saved_draft_msg').html(msg);
         } else {
             const msg = `
-                <div id="saved_draft_msg" class="wf_small_message">'
+                <div id="saved_draft_msg" class="wf_small_message">
                 ${storeJs.trans['message.post_saved_draft']} ${dateSaved.getHours()}:${dateSaved.getMinutes()<10?'0':''}${dateSaved.getMinutes()}
                 </div>`;
-            jQuery('.md-header').after();
+            jQuery('.md-header').after(msg);
         }
     }
 });

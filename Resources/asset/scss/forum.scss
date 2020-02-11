@@ -251,6 +251,13 @@ h2 {
 
   .wf_post_content {
     overflow: hidden;
+
+    img {
+      margin: 5px 0;
+      max-width:100%;
+      max-height: 1000px;
+
+    }
   }
 }
 

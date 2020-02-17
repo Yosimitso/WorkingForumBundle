@@ -856,12 +856,12 @@ code {
     }
 
     .wf_post-left {
-      float:none;
+      float: none;
       width: 95%;
 
       img {
         float: left;
-        margin-right:5%
+        margin-right: 5%
       }
     }
 
@@ -909,10 +909,10 @@ code {
     margin-right: 10px;
     margin-bottom: 10px;
   }
-}
 
-.hide-for-small {
-  display: none;
+  .hide-for-small {
+    display: none;
+  }
 }
 
 /***************** MEDIUM MOBILE *******************/

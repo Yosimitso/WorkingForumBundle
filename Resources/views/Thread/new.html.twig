@@ -21,7 +21,14 @@
 
                 <p>{{ form_label(form.sublabel) }}</p>
                 <p>{{ form_widget(form.sublabel) }}</p>
-                {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'pin': (form.pin is defined) ? form.pin : null, 'form': form.post.0, 'parameters': parameters, 'submitLabelKey': 'forum.create_thread'} only %}
+                {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig'with
+                    {'listSmiley': listSmiley,
+                        'pin': (form.pin is defined) ? form.pin : null,
+                        'form': form.post.0, 'parameters': parameters,
+                        'submitLabelKey': 'forum.create_thread',
+                        'hasSubscribed': false
+                    }
+                    only %}
 
                   {% block extraInput %}
                     {% if (pin) %}

@@ -100,9 +100,7 @@ class SubscriptionService
 
                         $this->mailer->send($email);
                     }
-                } catch (phpmailerException $e) {
-                    throw new \Exception($e->errorMessage());
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     throw new \Exception($e->getMessage());
                 }
             }

@@ -71,7 +71,7 @@ class ForumController extends BaseController
             ->findOneBy(['forum' => $forum->getId(), 'slug' => $subforum_slug]);
 
         if (is_null($subforum)) {
-            throw new NotFoundException('Subforum not found');
+            throw new NotFoundHttpException('Subforum not found');
         }
 
         if (!$this->authorization->hasSubforumAccess($subforum)) {

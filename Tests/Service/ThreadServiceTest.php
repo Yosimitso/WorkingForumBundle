@@ -43,6 +43,7 @@ class ThreadServiceTest extends TestCase
 
             $class = new class($user)
             {
+                private $user;
                 public function __construct($user)
                 {
                     $this->user = $user;
@@ -91,6 +92,8 @@ class ThreadServiceTest extends TestCase
         $formView = $this->createMock(FormView::class);
         $classFormFactory = new class($formView)
         {
+            private $formView;
+            
             public function __construct($formView)
             {
                 $this->formView = $formView;

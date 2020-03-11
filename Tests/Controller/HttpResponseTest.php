@@ -9,11 +9,11 @@ use Symfony\Component\BrowserKit\Cookie;
 
 /**
  *
- * Class ThreadControllerTest
+ * Class HttpControllerTest
  *
  * @package Yosimitso\WorkingForumBundle\Tests\Controller
  */
-class HttpControllerTest extends WebTestCase
+class HttpResponseTest extends WebTestCase
 {
     private $client = null;
 

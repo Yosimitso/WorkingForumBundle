@@ -22,6 +22,9 @@ use Yosimitso\WorkingForumBundle\Security\AuthorizationInterface;
  */
 class BaseController extends Controller
 {
+    /**
+     * @var EntityManagerInterface
+     */
     protected $em;
     /**
      * @var Authorization

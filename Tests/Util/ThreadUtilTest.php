@@ -1,6 +1,6 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\Tests\Controller;
+namespace Yosimitso\WorkingForumBundle\Tests\Util;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Yosimitso\WorkingForumBundle\Util\ThreadUtil;

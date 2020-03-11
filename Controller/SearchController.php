@@ -18,6 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
  */
 class SearchController extends BaseController
 {
+    /**
+     * @var FormFactory 
+     */
     protected $formFactory;
     
     public function __construct(FormFactory $formFactory)

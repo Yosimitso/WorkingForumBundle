@@ -17,6 +17,9 @@ use Yosimitso\WorkingForumBundle\Service\ThreadService;
  */
 class PostController extends BaseController
 {
+    /**
+     * @var ThreadService 
+     */
     protected $threadService;
 
     public function __construct(ThreadService $threadService)

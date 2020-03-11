@@ -11,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class AdminControllerTest extends WebTestCase
 {
+    private $client;
+    
     public function setUp()
     {
         $this->client = static::createClient([], [

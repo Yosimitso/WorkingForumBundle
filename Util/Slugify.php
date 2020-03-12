@@ -8,7 +8,7 @@ namespace Yosimitso\WorkingForumBundle\Util;
  *
  * @package Yosimitso\WorkingForumBundle\Util
  */
-class Slugify
+abstract class Slugify
 {
     /**
      * @param string $string

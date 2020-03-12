@@ -48,7 +48,7 @@ class ForumController extends BaseController
     /**
      * Display the thread list of a subforum
      *
-     * @param         $subforum_slug
+     * @param string $subforum_slug
      * @param Request $request
      * @param int $page
      *

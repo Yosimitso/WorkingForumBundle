@@ -9,6 +9,7 @@
 	    "symfony/translation": ">=3.4.26",
         "symfony/security": ">=3.4.26|>=4.2.7",
         "symfony/templating": ">=3.4.26",
+        "symfony/asset": ">=3.4.26|>=4.2.7",
         "sensio/framework-extra-bundle": ">=3.0",
         "symfony/dependency-injection": ">=3.4.26|>=4.2.7",
         "swiftmailer/swiftmailer": ">=5.4.9",
@@ -17,7 +18,8 @@
         "doctrine/orm": "^2.6",
         "twig/extensions": "^1.5",
         "twig/twig": ">=2.7|<3.0",
-        "doctrine/doctrine-bundle": ">=1.10"
+        "doctrine/doctrine-bundle": ">=1.10",
+        "symfony/asset": "^4.4"
     },
     "license": "MIT",
     "authors": [
@@ -37,6 +39,6 @@
         "phpunit/phpunit": "^6.0",
         "yosimitso/mockdoctrinemanager": "dev-master",
         "phpstan/phpstan-symfony": "^0.12.4",
-        "symfony/browser-kit": ">=3.4.26|=>4.2.7"
+        "symfony/browser-kit": ">=3.4.26|>=4.2.7"
     }
 }

@@ -36,11 +36,9 @@ class ThreadServiceTest extends TestCase
         if (is_null($user)) {
             $user = $this->createMock(User::class);
             $user->setUsername = 'toto';
-
         }
             $tokenStorage = $this->createMock(TokenStorageInterface::class);
-
-
+        
             $class = new class($user)
             {
                 private $user;

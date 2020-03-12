@@ -4,6 +4,8 @@ namespace Yosimitso\WorkingForumBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Yosimitso\WorkingForumBundle\Entity\Subforum;
+
 /**
  * Class Authorization
  * Check user's authorization
@@ -34,7 +36,11 @@ class Authorization implements AuthorizationInterface
      * @param $tokenStorage
      * @param $allowAnonymousRead
      */
-    public function __construct(AuthorizationChecker $securityChecker, TokenStorageInterface $tokenStorage, $allowAnonymousRead) {
+    public function __construct(
+        AuthorizationChecker $securityChecker,
+        TokenStorageInterface $tokenStorage,
+        $allowAnonymousRead
+    ) {
         $this->securityChecker = $securityChecker;
         $this->tokenStorage = $tokenStorage;
         $this->allowAnonymousRead = $allowAnonymousRead;
@@ -77,14 +83,17 @@ class Authorization implements AuthorizationInterface
     }
 
     /**
-     * @param $subforumList
+     * @param array<Subforum> $subforumList
      * @return array
      */
-    public function hasSubforumAccessList($subforumList)
+    public function hasSubforumAccessList(array $subforumList)
     {
         $subforumAllowed = array();
         foreach ($subforumList as $subforum)
             {
+                if (!$subforum instanceof Subforum) {
+                    throw new \Exception('is not a subforum');
+                }
                 if ($this->hasSubforumAccess($subforum))
                 {
                     $subforumAllowed[] = $subforum->getId();
@@ -95,11 +104,11 @@ class Authorization implements AuthorizationInterface
 
     /**
      * Check if user has permissions to view/write into a subforum
-     * @param $subforum
+     * @param Subforum $subforum
      * @return bool
      * @throws \Exception
      */
-    public function hasSubforumAccess($subforum)
+    public function hasSubforumAccess(Subforum $subforum)
     {
         if (!$this->hasUserAuthorization() || is_null($subforum))
         {

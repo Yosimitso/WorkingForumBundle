@@ -79,7 +79,7 @@ class PostReport
     }
 
     /**
-     * @param int $post
+     * @param Post $post
      *
      * @return PostReport
      */

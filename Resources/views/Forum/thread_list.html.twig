@@ -36,7 +36,7 @@
 
                     <table class="wf_thread_list">
                         {% if thread_list.items is not empty %}
-                        {% for item in thread_list.items %}
+                        {% for item in thread_list.items if item.thread_slug is not empty %}
                         <tr {% if item.thread_pin %} class="wf_pin" {% elseif item.thread_resolved %} class="wf_resolved"{% endif %}>
                             <td class="wf_sub_name">
                                 <p>

@@ -22,7 +22,7 @@ class AdminForumController extends BaseController
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @param Request $request
-     * @param         $id
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      * @throws \Exception
@@ -112,7 +112,7 @@ class AdminForumController extends BaseController
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @param $forum_id
+     * @param int $forum_id
      *
      * @return Response
      */

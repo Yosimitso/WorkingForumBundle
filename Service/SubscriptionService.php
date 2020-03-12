@@ -8,7 +8,11 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Templating;
 use Symfony\Component\Templating\EngineInterface;
+use Yosimitso\WorkingForumBundle\Entity\Post;
+use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Subscription;
+use Yosimitso\WorkingForumBundle\Entity\Thread;
+use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 
 /**
  * Class Subscription
@@ -68,18 +72,18 @@ class SubscriptionService
 
     /**
      * Notify subscribed users of a new post
-     * @param $post
+     * @param Post $post
      * @return bool
      * @throws \Exception
      */
-    public function notifySubscriptions($post)
+    public function notifySubscriptions(Post $post)
     {
         if (is_null($post->getThread())) {
-            return;
+            return false;
         }
-        $notifs = $this->em->getRepository(Subscription::class)->findByThread($post->getThread()->getId());
+        $notifs = $this->em->getRepository(Subscription::class)->findBy(['thread' => $post->getThread()->getId()]);
         if (!count($notifs)) {
-            return;
+            return false;
         }
         $emailTranslation = $this->getEmailTranslation($post->getThread()->getSubforum(), $post->getThread(), $post, $post->getUser());
         
@@ -111,13 +115,13 @@ class SubscriptionService
 
     /**
      * Get translated variable for email content
-     * @param $subforum
-     * @param $thread
-     * @param $post
-     * @param $user
+     * @param Subforum $subforum
+     * @param Thread $thread
+     * @param Post $post
+     * @param UserInterface $user
      * @return array
      */
-    private function getEmailTranslation($subforum, $thread, $post, $user)
+    private function getEmailTranslation(Subforum $subforum, Thread $thread, Post $post, UserInterface $user)
     {
         return [
             'siteTitle' => $this->siteTitle,

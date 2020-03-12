@@ -88,13 +88,13 @@ class ThreadService
     }
 
     /**
-     * @param $thread
+     * @param Thread $thread
      * @return bool
      * @throws \Exception
      *
      * Is the thread autolocked ?
      */
-    public function isAutolock($thread)
+    public function isAutolock(Thread $thread)
     {
         if ($this->lockThreadOlderThan) {
             $diff = $thread->getLastReplyDate()->diff(new \DateTime());
@@ -250,7 +250,7 @@ class ThreadService
     }
 
     /**
-     * @param ThreadType $form
+     * @param Form $form
      * @param Post $post
      * @param Thread $thread
      * @param Subforum $subforum
@@ -259,30 +259,42 @@ class ThreadService
      *
      * Create a thread
      */
-    public function create(ThreadType $form, Post $post, Thread $thread, Subforum $subforum)
+    public function create(Form $form, Post $post, Thread $thread, Subforum $subforum)
     {
-        $subforum->newThread($this->user); // UPDATE STATISTIC
 
-        $this->user->addNbPost(1);
-        $this->em->persist($this->user);
+        $this->em->beginTransaction();
+        try {
 
-        $this->em->persist($thread);
-        $this->em->persist($subforum);
-        $this->em->flush(); // GET THREAD ID
 
-        $thread->setSlug($this->slugify($thread)); // SLUG NEEDS THE ID
-        $post->setThread($thread); // ATTACH TO THREAD
-        $this->em->persist($thread);
+            $subforum->newThread($this->user); // UPDATE STATISTIC
 
-        if (!empty($form->getData()->getPost()[0]->getFilesUploaded())) {
-            $file = $this->fileUploaderService->upload($form->getData()->getPost()[0]->getFilesUploaded(), $post);
-            $post->addFiles($file);
+            $this->user->addNbPost(1);
+            $this->em->persist($this->user);
+
+            $this->em->persist($thread);
+            $this->em->persist($subforum);
+            $this->em->flush(); // GET THREAD ID
+
+            $thread->setSlug($this->slugify($thread)); // SLUG NEEDS THE ID
+            $post->setThread($thread); // ATTACH TO THREAD
+            $this->em->persist($thread);
+
+            if (!empty($form->getData()->getPost()[0]->getFilesUploaded())) {
+                $file = $this->fileUploaderService->upload($form->getData()->getPost()[0]->getFilesUploaded(), $post);
+                $post->addFiles($file);
+            }
+
+            $this->em->persist($post);
+            $this->em->flush();
+
+            $this->em->commit();
+
+            return true;
+        } catch (\Exception $e) {
+            $this->em->rollback();
+
+            throw $e;
         }
-
-        $this->em->persist($post);
-        $this->em->flush();
-
-        return true;
     }
 
     /**
@@ -296,7 +308,7 @@ class ThreadService
      *
      * Create a post
      */
-    public function post(Subforum $subforum, Thread $thread, Post $post, UserInterface $user, Form $form)
+    public function post(Subforum $subforum, Thread $thread, Post $post, UserInterface $user, PostType $form)
     {
         $subforum->newPost($user); // UPDATE SUBFORUM STATISTIC
         $thread->addReply($user); // UPDATE THREAD STATISTIC
@@ -323,8 +335,8 @@ class ThreadService
     /**
      * @param UserInterface $user
      * @param Thread $thread
-     * @param $autolock
-     * @param $canSubscribeThread
+     * @param bool $autolock
+     * @param bool $canSubscribeThread
      * @return array
      *
      * Get available actions for a given user

@@ -52,7 +52,7 @@ class ThreadController extends BaseController
     /**
      * Display a thread, save a post
      *
-     * @param $forum_slug
+     * @param string $forum_slug
      * @param string $subforum_slug
      * @param string $thread_slug
      * @param Request $request
@@ -202,8 +202,8 @@ class ThreadController extends BaseController
     /**
      * New thread
      *
-     * @param $forum_slug
-     * @param $subforum_slug
+     * @param string $forum_slug
+     * @param string $subforum_slug
      * @param Request $request
      * @return RedirectResponse|Response
      * @throws \Exception
@@ -245,32 +245,26 @@ class ThreadController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->threadService->create($form, $post, $thread, $subforum);
+
+                $this->flashbag->add(
+                    'success',
+                    $this->translator->trans('message.threadCreated', [], 'YosimitsoWorkingForumBundle')
+                );
+
+                return $this->redirect($this->generateUrl('workingforum_thread',
+                    [
+                        'forum_slug' => $forum_slug,
+                        'subforum_slug' => $subforum_slug,
+                        'thread_slug' => $thread->getSlug()
+                    ]
+                )); // REDIRECT TO THE NEW THREAD
+
             } catch (\Exception $e) {
                 $this->flashbag->add(
                     'error',
                     $e->getMessage()
                 );
-
-                return $this->redirect(
-                    $this->generateUrl(
-                        'workingforum_new_thread',
-                        ['form' => $form->createView(), 'forum_slug' => $forum->getSlug(), 'subforum_slug' => $subforum->getSlug()]
-                    ));
             }
-
-            $this->flashbag->add(
-                'success',
-                $this->translator->trans('message.threadCreated', [], 'YosimitsoWorkingForumBundle')
-            );
-
-            return $this->redirect($this->generateUrl('workingforum_thread',
-                [
-                    'forum_slug' => $forum_slug,
-                    'subforum_slug' => $subforum_slug,
-                    'thread_slug' => $thread->getSlug()
-                ]
-            )); // REDIRECT TO THE NEW THREAD
-
         }
 
         $parameters = [ // PARAMETERS USED BY TEMPLATE
@@ -293,8 +287,8 @@ class ThreadController extends BaseController
     /**
      * The thread is resolved
      *
-     * @param $forum_slug
-     * @param $subforum_slug
+     * @param string $forum_slug
+     * @param string $subforum_slug
      * @param $thread_slug
      *
      * @return RedirectResponse
@@ -338,8 +332,8 @@ class ThreadController extends BaseController
     /**
      * A moderator pin a thread
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-     * @param $forum_slug
-     * @param $subforum_slug
+     * @param string $forum_slug
+     * @param string $subforum_slug
      * @param $thread_slug
      * @return RedirectResponse
      * @throws \Exception
@@ -380,9 +374,9 @@ class ThreadController extends BaseController
     /**
      * A moderator unpin a thread
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-     * @param $forum_slug
-     * @param $subforum_slug
-     * @param $thread_slug
+     * @param string $forum_slug
+     * @param string $subforum_slug
+     * @param string $thread_slug
      * @return RedirectResponse
      * @throws \Exception
      */
@@ -424,7 +418,7 @@ class ThreadController extends BaseController
 
     /**
      * A user report a thread
-     * @param $post_id
+     * @param int $post_id
      * @return Response
      * @throws \Exception
      */
@@ -460,9 +454,9 @@ class ThreadController extends BaseController
      *
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
      *
-     * @param $forum_slug
-     * @param $subforum_slug
-     * @param $thread_slug
+     * @param string $forum_slug
+     * @param string $subforum_slug
+     * @param string $thread_slug
      *
      * @return RedirectResponse
      */
@@ -520,7 +514,7 @@ class ThreadController extends BaseController
     /**
      * The thread is deleted by modo or admin
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-     * @param $threadslug
+     * @param string $threadslug
      * @return RedirectResponse
      */
     public function deleteThreadAction($thread_slug)
@@ -557,7 +551,7 @@ class ThreadController extends BaseController
 
     /**
      *
-     * @param $thread_id
+     * @param int $thread_id
      * @return Response
      */
     public function cancelSubscriptionAction($thread_id)
@@ -584,7 +578,7 @@ class ThreadController extends BaseController
 
     /**
      * An user wants to subscribe to a thread
-     * @param $thread_id
+     * @param int $thread_id
      * @return Response
      */
     public function addSubscriptionAction($thread_id)

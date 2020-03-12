@@ -163,7 +163,7 @@ class Subforum
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -329,7 +329,7 @@ class Subforum
     }
 
     /**
-     * @param ArrayCollection $allowedRoles
+     * @param array $allowedRoles
      *
      * @return Subforum
      */

@@ -4,6 +4,7 @@ namespace Yosimitso\WorkingForumBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Yosimitso\WorkingForumBundle\Entity\Subforum;
 
 /**
  * Interface AuthorizationInterface
@@ -17,9 +18,9 @@ interface AuthorizationInterface
     
     public function hasAdminAuthorization();
     
-    public function hasSubforumAccessList($subforumList);
+    public function hasSubforumAccessList(array $subforumList);
     
-    public function hasSubforumAccess($subforum);
+    public function hasSubforumAccess(Subforum $subforum);
     
     public function hasUserAuthorization();
     

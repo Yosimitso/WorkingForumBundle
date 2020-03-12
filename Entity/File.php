@@ -2,6 +2,7 @@
 
 namespace Yosimitso\WorkingForumBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -57,7 +58,7 @@ class File
     private $size;
 
     /**
-     * @var datetime
+     * @var \DateTime
      *
      * @ORM\Column(name="cdate", type="datetime")
      */
@@ -208,7 +209,7 @@ class File
     /**
      * Set cdate
      *
-     * @param datetime_immutable $cdate
+     * @param \DateTime $cdate
      *
      * @return File
      */
@@ -222,7 +223,7 @@ class File
     /**
      * Get cdate
      *
-     * @return datetime_immutable
+     * @return \Datetime
      */
     public function getCdate()
     {

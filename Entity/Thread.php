@@ -107,7 +107,6 @@ class Thread
      * @var string
      *
      * @ORM\Column(name="slug", type="string", nullable=false)
-     * @Assert\NotBlank()
      */
     private $slug;
 
@@ -221,7 +220,7 @@ class Thread
     }
 
     /**
-     * @param $nb
+     * @param int $nb
      *
      * @return $this
      */
@@ -393,7 +392,7 @@ class Thread
     }
 
     /**
-     * @param $post
+     * @param int $post
      *
      * @return Thread
      */

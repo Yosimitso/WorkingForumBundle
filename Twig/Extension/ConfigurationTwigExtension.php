@@ -15,7 +15,7 @@ class ConfigurationTwigExtension extends \Twig_Extension
     private $paramList;
 
     /**
-     * @param $themeColor
+     * @param string $themeColor
      */
     public function __construct($theme_color)
     {

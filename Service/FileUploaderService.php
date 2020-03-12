@@ -2,8 +2,11 @@
 
 namespace Yosimitso\WorkingForumBundle\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Yosimitso\WorkingForumBundle\Entity\File;
+use Yosimitso\WorkingForumBundle\Entity\Post;
 
 /**
  * Class FileUploaderService
@@ -12,12 +15,24 @@ use Yosimitso\WorkingForumBundle\Entity\File;
  */
 class FileUploaderService
 {
+    /**
+     * @var string 
+     */
     private $path;
+    /**
+     * @var EntityManagerInterface
+     */
     private $em;
+    /**
+     * @var array 
+     */
     private $configFileUpload;
+    /**
+     * @var TranslatorInterface 
+     */
     private $translator;
 
-    public function __construct($em, $configFileUpload, $translator)
+    public function __construct(EntityManagerInterface $em, array $configFileUpload, TranslatorInterface $translator)
     {
         $this->path = 'wf_uploads/'.date('Y/m/');
         $this->em = $em;
@@ -27,13 +42,13 @@ class FileUploaderService
 
     /**
      * @param array $filesSubmitted
-     * @param $post
+     * @param Post $post
      * @return array|bool
      * @throws \Exception
      *
      * Upload submitted files on server
      */
-    public function upload(array $filesSubmitted, $post)
+    public function upload(array $filesSubmitted, Post $post)
     {
         $fileList = [];
         $totalSize = 0;
@@ -122,7 +137,7 @@ class FileUploaderService
     }
 
     /**
-     * @param $value
+     * @param string $value
      * @return int
      *
      * Parse size from a string

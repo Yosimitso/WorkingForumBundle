@@ -103,9 +103,11 @@ class ThreadRepository extends EntityRepository
                 ->join(User::class, 'lastReplyUser', 'WITH', 'thread.lastReplyUser = lastReplyUser.id')
                 ->join(Subforum::class,'subforum','WITH','thread.subforum = subforum.id')
                 ->join(Forum::class, 'forum', 'WITH', 'subforum.forum = forum.id')
-                ->where("subforum.id = ".$subforum->getId())
+                ->where('subforum.id = '.$subforum->getId())
+                ->andWhere('thread.slug != :slug_not_empty')
                 ->orderBy('thread.pin', 'DESC')
                 ->addOrderBy('thread.lastReplyDate', 'DESC')
+                ->setParameter('slug_not_empty', '')
             ;
         
         if ($withPosts) {

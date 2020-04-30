@@ -21,6 +21,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * Class ThreadController
@@ -52,27 +53,18 @@ class ThreadController extends BaseController
     /**
      * Display a thread, save a post
      *
-     * @param string $forum_slug
-     * @param string $subforum_slug
-     * @param string $thread_slug
+     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
+     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
+     * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
+     * @param Forum $forum
+     * @param Subforum $subforum
+     * @param Thread $thread
      * @param Request $request
      *
      * @return Response
      */
-    public function indexAction($forum_slug, $subforum_slug, $thread_slug, Request $request)
+    public function indexAction(Forum $forum, Subforum $subforum, Thread $thread, Request $request)
     {
-        $forum = $this->em->getRepository(Forum::class)->findOneBySlug($forum_slug);
-        if (is_null($forum)) {
-            throw new NotFoundHttpException('Forum not found');
-        }
-
-        $subforum = $this->em->getRepository(Subforum::class)->findOneBy(['slug' => $subforum_slug, 'forum' => $forum]);
-        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($thread_slug);
-
-        if (is_null($thread) || is_null($subforum)) {
-            throw new NotFoundHttpException('Thread not found');
-        }
-
         $anonymousUser = (is_null($this->user)) ? true : false;
 
         if (!$this->authorization->hasSubforumAccess($subforum)) { // CHECK IF USER HAS AUTHORIZATION TO VIEW THIS THREAD
@@ -121,7 +113,7 @@ class ThreadController extends BaseController
                         $this->translator->trans('thread_too_old_locked', [], 'YosimitsoWorkingForumBundle')
                     );
 
-                    return $this->redirect($this->generateUrl('workingforum_thread', ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug]));
+                    return $this->threadService->redirectToThread($forum, $subforum, $thread);
                 }
 
                 if ($form->isValid() && !$anonymousUser) {
@@ -138,10 +130,7 @@ class ThreadController extends BaseController
 
                         $post_list = $this->threadService->paginate($postQuery);
 
-                        return $this->redirect($this->generateUrl('workingforum_thread',
-                            ['forum_slug' => $forum_slug, 'subforum_slug' => $subforum_slug, 'thread_slug' => $thread_slug, 'page' => $post_list->getPageCount()]
-                        )
-                        );
+                        return $this->threadService->redirectToThread($forum, $subforum, $thread, $post_list->getPageCount());
                     } catch (\Exception $e) {
                         $this->flashbag->add(
                             'error',
@@ -202,35 +191,24 @@ class ThreadController extends BaseController
     /**
      * New thread
      *
-     * @param string $forum_slug
-     * @param string $subforum_slug
+     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
+     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
+     * @param Forum $forum
+     * @param Subforum $subforum
      * @param Request $request
      * @return RedirectResponse|Response
      * @throws \Exception
      * @Security("has_role('ROLE_USER')")
      */
-    public function newAction($forum_slug, $subforum_slug, Request $request)
+    public function newAction(Forum $forum, Subforum $subforum, Request $request)
     {
-
-        $forum = $this->em->getRepository(Forum::class)->findOneBySlug($forum_slug);
-
-        if (is_null($forum)) {
-            throw new NotFoundHttpException('Forum not found');
-        }
-
-        $subforum = $this->em->getRepository(Subforum::class)->findOneBySlug($subforum_slug);
-
-        if (is_null($subforum)) {
-            throw new NotFoundHttpException('Subforum not found');
-        }
-
         if (!$this->authorization->hasSubforumAccess($subforum)) {
             $this->flashbag->add(
                 'error',
                 $this->translator->trans($this->authorization->getErrorMessage(), [], 'YosimitsoWorkingForumBundle')
             );
-            return $this->redirect($this->generateUrl('workingforum_forum'));
 
+            return $this->redirect($this->generateUrl('workingforum_forum'));
         }
 
         $thread = new Thread($this->user, $subforum);
@@ -241,7 +219,6 @@ class ThreadController extends BaseController
         $form = $this->createForm(ThreadType::class, $thread, ['hasModeratorAuthorization' => $this->authorization->hasModeratorAuthorization()]);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->threadService->create($form, $post, $thread, $subforum);
@@ -251,13 +228,7 @@ class ThreadController extends BaseController
                     $this->translator->trans('message.threadCreated', [], 'YosimitsoWorkingForumBundle')
                 );
 
-                return $this->redirect($this->generateUrl('workingforum_thread',
-                    [
-                        'forum_slug' => $forum_slug,
-                        'subforum_slug' => $subforum_slug,
-                        'thread_slug' => $thread->getSlug()
-                    ]
-                )); // REDIRECT TO THE NEW THREAD
+                return $this->threadService->redirectToThread($forum, $subforum, $thread); // REDIRECT TO THE NEW THREAD
 
             } catch (\Exception $e) {
                 $this->flashbag->add(
@@ -287,25 +258,18 @@ class ThreadController extends BaseController
     /**
      * The thread is resolved
      *
-     * @param string $forum_slug
-     * @param string $subforum_slug
-     * @param $thread_slug
+     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
+     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
+     * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
+     * @param Forum $forum
+     * @param Subforum $subforum
+     * @param Thread $thread
      *
      * @return RedirectResponse
      * @throws \Exception
      */
-    public function resolveAction($forum_slug, $subforum_slug, $thread_slug)
+    public function resolveAction(Forum $forum, Subforum $subforum, Thread $thread)
     {
-
-        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($thread_slug);
-
-        if (is_null($thread)) {
-            throw new \Exception("Thread error",
-                500
-            );
-
-        }
-
         if (!$this->authorization->hasModeratorAuthorization() && $this->user->getId() != $thread->getAuthor()->getId()) // ONLY ADMIN MODERATOR OR THE THREAD'S AUTHOR CAN SET A THREAD AS RESOLVED
         {
             throw new \Exception('You are not authorized to do this', 403);
@@ -318,37 +282,23 @@ class ThreadController extends BaseController
             $this->translator->trans('message.threadResolved', [], 'YosimitsoWorkingForumBundle')
         );
 
-        return $this->redirect(
-            $this->generateUrl('workingforum_thread',
-                [
-                    'forum_slug' => $forum_slug,
-                    'thread_slug' => $thread_slug,
-                    'subforum_slug' => $subforum_slug,
-                ]
-            )
-        );
+        return $this->threadService->redirectToThread($forum, $subforum, $thread);
     }
 
     /**
      * A moderator pin a thread
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-     * @param string $forum_slug
-     * @param string $subforum_slug
-     * @param $thread_slug
+     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
+     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
+     * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
+     * @param Forum $forum
+     * @param Subforum $subforum
+     * @param Thread $thread
      * @return RedirectResponse
      * @throws \Exception
      */
-    public function pinAction($forum_slug, $subforum_slug, $thread_slug)
+    public function pinAction(Forum $forum, Subforum $subforum, Thread $thread)
     {
-        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($thread_slug);
-
-        if (is_null($thread)) {
-            throw new \Exception("Thread error",
-                500
-            );
-
-        }
-
         if ($thread->getPin()) {
             throw new \Exception("Thread already pinned", 500);
         }
@@ -360,37 +310,23 @@ class ThreadController extends BaseController
                 $this->translator->trans('message.threadPinned', [], 'YosimitsoWorkingForumBundle')
             );
 
-        return $this->redirect(
-            $this->generateUrl('workingforum_thread',
-                [
-                    'forum_slug' => $forum_slug,
-                    'subforum_slug' => $subforum_slug,
-                    'thread_slug' => $thread_slug,
-                ]
-            )
-        );
+        return $this->threadService->redirectToThread($forum, $subforum, $thread);
     }
 
     /**
      * A moderator unpin a thread
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
+     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
+     * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
      * @param string $forum_slug
      * @param string $subforum_slug
      * @param string $thread_slug
      * @return RedirectResponse
      * @throws \Exception
      */
-    public function unpinAction($forum_slug, $subforum_slug, $thread_slug)
+    public function unpinAction(Forum $forum, Subforum $subforum, Thread $thread)
     {
-        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($thread_slug);
-
-        if (is_null($thread)) {
-            throw new \Exception("Thread error",
-                500
-            );
-
-        }
-
         if (!$thread->getPin()) {
             throw new \Exception("Thread not pinned", 500);
         }
@@ -405,15 +341,7 @@ class ThreadController extends BaseController
                 $this->translator->trans('message.threadUnpinned', [], 'YosimitsoWorkingForumBundle')
             );
 
-        return $this->redirect(
-            $this->generateUrl('workingforum_thread',
-                [
-                    'forum_slug' => $forum_slug,
-                    'subforum_slug' => $subforum_slug,
-                    'thread_slug' => $thread_slug,
-                ]
-            )
-        );
+        return $this->threadService->redirectToThread($forum, $subforum, $thread);
     }
 
     /**

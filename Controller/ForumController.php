@@ -11,6 +11,7 @@ use Yosimitso\WorkingForumBundle\Entity\Rules;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Form\RulesType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * Class ForumController
@@ -48,32 +49,16 @@ class ForumController extends BaseController
     /**
      * Display the thread list of a subforum
      *
+     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
+     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
      * @param string $subforum_slug
      * @param Request $request
      * @param int $page
      *
      * @return Response
      */
-    public function subforumAction($forum_slug, $subforum_slug, Request $request, $page = 1)
+    public function subforumAction(Forum $forum, Subforum $subforum, Request $request, $page = 1)
     {
-        $forum = $this
-            ->em
-            ->getRepository(Forum::class)
-            ->findOneBySlug($forum_slug);
-
-        if (is_null($forum)) {
-            throw new NotFoundHttpException('Forum not found');
-        }
-
-        $subforum = $this
-            ->em
-            ->getRepository(Subforum::class)
-            ->findOneBy(['forum' => $forum->getId(), 'slug' => $subforum_slug]);
-
-        if (is_null($subforum)) {
-            throw new NotFoundHttpException('Subforum not found');
-        }
-
         if (!$this->authorization->hasSubforumAccess($subforum)) {
 
             return $this->templating->renderResponse(

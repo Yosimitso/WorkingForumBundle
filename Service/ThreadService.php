@@ -6,9 +6,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\Paginator;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Forms;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\RouterInterface;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
+use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\UserInterface;
@@ -62,6 +65,8 @@ class ThreadService
      */
     protected $formFactory;
 
+    protected $router;
+
     public function __construct(
         $lockThreadOlderThan,
         Paginator $paginator,
@@ -72,7 +77,8 @@ class ThreadService
         FileUploaderService $fileUploaderService,
         Authorization $authorization,
         BundleParametersService $bundleParameters,
-        FormFactory $formFactory
+        FormFactory $formFactory,
+        RouterInterface $router
     )
     {
         $this->lockThreadOlderThan = $lockThreadOlderThan;
@@ -85,6 +91,7 @@ class ThreadService
         $this->authorization = $authorization;
         $this->bundleParameters = $bundleParameters;
         $this->formFactory = $formFactory;
+        $this->router = $router;
     }
 
     /**
@@ -132,7 +139,7 @@ class ThreadService
      */
     public function slugify(Thread $thread)
     {
-        return $thread->getId().'-'.Slugify::convert($thread->getLabel());
+        return $thread->getId() . '-' . Slugify::convert($thread->getLabel());
     }
 
     /**
@@ -144,7 +151,7 @@ class ThreadService
     public function pin(Thread $thread)
     {
         $thread->setPin(true);
-        
+
         $this->em->persist($thread);
         $this->em->flush();
 
@@ -349,13 +356,33 @@ class ThreadService
             'setResolved' => $this->authorization->hasModeratorAuthorization() || (!$anonymousUser && $user->getId() == $thread->getAuthor()->getId()),
             'quote' => (!$anonymousUser && !$thread->getLocked()),
             'report' => (!$anonymousUser),
-            'post' => ( (!$anonymousUser && !$autolock) || $this->authorization->hasModeratorAuthorization()),
+            'post' => ((!$anonymousUser && !$autolock) || $this->authorization->hasModeratorAuthorization()),
             'subscribe' => (!$anonymousUser && $canSubscribeThread),
             'moveThread' => ($this->authorization->hasModeratorAuthorization()) ? $this->formFactory->create(MoveThreadType::class)->createView() : false,
+            'asModerator' => $this->authorization->hasModeratorAuthorization(),
+            'asAdmin' => $this->authorization->hasAdminAuthorization(),
             'allowModeratorDeleteThread' => $this->bundleParameters->allow_moderator_delete_thread
         ];
     }
 
+    /**
+     * @param Forum $forum
+     * @param Subforum $subforum
+     * @param Thread $thread
+     * @param int $page
+     * @return RedirectResponse
+     */
+    public function redirectToThread(Forum $forum, Subforum $subforum, Thread $thread, $page = 1)
+    {
+        return new RedirectResponse($this->router->generate('workingforum_thread'),
+            [
+                'forum_slug' => $forum->getSlug(),
+                'subforum_slug' => $subforum->getSlug(),
+                'thread_slug' => $thread->getSlug(),
+                'page' => $page
+            ]
+        );
+    }
 
 
 }

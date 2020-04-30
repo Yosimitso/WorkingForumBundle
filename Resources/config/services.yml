@@ -129,6 +129,7 @@ services:
       - "@yosimitso_workingforum.security.authorization"
       - "@yosimitso_workingforum.service.bundle_parameters"
       - "@form.factory"
+      - "@router"
 
   yosimitso_workingforum.service.bundle_parameters:
     class: Yosimitso\WorkingForumBundle\Service\BundleParametersService

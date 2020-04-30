@@ -54,7 +54,7 @@
     {% endif %}
 
         {# ACTIONS LIST FOR MODERATOR #}
-    {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
+    {% if actionsAvailables.asModerator %}
         {% include '@YosimitsoWorkingForum/Thread/actionsModerator.html.twig' with {'forum': forum, 'subforum': subforum, 'thread': thread, 'moveThread': actionsAvailables.moveThread, 'allowModeratorDeleteThread': actionsAvailables.allowModeratorDeleteThread} %}
     {% endif %}
 
@@ -69,13 +69,13 @@
             {{ knp_pagination_render(post_list) }}
 
             {% if not thread.locked %}
-                {% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {% if autolock and not actionsAvailable.post %}
+                <div class="wf_new_post">
+                    <p class="wf_post_a_message">{{ 'forum.thread_too_old_locked' | trans }}</p>
+                </div>
+                {% elseif not actionsAvailables.post %}
                     <div class="wf_new_post">
                         <p class="wf_post_a_message">{{ 'forum.no_message_login' | trans }}</p>
-                    </div>
-                {% elseif autolock and not actionsAvailables.post %}
-                    <div class="wf_new_post">
-                        <p class="wf_post_a_message">{{ 'forum.thread_too_old_locked' | trans }}</p>
                     </div>
                 {% else %}
                     {{ form_start(form, {'attr': {'id': 'wf_form_post'}}) }}

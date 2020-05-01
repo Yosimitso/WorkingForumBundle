@@ -315,11 +315,10 @@ class ThreadService
      *
      * Create a post
      */
-    public function post(Subforum $subforum, Thread $thread, Post $post, UserInterface $user, PostType $form)
+    public function post(Subforum $subforum, Thread $thread, Post $post, UserInterface $user, $form)
     {
         $subforum->newPost($user); // UPDATE SUBFORUM STATISTIC
         $thread->addReply($user); // UPDATE THREAD STATISTIC
-
 
         $user->addNbPost(1);
 
@@ -374,15 +373,29 @@ class ThreadService
      */
     public function redirectToThread(Forum $forum, Subforum $subforum, Thread $thread, $page = 1)
     {
-        return new RedirectResponse($this->router->generate('workingforum_thread'),
+        return new RedirectResponse($this->router->generate('workingforum_thread',
             [
                 'forum_slug' => $forum->getSlug(),
                 'subforum_slug' => $subforum->getSlug(),
                 'thread_slug' => $thread->getSlug(),
                 'page' => $page
             ]
-        );
+        ));
     }
 
+    /**
+     * @param Forum $forum
+     * @param Subforum $subforum
+     * @return RedirectResponse
+     */
+    public function redirectToSubforum(Forum $forum, Subforum $subforum)
+    {
+        return new RedirectResponse($this->router->generate('workingforum_subforum',
+            [
+                'forum_slug' => $forum->getSlug(),
+                'subforum_slug' => $subforum->getSlug(),
+            ]
+        ));
+    }
 
 }

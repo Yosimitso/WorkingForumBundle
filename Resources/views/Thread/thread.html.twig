@@ -69,7 +69,7 @@
             {{ knp_pagination_render(post_list) }}
 
             {% if not thread.locked %}
-            {% if autolock and not actionsAvailable.post %}
+            {% if autolock and not actionsAvailables.post %}
                 <div class="wf_new_post">
                     <p class="wf_post_a_message">{{ 'forum.thread_too_old_locked' | trans }}</p>
                 </div>

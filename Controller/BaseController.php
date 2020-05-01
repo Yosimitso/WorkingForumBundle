@@ -66,4 +66,9 @@ class BaseController extends Controller
         $this->paginator = $paginator;
         $this->templating = $templating;
     }
+
+    public function getEntityManager()
+    {
+        return $this->em;
+    }
 }

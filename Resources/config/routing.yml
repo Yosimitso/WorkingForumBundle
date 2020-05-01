@@ -1,50 +1,6 @@
-workingforum_forum:
-    path:     /
-    defaults: { _controller: yosimitso_workingforum.controller.forum:indexAction }
-
-workingforum_rules:
-    path: /rules
-    defaults: { _controller: yosimitso_workingforum.controller.forum:rulesAction}
-
-workingforum_rules_locale:
-    path: /rules/{locale}
-    defaults: { _controller: yosimitso_workingforum.controller.forum:rulesAction}
-    requirements:
-      locale: '\D+'
-
-workingforum_subforum:
-    path: /{forum_slug}/{subforum_slug}/view
-    defaults: { _controller: yosimitso_workingforum.controller.forum:subforumAction }
-
-workingforum_thread:
-    path: /{forum_slug}/{subforum_slug}/{thread_slug}/view
-    defaults: { _controller: yosimitso_workingforum.controller.thread:indexAction }
-
-workingforum_new_thread:
-    path: /{forum_slug}/{subforum_slug}/new
-    defaults: { _controller: yosimitso_workingforum.controller.thread:newAction }
-
-workingforum_lock_thread:
-    path: /{forum_slug}/{subforum_slug}/{thread_slug}/lock
-    defaults: { _controller: yosimitso_workingforum.controller.thread:lockAction }
-
-workingforum_pin_thread:
-    path: /{forum_slug}/{subforum_slug}/{thread_slug}/pin
-    defaults: { _controller: yosimitso_workingforum.controller.thread:pinAction }
-
-workingforum_unpin_thread:
-    path: /unpin/{forum_slug}/{subforum_slug}/{thread_slug}
-    defaults: { _controller: yosimitso_workingforum.controller.thread:unpinAction }
-
-workingforum_resolve_thread:
-    path: /{forum_slug}/{subforum_slug}/{thread_slug}/resolved
-    defaults: { _controller: yosimitso_workingforum.controller.thread:resolveAction }
-
-workingforum_report_post:
-    path: /{forum_slug}/{subforum_slug}/report/{post_id}
-    defaults: { _controller: yosimitso_workingforum.controller.thread:reportAction }
-    requirements:
-        post_id: '\d+'
+controller_routing:
+    resource: "@YosimitsoWorkingForumBundle/Controller/*"
+    type: annotation
 
 workingforum_add_subscription:
     path: /{forum_slug}/{subforum_slug}/addsubscription/{thread_id}
@@ -58,9 +14,6 @@ workingforum_cancel_subscription:
     requirements:
         thread_id: '\d+'
 
-workingforum_move_thread:
-    path: /movethread
-    defaults: { _controller: yosimitso_workingforum.controller.thread:moveThreadAction }
 
 workingforum_delete_thread:
     path: /{forum_slug}/{subforum_slug}/deletethread/{thread_slug}

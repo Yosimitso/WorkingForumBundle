@@ -22,10 +22,12 @@ use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * Class ThreadController
  *
+ * @Route("/", service="yosimitso_workingforum.controller.thread")
  * @package Yosimitso\WorkingForumBundle\Controller
  */
 class ThreadController extends BaseController
@@ -52,15 +54,10 @@ class ThreadController extends BaseController
 
     /**
      * Display a thread, save a post
-     *
+     * @Route("{forum_slug}/{subforum_slug}/{thread_slug}/view", name="workingforum_thread")
      * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
      * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
      * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
-     * @param Forum $forum
-     * @param Subforum $subforum
-     * @param Thread $thread
-     * @param Request $request
-     *
      * @return Response
      */
     public function indexAction(Forum $forum, Subforum $subforum, Thread $thread, Request $request)
@@ -191,17 +188,20 @@ class ThreadController extends BaseController
     /**
      * New thread
      *
+     * @Route("{forum_slug}/{subforum_slug}/new", name="workingforum_new_thread")
      * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
      * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
-     * @param Forum $forum
-     * @param Subforum $subforum
-     * @param Request $request
      * @return RedirectResponse|Response
      * @throws \Exception
-     * @Security("has_role('ROLE_USER')")
      */
     public function newAction(Forum $forum, Subforum $subforum, Request $request)
     {
+        if (is_null($this->user)) {
+            throw new \Exception("access denied",
+                403
+            );
+        }
+
         if (!$this->authorization->hasSubforumAccess($subforum)) {
             $this->flashbag->add(
                 'error',
@@ -257,14 +257,10 @@ class ThreadController extends BaseController
 
     /**
      * The thread is resolved
-     *
+     * @Route("{forum_slug}/{subforum_slug}/{thread_slug}/resolved", name="workingforum_resolve_thread")
      * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
      * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
      * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
-     * @param Forum $forum
-     * @param Subforum $subforum
-     * @param Thread $thread
-     *
      * @return RedirectResponse
      * @throws \Exception
      */
@@ -275,7 +271,7 @@ class ThreadController extends BaseController
             throw new \Exception('You are not authorized to do this', 403);
         }
 
-        $this->threadService->resolve($thread_slug);
+        $this->threadService->resolve($thread);
 
         $this->flashbag->add(
             'success',
@@ -288,12 +284,10 @@ class ThreadController extends BaseController
     /**
      * A moderator pin a thread
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Route("{forum_slug}/{subforum_slug}/{thread_slug}/pin", name="workingforum_pin_thread")
      * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
      * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
      * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
-     * @param Forum $forum
-     * @param Subforum $subforum
-     * @param Thread $thread
      * @return RedirectResponse
      * @throws \Exception
      */
@@ -316,12 +310,10 @@ class ThreadController extends BaseController
     /**
      * A moderator unpin a thread
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Route("{forum_slug}/{subforum_slug}/{thread_slug}/unpin", name="workingforum_unpin_thread")
      * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
      * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
      * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
-     * @param string $forum_slug
-     * @param string $subforum_slug
-     * @param string $thread_slug
      * @return RedirectResponse
      * @throws \Exception
      */
@@ -345,18 +337,18 @@ class ThreadController extends BaseController
     }
 
     /**
-     * A user report a thread
-     * @param int $post_id
+     * A user report a post
+     * @Route("{forum_slug}/{subforum_slug}/report/{post_id}", name="workingforum_report_post", requirements={"post_id":"\d+"})
+     * @ParamConverter("post", options={"mapping": {"post_id"="id"}})
      * @return Response
      * @throws \Exception
      */
-    public function reportAction($post_id)
+    public function reportAction(Post $post)
     {
         if (is_null($this->user)) {
-            throw new \Exception("user missing error",
+            throw new \Exception("access denied",
                 403
             );
-
         }
 
         $check_already = $this->em->getRepository(PostReport::class)
@@ -370,54 +362,58 @@ class ThreadController extends BaseController
 
         if ($this->threadService->report($post)) {
             return new JsonResponse('true', 200);
-
         } else {
-
             return new JsonResponse('false', 200);
         }
     }
 
     /**
-     * The thread is locked by a moderator or admin
-     *
+     * The thread is deleted by modo or admin
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-     *
-     * @param string $forum_slug
-     * @param string $subforum_slug
-     * @param string $thread_slug
-     *
+     * @Route("{forum_slug}/{subforum_slug}/deletethread/{thread_slug}", name="workingforum_delete_thread")
+     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
+     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
+     * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
      * @return RedirectResponse
      */
-    public function lockAction($forum_slug, $subforum_slug, $thread_slug)
+    public function deleteThreadAction(Forum $forum, Subforum $subforum, Thread $thread)
     {
-        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($thread_slug);
-
-        if (is_null($thread)) {
-            throw new Exception("Thread can't be found", 500);
-
+        if (!$this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')) {
+            throw new Exception('Thread deletion is not allowed');
         }
 
-        $this->threadService->lock($thread);
+        $this->threadService->delete($thread, $subforum);
+        $this->flashbag->add(
+            'success',
+            $this->translator->trans('message.thread_deleted', [], 'YosimitsoWorkingForumBundle')
+        );
 
+        return $this->threadService->redirectToSubforum($forum, $subforum);
+    }
+
+    /**
+     * The thread is locked by a moderator or admin
+     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Route("{forum_slug}/{subforum_slug}/{thread_slug}/lock", name="workingforum_lock_thread")
+     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
+     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
+     * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
+     * @return RedirectResponse
+     */
+    public function lockAction(Forum $forum, Subforum $subforum, Thread $thread)
+    {
+        $this->threadService->lock($thread);
         $this->flashbag->add(
             'success',
             $this->translator->trans('message.threadLocked', [], 'YosimitsoWorkingForumBundle')
         );
 
-        return $this->redirect(
-            $this->generateUrl('workingforum_thread',
-                [
-                    'forum_slug' => $forum_slug,
-                    'thread_slug' => $thread_slug,
-                    'subforum_slug' => $subforum_slug,
-                ]
-            )
-        );
-
+        return $this->threadService->redirectToThread($forum, $subforum, $thread);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Route("movethread", name="workingforum_move_thread", methods="POST")
      * @param Request $request
      * @return Response
      */
@@ -437,44 +433,6 @@ class ThreadController extends BaseController
         $this->threadService->move($thread, $currentSubforum, $targetSubforum);
 
         return new JsonResponse(['res' => 'true', 'targetLabel' => $targetSubforum->getName()], 200);
-    }
-
-    /**
-     * The thread is deleted by modo or admin
-     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-     * @param string $threadslug
-     * @return RedirectResponse
-     */
-    public function deleteThreadAction($thread_slug)
-    {
-        if (!$this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')) {
-            throw new Exception('Thread deletion is not allowed');
-        }
-
-        $thread = $this->em->getRepository(Thread::class)->findOneBySlug($thread_slug);
-        $subforum = $this->em->getRepository(Subforum::class)->findOneById($thread->getSubforum()->getId());
-
-        if (is_null($thread)) {
-            throw new Exception('Thread cannot be found');
-        }
-        if (is_null($subforum)) {
-            throw new Exception('Thread cannot be found');
-        }
-
-        $this->threadService->delete($thread, $subforum);
-
-        $this->flashbag->add(
-            'success',
-            $this->translator->trans('message.thread_deleted', [], 'YosimitsoWorkingForumBundle')
-        );
-
-        return $this->redirect(
-            $this->generateUrl('workingforum_subforum',
-                [
-                    'subforum_slug' => $subforum->getSlug(),
-                ]
-            )
-        );
     }
 
     /**

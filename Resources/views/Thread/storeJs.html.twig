@@ -30,7 +30,7 @@
             'workingforum_cancel_subscription': '{{ path('workingforum_cancel_subscription', {'forum_slug': forum.slug, 'subforum_slug' : subforum.slug, 'thread_id': thread.id}) }}'
         }
     {% if thread is defined %}
-        , 'thread_id': '{{ thread.id }}'
+        , 'threadId': '{{ thread.id }}'
         , 'postEditorId': '{{ thread.id }}'
     {% endif %}
     {% if subforum is defined %}

@@ -12,24 +12,26 @@ use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Form\RulesType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
  * Class ForumController
  *
+ * @Route("/", service="yosimitso_workingforum.controller.forum")
  * @package Yosimitso\WorkingForumBundle\Controller
  */
 class ForumController extends BaseController
 {
     /**
      * Display homepage of forum with subforums
-     *
+     * @Route("", name="workingforum_forum")
      * @return Response
      */
 
     public function indexAction()
     {
         $list_forum = $this
-            ->em
+            ->getEntityManager()
             ->getRepository(Forum::class)
             ->findAll();
 
@@ -49,12 +51,12 @@ class ForumController extends BaseController
     /**
      * Display the thread list of a subforum
      *
+     * @Route("{forum_slug}/{subforum_slug}/view", name="workingforum_subforum")
      * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
      * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
      * @param string $subforum_slug
      * @param Request $request
      * @param int $page
-     *
      * @return Response
      */
     public function subforumAction(Forum $forum, Subforum $subforum, Request $request, $page = 1)
@@ -106,6 +108,12 @@ class ForumController extends BaseController
         );
     }
 
+    /**
+     * @Route("rules", name="workingforum_rules")
+     * @Route("rules/{locale}", name="workingforum_rules", requirements={"locale":"\D+"})
+     * @param null|string $locale
+     * @return mixed
+     */
     public function rulesAction($locale = null)
     {
         if (is_null($locale)) {

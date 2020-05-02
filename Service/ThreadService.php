@@ -375,9 +375,9 @@ class ThreadService
     {
         return new RedirectResponse($this->router->generate('workingforum_thread',
             [
-                'forum_slug' => $forum->getSlug(),
-                'subforum_slug' => $subforum->getSlug(),
-                'thread_slug' => $thread->getSlug(),
+                'forum' => $forum->getSlug(),
+                'subforum' => $subforum->getSlug(),
+                'thread' => $thread->getSlug(),
                 'page' => $page
             ]
         ));
@@ -392,8 +392,8 @@ class ThreadService
     {
         return new RedirectResponse($this->router->generate('workingforum_subforum',
             [
-                'forum_slug' => $forum->getSlug(),
-                'subforum_slug' => $subforum->getSlug(),
+                'forum' => $forum->getSlug(),
+                'subforum' => $subforum->getSlug(),
             ]
         ));
     }

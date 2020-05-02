@@ -21,7 +21,7 @@
             {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and subforum is defined %}
                 <p>
                     <a class="wf_button wf_add"
-                       href="{{ path('workingforum_new_thread', {'forum_slug': forum.slug, 'subforum_slug' : subforum.slug}) }}"><span
+                       href="{{ path('workingforum_new_thread', {'forum': forum.slug, 'subforum' : subforum.slug}) }}"><span
                                 class="wf_add-plus"></span>{{ ('forum.new_thread' | trans) }}</a>
                 </p>
             {% endif %}
@@ -56,7 +56,7 @@
                                     {% endif %}
 
                                     <a class="wf_label"
-                                       href="{{ path( 'workingforum_thread', {'forum_slug': item.forum_slug, 'subforum_slug' : item.subforum_slug, 'thread_slug' : item.thread_slug}) }}">{{ item.thread_label }}</a>
+                                       href="{{ path( 'workingforum_thread', {'forum': item.forum_slug, 'subforum' : item.subforum_slug, 'thread' : item.thread_slug}) }}">{{ item.thread_label }}</a>
                                 </p>
 
 
@@ -64,7 +64,7 @@
                                 {% set nbPage = (item.thread_nbReplies/post_per_page) %}
                                 {% if nbPage > 1 %}
                                     <p class="wf_latest_page">
-                                        <a href="{{ path( 'workingforum_thread', {'forum_slug': item.forum_slug, 'subforum_slug' : item.subforum_slug, 'thread_slug' : item.thread_slug, (page_prefix) : (nbPage |round(0,'ceil')) }) }}">&rarr; {{ 'pagination.latestPage' | trans }}</a>
+                                        <a href="{{ path( 'workingforum_thread', {'forum': item.forum_slug, 'subforum' : item.subforum_slug, 'thread' : item.thread_slug, (page_prefix) : (nbPage |round(0,'ceil')) }) }}">&rarr; {{ 'pagination.latestPage' | trans }}</a>
                                     </p>
                                 {% endif %}
                             </td>

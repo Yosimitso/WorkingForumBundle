@@ -51,10 +51,7 @@ class ForumController extends BaseController
     /**
      * Display the thread list of a subforum
      *
-     * @Route("{forum_slug}/{subforum_slug}/view", name="workingforum_subforum")
-     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
-     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
-     * @param string $subforum_slug
+     * @Route("{forum}/{subforum}/view", name="workingforum_subforum")
      * @param Request $request
      * @param int $page
      * @return Response

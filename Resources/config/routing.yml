@@ -2,23 +2,6 @@ controller_routing:
     resource: "@YosimitsoWorkingForumBundle/Controller/*"
     type: annotation
 
-workingforum_add_subscription:
-    path: /{forum_slug}/{subforum_slug}/addsubscription/{thread_id}
-    defaults: { _controller: yosimitso_workingforum.controller.thread:addSubscriptionAction}
-    requirements:
-        thread_id: '\d+'
-
-workingforum_cancel_subscription:
-    path: /{forum_slug}/{subforum_slug}/cancelsubscription/{thread_id}
-    defaults: { _controller: yosimitso_workingforum.controller.thread:cancelSubscriptionAction}
-    requirements:
-        thread_id: '\d+'
-
-
-workingforum_delete_thread:
-    path: /{forum_slug}/{subforum_slug}/deletethread/{thread_slug}
-    defaults: { _controller: yosimitso_workingforum.controller.thread:deleteThreadAction }
-
 workingforum_admin:
     path: /admin
     defaults: { _controller: yosimitso_workingforum.controller.admin:indexAction }

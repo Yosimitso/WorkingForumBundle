@@ -25,8 +25,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * Class ThreadController
- *
  * @Route("/", service="yosimitso_workingforum.controller.thread")
  * @package Yosimitso\WorkingForumBundle\Controller
  */
@@ -54,10 +52,7 @@ class ThreadController extends BaseController
 
     /**
      * Display a thread, save a post
-     * @Route("{forum_slug}/{subforum_slug}/{thread_slug}/view", name="workingforum_thread")
-     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
-     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
-     * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
+     * @Route("{forum}/{subforum}/{thread}/view", name="workingforum_thread")
      * @return Response
      */
     public function indexAction(Forum $forum, Subforum $subforum, Thread $thread, Request $request)
@@ -188,9 +183,7 @@ class ThreadController extends BaseController
     /**
      * New thread
      *
-     * @Route("{forum_slug}/{subforum_slug}/new", name="workingforum_new_thread")
-     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
-     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
+     * @Route("{forum}/{subforum}/new", name="workingforum_new_thread")
      * @return RedirectResponse|Response
      * @throws \Exception
      */
@@ -257,10 +250,7 @@ class ThreadController extends BaseController
 
     /**
      * The thread is resolved
-     * @Route("{forum_slug}/{subforum_slug}/{thread_slug}/resolved", name="workingforum_resolve_thread")
-     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
-     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
-     * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
+     * @Route("{forum}/{subforum}/{thread}/resolved", name="workingforum_resolve_thread")
      * @return RedirectResponse
      * @throws \Exception
      */
@@ -284,10 +274,7 @@ class ThreadController extends BaseController
     /**
      * A moderator pin a thread
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-     * @Route("{forum_slug}/{subforum_slug}/{thread_slug}/pin", name="workingforum_pin_thread")
-     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
-     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
-     * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
+     * @Route("{forum}/{subforum}/{thread}/pin", name="workingforum_pin_thread")
      * @return RedirectResponse
      * @throws \Exception
      */
@@ -310,10 +297,7 @@ class ThreadController extends BaseController
     /**
      * A moderator unpin a thread
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-     * @Route("{forum_slug}/{subforum_slug}/{thread_slug}/unpin", name="workingforum_unpin_thread")
-     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
-     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
-     * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
+     * @Route("{forum}/{subforum}/{thread}/unpin", name="workingforum_unpin_thread")
      * @return RedirectResponse
      * @throws \Exception
      */
@@ -338,8 +322,7 @@ class ThreadController extends BaseController
 
     /**
      * A user report a post
-     * @Route("{forum_slug}/{subforum_slug}/report/{post_id}", name="workingforum_report_post", requirements={"post_id":"\d+"})
-     * @ParamConverter("post", options={"mapping": {"post_id"="id"}})
+     * @Route("{forum}/{subforum}/report/{post}", name="workingforum_report_post", requirements={"post_id":"\d+"})
      * @return Response
      * @throws \Exception
      */
@@ -370,10 +353,7 @@ class ThreadController extends BaseController
     /**
      * The thread is deleted by modo or admin
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-     * @Route("{forum_slug}/{subforum_slug}/deletethread/{thread_slug}", name="workingforum_delete_thread")
-     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
-     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
-     * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
+     * @Route("{forum}/{subforum}/deletethread/{thread}", name="workingforum_delete_thread")
      * @return RedirectResponse
      */
     public function deleteThreadAction(Forum $forum, Subforum $subforum, Thread $thread)
@@ -394,10 +374,7 @@ class ThreadController extends BaseController
     /**
      * The thread is locked by a moderator or admin
      * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
-     * @Route("{forum_slug}/{subforum_slug}/{thread_slug}/lock", name="workingforum_lock_thread")
-     * @ParamConverter("forum", options={"mapping": {"forum_slug": "slug"}})
-     * @ParamConverter("subforum", options={"mapping": {"subforum_slug": "slug"}})
-     * @ParamConverter("thread", options={"mapping": {"thread_slug": "slug"}})
+     * @Route("{forum}/{subforum}/{thread}/lock", name="workingforum_lock_thread")
      * @return RedirectResponse
      */
     public function lockAction(Forum $forum, Subforum $subforum, Thread $thread)
@@ -436,17 +413,12 @@ class ThreadController extends BaseController
     }
 
     /**
-     *
-     * @param int $thread_id
+     * @Route("{forum}/{subforum}/cancelsubscription/{thread}", name="workingforum_cancel_subscription")
      * @return Response
      */
-    public function cancelSubscriptionAction($thread_id)
+    public function cancelSubscriptionAction(Thread $thread)
     {
         if (is_null($this->user)) {
-            return new Response(null, 500);
-        }
-        $thread = $this->em->getRepository(Thread::class)->findOneById($thread_id);
-        if (is_null($thread)) {
             return new Response(null, 500);
         }
 
@@ -464,16 +436,12 @@ class ThreadController extends BaseController
 
     /**
      * An user wants to subscribe to a thread
-     * @param int $thread_id
+     * @Route("{forum}/{subforum}/addsubscription/{thread}", name="workingforum_add_subscription")
      * @return Response
      */
-    public function addSubscriptionAction($thread_id)
+    public function addSubscriptionAction(Thread $thread)
     {
         if (is_null($this->user)) {
-            return new Response(null, 500);
-        }
-        $thread = $this->em->getRepository(Thread::class)->findOneById($thread_id);
-        if (is_null($thread)) {
             return new Response(null, 500);
         }
 

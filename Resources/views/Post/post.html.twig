@@ -19,7 +19,7 @@
 
             {% if post.moderateReason is empty and actionsAvailables.report %}
                 <a href="#"
-                   onclick="report('{{ path('workingforum_report_post', {'forum_slug': forum.slug, 'subforum_slug' : subforum.slug, 'post_id' : post.id}) }}'); return false;"
+                   onclick="report('{{ path('workingforum_report_post', {'forum': forum.slug, 'subforum' : subforum.slug, 'post' : post.id}) }}'); return false;"
                    title="{{ 'forum.report' | trans }}"
                    class=""
                 >

@@ -37,11 +37,11 @@ class PostController extends BaseController
     {
         $postId = $request->get('postId');
 
-        $post = $this->em->getRepository(Post::class)->findOneById($postId);
         if (is_null($this->user)) {
             return new JsonResponse(['res' => 'false', 'errMsg' => 'You must be a registered user'], 403);
         }
 
+        $post = $this->em->getRepository(Post::class)->findOneById($postId);
         $subforum = $this->em->getRepository(Subforum::class)->findOneById(
             $post->getThread()->getSubforum()->getId()
         );

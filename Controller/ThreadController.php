@@ -59,18 +59,6 @@ class ThreadController extends BaseController
     {
         $anonymousUser = (is_null($this->user)) ? true : false;
 
-        if (!$this->authorization->hasSubforumAccess($subforum)) { // CHECK IF USER HAS AUTHORIZATION TO VIEW THIS THREAD
-            return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/thread.html.twig',
-                [
-                    'forum' => $forum,
-                    'subforum' => $subforum,
-                    'thread' => $thread,
-                    'forbidden' => true,
-                    'forbiddenMsg' => $this->authorization->getErrorMessage()
-                ]
-            );
-
-        }
         $autolock = $this->threadService->isAutolock($thread); // CHECK IF THREAD IS AUTOMATICALLY LOCKED (TOO OLD?)
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
 
@@ -189,19 +177,10 @@ class ThreadController extends BaseController
      */
     public function newAction(Forum $forum, Subforum $subforum, Request $request)
     {
-        if (is_null($this->user)) {
+        if (is_null($this->user)) { //ANONYMOUS CAN'T POST
             throw new \Exception("access denied",
                 403
             );
-        }
-
-        if (!$this->authorization->hasSubforumAccess($subforum)) {
-            $this->flashbag->add(
-                'error',
-                $this->translator->trans($this->authorization->getErrorMessage(), [], 'YosimitsoWorkingForumBundle')
-            );
-
-            return $this->redirect($this->generateUrl('workingforum_forum'));
         }
 
         $thread = new Thread($this->user, $subforum);

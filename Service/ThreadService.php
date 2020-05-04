@@ -65,7 +65,12 @@ class ThreadService
      */
     protected $formFactory;
 
+    /**
+     * @var RouterInterface
+     */
     protected $router;
+
+    protected $templating;
 
     public function __construct(
         $lockThreadOlderThan,
@@ -78,7 +83,8 @@ class ThreadService
         Authorization $authorization,
         BundleParametersService $bundleParameters,
         FormFactory $formFactory,
-        RouterInterface $router
+        RouterInterface $router,
+        $templating
     )
     {
         $this->lockThreadOlderThan = $lockThreadOlderThan;
@@ -92,6 +98,7 @@ class ThreadService
         $this->bundleParameters = $bundleParameters;
         $this->formFactory = $formFactory;
         $this->router = $router;
+        $this->templating = $templating;
     }
 
     /**
@@ -396,6 +403,18 @@ class ThreadService
                 'subforum' => $subforum->getSlug(),
             ]
         ));
+    }
+
+    public function redirectToForbiddenAccess(Subforum $subforum, $forbiddenMessage)
+    {
+            return $this->templating->renderResponse(
+                '@YosimitsoWorkingForum/Forum/thread_list.html.twig',
+                [
+                    'subforum' => $subforum,
+                    'forbidden' => true,
+                    'forbiddenMsg' => $forbiddenMessage
+                ]
+            );
     }
 
 }

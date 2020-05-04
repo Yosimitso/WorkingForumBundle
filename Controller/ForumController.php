@@ -31,7 +31,7 @@ class ForumController extends BaseController
     public function indexAction()
     {
         $list_forum = $this
-            ->getEntityManager()
+            ->em
             ->getRepository(Forum::class)
             ->findAll();
 
@@ -58,19 +58,6 @@ class ForumController extends BaseController
      */
     public function subforumAction(Forum $forum, Subforum $subforum, Request $request, $page = 1)
     {
-        if (!$this->authorization->hasSubforumAccess($subforum)) {
-
-            return $this->templating->renderResponse(
-                '@YosimitsoWorkingForum/Forum/thread_list.html.twig',
-                [
-                    'subforum' => $subforum,
-                    'forbidden' => true,
-                    'forbiddenMsg' => $this->authorization->getErrorMessage()
-                ]
-            );
-        }
-
-
         $list_subforum_query = $this
             ->em
             ->getRepository(Thread::class)

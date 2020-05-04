@@ -4,14 +4,12 @@
     {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
     {% include '@YosimitsoWorkingForum/Common/flashmsg.html.twig' %}
     <div id="wf_forum_content">
-        <div class="wf_breadcrumb">
-            <a href="{{ path('workingforum_forum') }}">Forum</a>
-            {% if subforum is defined %}
-                &rarr; {{ subforum.forum.name }}
-            {% else %}
-                &rarr; <a href="{{ path('workingforum_search') }}">{{ 'forum.search_forum' |trans }}</a>
-            {% endif %}
-        </div>
+        {% if subforum is defined %}
+            {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'subforum': subforum} only %}
+        {% else %}
+            {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'extraPath': [('forum.search_forum' | trans)]} only %}
+        {% endif %}
+
         {% if forbidden is defined and forbidden %}
             <div class="wf_forum">
                 <div class="wf_empty_forum">{{ forbiddenMsg | trans }}</div>

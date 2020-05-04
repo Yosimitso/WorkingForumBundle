@@ -130,6 +130,7 @@ services:
       - "@yosimitso_workingforum.service.bundle_parameters"
       - "@form.factory"
       - "@router"
+      - "@templating"
 
   yosimitso_workingforum.service.bundle_parameters:
     class: Yosimitso\WorkingForumBundle\Service\BundleParametersService
@@ -145,24 +146,40 @@ services:
 
   yosimitso_workingforum.param_converters.forum:
     class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
-    arguments: ["@doctrine.orm.entity_manager", 'Yosimitso\WorkingForumBundle\Entity\Forum']
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@yosimitso_workingforum.security.authorization'
+      - '@yosimitso_workingforum.service.thread'
+      - 'Yosimitso\WorkingForumBundle\Entity\Forum'
     tags:
       - { name: request.param_converter, priority: 20 }
 
   yosimitso_workingforum.param_converters.subforum:
     class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
-    arguments: ["@doctrine.orm.entity_manager", 'Yosimitso\WorkingForumBundle\Entity\Subforum']
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@yosimitso_workingforum.security.authorization'
+      - '@yosimitso_workingforum.service.thread'
+      - 'Yosimitso\WorkingForumBundle\Entity\Subforum'
     tags:
       - { name: request.param_converter, priority: 20 }
 
   yosimitso_workingforum.param_converters.thread:
     class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
-    arguments: ["@doctrine.orm.entity_manager", 'Yosimitso\WorkingForumBundle\Entity\Thread']
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@yosimitso_workingforum.security.authorization'
+      - '@yosimitso_workingforum.service.thread'
+      - 'Yosimitso\WorkingForumBundle\Entity\Thread'
     tags:
       - { name: request.param_converter, priority: 20 }
 
   yosimitso_workingforum.param_converters.post:
     class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
-    arguments: ["@doctrine.orm.entity_manager", 'Yosimitso\WorkingForumBundle\Entity\Post']
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@yosimitso_workingforum.security.authorization'
+      - '@yosimitso_workingforum.service.thread'
+      - 'Yosimitso\WorkingForumBundle\Entity\Post'
     tags:
       - { name: request.param_converter, priority: 20 }

@@ -21,7 +21,7 @@ class FileUploaderServiceTest extends WebTestCase
     private $translator;
     private $post;
 
-    public function setUp()
+    public function setUp() : void
     {
         $file = $this->getMockBuilder(UploadedFile::class)
             ->setConstructorArgs(['C:\Users\MyUser\AppData\Local\Temp\php6BA8.tmp', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg', true])

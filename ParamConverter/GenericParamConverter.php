@@ -22,10 +22,6 @@ class GenericParamConverter implements  ParamConverterInterface
      */
     protected $em;
     /**
-     * @var array
-     */
-    protected const HANDLED_PARAM_NAME = ['forum', 'subforum', 'thread', 'post'];
-    /**
      * @var string
      */
     protected $classname;
@@ -33,16 +29,11 @@ class GenericParamConverter implements  ParamConverterInterface
      * @var Authorization
      */
     protected $authorization;
-    /**
-     * @var ThreadService
-     */
-    protected $threadService;
 
-    public function __construct(EntityManagerInterface $em, Authorization $authorization, ThreadService $threadService, $classname)
+    public function __construct(EntityManagerInterface $em, Authorization $authorization, $classname)
     {
         $this->em = $em;
         $this->authorization = $authorization;
-        $this->threadService = $threadService;
         $this->classname = $classname;
     }
 

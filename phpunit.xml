@@ -3,8 +3,9 @@
 <phpunit bootstrap="./vendor/autoload.php" colors="true">
     <!-- Les fichiers de tests à lancer -->
     <testsuites>
-        <testsuite name="testsService">
+        <testsuite name="tests">
             <directory suffix="Test.php">./Tests/Service</directory>
+            <directory suffix="Test.php">./Tests/ParamConverter</directory>
         </testsuite>
     </testsuites>
     <!-- Quels fichiers sont concernés par l'évaluation du code coverage -->

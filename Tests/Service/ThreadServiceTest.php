@@ -7,6 +7,9 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Router;
+use Twig\Template;
+use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
@@ -22,12 +25,8 @@ use Knp\Component\Pager\Paginator;
 use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Bundle\TwigBundle\TwigEngine;
 
-/**
- * Class ThreadControllerTest
- *
- * @package Yosimitso\WorkingForumBundle\Tests\Service
- */
 class ThreadServiceTest extends TestCase
 {
 
@@ -67,6 +66,14 @@ class ThreadServiceTest extends TestCase
         }
 
         $bundleParameters = $this->createMock(BundleParametersService::class);
+        $router = $this->createMock(Router::class);
+        $router->method('generate')->willReturnCallback(function($route, $args) {
+            if ($route === 'workingforum_subforum' && $args['forum'] === 'my-forum' && $args['subforum'] === 'my-subforum') {
+                return 'my-forum/my-subforum/view';
+            }
+        });
+
+        $templating = $this->createMock(Template::class);
         $bundleParameters->allow_moderator_delete_thread = false;
         $testedClass = new ThreadService(
             0,
@@ -78,7 +85,9 @@ class ThreadServiceTest extends TestCase
             $this->createMock(FileUploaderService::class),
             $authorization,
             $bundleParameters,
-            $this->getFormFactory()
+            $this->getFormFactory(),
+            $router,
+            $templating
         );
 
         return $testedClass;
@@ -454,6 +463,16 @@ class ThreadServiceTest extends TestCase
         $this->assertTrue($result['subscribe']);
         $this->assertTrue($result['moveThread'] instanceof FormView);
         $this->assertFalse($result['allowModeratorDeleteThread']);
+    }
+
+    public function testRedirectToSubforum()
+    {
+        $testedClass = $this->getTestedClass();
+        $forum = (new Forum())->setSlug('my-forum');
+        $subforum = (new Subforum())->setSlug('my-subforum');
+        $response = $testedClass->redirectToSubforum($forum, $subforum);
+
+        $this->assertEquals('my-forum/my-subforum/view', $response->getTargetUrl());
     }
 
 }

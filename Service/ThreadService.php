@@ -273,7 +273,7 @@ class ThreadService
      *
      * Create a thread
      */
-    public function create(Form $form, Post $post, Thread $thread, Subforum $subforum)
+    public function create($form, Post $post, Thread $thread, Subforum $subforum)
     {
 
         $this->em->beginTransaction();

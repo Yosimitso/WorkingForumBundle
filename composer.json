@@ -36,7 +36,7 @@
         }
 		},
     "require-dev": {
-        "phpunit/phpunit": "^6.0",
+        "phpunit/phpunit": "^8.2",
         "yosimitso/mockdoctrinemanager": "dev-master",
         "phpstan/phpstan-symfony": "^0.12.4",
         "symfony/browser-kit": ">=3.4.26|>=4.2.7"

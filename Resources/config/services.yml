@@ -84,7 +84,7 @@ services:
     class: Yosimitso\WorkingForumBundle\Security\Authorization
     arguments:
       - "@security.authorization_checker"
-      - "@security.token_storage"
+      - "@security.helper"
       - "%yosimitso_working_forum.allow_anonymous_read%"
 
   yosimitso_workingforum.service.fileuploader:

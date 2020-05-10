@@ -3,7 +3,7 @@
 namespace Yosimitso\WorkingForumBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 
 /**
@@ -22,9 +22,9 @@ class Authorization implements AuthorizationInterface
      */
     private $errorMessage;
     /**
-     * @var TokenStorage
+     * @var UserInterface|null
      */
-    private $tokenStorage;
+    private $user;
     /**
      * @var boolean
      */
@@ -42,7 +42,7 @@ class Authorization implements AuthorizationInterface
         $allowAnonymousRead
     ) {
         $this->securityChecker = $securityChecker;
-        $this->tokenStorage = $tokenStorage;
+        $this->user = $tokenStorage->getToken()->getUser();
         $this->allowAnonymousRead = $allowAnonymousRead;
     }
 
@@ -114,8 +114,6 @@ class Authorization implements AuthorizationInterface
         {
             return false;
         }
-        $user = $this->tokenStorage->getToken()->getUser();
-
 
         $subforumRoles = $subforum->getAllowedRoles();
 
@@ -124,7 +122,7 @@ class Authorization implements AuthorizationInterface
             return true;
         }
 
-        $userRoles = (is_object($user)) ? $user->getRoles() : [];
+        $userRoles = (is_object($this->user)) ? $this->user->getRoles() : [];
         if (!count($userRoles) || trim($userRoles[0]) === '') // CASE OF USER HAS NO ROLE, FALLBACK
         {
             $userRoles = ['ROLE_USER'];
@@ -150,13 +148,12 @@ class Authorization implements AuthorizationInterface
      */
     public function hasUserAuthorization()
     {
-        $user = $this->tokenStorage->getToken()->getUser();
-        if (is_object($user) && $user->isBanned()) {
+        if (is_object($this->user) && $this->user->isBanned()) {
             $this->setErrorMessage('banned');
             return false;
         }
 
-        if (is_object($user) || $this->allowAnonymousRead) {
+        if (is_object($this->user) || $this->allowAnonymousRead) {
             return true;
         }
 

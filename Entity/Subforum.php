@@ -172,6 +172,8 @@ class Subforum
         if (empty($this->slug)) {
             $this->slug = Slugify::convert($this->name);
         }
+
+        return $this;
     }
 
     /**

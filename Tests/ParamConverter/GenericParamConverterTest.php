@@ -13,7 +13,7 @@ use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter;
-use Yosimitso\WorkingForumBundle\Security\Authorization;
+use Yosimitso\WorkingForumBundle\Security\AuthorizationGuard;
 
 class GenericParamConverterTest extends TestCase
 {
@@ -24,7 +24,7 @@ class GenericParamConverterTest extends TestCase
         }
 
         if (is_null($authorization)) {
-            $authorization = $this->createMock(Authorization::class);
+            $authorization = $this->createMock(AuthorizationGuard::class);
             $authorization->method('hasSubforumAccess')->willReturn(true);
         }
 

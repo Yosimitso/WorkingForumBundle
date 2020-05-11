@@ -86,7 +86,7 @@ class ThreadController extends BaseController
                     return $this->redirect($this->generateUrl('workingforum', []));
                 }
 
-                if ($autolock && !$this->authorization->hasModeratorAuthorization()) // THREAD IS LOCKED CAUSE TOO OLD ACCORDING TO PARAMETERS
+                if ($autolock && !$this->authorizationGuard->hasModeratorAuthorization()) // THREAD IS LOCKED CAUSE TOO OLD ACCORDING TO PARAMETERS
                 {
                     $this->flashbag->add(
                         'error',
@@ -188,7 +188,7 @@ class ThreadController extends BaseController
         $thread->addPost($post);
 
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
-        $form = $this->createForm(ThreadType::class, $thread, ['hasModeratorAuthorization' => $this->authorization->hasModeratorAuthorization()]);
+        $form = $this->createForm(ThreadType::class, $thread, ['hasModeratorAuthorization' => $this->authorizationGuard->hasModeratorAuthorization()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -235,7 +235,7 @@ class ThreadController extends BaseController
      */
     public function resolveAction(Forum $forum, Subforum $subforum, Thread $thread)
     {
-        if (!$this->authorization->hasModeratorAuthorization() && $this->user->getId() != $thread->getAuthor()->getId()) // ONLY ADMIN MODERATOR OR THE THREAD'S AUTHOR CAN SET A THREAD AS RESOLVED
+        if (!$this->authorizationGuard->hasModeratorAuthorization() && $this->user->getId() != $thread->getAuthor()->getId()) // ONLY ADMIN MODERATOR OR THE THREAD'S AUTHOR CAN SET A THREAD AS RESOLVED
         {
             throw new \Exception('You are not authorized to do this', 403);
         }
@@ -314,13 +314,13 @@ class ThreadController extends BaseController
         }
 
         $check_already = $this->em->getRepository(PostReport::class)
-            ->findOneBy(['user' => $this->user->getId(), 'post' => $post_id]);
+            ->findOneBy(['user' => $this->user->getId(), 'post' => $post->getId()]);
 
         if (!is_null($check_already)) { // ALREADY WARNED BUT THAT'S OK, THANKS ANYWAY
             return new JsonResponse('true', 200);
         }
 
-        $post = $this->em->getRepository(Post::class)->findOneById($post_id);
+        $post = $this->em->getRepository(Post::class)->findOneById($post->getId());
 
         if ($this->threadService->report($post)) {
             return new JsonResponse('true', 200);

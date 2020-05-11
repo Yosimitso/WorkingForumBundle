@@ -18,7 +18,7 @@ use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 use Yosimitso\WorkingForumBundle\Form\MoveThreadType;
 use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
-use Yosimitso\WorkingForumBundle\Security\Authorization;
+use Yosimitso\WorkingForumBundle\Security\AuthorizationGuardInterface;
 use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
@@ -43,6 +43,9 @@ class ThreadService
      * @var RequestStack
      */
     protected $requestStack;
+    /**
+     * @var EntityManagerInterface
+     */
     protected $em;
     /**
      * @var UserInterface
@@ -53,9 +56,9 @@ class ThreadService
      */
     protected $fileUploaderService;
     /**
-     * @var Authorization
+     * @var AuthorizationGuardInterface
      */
-    protected $authorization;
+    protected $authorizationGuard;
     /**
      * @var BundleParametersService
      */
@@ -80,7 +83,7 @@ class ThreadService
         EntityManagerInterface $em,
         TokenStorageInterface $tokenStorage,
         FileUploaderService $fileUploaderService,
-        Authorization $authorization,
+        AuthorizationGuardInterface $authorizationGuard,
         BundleParametersService $bundleParameters,
         FormFactory $formFactory,
         RouterInterface $router,
@@ -94,7 +97,7 @@ class ThreadService
         $this->em = $em;
         $this->user = $tokenStorage->getToken()->getUser();
         $this->fileUploaderService = $fileUploaderService;
-        $this->authorization = $authorization;
+        $this->authorizationGuard = $authorizationGuard;
         $this->bundleParameters = $bundleParameters;
         $this->formFactory = $formFactory;
         $this->router = $router;
@@ -278,8 +281,6 @@ class ThreadService
 
         $this->em->beginTransaction();
         try {
-
-
             $subforum->newThread($this->user); // UPDATE STATISTIC
 
             $this->user->addNbPost(1);
@@ -359,14 +360,14 @@ class ThreadService
         $anonymousUser = (is_null($user)) ? true : false;
 
         return [
-            'setResolved' => $this->authorization->hasModeratorAuthorization() || (!$anonymousUser && $user->getId() == $thread->getAuthor()->getId()),
+            'setResolved' => $this->authorizationGuard->hasModeratorAuthorization() || (!$anonymousUser && $user->getId() == $thread->getAuthor()->getId()),
             'quote' => (!$anonymousUser && !$thread->getLocked()),
             'report' => (!$anonymousUser),
-            'post' => ((!$anonymousUser && !$autolock) || $this->authorization->hasModeratorAuthorization()),
+            'post' => ((!$anonymousUser && !$autolock) || $this->authorizationGuard->hasModeratorAuthorization()),
             'subscribe' => (!$anonymousUser && $canSubscribeThread),
-            'moveThread' => ($this->authorization->hasModeratorAuthorization()) ? $this->formFactory->create(MoveThreadType::class)->createView() : false,
-            'asModerator' => $this->authorization->hasModeratorAuthorization(),
-            'asAdmin' => $this->authorization->hasAdminAuthorization(),
+            'moveThread' => ($this->authorizationGuard->hasModeratorAuthorization()) ? $this->formFactory->create(MoveThreadType::class)->createView() : false,
+            'asModerator' => $this->authorizationGuard->hasModeratorAuthorization(),
+            'asAdmin' => $this->authorizationGuard->hasAdminAuthorization(),
             'allowModeratorDeleteThread' => $this->bundleParameters->allow_moderator_delete_thread
         ];
     }

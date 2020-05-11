@@ -47,7 +47,7 @@ class SearchController extends BaseController
         if ($form->isSubmitted()) {
             if ($form->isValid())
             {
-                $whereSubforum = (array) $this->authorization->hasSubforumAccessList($form['forum']->getData()->toArray());
+                $whereSubforum = (array) $this->authorizationGuard->hasSubforumAccessList($form['forum']->getData()->toArray());
 
                 $thread_list_query = $this->em->getRepository(Thread::class)
                                         ->search($form['keywords']->getData(), 0, 100, $whereSubforum)

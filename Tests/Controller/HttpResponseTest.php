@@ -17,7 +17,7 @@ class HttpResponseTest extends WebTestCase
 {
     private $client = null;
 
-    public function setUp()
+    public function setUp() : void
     {
         $this->client = static::createClient([], [
             'PHP_AUTH_USER' => $_ENV['TEST_ADMIN_USERNAME'],

@@ -50,7 +50,7 @@ class PostController extends BaseController
             return new JsonResponse(['res' => 'false', 'errMsg' => 'Internal error'], 500);
         }
 
-        if (!$this->authorization->hasSubforumAccess(
+        if (!$this->authorizationGuard->hasSubforumAccess(
             $subforum
         )) { // CHECK IF USER HAS AUTHORIZATION TO VIEW THIS THREAD
             return new JsonResponse(['res' => 'false'], 403);

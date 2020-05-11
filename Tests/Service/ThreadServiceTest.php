@@ -17,7 +17,7 @@ use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\User;
 use Yosimitso\WorkingForumBundle\Form\PostType;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
-use Yosimitso\WorkingForumBundle\Security\Authorization;
+use Yosimitso\WorkingForumBundle\Security\AuthorizationGuard;
 use Yosimitso\WorkingForumBundle\Service\BundleParametersService;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
 use Yosimitso\MockDoctrineManager\EntityManagerMock;
@@ -55,7 +55,7 @@ class ThreadServiceTest extends TestCase
         $tokenStorage->method('getToken')->willReturn($class);
 
         if (is_null($authorization)) {
-            $authorization = $this->createMock(Authorization::class);
+            $authorization = $this->createMock(AuthorizationGuard::class);
         }
         
         if (is_null($em)) {
@@ -423,7 +423,7 @@ class ThreadServiceTest extends TestCase
 
     public function testGetAvailableActionsModerator()
     {
-        $authorization = $this->createMock(Authorization::class);
+        $authorization = $this->createMock(AuthorizationGuard::class);
         $authorization->method('hasModeratorAuthorization')->willReturn(true);
 
         $testedClass = $this->getTestedClass(null, null, $authorization);
@@ -445,7 +445,7 @@ class ThreadServiceTest extends TestCase
 
     public function testGetAvailableActionsAdmin()
     {
-        $authorization = $this->createMock(Authorization::class);
+        $authorization = $this->createMock(AuthorizationGuard::class);
         $authorization->method('hasModeratorAuthorization')->willReturn(true);
 
         $testedClass = $this->getTestedClass(null, null, $authorization);

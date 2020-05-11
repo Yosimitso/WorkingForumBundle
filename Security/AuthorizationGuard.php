@@ -2,21 +2,16 @@
 
 namespace Yosimitso\WorkingForumBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 
-/**
- * Class Authorization
- * Check user's authorization
- * @package Yosimitso\WorkingForumBundle\Security
- */
-class Authorization implements AuthorizationInterface
+class AuthorizationGuard implements AuthorizationGuardInterface
 {
     /**
-     * @var AuthorizationChecker
+     * @var AuthorizationCheckerInterface
      */
-    private $securityChecker;
+    private $authorizationChecker;
     /**
      * @var string
      */
@@ -32,16 +27,16 @@ class Authorization implements AuthorizationInterface
 
     /**
      * Authorization constructor.
-     * @param \Symfony\Component\Security\Core\Authorization\AuthorizationChecker $securityChecker
+     * @param AuthorizationCheckerInterface $securityChecker
      * @param $tokenStorage
      * @param $allowAnonymousRead
      */
     public function __construct(
-        AuthorizationChecker $securityChecker,
+        AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
         $allowAnonymousRead
     ) {
-        $this->securityChecker = $securityChecker;
+        $this->authorizationChecker = $authorizationChecker;
         $this->user = $tokenStorage->getToken()->getUser();
         $this->allowAnonymousRead = $allowAnonymousRead;
     }
@@ -51,7 +46,7 @@ class Authorization implements AuthorizationInterface
      * @return bool
      */
     public function hasModeratorAuthorization() {
-        if ($this->securityChecker->isGranted('ROLE_SUPER_ADMIN') || $this->securityChecker->isGranted('ROLE_ADMIN') || $this->securityChecker->isGranted('ROLE_MODERATOR')) {
+        if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN') || $this->authorizationChecker->isGranted('ROLE_ADMIN') || $this->authorizationChecker->isGranted('ROLE_MODERATOR')) {
             return true;
         }
         else {
@@ -73,7 +68,7 @@ class Authorization implements AuthorizationInterface
      */
     public function hasAdminAuthorization()
     {
-        if ($this->securityChecker->isGranted('ROLE_ADMIN') || $this->securityChecker->isGranted('ROLE_SUPER_ADMIN')) {
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN') || $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             return true;
         }
         else {

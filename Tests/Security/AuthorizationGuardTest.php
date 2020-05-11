@@ -9,17 +9,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\User;
-use Yosimitso\WorkingForumBundle\Security\Authorization;
 use PHPUnit\Framework\TestCase;
+use Yosimitso\WorkingForumBundle\Security\AuthorizationGuard;
 
-class AuthorizationTest extends TestCase
+class AuthorizationGuardTest extends TestCase
 {
     private function getTestedClass(TokenStorage $tokenStorage, $allowAnonymousToRead)
     {
 
         $authorizationChecker = $this->getMockBuilder(AuthorizationChecker::class)->disableOriginalConstructor()->getMock();
 
-        return new Authorization(
+        return new AuthorizationGuard(
             $authorizationChecker,
             $tokenStorage,
             $allowAnonymousToRead

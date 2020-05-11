@@ -22,9 +22,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('yosimitso_working_forum');
 
-        $rootNode = $treeBuilder->root('yosimitso_working_forum');
+        $rootNode = $treeBuilder->root();
         $rootNode
             ->children()
                 ->scalarNode('site_title')

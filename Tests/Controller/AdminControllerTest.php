@@ -13,7 +13,7 @@ class AdminControllerTest extends WebTestCase
 {
     private $client;
     
-    public function setUp()
+    public function setUp() : void
     {
         $this->client = static::createClient([], [
             'PHP_AUTH_USER' => $_ENV['TEST_ADMIN_USERNAME'],

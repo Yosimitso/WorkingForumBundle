@@ -5,14 +5,12 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-/**
- * Interface AuthorizationInterface
- * @package Yosimitso\WorkingForumBundle\Security
- */
-interface AuthorizationInterface
+
+interface AuthorizationGuardInterface
 {
-    public function __construct(AuthorizationChecker $securityChecker, TokenStorageInterface $tokenStorage, $allowAnonymousRead);
+    public function __construct(AuthorizationCheckerInterface $authorizatonChecker, TokenStorageInterface $tokenStorage, $allowAnonymousRead);
     
     public function hasModeratorAuthorization();
     

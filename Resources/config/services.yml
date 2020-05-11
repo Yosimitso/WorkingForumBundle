@@ -81,7 +81,7 @@ services:
     arguments: ["%yosimitso_working_forum.theme_color%"]
 
   yosimitso_workingforum.security.authorization:
-    class: Yosimitso\WorkingForumBundle\Security\Authorization
+    class: Yosimitso\WorkingForumBundle\Security\AuthorizationGuard
     arguments:
       - "@security.authorization_checker"
       - "@security.helper"

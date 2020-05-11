@@ -12,7 +12,7 @@ use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
-use Yosimitso\WorkingForumBundle\Security\Authorization;
+use Yosimitso\WorkingForumBundle\Security\AuthorizationGuardInterface;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
 
 class GenericParamConverter implements  ParamConverterInterface
@@ -26,14 +26,14 @@ class GenericParamConverter implements  ParamConverterInterface
      */
     protected $classname;
     /**
-     * @var Authorization
+     * @var AuthorizationGuardInterface
      */
-    protected $authorization;
+    protected $authorizationGuard;
 
-    public function __construct(EntityManagerInterface $em, Authorization $authorization, $classname)
+    public function __construct(EntityManagerInterface $em, AuthorizationGuardInterface $authorizationGuard, $classname)
     {
         $this->em = $em;
-        $this->authorization = $authorization;
+        $this->authorizationGuard = $authorizationGuard;
         $this->classname = $classname;
     }
 
@@ -56,7 +56,7 @@ class GenericParamConverter implements  ParamConverterInterface
             $subforumAuthorization = $entity->getThread()->getSubforum();
         }
 
-        if (!is_null($subforumAuthorization) && !$this->authorization->hasSubforumAccess($subforumAuthorization)) {
+        if (!is_null($subforumAuthorization) && !$this->authorizationGuard->hasSubforumAccess($subforumAuthorization)) {
             throw new UnauthorizedHttpException('Forbidden');
         }
 

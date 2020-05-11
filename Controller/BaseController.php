@@ -11,9 +11,8 @@ use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Yosimitso\WorkingForumBundle\Entity\UserInterface;
-use Yosimitso\WorkingForumBundle\Security\Authorization;
+use Yosimitso\WorkingForumBundle\Security\AuthorizationGuardInterface;
 use Symfony\Component\Translation\DataCollectorTranslator;
-use Yosimitso\WorkingForumBundle\Security\AuthorizationInterface;
 
 /**
  * Class BaseController
@@ -27,9 +26,9 @@ class BaseController extends Controller
      */
     protected $em;
     /**
-     * @var Authorization
+     * @var AuthorizationGuardInterface
      */
-    protected $authorization;
+    protected $authorizationGuard;
     /**
      * @var UserInterface|null
      */
@@ -50,8 +49,8 @@ class BaseController extends Controller
     protected $templating;
     
     public function setParameters(
-        EntityManagerInterface$em,
-        AuthorizationInterface $authorization,
+        EntityManagerInterface $em,
+        AuthorizationGuardInterface $authorizationGuard,
         $user,
         SessionInterface $session,
         $translator,
@@ -59,7 +58,7 @@ class BaseController extends Controller
         $templating
     ) {
         $this->em = $em;
-        $this->authorization = $authorization;
+        $this->authorizationGuard = $authorizationGuard;
         $this->user = (is_object($user)) ? $user : null;
         $this->flashbag = $session->getFlashBag();
         $this->translator = $translator;

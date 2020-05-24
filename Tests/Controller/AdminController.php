@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  *
  * @package Yosimitso\WorkingForumBundle\Tests\Controller
  */
-class AdminControllerTest extends WebTestCase
+class AdminController extends WebTestCase
 {
     private $client;
     

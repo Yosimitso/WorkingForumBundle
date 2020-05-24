@@ -210,7 +210,7 @@ class ThreadService
         {
             $report = new PostReport;
             $report->setPost($post)
-                ->setUser($this->user);
+                    ->setUser($this->user);
             $this->em->persist($report);
             $this->em->flush();
 

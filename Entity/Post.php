@@ -48,12 +48,6 @@ class Post
      */
     private $published;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="user_id", type="integer", nullable=false)
-     */
-    private $userId;
 
     /**
      * @var UserInterface
@@ -221,25 +215,6 @@ class Post
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
-
-    /**
-     * @param int $userId
-     *
-     * @return Post
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
 
     /**
      * @return UserInterface

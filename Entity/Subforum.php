@@ -78,9 +78,9 @@ class Subforum
     private $lastReplyDate;
 
     /**
-     * @var UserInterface
+     * @var UserInterface|null
      *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\User", cascade={"persist"})
      * @ORM\JoinColumn(name="lastReplyUser", referencedColumnName="id", nullable=true)
      */
     private $lastReplyUser;
@@ -279,11 +279,11 @@ class Subforum
     }
 
     /**
-     * @param UserInterface $lastReplyUser
+     * @param UserInterface|null $lastReplyUser
      *
      * @return Subforum
      */
-    public function setLastReplyUser(UserInterface $lastReplyUser)
+    public function setLastReplyUser(?UserInterface $lastReplyUser)
     {
         $this->lastReplyUser = $lastReplyUser;
 

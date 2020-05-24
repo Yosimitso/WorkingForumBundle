@@ -3,7 +3,7 @@
     "description": "A complete forum bundle",
     "type": "symfony-bundle",
     "require": {
-        "knplabs/knp-paginator-bundle": "^2.7.2",
+        "knplabs/knp-paginator-bundle": "^3.0",
         "knplabs/knp-markdown-bundle": "^1.7.0",
 	    "symfony/framework-bundle": ">=3.4.26|>=4.2.7",
 	    "symfony/translation": ">=3.4.26",
@@ -17,9 +17,10 @@
         "doctrine/common": "^2.5.1",
         "doctrine/orm": "^2.6",
         "twig/extensions": "^1.5",
-        "twig/twig": ">=2.7|<3.0",
+        "twig/twig": "^2.0",
         "doctrine/doctrine-bundle": ">=1.10",
-        "symfony/asset": "^4.4"
+        "symfony/validator": "^5.0",
+        "doctrine/annotations": "^1.10"
     },
     "license": "MIT",
     "authors": [
@@ -39,6 +40,12 @@
         "phpunit/phpunit": "^8.2",
         "yosimitso/mockdoctrinemanager": "dev-master",
         "phpstan/phpstan-symfony": "^0.12.4",
-        "symfony/browser-kit": ">=3.4.26|>=4.2.7"
+        "symfony/browser-kit": ">=3.4.26|>=4.2.7",
+        "symfony/panther": "^0.7",
+        "hautelook/alice-bundle": "^2.7",
+        "symfony/expression-language": "^5.0",
+        "symfony/twig-bundle": "^4.4",
+        "symfony/security-bundle": "^4.4",
+        "symfony/swiftmailer-bundle": "^3.4"
     }
 }

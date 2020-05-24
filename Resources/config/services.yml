@@ -1,6 +1,4 @@
 parameters:
-
-
 services:
   yosimitso_workingforum.controller.base:
     class: Yosimitso\WorkingForumBundle\Controller\BaseController
@@ -84,7 +82,7 @@ services:
     class: Yosimitso\WorkingForumBundle\Security\AuthorizationGuard
     arguments:
       - "@security.authorization_checker"
-      - "@security.helper"
+      - "@security.token_storage"
       - "%yosimitso_working_forum.allow_anonymous_read%"
 
   yosimitso_workingforum.service.fileuploader:

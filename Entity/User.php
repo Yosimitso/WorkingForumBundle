@@ -3,19 +3,25 @@
 namespace Yosimitso\WorkingForumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class User
  *
  * @package Yosimitso\WorkingForumBundle\Entity
  *
+ * @ORM\Entity
  * @ORM\MappedSuperclass
+ * @ORM\Table(name="users")
  *
  */
-abstract class User implements UserInterface
+ abstract class User implements UserInterface
 {
     /**
-     * @var integer
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @Assert\NotBlank()
      */
     protected $id;
 
@@ -69,6 +75,13 @@ abstract class User implements UserInterface
         return $this->id;
     }
 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
     /**
      * @return string
      */
@@ -90,7 +103,7 @@ abstract class User implements UserInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getAvatarUrl()
     {
@@ -98,7 +111,7 @@ abstract class User implements UserInterface
     }
 
     /**
-     * @param string $avatarUrl
+     * @param string|null $avatarUrl
      *
      * @return User
      */
@@ -174,7 +187,7 @@ abstract class User implements UserInterface
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getLastReplyDate()
     {

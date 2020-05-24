@@ -37,7 +37,8 @@ class AuthorizationGuard implements AuthorizationGuardInterface
         $allowAnonymousRead
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->user = $tokenStorage->getToken()->getUser();
+        $token = $tokenStorage->getToken();
+        $this->user = (is_object($token)) ? $token->getUser() : null;
         $this->allowAnonymousRead = $allowAnonymousRead;
     }
 

@@ -23,9 +23,8 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('yosimitso_working_forum');
-
-        $rootNode = $treeBuilder->root();
-        $rootNode
+        $treeBuilder
+            ->getRootNode()
             ->children()
                 ->scalarNode('site_title')
                     ->isRequired()

@@ -1,8 +1,0 @@
-parameters:
-  framework:
-    router:
-      test:
-        resource: "../Resources/config/routing.yml"
-#    controllers:
-#      resource: ../../src/Controller/
-#      type: annotation

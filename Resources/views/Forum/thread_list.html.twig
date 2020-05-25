@@ -97,11 +97,11 @@
                 {% else %}
                     </table>
                     {% if keywords is defined %}
-                        <div class="wf_empty_forum">{{ 'forum.empty_forum' | trans }}</div>
-                    {% else %}
                         <div class="wf_empty_forum">{{ 'search.no_result' | trans({'%keywords%' : keywords}) }}</div>
+                    {% else %}
+                        <div class="wf_empty_forum">{{ 'forum.empty_forum' | trans }}</div>
                     {% endif %}
-                    {% endif %}
+                {% endif %}
 
 
                 </div>

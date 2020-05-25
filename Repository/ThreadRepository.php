@@ -7,7 +7,7 @@ use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Doctrine\ORM\Query;
-use Yosimitso\WorkingForumBundle\Entity\User;
+use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 
 /**
  * Class ThreadRepository
@@ -70,8 +70,8 @@ class ThreadRepository extends EntityRepository
             ->addSelect('lastReplyUser.avatarUrl AS lastReplyUser_avatarUrl, lastReplyUser.username AS lastReplyUser_username')
             ->from($this->_entityName, 'thread')
             ->join(Post::class, 'post', 'WITH', 'post.thread = thread.id')
-            ->join(User::class,'author','WITH','thread.author = author.id')
-            ->join(User::class, 'lastReplyUser', 'WITH', 'thread.lastReplyUser = lastReplyUser.id')
+            ->join(UserInterface::class,'author','WITH','thread.author = author.id')
+            ->join(UserInterface::class, 'lastReplyUser', 'WITH', 'thread.lastReplyUser = lastReplyUser.id')
             ->join(Subforum::class,'subforum','WITH','thread.subforum = subforum.id')
             ->join(Forum::class, 'forum', 'WITH', 'subforum.forum = forum.id')
             ->where($where)
@@ -99,8 +99,8 @@ class ThreadRepository extends EntityRepository
                 ->addSelect('author.avatarUrl AS author_avatarUrl, author.username AS author_username')
                 ->addSelect('lastReplyUser.avatarUrl AS lastReplyUser_avatarUrl, lastReplyUser.username AS lastReplyUser_username')
                 ->from($this->_entityName, 'thread')
-                ->join(User::class,'author','WITH','thread.author = author.id')
-                ->join(User::class, 'lastReplyUser', 'WITH', 'thread.lastReplyUser = lastReplyUser.id')
+                ->join(UserInterface::class,'author','WITH','thread.author = author.id')
+                ->join(UserInterface::class, 'lastReplyUser', 'WITH', 'thread.lastReplyUser = lastReplyUser.id')
                 ->join(Subforum::class,'subforum','WITH','thread.subforum = subforum.id')
                 ->join(Forum::class, 'forum', 'WITH', 'subforum.forum = forum.id')
                 ->where('subforum.id = '.$subforum->getId())

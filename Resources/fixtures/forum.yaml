@@ -2,3 +2,6 @@ Yosimitso\WorkingForumBundle\Entity\Forum:
   forum_1:
     name: My Forum
     slug: my-forum
+    subforum:
+      - '@subforum_classic'
+      - '@subforum_moderator'

@@ -80,7 +80,7 @@ class Subforum
     /**
      * @var UserInterface|null
      *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\User", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
      * @ORM\JoinColumn(name="lastReplyUser", referencedColumnName="id", nullable=true)
      */
     private $lastReplyUser;

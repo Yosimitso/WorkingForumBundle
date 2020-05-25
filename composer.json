@@ -46,6 +46,7 @@
         "symfony/expression-language": "^5.0",
         "symfony/twig-bundle": "^4.4",
         "symfony/security-bundle": "^4.4",
-        "symfony/swiftmailer-bundle": "^3.4"
+        "symfony/swiftmailer-bundle": "^3.4",
+        "symfony/css-selector": "^4.4"
     }
 }

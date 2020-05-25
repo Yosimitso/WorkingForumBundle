@@ -10,9 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @package Yosimitso\WorkingForumBundle\Entity
  *
- * @ORM\Entity
  * @ORM\MappedSuperclass
- * @ORM\Table(name="users")
  *
  */
  abstract class User implements UserInterface

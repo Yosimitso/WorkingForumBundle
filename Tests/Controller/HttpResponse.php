@@ -2,10 +2,12 @@
 
 namespace Yosimitso\WorkingForumBundle\Tests\Controller;
 
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Config\Definition\Exception\Exception as Exception;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\BrowserKit\Cookie;
+use Yosimitso\WorkingForumBundle\Entity\UserTest;
 
 /**
  *
@@ -15,14 +17,32 @@ use Symfony\Component\BrowserKit\Cookie;
  */
 class HttpResponse extends WebTestCase
 {
-    private $client = null;
+    use ReloadDatabaseTrait;
+    private $client;
 
     public function setUp() : void
     {
-        $this->client = static::createClient([], [
-            'PHP_AUTH_USER' => $_ENV['TEST_ADMIN_USERNAME'],
-            'PHP_AUTH_PW' => $_ENV['TEST_ADMIN_PASSWORD'],
-        ]);
+        self::bootKernel();
+//        $this->client = static::createClient(
+//            [],
+//            [
+//                'PHP_AUTH_USER' => $_ENV['TEST_ADMIN_USERNAME'],
+//                'PHP_AUTH_PW' => $_ENV['TEST_ADMIN_PASSWORD'],
+//            ]
+//        );
+//
+        $client = static::createClient();
+        $container = static::$kernel->getContainer();
+        $session = $container->get('session');
+        $person = self::$kernel->getContainer()->get('doctrine')->getRepository(UserTest::class)->findAll()[1];
+
+        $token = new UsernamePasswordToken($person, null, 'main', $person->getRoles());
+        $session->set('_security_main', serialize($token));
+        $session->save();
+
+        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+
+        $this->client = $client;
     }
     /**
      * @test
@@ -32,19 +52,22 @@ class HttpResponse extends WebTestCase
         $urls = [
             '',
             'search',
-            'view/subforum-test',
-            'newthread/subforum-test',
+            'my-forum/my-first-forum/view',
+            'my-forum/my-first-forum/new',
             'admin',
             'admin/forum/edit/1',
             'admin/forum/add',
-            'admin/user',
+            'admin/users',
             'admin/report',
             'admin/report/history'
 
         ];
 
         foreach ($urls as $url) {
-                $this->client->request('GET', '/'.$url);
+                $crawler = $this->client->request('GET', '/'.$url);
+                if ($this->client->getResponse()->getStatusCode() === 500) {
+//                    print_r($crawler->html());
+                }
                 $this->assertEquals(200, $this->client->getResponse()->getStatusCode(),$url.' returns '.$this->client->getResponse()->getStatusCode());
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\Tests;
+namespace Yosimitso\WorkingForumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\EquatableInterface;
@@ -10,7 +10,7 @@ use \Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Entity()
  * @ORM\Table(name="users")
  */
-class User extends \Yosimitso\WorkingForumBundle\Entity\User implements UserInterface, EquatableInterface
+class UserTest extends \Yosimitso\WorkingForumBundle\Entity\User implements UserInterface, EquatableInterface
 {
 
     /**
@@ -38,7 +38,7 @@ class User extends \Yosimitso\WorkingForumBundle\Entity\User implements UserInte
     /**
      * @ORM\Column(name="roles", type="array")
      */
-    protected $roles = array();
+    public $roles = array();
 
     /**
      * @var string
@@ -64,14 +64,33 @@ class User extends \Yosimitso\WorkingForumBundle\Entity\User implements UserInte
         return $this->salt;
     }
 
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+        return $this;
+    }
+
     public function getPassword()
     {
         return $this->password;
     }
 
+    public function setPassword($password)
+    {
+        $this->password = $password;
+        return $this;
+    }
+
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    public function addRole($role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
     }
 
     public function getUsername()
@@ -129,5 +148,25 @@ class User extends \Yosimitso\WorkingForumBundle\Entity\User implements UserInte
         }
 
         return true;
+    }
+
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->password,
+            $this->email,
+            $this->username,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->password,
+            $this->email,
+            $this->username,
+            ) = unserialize($serialized, array('allowed_classes' => false));
     }
 }

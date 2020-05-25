@@ -1,9 +1,0 @@
-Yosimitso\WorkingForumBundle\Tests\User:
-  user_classic:
-    id: 5
-    avatar_url: null
-    nb_post: 5
-    username: imauser
-    banned: false
-    lastReplyDate: "2020-05-02 18:26:48"
-    email_address: 'test@test.com'

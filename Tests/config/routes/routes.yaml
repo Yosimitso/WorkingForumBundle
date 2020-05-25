@@ -1,0 +1,12 @@
+test:
+    resource: "../../Resources/config/routing.yml"
+#    controllers:
+#      resource: ../../src/Controller/
+#      type: annotation
+login:
+    path:   /login
+    defaults:  { _controller: login:loginAction }
+login_check:
+    path:   /login_check
+logout:
+    path:   /logout

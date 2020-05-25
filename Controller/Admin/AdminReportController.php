@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
-use Yosimitso\WorkingForumBundle\Entity\User;
+use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 
 /**
  * Class AdminReportController
@@ -115,7 +115,7 @@ class AdminReportController extends BaseController
         }
 
         if ($banuser) {
-            $postUser = $this->em->getRepository(User::class)->findOneById(
+            $postUser = $this->em->getRepository(UserInterface::class)->findOneById(
                 $post->getUser()->getId()
             );
             if (is_null($postUser)) {

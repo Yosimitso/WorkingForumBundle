@@ -4,7 +4,7 @@ Yosimitso\WorkingForumBundle\Entity\Subforum:
     description: null
     name: My First Forum
     nb_thread: 3
-    slug: my-forum
+    slug: my-first-forum
     nb_post: 10
     last_reply_date: <datetimeBetween('-5 days', 'now')>
     allowed_roles: []
@@ -15,7 +15,7 @@ Yosimitso\WorkingForumBundle\Entity\Subforum:
     description: null
     name: My Second Forum
     nb_thread: 3
-    slug: my-forum
+    slug: my-second-forum
     nb_post: 10
     last_reply_date: <datetimeBetween('-5 days', 'now')>
     allowed_roles: ['ROLE_MODERATOR']

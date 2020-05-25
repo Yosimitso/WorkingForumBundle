@@ -33,14 +33,14 @@ doctrine:
     naming_strategy: doctrine.orm.naming_strategy.underscore
 #    auto_mapping: true
     resolve_target_entities:
-      Yosimitso\WorkingForumBundle\User: Yosimitso\WorkingForumBundle\Tests\User
+      Yosimitso\WorkingForumBundle\Entity\UserInterface: Yosimitso\WorkingForumBundle\Entity\UserTest
     mappings:
       Yosimitso\WorkingForumBundle:
         is_bundle: false
         type: annotation
         dir: '%kernel.project_dir%/Entity'
         prefix: 'Yosimitso\WorkingForumBundle\Entity'
-        alias: App
+        alias: YosimitsoWorkingForumBundle
 
 framework:
   templating: { engines: ['twig'] }
@@ -63,7 +63,7 @@ knp_paginator:
 security:
   encoders:
     Symfony\Component\Security\Core\User\User: plaintext
-    App\Entity\User: plaintext
+    Yosimitso\WorkingForumBundle\Entity\UserTest: plaintext
 
   role_hierarchy:
     ROLE_ADMIN:       ROLE_USER
@@ -74,26 +74,24 @@ security:
     # Et voici notre nouveau fournisseur :
     main:
       entity:
-        class:    App\Entity\User
+        class:    Yosimitso\WorkingForumBundle\Entity\UserTest
         property: username
 
   firewalls:
-    dev:
-      pattern:  ^/(_(profiler|wdt)|css|images|js)/
-      security: false
     main:
       pattern: ^/
       anonymous: true
       provider: main
       http_basic: ~
-      form_login:
-        login_path: login
-        check_path: login_check
-        csrf_token_generator: security.csrf.token_manager
-        default_target_path: /
-      logout:
-        path:   logout
-        target: /
+#      form_login:
+#        login_path: login
+#        check_path: login_check
+#        csrf_token_generator: security.csrf.token_manager
+#        default_target_path: /
+#      logout:
+#        path:   logout
+#        target: /
+
 
 swiftmailer:
   url: '%env(MAILER_URL)%'

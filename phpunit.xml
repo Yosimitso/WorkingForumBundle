@@ -21,6 +21,9 @@
         <server name="KERNEL_CLASS" value="Yosimitso\WorkingForumBundle\Tests\Kernel" />
         <server name="PANTHER_WEB_SERVER_DIR" value="." />
         <server name="DATABASE_URL" value="mysql://root:metalslug2@127.0.0.1:3306/demoworkingforumtest" />
+        <server name="MAILER_URL" value="" />
+        <env name="TEST_ADMIN_USERNAME" value="testuser" />
+        <env name="TEST_ADMIN_PASSWORD" value="pwd" />
     </php>
 
 </phpunit>

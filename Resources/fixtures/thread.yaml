@@ -1,3 +1,0 @@
-#Yosimitso\WorkingForumBundle\Entity\Thread:
-#  thread_normal:
-#    cdate: <datetimeBetween('-5 days', 'now')>

@@ -14,6 +14,7 @@ namespace Yosimitso\WorkingForumBundle\Tests;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle;
 use Hautelook\AliceBundle\HautelookAliceBundle;
+use Knp\Bundle\MarkdownBundle\KnpMarkdownBundle;
 use Knp\Bundle\PaginatorBundle\KnpPaginatorBundle;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
@@ -29,9 +30,22 @@ use Symfony\Component\Routing\RouteCollectionBuilder;
 use Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle;
 use Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle;
 
+
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
+
+    const CONFIG_EXTS = '.{php,xml,yaml,yml}';
+
+    public function getCacheDir()
+    {
+        return $this->getProjectDir().'/var/cache/'.$this->environment;
+    }
+
+    public function getLogDir()
+    {
+        return $this->getProjectDir().'/var/log';
+    }
 
     public function registerBundles()
     {
@@ -41,6 +55,7 @@ class Kernel extends BaseKernel
             YosimitsoWorkingForumBundle::class => ['all' => true],
             DoctrineBundle::class => ['all' => true],
             KnpPaginatorBundle::class => ['all' => true],
+            KnpMarkdownBundle::class => ['all' => true],
             TwigBundle::class => ['all' => true],
             SecurityBundle::class => ['all' => true],
             SwiftmailerBundle::class => ['all' => true],
@@ -48,72 +63,22 @@ class Kernel extends BaseKernel
             FidryAliceDataFixturesBundle::class => ['all' => true],
             NelmioAliceBundle::class => ['all' => true],
         ];
-
         foreach ($contents as $class => $envs) {
             if (isset($envs['all']) || isset($envs[$this->environment])) {
                 yield new $class();
             }
         }
+    }
 
+    protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
+    {
+        $container->setParameter('container.dumper.inline_class_loader', true);
+        $loader->load(__DIR__.'/config.yaml');
+        $loader->load(__DIR__.'/../Resources/config/services.yml');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-//        $a = $routes->import(__DIR__.'/routes.yaml', '/');
-
-
-        $routes->import(__DIR__.'/../Controller', '/', 'annotation');
-    }
-
-    public function configureContainer(ContainerBuilder $c, LoaderInterface $loader)
-    {
-        $loader->load(__DIR__.'/config.yaml');
-        $loader->load(__DIR__.'/../Resources/config/services.yml');
-        // TODO: Implement configureContainer() method.
-    }
-
-    public function registerContainerConfiguration(LoaderInterface $loader)
-    {
-
-        $loader->load(function (ContainerBuilder $container) use ($loader) {
-            $container->loadFromExtension('framework', [
-                'router' => [
-                    'resource' => 'kernel::loadRoutes',
-                    'type' => 'service',
-                ],
-            ]);
-
-            if (!$container->hasDefinition('kernel')) {
-                $container->register('kernel', static::class)
-                    ->setSynthetic(true)
-                    ->setPublic(true)
-                ;
-            }
-
-            $kernelDefinition = $container->getDefinition('kernel');
-            $kernelDefinition->addTag('routing.route_loader');
-
-            if ($this instanceof EventSubscriberInterface) {
-                $kernelDefinition->addTag('kernel.event_subscriber');
-            }
-
-            $this->configureContainer($container, $loader);
-
-            $container->addObjectResource($this);
-        });
-        $this->loadRoutes($loader);
-    }
-
-    public function getProjectDir()
-    {
-        return __DIR__.'/../';
-    }
-
-    public function loadRoutes(LoaderInterface $loader)
-    {
-        $routes = new RouteCollectionBuilder($loader);
-        $this->configureRoutes($routes);
-
-        return $routes->build();
+        $a = $routes->import(__DIR__.'/config/routes/routes.yaml', '/');
     }
 }

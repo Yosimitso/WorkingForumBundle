@@ -7,8 +7,8 @@
             <directory suffix="Test.php">./Tests/Service</directory>
             <directory suffix="Test.php">./Tests/ParamConverter</directory>
         </testsuite>
-        <testsuite name="unit">
-            <directory suffix="Test.php">./Tests/Controller</directory>
+        <testsuite name="scenario">
+            <directory suffix="Test.php">./Tests/Scenario</directory>
         </testsuite>
     </testsuites>
     <!-- Quels fichiers sont concernés par l'évaluation du code coverage -->

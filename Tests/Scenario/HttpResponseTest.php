@@ -1,6 +1,6 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\Tests\Controller;
+namespace Yosimitso\WorkingForumBundle\Tests\Scenario;
 
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -15,7 +15,7 @@ use Yosimitso\WorkingForumBundle\Entity\UserTest;
  *
  * @package Yosimitso\WorkingForumBundle\Tests\Controller
  */
-class HttpResponse extends WebTestCase
+class HttpResponseTest extends WebTestCase
 {
     use ReloadDatabaseTrait;
     private $client;

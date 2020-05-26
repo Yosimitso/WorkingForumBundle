@@ -106,7 +106,7 @@ class Thread
     /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string", nullable=false)
+     * @ORM\Column(name="slug", type="string", nullable=true)
      */
     private $slug;
 

@@ -4,6 +4,7 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
@@ -178,9 +179,7 @@ class ThreadController extends BaseController
     public function newAction(Forum $forum, Subforum $subforum, Request $request)
     {
         if (is_null($this->user)) { //ANONYMOUS CAN'T POST
-            throw new \Exception("access denied",
-                403
-            );
+            throw new AccessDeniedHttpException("access denied");
         }
 
         $thread = new Thread($this->user, $subforum);
@@ -237,7 +236,7 @@ class ThreadController extends BaseController
     {
         if (!$this->authorizationGuard->hasModeratorAuthorization() && $this->user->getId() != $thread->getAuthor()->getId()) // ONLY ADMIN MODERATOR OR THE THREAD'S AUTHOR CAN SET A THREAD AS RESOLVED
         {
-            throw new \Exception('You are not authorized to do this', 403);
+            throw new AccessDeniedHttpException('You are not authorized to do this');
         }
 
         $this->threadService->resolve($thread);
@@ -308,9 +307,7 @@ class ThreadController extends BaseController
     public function reportAction(Post $post)
     {
         if (is_null($this->user)) {
-            throw new \Exception("access denied",
-                403
-            );
+            throw new AccessDeniedHttpException("access denied");
         }
 
         $check_already = $this->em->getRepository(PostReport::class)

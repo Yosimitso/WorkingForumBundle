@@ -11,4 +11,4 @@ install:
   - yarn run prod
 
 script:
-  - php ./vendor/phpunit/phpunit/phpunit
+  - php ./vendor/phpunit/phpunit/phpunit --testsuite=unit

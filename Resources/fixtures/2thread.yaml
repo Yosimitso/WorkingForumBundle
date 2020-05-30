@@ -8,8 +8,8 @@ Yosimitso\WorkingForumBundle\Entity\Thread:
     lastReplyUser: '@user_classic'
     resolved: false
     locked: false
-    label: 'A classic thread'
+    label: 'A thread from fixtures'
     sublabel: 'Totally classic'
-    slug: 'a-classic-thread'
+    slug: 'a-thread-from-fixtures'
     post: []
     pin: false

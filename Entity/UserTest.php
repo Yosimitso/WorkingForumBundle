@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 use \Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * Used by functionnal tests
  * @ORM\Entity()
  * @ORM\Table(name="users")
  */

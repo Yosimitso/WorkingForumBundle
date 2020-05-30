@@ -4,6 +4,7 @@
         <li>
             <a class="wf_button wf_icon-lock"
                rel="nofollow"
+               id="wf_set-locked"
                href="{{ path('workingforum_lock_thread',{'forum': forum.slug, 'subforum' : subforum.slug, 'thread' : thread.slug}) }}">
                 {{ 'forum.lock' | trans }}
             </a>

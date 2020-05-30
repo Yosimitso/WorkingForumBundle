@@ -1,0 +1,13 @@
+Yosimitso\WorkingForumBundle\Entity\Post:
+  post_classic:
+    thread: '@thread_normal'
+    content: '**Content** test'
+    published: true
+    user: '@user_classic'
+    cdate: <datetime('now')>
+    ip: '192.168.0.1'
+    moderateReason: null
+    postReport: []
+    postVote: []
+    voteUp: []
+    files: []

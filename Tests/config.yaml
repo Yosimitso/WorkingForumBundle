@@ -15,7 +15,7 @@ yosimitso_working_forum:
     max_size_ko: 10000
     accepted_format: [image/jpg, image/jpeg, image/png, image/gif, image/tiff, application/pdf]
     preview_file: true
-  post_flood_sec: 30
+  post_flood_sec: 0
   thread_subscription:
     enable: true
 

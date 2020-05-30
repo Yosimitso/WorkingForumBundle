@@ -57,17 +57,19 @@ class PostEvent
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
-        $this->em = $args->getEntityManager();
+        if ($this->floodLimit) {
+            $entity = $args->getEntity();
+            $this->em = $args->getEntityManager();
 
-        if (!$entity instanceof Post) {
-            return;
+            if (!$entity instanceof Post) {
+                return;
+            }
+
+            if (!$this->isFlood($entity)) {
+                return;
+            }
         }
-
-        if (!$this->isFlood($entity)) {
-            return;
-        }
-
+        
         return;
     }
 

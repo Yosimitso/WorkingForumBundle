@@ -10,6 +10,17 @@ Yosimitso\WorkingForumBundle\Entity\UserTest:
     email_address: 'test@test.com'
     roles: [ROLE_USER]
 
+  moderator:
+    avatar_url: null
+    nb_post: 5
+    username: moderator
+    password: pwd
+    salt: ''
+    banned: false
+    lastReplyDate: <datetimeBetween('-1 days', 'now')>
+    email_address: 'test@test.com'
+    roles: [ROLE_MODERATOR]
+
   admin:
     avatar_url: null
     nb_post: 5

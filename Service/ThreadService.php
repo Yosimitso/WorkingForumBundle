@@ -296,7 +296,7 @@ class ThreadService
 
             if (!empty($form->getData()->getPost()[0]->getFilesUploaded())) {
                 $file = $this->fileUploaderService->upload($form->getData()->getPost()[0]->getFilesUploaded(), $post);
-                $post->addFiles($file);
+                $post->addFile($file);
             }
 
             $this->em->persist($post);
@@ -337,7 +337,7 @@ class ThreadService
 
         if (!empty($form->getData()->getFilesUploaded())) {
             $file = $this->fileUploaderService->upload($form->getData()->getFilesUploaded(), $post);
-            $post->addFiles($file);
+            $post->addFile($file);
         }
 
         $this->em->persist($post);

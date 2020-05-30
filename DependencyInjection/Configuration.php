@@ -98,7 +98,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->integerNode('post_flood_sec')
                     ->defaultValue(30)
-                    ->min(1)
+                    ->min(0)
                 ->end()
                 ->arrayNode('thread_subscription')
                     ->children()

@@ -19,6 +19,38 @@ class ThreadTest extends WebTestCase
         self::bootKernel();
     }
 
+    private function getModeratorUserClient()
+    {
+        $client = static::createClient();
+        $container = static::$kernel->getContainer();
+        $session = $container->get('session');
+        $person = self::$kernel->getContainer()->get('doctrine')->getRepository(UserTest::class)->findAll()[1];
+
+        $token = new UsernamePasswordToken($person, null, 'main', $person->getRoles());
+        $session->set('_security_main', serialize($token));
+        $session->save();
+
+        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+
+        return $client;
+    }
+
+    private function getAdminUserClient()
+    {
+        $client = static::createClient();
+        $container = static::$kernel->getContainer();
+        $session = $container->get('session');
+        $person = self::$kernel->getContainer()->get('doctrine')->getRepository(UserTest::class)->findAll()[2];
+
+        $token = new UsernamePasswordToken($person, null, 'main', $person->getRoles());
+        $session->set('_security_main', serialize($token));
+        $session->save();
+
+        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+
+        return $client;
+    }
+
     private function getClassicUserClient()
     {
         $client = static::createClient();
@@ -74,6 +106,8 @@ class ThreadTest extends WebTestCase
         ]);
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//        exit(print_r($crawler->html()));
+        
         $post = $crawler->filter('.wf_post_content')->first()->html();
 
         $this->assertEquals(trim(
@@ -82,6 +116,8 @@ class ThreadTest extends WebTestCase
         );
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        
+        
     }
 
     public function testAnonymousGoToSubforumAndShouldNotBeAbleToCreateAThread()
@@ -101,5 +137,87 @@ class ThreadTest extends WebTestCase
         // NEW THREAD PAGE SHOULDN'T BE ACCESSIBLE
         $client->request('GET', '/my-forum/my-first-forum/new');
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
+    }
+
+    public function testSetAsResolved()
+    {
+        $client = $this->getClassicUserClient();
+        $client->followRedirects();
+        
+        $crawler = $client->request('GET', '/my-forum/my-first-forum/a-thread-from-fixtures/view');
+        $link = $crawler->filter('#wf_set-resolved')->first()->link();
+        $crawler = $client->click($link);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $this->assertEquals('The thread is now solved, thanks for your feedback', $crawler->filter('.alert-success ul > li')->html());
+    }
+
+    public function testPost()
+    {
+        $client = $this->getClassicUserClient();
+
+        $crawler = $client->request('GET', '/my-forum/my-first-forum/a-thread-from-fixtures/view');
+
+        $client->followRedirects();
+        $crawler = $client->submitForm('Post !', [
+            'post[content]' => 'test post a message'
+        ]);
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals('Post saved', $crawler->filter('.alert-success ul > li')->html());
+
+    }
+
+    public function testModeratorShouldBeAbleToLockThread()
+    {
+        $client = $this->getModeratorUserClient();
+        $client->followRedirects();
+
+        $crawler = $client->request('GET', '/my-forum/my-first-forum/a-thread-from-fixtures/view');
+
+        $link = $crawler->filter('#wf_set-locked')->first()->link();
+        $crawler = $client->click($link);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $this->assertEquals('The thread has been successfully locked', $crawler->filter('.alert-success ul > li')->html());
+
+    }
+
+    public function testAdminShouldBeAbleToLockThread()
+    {
+        $client = $this->getAdminUserClient();
+        $client->followRedirects();
+
+        $crawler = $client->request('GET', '/my-forum/my-first-forum/a-thread-from-fixtures/view');
+
+        $link = $crawler->filter('#wf_set-locked')->first()->link();
+        $crawler = $client->click($link);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $this->assertEquals('The thread has been successfully locked', $crawler->filter('.alert-success ul > li')->html());
+    }
+
+    public function testClassicUserShouldNotBeAbleToLockThread()
+    {
+        $client = $this->getClassicUserClient();
+        $client->followRedirects();
+
+        $crawler = $client->request('GET', '/my-forum/my-first-forum/a-thread-from-fixtures/view'); // SHOULDN'T SEE THE BUTTON
+        $this->assertEquals(0, $crawler->filter('#wf_set-locked')->count());
+        
+        $crawler = $client->request('GET', '/my-forum/my-first-forum/a-thread-from-fixtures/lock');
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+    }
+
+    public function testAnonymousShouldNotBeAbleToLockThread()
+    {
+        $client = $this->getAnonymousUserClient();
+        $client->followRedirects();
+
+        $crawler = $client->request('GET', '/my-forum/my-first-forum/a-thread-from-fixtures/view'); // SHOULDN'T SEE THE BUTTON
+        $this->assertEquals(0, $crawler->filter('#wf_set-locked')->count());
+
+        $crawler = $client->request('GET', '/my-forum/my-first-forum/a-thread-from-fixtures/lock');
+        $this->assertEquals(401, $client->getResponse()->getStatusCode());
     }
 }

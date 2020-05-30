@@ -23,6 +23,7 @@
     {% if not thread.resolved and actionsAvailables.setResolved %}
         <p><a class="wf_button"
               rel="nofollow"
+              id="wf_set-resolved"
               href="{{ path('workingforum_resolve_thread',{'forum': forum.slug, 'subforum' : subforum.slug, 'thread' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a>
         </p>
     {% endif %}

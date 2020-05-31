@@ -19,7 +19,7 @@
         "twig/extensions": "^1.5",
         "twig/twig": "^2.0",
         "doctrine/doctrine-bundle": ">=1.10",
-        "symfony/validator": "^5.0",
+        "symfony/validator": ">=3.4.26|>=4.2.7",
         "doctrine/annotations": "^1.10"
     },
     "license": "MIT",

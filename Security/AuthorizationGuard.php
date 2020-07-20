@@ -86,15 +86,15 @@ class AuthorizationGuard implements AuthorizationGuardInterface
     {
         $subforumAllowed = array();
         foreach ($subforumList as $subforum)
-            {
-                if (!$subforum instanceof Subforum) {
-                    throw new \Exception('is not a subforum');
-                }
-                if ($this->hasSubforumAccess($subforum))
-                {
-                    $subforumAllowed[] = $subforum->getId();
-                }
+        {
+            if (!$subforum instanceof Subforum) {
+                throw new \Exception('is not a subforum');
             }
+            if ($this->hasSubforumAccess($subforum))
+            {
+                $subforumAllowed[] = $subforum->getId();
+            }
+        }
         return $subforumAllowed;
     }
 

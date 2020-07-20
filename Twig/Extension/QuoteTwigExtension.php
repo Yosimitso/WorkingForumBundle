@@ -50,7 +50,7 @@ class QuoteTwigExtension extends \Twig_Extension
     }
 
     /**
-     * @param $text
+     * @param string $text
      *
      * @return mixed
      */
@@ -61,7 +61,7 @@ class QuoteTwigExtension extends \Twig_Extension
 
                 /** @var Post $post */
                 $post = $this->entityManager
-                    ->getRepository('YosimitsoWorkingForumBundle:Post')
+                    ->getRepository(Post::class)
                     ->findOneById((int) $listQuote[1])
                 ;
 
@@ -72,7 +72,7 @@ class QuoteTwigExtension extends \Twig_Extension
                         . $this->translator->trans('forum.has_written', [], 'YosimitsoWorkingForumBundle')
                         . " :** \n"
                         . '>'.$this->markdownQuote($this->quote($post->getContent()))
-                        . "\n";
+                        . "\n\n";
                 }
 
                 return '';
@@ -83,6 +83,10 @@ class QuoteTwigExtension extends \Twig_Extension
         return $content;
     }
 
+    /**
+     * @param string $text
+     * @return string|string[]|null
+     */
     private function markdownQuote($text) {
         return preg_replace('/\n/', "\n >", $text );
     }

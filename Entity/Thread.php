@@ -34,7 +34,7 @@ class Thread
     /**
      * @var UserInterface
      *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
      */
     private $author;
@@ -64,7 +64,7 @@ class Thread
     /**
      * @var UserInterface
      *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface", cascade={"persist"})
      * @ORM\JoinColumn(name="lastReplyUser", referencedColumnName="id", nullable=true)
      */
     private $lastReplyUser;
@@ -133,15 +133,24 @@ class Thread
         return $this->id;
     }
 
-    public function __construct(UserInterface $user, Subforum $subforum, Post $post = null)
+    public function __construct(UserInterface $user = null, Subforum $subforum = null, Post $post = null)
     {
         $this->post = new ArrayCollection;
         $this->setLastReplyDate(new \DateTime)
             ->setCdate(new \DateTime)
             ->setNbReplies(1) // A THREAD MUST HAVE AT LEAST 1 POST
-            ->setLastReplyUser($user)
-            ->setAuthor($user)
-            ->setSubforum($subforum);
+            ;
+
+        if (!is_null($user)) {
+            $this->setLastReplyUser($user)
+                ->setAuthor($user)
+                ;
+        }
+
+        if (!is_null($subforum)) {
+            $this->setSubforum($subforum)
+            ;
+        }
 
         if (!is_null($post)) {
             $this->addPost($post);
@@ -211,7 +220,7 @@ class Thread
     }
 
     /**
-     * @param $nb
+     * @param int $nb
      *
      * @return $this
      */
@@ -383,7 +392,7 @@ class Thread
     }
 
     /**
-     * @param $post
+     * @param int $post
      *
      * @return Thread
      */

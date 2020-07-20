@@ -22,17 +22,16 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-
-        $rootNode = $treeBuilder->root('yosimitso_working_forum');
-        $rootNode
+        $treeBuilder = new TreeBuilder('yosimitso_working_forum');
+        $treeBuilder
+            ->getRootNode()
             ->children()
                 ->scalarNode('site_title')
                     ->isRequired()
                     ->cannotBeEmpty()
                     ->end()
                 ->booleanNode('allow_anonymous_read')
-                    ->isRequired()
+                    ->defaultTrue()
                     ->end()
                 ->integerNode('thread_per_page')
                     ->min(1)
@@ -43,7 +42,7 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue(20)
                 ->end()
                 ->scalarNode('date_format')
-                    ->defaultValue('d/m/Y H:i:s')
+                    ->defaultValue('d/m/Y')
                     ->cannotBeEmpty()
                     ->validate()
                         ->ifTrue(function ($format) {
@@ -54,11 +53,14 @@ class Configuration implements ConfigurationInterface
                         ->thenInvalid('WorkingForum Bundle : the "date_format" parameters must be a valid date format, please see available constants on : https://www.php.net/manual/en/function.date.php')
                     ->end()
                 ->end()
+                ->scalarNode('time_format')
+                    ->defaultValue('H:i:s')
+                    ->cannotBeEmpty()
+                ->end()
                 ->booleanNode('allow_moderator_delete_thread')
                     ->defaultFalse()
                 ->end()
-                ->enumNode('theme_color')
-                    ->values(['green', 'dark_blue'])
+                ->scalarNode('theme_color')
                     ->defaultValue('green')
                     ->cannotBeEmpty()
                 ->end()
@@ -96,7 +98,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->integerNode('post_flood_sec')
                     ->defaultValue(30)
-                    ->min(1)
+                    ->min(0)
                 ->end()
                 ->arrayNode('thread_subscription')
                     ->children()

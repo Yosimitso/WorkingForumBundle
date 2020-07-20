@@ -78,9 +78,9 @@ class Subforum
     private $lastReplyDate;
 
     /**
-     * @var UserInterface
+     * @var UserInterface|null
      *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
      * @ORM\JoinColumn(name="lastReplyUser", referencedColumnName="id", nullable=true)
      */
     private $lastReplyUser;
@@ -163,7 +163,7 @@ class Subforum
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
     public function setName($name)
     {
@@ -172,6 +172,8 @@ class Subforum
         if (empty($this->slug)) {
             $this->slug = Slugify::convert($this->name);
         }
+
+        return $this;
     }
 
     /**
@@ -277,11 +279,11 @@ class Subforum
     }
 
     /**
-     * @param UserInterface $lastReplyUser
+     * @param UserInterface|null $lastReplyUser
      *
      * @return Subforum
      */
-    public function setLastReplyUser(UserInterface $lastReplyUser)
+    public function setLastReplyUser(?UserInterface $lastReplyUser)
     {
         $this->lastReplyUser = $lastReplyUser;
 
@@ -329,7 +331,7 @@ class Subforum
     }
 
     /**
-     * @param ArrayCollection $allowedRoles
+     * @param array $allowedRoles
      *
      * @return Subforum
      */

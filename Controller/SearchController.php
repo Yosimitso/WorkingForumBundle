@@ -3,8 +3,11 @@
 namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Yosimitso\WorkingForumBundle\Entity\Forum;
+use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Form\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
@@ -16,14 +19,24 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 class SearchController extends BaseController
 {
     /**
+     * @var FormFactory 
+     */
+    protected $formFactory;
+    
+    public function __construct(FormFactory $formFactory)
+    {
+        $this->formFactory = $formFactory;
+    }
+
+    /**
      * @param Request $request
      *
      * @return Response
      */
     public function indexAction(Request $request)
     {
-        $listForum = $this->em->getRepository('YosimitsoWorkingForumBundle:Forum')->findAll();
-        $form = $this->get('form.factory')
+        $listForum = $this->em->getRepository(Forum::class)->findAll();
+        $form = $this->formFactory
             ->createNamedBuilder('', SearchType::class, null, array('csrf_protection' => false,))
             ->add('page', HiddenType::class, ['data' => 1])
             ->setMethod('GET')
@@ -34,9 +47,9 @@ class SearchController extends BaseController
         if ($form->isSubmitted()) {
             if ($form->isValid())
             {
-                $whereSubforum = (array) $this->authorization->hasSubforumAccessList($form['forum']->getData());
+                $whereSubforum = (array) $this->authorizationGuard->hasSubforumAccessList($form['forum']->getData()->toArray());
 
-                $thread_list_query = $this->em->getRepository('YosimitsoWorkingForumBundle:Thread')
+                $thread_list_query = $this->em->getRepository(Thread::class)
                                         ->search($form['keywords']->getData(), 0, 100, $whereSubforum)
                 ;
                 $date_format = $this->getParameter('yosimitso_working_forum.date_format');
@@ -45,7 +58,7 @@ class SearchController extends BaseController
                     $thread_list = $this->paginator->paginate(
                         $thread_list_query,
                         $request->query->get('page', 1)/*page number*/,
-                        $this->container->getParameter('yosimitso_working_forum.thread_per_page')
+                        $this->getParameter('yosimitso_working_forum.thread_per_page')
                     ); /*limit per page*/
                 }
                 else
@@ -53,13 +66,18 @@ class SearchController extends BaseController
                     $thread_list = [];
                 }
 
+                $parameters  = [ // PARAMETERS USED BY TEMPLATE
+                    'dateFormat' => $this->getParameter('yosimitso_working_forum.date_format')
+                ];
+
                 return $this->templating->renderResponse('@YosimitsoWorkingForum/Forum/thread_list.html.twig',
                     [
                         'thread_list' => $thread_list,
                         'date_format' => $date_format,
                         'keywords'    => $form['keywords']->getData(),
                         'post_per_page' => $this->getParameter('yosimitso_working_forum.post_per_page'),
-                        'page_prefix'   => 'page'
+                        'page_prefix'   => 'page',
+                        'parameters' => $parameters
                     ]
                 );
             }

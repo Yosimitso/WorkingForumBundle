@@ -3,7 +3,7 @@
     <div class="wf_post-left">
         <img class="wf_cadre-img" src="
           {% if post.user.avatarUrl is not empty %}
-          {{ asset('bundles/yosimitsoworkingforum/'~post.user.avatarUrl) }}
+          {{ asset(post.user.avatarUrl) }}
           {% else %}
            {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}
           {% endif %}
@@ -15,11 +15,11 @@
     </div>
     <div class="wf_post-right{% if post.voteUp >= parameters.thresholdUsefulPost and post.moderateReason is empty %} wf_useful_post{% endif %}">
         <p class="wf_date">
-            {{ post.cdate | date(parameters.dateFormat) }}
+            {{ post.cdate | date(parameters.dateFormat~' '~parameters.timeFormat) }}
 
             {% if post.moderateReason is empty and actionsAvailables.report %}
                 <a href="#"
-                   onclick="report('{{ path('workingforum_report_post', {'post_id' : post.id}) }}'); return false;"
+                   onclick="report('{{ path('workingforum_report_post', {'forum': forum.slug, 'subforum' : subforum.slug, 'post' : post.id}) }}'); return false;"
                    title="{{ 'forum.report' | trans }}"
                    class=""
                 >
@@ -39,7 +39,7 @@
                 {% endif %}
 
             {% endif %}
-            {% if ((is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR"))) and post.moderateReason is empty %}
+            {% if actionsAvailables.asModerator and post.moderateReason is empty %}
                 <a href="#"
                    onclick="moderate({{ post.id }}); return false;"
                    title="{{ 'admin.report.moderate' | trans }}"

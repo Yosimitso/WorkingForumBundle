@@ -6,17 +6,25 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
+use Yosimitso\WorkingForumBundle\Entity\Forum;
+use Yosimitso\WorkingForumBundle\Entity\Rules;
+use Yosimitso\WorkingForumBundle\Entity\Subforum;
+use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Form\RulesType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+
 /**
  * Class ForumController
  *
+ * @Route("/", service="yosimitso_workingforum.controller.forum")
  * @package Yosimitso\WorkingForumBundle\Controller
  */
 class ForumController extends BaseController
 {
     /**
      * Display homepage of forum with subforums
-     *
+     * @Route("", name="workingforum_forum")
      * @return Response
      */
 
@@ -24,11 +32,11 @@ class ForumController extends BaseController
     {
         $list_forum = $this
             ->em
-            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')
+            ->getRepository(Forum::class)
             ->findAll();
 
         $parameters  = [ // PARAMETERS USED BY TEMPLATE
-            'dateFormat' => $this->container->getParameter('yosimitso_working_forum.date_format')
+            'dateFormat' => $this->getParameter('yosimitso_working_forum.date_format')
             ];
 
         return $this->templating->renderResponse(
@@ -43,51 +51,18 @@ class ForumController extends BaseController
     /**
      * Display the thread list of a subforum
      *
-     * @param         $subforum_slug
+     * @Route("{forum}/{subforum}/view", name="workingforum_subforum")
      * @param Request $request
      * @param int $page
-     *
      * @return Response
      */
-    public function subforumAction($forum_slug, $subforum_slug, Request $request, $page = 1)
+    public function subforumAction(Forum $forum, Subforum $subforum, Request $request, $page = 1)
     {
-        $forum = $this
-            ->em
-            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Forum')
-            ->findOneBySlug($forum_slug);
-
-        if (is_null($forum)) {
-            throw new NotFoundHttpException('Forum not found');
-        }
-
-        $subforum = $this
-            ->em
-            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Subforum')
-            ->findOneBy(['forum' => $forum->getId(), 'slug' => $subforum_slug]);
-
-        if (is_null($subforum)) {
-            throw new NotFoundException('Subforum not found');
-        }
-
-        if (!$this->authorization->hasSubforumAccess($subforum)) {
-
-            return $this->templating->renderResponse(
-                '@YosimitsoWorkingForum/Forum/thread_list.html.twig',
-                [
-                    'subforum' => $subforum,
-                    'forbidden' => true,
-                    'forbiddenMsg' => $this->authorization->getErrorMessage()
-                ]
-            );
-        }
-
-
         $list_subforum_query = $this
             ->em
-            ->getRepository('Yosimitso\WorkingForumBundle\Entity\Thread')
-            ->findBySubforum(
-                $subforum->getId(),
-                ['pin' => 'DESC', 'lastReplyDate' => 'DESC']
+            ->getRepository(Thread::class)
+            ->getAllBySubforum(
+                $subforum
             );
 
         $date_format = $this->getParameter('yosimitso_working_forum.date_format');
@@ -98,6 +73,9 @@ class ForumController extends BaseController
             $this->getParameter('yosimitso_working_forum.thread_per_page') /*limit per page*/
         );
 
+        $parameters  = [ // PARAMETERS USED BY TEMPLATE
+            'dateFormat' => $this->getParameter('yosimitso_working_forum.date_format')
+        ];
 
         return $this->templating->renderResponse(
             '@YosimitsoWorkingForum/Forum/thread_list.html.twig',
@@ -108,15 +86,22 @@ class ForumController extends BaseController
                 'date_format' => $date_format,
                 'forbidden' => false,
                 'post_per_page' => $this->getParameter('yosimitso_working_forum.post_per_page'),
-                'page_prefix' => 'page'
+                'page_prefix' => 'page',
+                'parameters' => $parameters
             ]
         );
     }
 
+    /**
+     * @Route("rules", name="workingforum_rules")
+     * @Route("rules/{locale}", name="workingforum_rules", requirements={"locale":"\D+"})
+     * @param null|string $locale
+     * @return mixed
+     */
     public function rulesAction($locale = null)
     {
         if (is_null($locale)) {
-            $rulesList = $this->em->getRepository('Yosimitso\WorkingForumBundle\Entity\Rules')->findAll();
+            $rulesList = $this->em->getRepository(Rules::class)->findAll();
 
             if (!empty($rulesList)) {
                 $rules = $rulesList[0];
@@ -124,7 +109,7 @@ class ForumController extends BaseController
                 $rules = null;
             }
         } else {
-            $rules = $this->em->getRepository('Yosimitso\WorkingForumBundle\Entity\Rules')->findOneByLang($locale);
+            $rules = $this->em->getRepository(Rules::class)->findOneByLang($locale);
         }
 
         $form = $this->createForm(RulesType::class, null);

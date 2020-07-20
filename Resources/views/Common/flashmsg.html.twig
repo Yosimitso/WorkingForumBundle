@@ -7,18 +7,18 @@
         </ul>
     </div>
 {% endif %}
-               {% if app.session.flashbag.has('error') %}
-                   <div class="alert-error">
-                       <ul>
-                           {% for flashMessage in app.session.flashbag.get('error') %}
-                               <li>{{ flashMessage }}</li>
-                           {% endfor %}
-                       </ul>
-                   </div>
-               {% endif %}
-                         {% if form is defined and form_errors(form) %}
-                             <div class="alert-error">
-                                 {{ form_errors(form) }}
-                             </div>
-                         {% endif %}
+{% if app.session.flashbag.has('error') %}
+    <div class="alert-error">
+        <ul>
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <li>{{ flashMessage }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% if form is defined and form is not null and form_errors(form) %}
+    <div class="alert-error">
+        {{ form_errors(form) }}
+    </div>
+{% endif %}
 

@@ -2,6 +2,7 @@
 
 namespace Yosimitso\WorkingForumBundle\Twig\Extension;
 
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -13,7 +14,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class SmileyTwigExtension extends \Twig_Extension
 {
     /**
-     * @var
+     * @var Packages
      */
     private $asset;
 
@@ -62,16 +63,16 @@ class SmileyTwigExtension extends \Twig_Extension
      * SmileyTwigExtension constructor.
      *
      * @param RequestStack $request_stack
-     * @param              $asset
+     * @param Packages $asset
      */
     public function __construct(
         RequestStack $request_stack,
-        $asset
+        Packages $asset
     )
     {
         $request = $request_stack->getCurrentRequest();
         $this->asset = $asset;
-
+        
         if ($request instanceof Request) {
             $this->basePath = $request->getSchemeAndHttpHost();
         } else {
@@ -98,7 +99,7 @@ class SmileyTwigExtension extends \Twig_Extension
     }
 
     /**
-     * @param $text
+     * @param string $text
      *
      * @return mixed
      */
@@ -118,7 +119,7 @@ class SmileyTwigExtension extends \Twig_Extension
 
     /**
      * @param array $replace
-     * @param       $subject
+     * @param string $subject
      *
      * @return mixed
      */

@@ -34,7 +34,7 @@ class PostReport
     /**
      * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
@@ -79,11 +79,11 @@ class PostReport
     }
 
     /**
-     * @param int $post
+     * @param Post $post
      *
      * @return PostReport
      */
-    public function setPost($post)
+    public function setPost(Post $post)
     {
         $this->post = $post;
 

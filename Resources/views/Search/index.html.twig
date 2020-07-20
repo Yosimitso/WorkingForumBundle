@@ -3,7 +3,7 @@
     {% include '@YosimitsoWorkingForum/Common/header.html.twig' %}
 {% trans_default_domain 'YosimitsoWorkingForumBundle' %}
  <div id="wf_forum_content">
-<div class="wf_breadcrumb">Forum</div>
+     {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {} only %}
     <div id="wf_forum">
         {{ form_start(form) }}
         {{ form_rest(form) }}

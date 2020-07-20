@@ -1,0 +1,23 @@
+Yosimitso\WorkingForumBundle\Entity\Subforum:
+  subforum_classic:
+    forum: '@forum_1'
+    description: null
+    name: My First Forum
+    nb_thread: 3
+    slug: my-first-forum
+    nb_post: 10
+    last_reply_date: <datetimeBetween('-5 days', 'now')>
+    allowed_roles: []
+#    last_reply_user: null
+
+  subforum_moderator:
+    forum: '@forum_1'
+    description: null
+    name: My Second Forum
+    nb_thread: 3
+    slug: my-second-forum
+    nb_post: 10
+    last_reply_date: <datetimeBetween('-5 days', 'now')>
+    allowed_roles: ['ROLE_MODERATOR']
+#    last_reply_user: null
+

@@ -3,8 +3,12 @@
 <phpunit bootstrap="./Tests/bootstrap.php" colors="true">
     <!-- Les fichiers de tests à lancer -->
     <testsuites>
-        <testsuite name="KitpagesDataGridBundle test suite">
-            <directory suffix="Test.php">./Tests</directory>
+        <testsuite name="unit">
+            <directory suffix="Test.php">./Tests/Service</directory>
+            <directory suffix="Test.php">./Tests/ParamConverter</directory>
+        </testsuite>
+        <testsuite name="scenario">
+            <directory suffix="Test.php">./Tests/Scenario</directory>
         </testsuite>
     </testsuites>
     <!-- Quels fichiers sont concernés par l'évaluation du code coverage -->
@@ -13,4 +17,13 @@
             <directory>./Tests</directory>
         </whitelist>
     </filter>
+    <php>
+        <server name="KERNEL_CLASS" value="Yosimitso\WorkingForumBundle\Tests\Kernel" />
+        <server name="PANTHER_WEB_SERVER_DIR" value="." />
+        <server name="DATABASE_URL" value="mysql://root:metalslug2@127.0.0.1:3306/demoworkingforumtest" />
+        <server name="MAILER_URL" value="" />
+        <env name="TEST_ADMIN_USERNAME" value="testuser" />
+        <env name="TEST_ADMIN_PASSWORD" value="pwd" />
+    </php>
+
 </phpunit>

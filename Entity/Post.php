@@ -48,17 +48,11 @@ class Post
      */
     private $published;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="user_id", type="integer", nullable=false)
-     */
-    private $userId;
 
     /**
      * @var UserInterface
      *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      */
     private $user;
@@ -221,25 +215,6 @@ class Post
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
-
-    /**
-     * @param int $userId
-     *
-     * @return Post
-     */
-    public function setUserId($userId)
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
 
     /**
      * @return UserInterface
@@ -328,6 +303,20 @@ class Post
     {
         return $this->postReport;
     }
+    
+    public function addPostReport(PostReport $postReport)
+    {
+        $this->postReport[] = $postReport;
+        
+        return $this;
+    }
+    
+    public function removePostReport($index)
+    {
+        unset($this->postReport[$index]);
+        
+        return $this;
+    }
 
     /**
      * @return ArrayCollection
@@ -336,6 +325,21 @@ class Post
     {
         return $this->postVote;
     }
+
+    public function addPostVote(PostVote $postVote)
+    {
+        $this->postVote[] = $postVote;
+
+        return $this;
+    }
+
+    public function removePostVote($index)
+    {
+        unset($this->postVote[$index]);
+
+        return $this;
+    }
+
 
     /**
      * @return int
@@ -346,6 +350,12 @@ class Post
         return $this->voteUp;
     }
 
+    public function setVoteUp($voteUp)
+    {
+        $this->voteUp = $voteUp;
+        
+        return $this;
+    }
     /**
      * @return Post
      */
@@ -367,7 +377,7 @@ class Post
     /**
      * @return Post
      */
-    public function addFiles($files)
+    public function addFile($files)
     {
         if (is_array($files)) {
             foreach ($files as $file) {
@@ -378,6 +388,11 @@ class Post
         }
 
         return $this;
+    }
+    
+    public function removeFile($index)
+    {
+        unset($this->files[$index]);
     }
 
     /**

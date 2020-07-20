@@ -139,7 +139,7 @@ class Forum
     }
 
     /**
-     * @param $name
+     * @param string $name
      *
      * @return mixed|string
      */

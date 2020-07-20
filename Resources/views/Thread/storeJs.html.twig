@@ -12,6 +12,8 @@
             'forum.post_moderated': '{{ 'forum.post_moderated' | trans }}',
             'forum.already_subscribed': '{{ 'forum.already_subscribed' | trans }}',
             'forum.has_written': '{{ 'forum.has_written' | trans }}',
+            'forum.add_subscription': '{{ 'forum.add_subscription' | trans }}',
+            'forum.cancel_subscription': '{{ 'forum.cancel_subscription' | trans |capitalize }}',
             'message.subscription_cancelled': '{{ 'message.subscription_cancelled' | trans }}',
             'message.post_saved_draft': '{{ 'message.post_saved_draft' | trans }}',
             'message.generic_error': '{{ 'message.generic_error' | trans }}',
@@ -24,9 +26,19 @@
             'workingforum_move_thread': '{{ path('workingforum_move_thread') }}',
             'workingforum_admin_report_action_moderate': '{{ path('workingforum_admin_report_action_moderate') }}',
             'workingforum_vote_up': '{{ path('workingforum_vote_up') }}',
-            'workingforum_add_subscription': '{{ path('workingforum_add_subscription', {'threadId': '%thread.id%'}) }}',
-            'workingforum_cancel_subscription': '{{ path('workingforum_cancel_subscription', {'threadId': '%thread.id%'}) }}'
+            'workingforum_add_subscription': '{{ path('workingforum_add_subscription', {'forum': forum.slug, 'subforum' : subforum.slug, 'thread': thread.id }) }}',
+            'workingforum_cancel_subscription': '{{ path('workingforum_cancel_subscription', {'forum': forum.slug, 'subforum' : subforum.slug, 'thread': thread.id}) }}'
         }
+    {% if thread is defined %}
+        , 'threadId': '{{ thread.id }}'
+        , 'postEditorId': '{{ thread.id }}'
+    {% endif %}
+    {% if subforum is defined %}
+        , 'subforum_slug': '{{ subforum.slug }}'
+    {% endif %}
+    {% if forum is defined %}
+        , 'forum_slug': '{{ forum.slug }}'
+    {% endif %}
     }
 
 </script>

@@ -1,0 +1,16 @@
+parameters:
+  level: 1
+  paths:
+    - Controller
+    - DependencyInjection
+    - Entity
+    - Event
+    - Form
+    - Repository
+    - Security
+    - Service
+    - Tests
+    - Twig
+    - Util
+  autoload_files:
+    - vendor/autoload.php

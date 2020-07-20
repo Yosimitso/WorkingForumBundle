@@ -1,0 +1,15 @@
+Yosimitso\WorkingForumBundle\Entity\Thread:
+  thread_normal:
+    cdate: <datetimeBetween('-5 days', 'now')>
+    subforum: '@subforum_classic'
+    author: '@user_classic'
+    nbReplies: 5
+    lastReplyDate: <datetimeBetween('-1 days', 'now')>
+    lastReplyUser: '@user_classic'
+    resolved: false
+    locked: false
+    label: 'A thread from fixtures'
+    sublabel: 'Totally classic'
+    slug: 'a-thread-from-fixtures'
+    post: []
+    pin: false

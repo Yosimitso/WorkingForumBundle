@@ -4,7 +4,8 @@
         <li>
             <a class="wf_button wf_icon-lock"
                rel="nofollow"
-               href="{{ path('workingforum_lock_thread',{'forum_slug': forum.slug, 'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
+               id="wf_set-locked"
+               href="{{ path('workingforum_lock_thread',{'forum': forum.slug, 'subforum' : subforum.slug, 'thread' : thread.slug}) }}">
                 {{ 'forum.lock' | trans }}
             </a>
         </li>
@@ -20,7 +21,7 @@
             <a class="wf_button wf_icon-remove"
                rel="nofollow"
                onclick="if (!confirm('{{ 'forum.confirm_delete_thread' | trans }}')) { return false; }"
-               href="{{ path('workingforum_delete_thread',{'threadSlug': thread.slug}) }}">
+               href="{{ path('workingforum_delete_thread',{'forum': forum.slug, 'subforum' : subforum.slug, 'thread': thread.slug}) }}">
                 {{ 'forum.delete_thread' | trans }}
             </a>
         </li>
@@ -29,7 +30,7 @@
     <li>
         <a class="wf_button wf_icon-pin"
            rel="nofollow"
-           href="{{ path('workingforum_pin_thread',{'forum_slug': forum.slug, 'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
+           href="{{ path('workingforum_pin_thread',{'forum': forum.slug, 'subforum' : subforum.slug, 'thread' : thread.slug}) }}">
             {{ 'forum.pin_thread' | trans }}
         </a>
     </li>
@@ -37,7 +38,7 @@
             <li>
                 <a class="wf_button wf_icon-pin"
                    rel="nofollow"
-                   href="{{ path('workingforum_unpin_thread',{'forum_slug': forum.slug, 'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">
+                   href="{{ path('workingforum_unpin_thread',{'forum': forum.slug, 'subforum' : subforum.slug, 'thread' : thread.slug}) }}">
                     {{ 'forum.unpin_thread' | trans }}
                 </a>
             </li>

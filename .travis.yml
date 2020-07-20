@@ -1,27 +1,14 @@
-# Project language
 language: php
-
-# Start mysql service
-services:
-  - mysql
-
-# Cache composer packages so "composer install" is faster
-cache:
-  directories:
-    - $HOME/.composer/cache/files
-
-# Settings version PHP
 php:
-   - 7.1
+  - '7.4'
 
-# Update composer
-before-install:
-  - composer install --dev
+before_install:
+  - nvm install 8.16.2
 
-# Run script
+install:
+  - composer install
+  - yarn install
+  - yarn run prod
+
 script:
-  - phpunit --coverage-text
-
-# After a build, send email notification with the build results
-notifications:
-  email: contactportfolio@charlymartins.fr
+  - php ./vendor/phpunit/phpunit/phpunit --testsuite=unit

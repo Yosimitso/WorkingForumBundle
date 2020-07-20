@@ -1,0 +1,45 @@
+{% extends '@YosimitsoWorkingForum/Common/base.html.twig' %}
+{% block forum %}
+    {% include '@YosimitsoWorkingForum/Common/header.html.twig' %}
+{% trans_default_domain 'YosimitsoWorkingForumBundle' %}
+<div id="wf_forum_content">
+    {%  include '@YosimitsoWorkingForum/Admin/header.html.twig' with {'backToAdmin': true, 'adminSubtitle': 'admin.menu.user'} %}
+        <table class="wf_admin_table">
+            <thead>
+            <th>ID</th>
+            <th class="hide-for-small"></th>
+            <th>{{ 'forum.user.username' | trans }}</th>
+            <th>{{ 'forum.user.roles' | trans }}</th>
+            <th>{{ 'forum.nbPost' | trans |capitalize }}</th>
+            <th>{{ 'forum.user.banned' |trans }}</th>
+        </thead>
+        <tbody>
+            {% for aUser in usersList %}
+                <tr>
+                    <td>{{ aUser.id }}</td>
+                    <td class="hide-for-small">
+                           <img class="wf_cadre-img" src="
+          {% if aUser.avatarUrl is not empty %}
+          {{ asset(aUser.avatarUrl) }}
+          {% else %}
+           {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}   
+          {% endif %}
+          
+          " /> 
+                    </td>    
+                    <td>{{ aUser.username }}</td>
+                    <td>
+                        {% for role in aUser.roles %}
+                            {% if loop.index > 1%}, {%endif%}
+                           {{ ('forum.user.'~role) | trans }}
+                        {% endfor %}    
+                    </td>
+                    <td>{{ aUser.nbPost }}</th>
+                    <td><input type="checkbox" disabled autocomplete="off" {% if aUser.banned %} checked {% endif %}/> </td>
+                </tr>
+                {% endfor %}
+        </tbody>
+        </table>
+ </div>
+</div>
+{% endblock %}

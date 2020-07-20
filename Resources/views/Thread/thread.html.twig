@@ -5,41 +5,34 @@
     <div id="wf_forum_content">
     {% include '@YosimitsoWorkingForum/Common/flashmsg.html.twig' %}
 
-    {% if thread.resolved %}
-    <div class="alert-success">
-        <ul>
-            <li><span class="wf_tick"></span>{{ 'forum.thread_resolved' | trans }}</li>
-        </ul>
-    </div>
-    {% endif %}
-    {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'subforum': subforum, 'thread': thread} only %}
-
-    {% if not thread.resolved and actionsAvailables.setResolved %}
-        <p><a class="wf_button"
-              rel="nofollow"
-              href="{{ path('workingforum_resolve_thread',{'forum_slug': forum.slug, 'subforum_slug' : subforum.slug, 'thread_slug' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a>
-        </p>
-    {% endif %}
-
-
     {% if forbidden is defined and forbidden %}
         <div class="wf_forum">
             <div class="wf_empty_forum">{{ forbiddenMsg | trans }}</div>
         </div>
     {% else %}
+
+    {% if thread.resolved %}
+        <div class="alert-success">
+            <ul>
+                <li><span class="wf_tick"></span>{{ 'forum.thread_resolved' | trans }}</li>
+            </ul>
+        </div>
+    {% endif %}
+        {% include '@YosimitsoWorkingForum/Common/breadcrumb.html.twig' with {'subforum': subforum, 'thread': thread} only %}
+
+    {% if not thread.resolved and actionsAvailables.setResolved %}
+        <p><a class="wf_button"
+              rel="nofollow"
+              id="wf_set-resolved"
+              href="{{ path('workingforum_resolve_thread',{'forum': forum.slug, 'subforum' : subforum.slug, 'thread' : thread.slug}) }}">{{ 'forum.now_resolved' | trans }}</a>
+        </p>
+    {% endif %}
+
         {% include '@YosimitsoWorkingForum/Thread/storeJs.html.twig' %}
-        <script src="{{ asset('bundles/yosimitsoworkingforum/js/jquery.min.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/js/smiley.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/js/thread.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/markdown/js/bootstrap-markdown.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/showdown.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/twitter.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/showdown/src/extensions/github.js') }}"></script>
-        <script src="{{ asset('bundles/yosimitsoworkingforum/js/nicefileinput/jquery.nicefileinput.min.js') }}"></script>
-        <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap.min.css') }}"
-          type="text/css" media="all"/>
-        <link rel="stylesheet" href="{{ asset('bundles/yosimitsoworkingforum/markdown/css/bootstrap-markdown.min.css') }}"
-          type="text/css" media="all"/>
+
+        <script src="{{ asset('bundles/yosimitsoworkingforum/thread.min.js') }}"></script>
+        <script src="{{ asset('bundles/yosimitsoworkingforum/post.min.js') }}"></script>
+        <link rel="stylesheet" media="all" href="{{ asset('bundles/yosimitsoworkingforum/css/post.min.css') }}" />
 
         {# LOCK #}
     {% if thread.locked %}
@@ -52,7 +45,9 @@
     {% if actionsAvailables.post %}
         <p>
             <a class="wf_button wf_icon-reply" href="#wf_new_post" rel="nofollow">{{ 'forum.reply' | trans }}</a>
-            {% if actionsAvailables.subscribe %}
+            {%  if hasSubscribed %}
+                <a class="wf_button wf_icon-remove" id="wf_add_subscription" href="#" onclick="cancelSubscription(); return false;" rel="nofollow">{{ 'forum.cancel_subscription' | trans |capitalize }}</a>
+            {% elseif actionsAvailables.subscribe %}
             <a class="wf_button" id="wf_add_subscription" href="#" onclick="addSubscription(); return false;" rel="nofollow">{{ 'forum.add_subscription' | trans }}</a>
             {% endif %}
         </p>
@@ -60,7 +55,7 @@
     {% endif %}
 
         {# ACTIONS LIST FOR MODERATOR #}
-    {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")) %}
+    {% if actionsAvailables.asModerator %}
         {% include '@YosimitsoWorkingForum/Thread/actionsModerator.html.twig' with {'forum': forum, 'subforum': subforum, 'thread': thread, 'moveThread': actionsAvailables.moveThread, 'allowModeratorDeleteThread': actionsAvailables.allowModeratorDeleteThread} %}
     {% endif %}
 
@@ -69,23 +64,25 @@
             <h2>{{ thread.sublabel }}</h2>
 
             {% for post in post_list %}
-                {% include '@YosimitsoWorkingForum/Post/post.html.twig' with {'post': post, 'thread': thread, 'parameters': parameters, 'hasAlreadyVoted': hasAlreadyVoted, 'autolock': autolock, 'loop': loop, 'actionsAvailables': actionsAvailables} only %}
+                {% include '@YosimitsoWorkingForum/Post/post.html.twig' with {'forum': forum, 'subforum' : subforum, 'post': post, 'thread': thread, 'parameters': parameters, 'hasAlreadyVoted': hasAlreadyVoted, 'autolock': autolock, 'loop': loop, 'actionsAvailables': actionsAvailables} only %}
             {% endfor %}
 
             {{ knp_pagination_render(post_list) }}
 
             {% if not thread.locked %}
-                {% if not is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            {% if autolock and not actionsAvailables.post %}
+                <div class="wf_new_post">
+                    <p class="wf_post_a_message">{{ 'forum.thread_too_old_locked' | trans }}</p>
+                </div>
+                {% elseif not actionsAvailables.post %}
                     <div class="wf_new_post">
                         <p class="wf_post_a_message">{{ 'forum.no_message_login' | trans }}</p>
                     </div>
-                {% elseif autolock %}
-                    <div class="wf_new_post">
-                        <p class="wf_post_a_message">{{ 'forum.thread_too_old_locked' | trans }}</p>
-                    </div>
                 {% else %}
                     {{ form_start(form, {'attr': {'id': 'wf_form_post'}}) }}
-                    {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with {'listSmiley': listSmiley, 'form': form, 'parameters': parameters, 'submitLabelKey': 'forum.submit_post'} only %}
+                    {% embed '@YosimitsoWorkingForum/Post/textarea.html.twig' with
+                        {'listSmiley': listSmiley, 'form': form, 'parameters': parameters, 'submitLabelKey': 'forum.submit_post', 'hasSubscribed': hasSubscribed}
+                        only %}
                         {% block header %}
                             <p class="wf_post_a_message">{{ 'forum.post_a_message' | trans([], 'YosimitsoWorkingForumBundle') }}</p>
                         {% endblock %}

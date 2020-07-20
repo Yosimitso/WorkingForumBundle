@@ -1,7 +1,7 @@
 WorkingForumBundle
 ==================
 
-[![Join the chat at https://gitter.im/WorkingForumBundle/Lobby](https://badges.gitter.im/WorkingForumBundle/Lobby.svg)](https://gitter.im/WorkingForumBundle/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Latest Stable Version](https://poser.pugx.org/yosimitso/workingforumbundle/v/stable)](https://packagist.org/packages/yosimitso/workingforumbundle) [![Total Downloads](https://poser.pugx.org/yosimitso/workingforumbundle/downloads)](https://packagist.org/packages/yosimitso/workingforumbundle) [![License](https://poser.pugx.org/yosimitso/workingforumbundle/license)](https://packagist.org/packages/yosimitso/workingforumbundle)
+[![Join the chat at https://gitter.im/WorkingForumBundle/Lobby](https://badges.gitter.im/WorkingForumBundle/Lobby.svg)](https://gitter.im/WorkingForumBundle/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) [![Build Status](https://travis-ci.org/Yosimitso/WorkingForumBundle.svg?branch=master)](https://travis-ci.org/Yosimitso/WorkingForumBundle) [![Latest Stable Version](https://poser.pugx.org/yosimitso/workingforumbundle/v/stable)](https://packagist.org/packages/yosimitso/workingforumbundle) [![Total Downloads](https://poser.pugx.org/yosimitso/workingforumbundle/downloads)](https://packagist.org/packages/yosimitso/workingforumbundle) [![License](https://poser.pugx.org/yosimitso/workingforumbundle/license)](https://packagist.org/packages/yosimitso/workingforumbundle)
 
 V3 is coming
 ===============
@@ -40,9 +40,26 @@ Features
 
 Setup
 ------------------
-See SETUP-SF2-SF3.md or SETUP-SF4-FLEX if you use Symfony 4 with Flex structure
+See SETUP-SF3.md or SETUP-SF4-FLEX if you use Symfony 4 with Flex structure
 
 
 Configuration
 -----------------
 Refer to CONFIGURATION.md
+
+Contribute
+----------------
+About a fix : 
+Make a PR !
+
+About a feature :
+please open an issue, to talk about it and share the work
+
+To launch tests, go to the bundle's directory and execute 
+````
+composer install
+vendor/phpunit/phpunit/phpunit
+````
+
+
+

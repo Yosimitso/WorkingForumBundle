@@ -1,0 +1,33 @@
+Yosimitso\WorkingForumBundle\Entity\UserTest:
+  user_classic:
+    avatar_url: null
+    nb_post: 5
+    username: testuser
+    password: pwd
+    salt: ''
+    banned: false
+    lastReplyDate: <datetimeBetween('-1 days', 'now')>
+    email_address: 'test@test.com'
+    roles: [ROLE_USER]
+
+  moderator:
+    avatar_url: null
+    nb_post: 5
+    username: moderator
+    password: pwd
+    salt: ''
+    banned: false
+    lastReplyDate: <datetimeBetween('-1 days', 'now')>
+    email_address: 'test@test.com'
+    roles: [ROLE_MODERATOR]
+
+  admin:
+    avatar_url: null
+    nb_post: 5
+    username: admin
+    password: pwd
+    salt: ''
+    banned: false
+    lastReplyDate: <datetimeBetween('-1 days', 'now')>
+    email_address: 'test@test.com'
+    roles: [ROLE_ADMIN]

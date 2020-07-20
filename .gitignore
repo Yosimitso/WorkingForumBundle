@@ -1,2 +1,6 @@
 /vendor/
 .idea
+node_modules/
+npm-debug.log
+.phpunit.result.cache
+php_errors.log

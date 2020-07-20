@@ -2,7 +2,7 @@
     <a href="{{ path('workingforum_forum') }}">Forum</a>
     {% if subforum is defined %}
         &rarr; <a href="{{ path('workingforum_forum') }}">{{ subforum.forum.name }}</a>
-        &rarr; <a href="{{ path('workingforum_subforum',{ 'forum_slug': subforum.forum.slug, 'subforum_slug' : subforum.slug }) }}">{{ subforum.name }}</a>
+        &rarr; <a href="{{ path('workingforum_subforum',{ 'forum': subforum.forum.slug, 'subforum' : subforum.slug }) }}">{{ subforum.name }}</a>
     {% endif %}
     {% if thread is defined %}
         &rarr; {{ thread.label }}

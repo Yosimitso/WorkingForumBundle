@@ -20,7 +20,8 @@
         "twig/twig": "^2.0",
         "doctrine/doctrine-bundle": ">=1.10",
         "symfony/validator": ">=3.4.26|>=4.2.7",
-        "doctrine/annotations": "^1.10"
+        "doctrine/annotations": "^1.10",
+        "symfony/mime": ">=4.4.0"
     },
     "license": "MIT",
     "authors": [

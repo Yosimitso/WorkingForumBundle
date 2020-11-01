@@ -3,6 +3,7 @@
 namespace Yosimitso\WorkingForumBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Yosimitso\WorkingForumBundle\Entity\Thread;
 
 /**
  * Class SubforumRepository
@@ -23,7 +24,7 @@ class SubforumRepository extends EntityRepository
         $queryBuilder = $this->_em->createQueryBuilder();
         $query = $queryBuilder
             ->select('a')
-            ->from('YosimitsoWorkingForumBundle:Thread', 'a')
+            ->from(Thread::class, 'a')
             ->where('a.subforumId = :subforumId')
             ->setParameter('subforumId', $subforumId)
             ->orderBy('a.lastReplyDate', 'desc')

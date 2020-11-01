@@ -114,6 +114,12 @@ class Forum
         return $this;
     }
 
+    public function setSubForum(array $subforums)
+    {
+        $this->subForum = $subforums;
+
+        return $this;
+    }
     /**
      * Set slug
      *

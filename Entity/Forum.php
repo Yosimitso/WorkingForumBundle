@@ -102,14 +102,13 @@ class Forum
     }
 
     /**
-     * @param Subforum $subForum
+     * @param int $index
      *
      * @return Forum
      */
-    public function removeSubForum(Subforum $subForum)
+    public function removeSubForum($index)
     {
-        $this->subForum->remove($subForum);
-        $subForum->setForum(null);
+        $this->subForum->remove($index);
 
         return $this;
     }

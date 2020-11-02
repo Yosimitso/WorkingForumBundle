@@ -168,7 +168,12 @@ class AuthorizationGuard implements AuthorizationGuardInterface
                 throw new \Exception('is not a forum');
             }
 
-            $forum->setSubForum($this->hasSubforumAccessList($forum->getSubforum()->toArray()));
+            foreach ($forum->getSubforum() as $index => $subforum) {
+                if (!$this->hasSubforumAccess($subforum)) {
+                    $forum->removeSubForum($index);
+                }
+            }
+
         }
     }
     /**

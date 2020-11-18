@@ -4,6 +4,7 @@ namespace Yosimitso\WorkingForumBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 
 class AuthorizationGuard implements AuthorizationGuardInterface
@@ -159,6 +160,22 @@ class AuthorizationGuard implements AuthorizationGuardInterface
 
     }
 
+    public function filterForumAccess(array $forums)
+    {
+        foreach ($forums as $forum)
+        {
+            if (!$forum instanceof Forum) {
+                throw new \Exception('is not a forum');
+            }
+
+            foreach ($forum->getSubforum() as $index => $subforum) {
+                if (!$this->hasSubforumAccess($subforum)) {
+                    $forum->removeSubForum($index);
+                }
+            }
+
+        }
+    }
     /**
      * @return string
      */

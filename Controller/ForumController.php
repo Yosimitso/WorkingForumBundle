@@ -35,6 +35,8 @@ class ForumController extends BaseController
             ->getRepository(Forum::class)
             ->findAll();
 
+        $this->authorizationGuard->filterForumAccess($list_forum);
+
         $parameters  = [ // PARAMETERS USED BY TEMPLATE
             'dateFormat' => $this->getParameter('yosimitso_working_forum.date_format')
             ];

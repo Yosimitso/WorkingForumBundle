@@ -1,5 +1,5 @@
 test:
-    resource: "../../Resources/config/routing.yml"
+    resource: "../../../Resources/config/routing.yml"
 #    controllers:
 #      resource: ../../src/Controller/
 #      type: annotation

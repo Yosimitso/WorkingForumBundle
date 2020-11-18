@@ -79,7 +79,7 @@ class ThreadTest extends WebTestCase
         $client = $this->getClassicUserClient();
         $crawler = $client->request('GET', '/');
 
-        $this->assertEquals(2, $crawler->filter('.wf_sub_name > a')->count());
+        $this->assertEquals(1, $crawler->filter('.wf_sub_name > a')->count());
         $link = $crawler->filter('.wf_sub_name > a')->first()->link();
         $crawler = $client->click($link);
 
@@ -125,7 +125,7 @@ class ThreadTest extends WebTestCase
         $client = $this->getAnonymousUserClient();
         $crawler = $client->request('GET', '/');
 
-        $this->assertEquals(2, $crawler->filter('.wf_sub_name > a')->count());
+        $this->assertEquals(1, $crawler->filter('.wf_sub_name > a')->count());
         $link = $crawler->filter('.wf_sub_name > a')->first()->link();
         $crawler = $client->click($link);
 

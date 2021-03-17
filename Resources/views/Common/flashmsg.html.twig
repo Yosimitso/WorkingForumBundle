@@ -1,16 +1,16 @@
-{% if app.session.flashbag.has('success') %}
+{% if app.flashes('success') |length %}
     <div class="alert-success">
         <ul>
-            {% for flashMessage in app.session.flashbag.get('success') %}
+            {% for flashMessage in app.flashes('success') %}
                 <li>{{ flashMessage }}</li>
             {% endfor %}
         </ul>
     </div>
 {% endif %}
-{% if app.session.flashbag.has('error') %}
+{% if app.flashes('error') |length %}
     <div class="alert-error">
         <ul>
-            {% for flashMessage in app.session.flashbag.get('error') %}
+            {% for flashMessage in app.flashes('error') %}
                 <li>{{ flashMessage }}</li>
             {% endfor %}
         </ul>

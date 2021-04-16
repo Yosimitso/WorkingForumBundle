@@ -5,7 +5,7 @@ WorkingForumBundle
 
 V3 is coming
 ===============
-Among new features : lighter, new design, Flex recipes, Webpack, important refactoring, some URLs rewritted, better unit tests
+Among new features : lighter, new design, Webpack, important refactoring, some URLs rewritted, better unit tests
 
 ENGLISH
 =================  
@@ -20,7 +20,7 @@ Try it here - https://demoworkingforum.charlymartins.fr
 
 Features
 ------------------
-- Support multi language
+- Support multi language (currently provided : english, french)
 - Responsive design (mobile, tablet, desktop)
 - Post editor using markdown with smiley, quote and instant preview
 - Threads status : resolved, closed, pinned, moved from a moderator
@@ -40,7 +40,7 @@ Features
 
 Setup
 ------------------
-See SETUP-SF3.md or SETUP-SF4-FLEX if you use Symfony 4 with Flex structure
+See SETUP.md
 
 
 Configuration
@@ -55,10 +55,28 @@ Make a PR !
 About a feature :
 please open an issue, to talk about it and share the work
 
-To launch tests, go to the bundle's directory and execute 
+Tests
+--------------------
+Before opening a pull request, run tests :
+
+Go to the bundle's directory and execute 
 ````
 composer install
-vendor/phpunit/phpunit/phpunit
+````
+
+Unit tests
+````
+vendor/phpunit/phpunit/phpunit --testsuite=unit
+````
+
+Functionnal tests
+
+- Create an empty database (all data will be erased hen you run tests)
+- set its credentials into phpunit.xml
+- import the database structure (Tests/Scenario/empty_db.sql)
+- Run 
+````
+vendor/phpunit/phpunit/phpunit --testsuite=scenario
 ````
 
 

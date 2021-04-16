@@ -1,7 +1,7 @@
 WorkingForumBundle
 ==================
 
-Setup for Symfony 2/3/4 (without Flex structure)
+Setup for Symfony 4 / 5 
 ------------------
 WARNING : TWIG 3.* CAN'T BE USED WITH THIS BUNDLE, DUE TO AN INCOMPATBILITY BETWEEN TWIG EXTENSIONS AND TWIG
 
@@ -9,14 +9,14 @@ This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rend
 
 /!\ IMPORTANT /*\ **Prerequisite** :
 - You must handle user 
-- You have to define Twig as your tempating engine in app/config.yml
+- You have to define Twig as your tempating engine in config/packages/framework.yaml
 ````yml
 framework:
     templating:
         engines: ['twig']
 ````
 - You must have a database configured
-- You must configure your translator, example in app/config.yml :
+- You must configure your translator, example in config/framework.yaml :
 ````yml
 framework:
     translator:
@@ -28,7 +28,9 @@ framework:
 
 - If you want to enable threads subscription, you must have switfmailer configured
 
-1/ Add the bundle's configuration into your app/config.yml
+
+1/ Create the config file "config/packages/yosimitso_working_forum.yaml" with :
+
 ````yml
 yosimitso_working_forum:
     thread_per_page: 50
@@ -38,8 +40,8 @@ yosimitso_working_forum:
     allow_moderator_delete_thread: false
     theme_color: green                      # GREEN OR DARK_BLUE
     lock_thread_older_than: 0               # DAYS BETWEEN THE LAST THREAD'S POST AND THE AUTOLOCKING OF THE THREAD, 0 MEANS DISABLED
-    post_flood_sec: 30                      # SECONDS MINIMUM BETWEEN EACH POST FROM A SAME USER 
-    site_title: "My website"
+    post_flood_sec: 30                      # SECONDS MINIMUM BETWEEN EACH POST FROM A SAME USER
+    site_title: "My website" 
     vote:
         threshold_useful_post: 5            # NUMBER OF VOTE NEEDED FOR A POST TO BE CONSIDERED AS USEFUL
     file_upload:
@@ -49,6 +51,19 @@ yosimitso_working_forum:
         preview_file: true                  # FOR IMAGES ONLY, DISPLAY A THUMBNAIL
     thread_subscription:                    # ALLOW OR NOT THREAD SUBSCRIPTION
         enable: true  
+````
+
+2/ OPTIONNAL : if you decide to enable the file upload system, create a directory called "wf_uploads" into your public directory with writing rights,
+please also check if your PHP configuration allow file upload through forms and adjust the directives "upload_max_filesize" and "post_max_size" to your application's config
+
+3/ Run :
+````bash
+composer require "yosimitso/workingforumbundle":"^3.0"
+````
+
+
+4/ Create the config file for KNP Paginator "config/packages/knp_paginator.yaml" with :
+````yml
 knp_paginator:
     page_range: 1                      # default page range used in pagination control
     default_options:
@@ -60,24 +75,8 @@ knp_paginator:
         pagination: "@YosimitsoWorkingForum/Common/slidePagination.html.twig"     # sliding pagination controls template
         sortable: "@KnpPaginator/Pagination/sortable_link.html.twig" # sort link template
 ````
-2/ OPTIONNAL : if you decide to enable the file upload system, create a directory called "wf_uploads" into your web directory with writing rights,
-please also check if your PHP configuration allow file upload through forms and adjust the directives "upload_max_filesize" and "post_max_size" to your application's config
 
-3/ Run  :
-````bash
-composer require "yosimitso/workingforumbundle":"^3.0"
-````
-
-
-4/ Register the bundle in your AppKernel
-````php
-  new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-  new Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle(),
-  new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
-  new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle()
-````
-
-5/ Add to you app/config.yml into 'orm' key :
+5/ Copy and edit the above code to "config/doctrine.yaml" into "orm" key :
 ````yml
 doctrine:
     orm:
@@ -86,29 +85,42 @@ doctrine:
 ````
 
 6/ Your User Entity needs to extends : \Yosimitso\WorkingForumBundle\Entity\User
+
+The id property must be protected
+
 Example :
 ````php
    class User extends \Yosimitso\WorkingForumBundle\Entity\User
 {
-    // YOUR ENTITY
+    /**
+     * @var integer
+     */
+    protected $id;
+
+    // REST OF YOUR ENTITY
 }
 ````
+
 In case your user entity already extends an another bundle (like FOSUserBundle), implement the interface \Yosimitso\WorkingForumBundle\Entity\UserInterface
 in your user entity. Then copy/paste the content of \Yosimitso\WorkingForumBundle\Entity\User (attributes, getter, setter) into your user entity
 
-7/ To import the bundle's routing, add to your app/routing.yml (you are free to modifiy the prefix) :
+7/ Your User Entity must be PHP compatible with Yosimitso\WorkingForumBundle\Entity\User,
+edit the method/properties or remove them to let the bundle handle them.
+
+
+8/ Import the bundle's routing, add to your "config/routes.yaml" (you are free to modifiy the prefix) :
 ````yml
 yosimitso_working_forum:
     resource: "@YosimitsoWorkingForumBundle/Resources/config/routing.yml"
     prefix:   /forum
 ````    
 
-8/ Install the assets
+9/ Install the assets according to your application, default command is :
 ````bash
 php bin/console assets:install
 ````
 
-9/ Update the database schema, check the SQL query generated by Doctrine :
+10/ Update the database schema, check the SQL query generated by Doctrine :
 ````bash
 php bin/console doctrine:schema:update --dump-sql
 ````
@@ -117,11 +129,14 @@ Then if the SQL queries looks OK, run :
 php bin/console doctrine:schema:update --force
 ````
 
-10/ (Optionnal but necessary in many cases)
+11/ (Optionnal but necessary in many cases)
 Override templates "Common/base.html.twig" and "Common/header.html.twig" to adapt the bundle templates to your application
 Example : create the file "templates/bundles/YosimitsoWorkingForumBundle/Common/base.html.twig" with at least :
 ````twig
 {% block forum %}
 {% endblock %}
 ````
+
 You can also override the translations files
+
+

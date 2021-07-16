@@ -5,23 +5,23 @@
     "require": {
         "knplabs/knp-paginator-bundle": "^5.0",
         "knplabs/knp-markdown-bundle": "^1.9.0",
-	    "symfony/framework-bundle": ">=4.4",
-	    "symfony/translation": ">=4.4",
-        "symfony/security": ">=4.4",
-        "symfony/templating": ">=4.4",
-        "symfony/asset": ">=4.4",
+	    "symfony/framework-bundle": ">=4.4|>=5.*",
+	    "symfony/translation": ">=4.4|>=5.*",
+        "symfony/security": ">=4.4|>=5.*",
+        "symfony/templating": ">=4.4|>=5.*",
+        "symfony/asset": ">=4.4|>=5.*",
         "sensio/framework-extra-bundle": ">=6.0",
-        "symfony/dependency-injection": ">=4.4",
+        "symfony/dependency-injection": ">=4.4|>=5.*",
         "swiftmailer/swiftmailer": ">=5.4.9",
-        "symfony/form": ">=4.4",
+        "symfony/form": ">=4.4|>=5.*",
         "doctrine/common": "^3.0",
         "doctrine/orm": "^2.8",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.0",
         "doctrine/doctrine-bundle": ">=2.1",
-        "symfony/validator": ">=4.4",
+        "symfony/validator": ">=4.4|>=5.*",
         "doctrine/annotations": "^1.12",
-        "symfony/mime": ">=4.4.0"
+        "symfony/mime": ">=4.4.0|>=5.*"
     },
     "license": "MIT",
     "authors": [
@@ -41,13 +41,13 @@
         "phpunit/phpunit": "^8.2",
         "yosimitso/mockdoctrinemanager": "dev-master",
         "phpstan/phpstan-symfony": "^0.12.4",
-        "symfony/browser-kit": ">=4.4",
+        "symfony/browser-kit": ">=4.4|>=5.*",
         "symfony/panther": "^1.0",
         "hautelook/alice-bundle": "^2.7",
         "symfony/expression-language": "^5.0",
-        "symfony/twig-bundle": "^4.4",
-        "symfony/security-bundle": "^4.4",
+        "symfony/twig-bundle": "^4.4|>=5.*",
+        "symfony/security-bundle": "^4.4|>=5.*",
         "symfony/swiftmailer-bundle": "^3",
-        "symfony/css-selector": "^4.4"
+        "symfony/css-selector": "^4.4|>=5.*"
     }
 }

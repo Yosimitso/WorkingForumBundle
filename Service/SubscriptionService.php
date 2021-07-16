@@ -4,10 +4,11 @@
 namespace Yosimitso\WorkingForumBundle\Service;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Swift_Mailer;
 use Symfony\Bundle\FrameworkBundle\Templating;
 use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Subscription;
@@ -42,7 +43,7 @@ class SubscriptionService
      */
     private $senderAddress;
     /**
-     * @var EngineInterface
+     * @var Environment
      */
     private $templating;
 
@@ -53,9 +54,9 @@ class SubscriptionService
      * @param TranslatorInterface $translator
      * @param string $siteTitle
      * @param string $senderAddress
-     * @param EngineInterface $templating
+     * @param Environment $templating
      */
-    public function __construct(EntityManager $em, Swift_Mailer $mailer, TranslatorInterface $translator, string $siteTitle, EngineInterface $templating, ?string $senderAddress)
+    public function __construct(EntityManager $em, Swift_Mailer $mailer, TranslatorInterface $translator, string $siteTitle, Environment $templating, ?string $senderAddress)
     {
         $this->em = $em;
         $this->mailer = $mailer;

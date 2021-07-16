@@ -3,12 +3,13 @@
 namespace Yosimitso\WorkingForumBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Knp\Component\Pager\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
@@ -72,12 +73,14 @@ class ThreadService
      * @var RouterInterface
      */
     protected $router;
-
+    /**
+     * @var Environment
+     */
     protected $templating;
 
     public function __construct(
         $lockThreadOlderThan,
-        Paginator $paginator,
+        PaginatorInterface $paginator,
         $postPerPage,
         RequestStack $requestStack,
         EntityManagerInterface $em,
@@ -87,7 +90,7 @@ class ThreadService
         BundleParametersService $bundleParameters,
         FormFactory $formFactory,
         RouterInterface $router,
-        $templating
+        Environment $templating
     )
     {
         $this->lockThreadOlderThan = $lockThreadOlderThan;
@@ -408,7 +411,7 @@ class ThreadService
 
     public function redirectToForbiddenAccess(Subforum $subforum, $forbiddenMessage)
     {
-            return $this->templating->renderResponse(
+            return $this->templating->render(
                 '@YosimitsoWorkingForum/Forum/thread_list.html.twig',
                 [
                     'subforum' => $subforum,

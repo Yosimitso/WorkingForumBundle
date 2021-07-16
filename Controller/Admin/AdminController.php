@@ -13,12 +13,12 @@ use Yosimitso\WorkingForumBundle\Entity\PostReport;
  *
  * @package Yosimitso\WorkingForumBundle\Controller\Admin
  *
- * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+ * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
  */
 class AdminController extends BaseController
 {
 
-    /** @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+    /** @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
      * @return Response
      * @throws \Exception
      */
@@ -48,7 +48,7 @@ class AdminController extends BaseController
                 ->findBy(['processed' => null])
         );
 
-        return $this->templating->renderResponse(
+        return $this->render(
             '@YosimitsoWorkingForum/Admin/main.html.twig',
             [
                 'list_forum' => $list_forum,
@@ -72,13 +72,12 @@ class AdminController extends BaseController
                 $html = [];
 
                 if (isset($setting['key'])) {
-                    $setting['value'] = $this->getParameter(
-                        'yosimitso_working_forum.'.$setting['label']
-                    )[$setting['key']];
+                    $setting['value'] = $this->bundleParameters->$setting['label'][$setting['key']];
                     $html['text'] = $this->translator
                         ->trans('setting.'.$setting['label'].'.'.$setting['key'], [], 'YosimitsoWorkingForumBundle');
                 } else {
-                    $setting['value'] = $this->getParameter('yosimitso_working_forum.'.$setting['label']);
+                    $setting['value'] = $this->bundleParameters->$setting['label'];
+
                     $html['text'] = $this->translator
                         ->trans('setting.'.$setting['label'], [], 'YosimitsoWorkingForumBundle');
                 }

@@ -52,13 +52,13 @@ class SearchController extends BaseController
                 $thread_list_query = $this->em->getRepository(Thread::class)
                                         ->search($form['keywords']->getData(), 0, 100, $whereSubforum)
                 ;
-                $date_format = $this->getParameter('yosimitso_working_forum.date_format');
+                $date_format = $this->bundleParameters->date_format;
 
                 if (!is_null($thread_list_query)) {
                     $thread_list = $this->paginator->paginate(
                         $thread_list_query,
                         $request->query->get('page', 1)/*page number*/,
-                        $this->getParameter('yosimitso_working_forum.thread_per_page')
+                        $this->bundleParameters->thread_per_page
                     ); /*limit per page*/
                 }
                 else
@@ -67,15 +67,15 @@ class SearchController extends BaseController
                 }
 
                 $parameters  = [ // PARAMETERS USED BY TEMPLATE
-                    'dateFormat' => $this->getParameter('yosimitso_working_forum.date_format')
+                    'dateFormat' => $this->bundleParameters->date_format
                 ];
 
-                return $this->templating->renderResponse('@YosimitsoWorkingForum/Forum/thread_list.html.twig',
+                return $this->render('@YosimitsoWorkingForum/Forum/thread_list.html.twig',
                     [
                         'thread_list' => $thread_list,
                         'date_format' => $date_format,
                         'keywords'    => $form['keywords']->getData(),
-                        'post_per_page' => $this->getParameter('yosimitso_working_forum.post_per_page'),
+                        'post_per_page' => $this->bundleParameters->post_per_page,
                         'page_prefix'   => 'page',
                         'parameters' => $parameters
                     ]
@@ -83,7 +83,7 @@ class SearchController extends BaseController
             }
         }
 
-        return $this->templating->renderResponse('@YosimitsoWorkingForum/Search/search.html.twig',
+        return $this->render('@YosimitsoWorkingForum/Search/search.html.twig',
             [
                 'listForum' => $listForum,
                 'form'      => $form->createView(),

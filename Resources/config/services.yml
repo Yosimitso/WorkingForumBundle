@@ -1,61 +1,70 @@
 parameters:
 services:
-  yosimitso_workingforum.controller.base:
-    class: Yosimitso\WorkingForumBundle\Controller\BaseController
+  _defaults:
+    autowire: false
+    autoconfigure: true
+
+  Yosimitso\WorkingForumBundle\Controller\:
+    resource: '../../Controller'
+    tags: ['controller.service_arguments']
+
+  Yosimitso\WorkingForumBundle\Controller\BaseController:
     calls:
-      - ["setParameters",["@doctrine.orm.entity_manager","@yosimitso_workingforum.security.authorization","@=service('security.token_storage').getToken().getUser()","@session", "@translator", "@knp_paginator", "@templating"]]
+      - ["setParameters",["@doctrine.orm.entity_manager","@yosimitso_workingforum.security.authorization","@=service('security.token_storage').getToken().getUser()","@session", "@translator", "@knp_paginator", '@yosimitso_workingforum.service.bundle_parameters']]
+      - { method: setContainer, arguments: [ '@service_container' ] }
 
-  yosimitso_workingforum.controller.forum:
-    class: Yosimitso\WorkingForumBundle\Controller\ForumController
-    parent: yosimitso_workingforum.controller.base
+
+  Yosimitso\WorkingForumBundle\Controller\ForumController:
+    parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
+    arguments:
+      - '%yosimitso_working_forum.date_format%'
+      - '%yosimitso_working_forum.post_per_page%'
+      - '%yosimitso_working_forum.thread_per_page%'
+    calls:
+      - { method: setContainer, arguments: [ '@service_container' ] }
 
-  yosimitso_workingforum.controller.thread:
-    class: Yosimitso\WorkingForumBundle\Controller\ThreadController
-    parent: yosimitso_workingforum.controller.base
+  Yosimitso\WorkingForumBundle\Controller\ThreadController:
+    parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
     arguments:
       - "@yosimitso_workingforum.service.fileuploader"
       - "@yosimitso_workingforum.extension.smiley"
       - "@yosimitso_workingforum.service.thread"
 
-  yosimitso_workingforum.controller.admin:
-    class: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController
-    parent: yosimitso_workingforum.controller.base
+  Yosimitso\WorkingForumBundle\Controller\Admin\AdminController:
+    parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
 
-  yosimitso_workingforum.controller.admin_forum:
-    class: Yosimitso\WorkingForumBundle\Controller\Admin\AdminForumController
-    parent: yosimitso_workingforum.controller.base
+  Yosimitso\WorkingForumBundle\Controller\Admin\AdminForumController:
+    parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
 
-  yosimitso_workingforum.controller.admin_report:
-    class: Yosimitso\WorkingForumBundle\Controller\Admin\AdminReportController
-    parent: yosimitso_workingforum.controller.base
+  Yosimitso\WorkingForumBundle\Controller\Admin\AdminReportController:
+    parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
 
-  yosimitso_workingforum.controller.admin_rules:
-    class: Yosimitso\WorkingForumBundle\Controller\Admin\AdminRulesController
-    parent: yosimitso_workingforum.controller.base
+  Yosimitso\WorkingForumBundle\Controller\Admin\AdminRulesController:
+    parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
     arguments:
       - "@yosimitso_workingforum.extension.smiley"
 
   yosimitso_workingforum.controller.admin_users:
     class: Yosimitso\WorkingForumBundle\Controller\Admin\AdminUsersController
-    parent: yosimitso_workingforum.controller.base
+    parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
 
   yosimitso_workingforum.controller.search:
     class: Yosimitso\WorkingForumBundle\Controller\SearchController
-    parent: yosimitso_workingforum.controller.base
+    parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
     arguments:
       - "@form.factory"
 
   yosimitso_workingforum.controller.post:
     class: Yosimitso\WorkingForumBundle\Controller\PostController
-    parent: yosimitso_workingforum.controller.base
+    parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
     arguments:
       - "@yosimitso_workingforum.service.thread"
@@ -70,7 +79,7 @@ services:
     class: Yosimitso\WorkingForumBundle\Twig\Extension\QuoteTwigExtension
     tags:
       - { name: twig.extension }
-    arguments: ["@doctrine.orm.entity_manager", "@translator"]
+    arguments: ["@doctrine.orm.entity_manager", '@translator']
 
   yosimitso_workingforum.extension.config:
     class: Yosimitso\WorkingForumBundle\Twig\Extension\ConfigurationTwigExtension
@@ -99,7 +108,7 @@ services:
       - "@mailer"
       - "@translator"
       - "%yosimitso_working_forum.site_title%"
-      - "@templating"
+      - "@twig"
       -  "@=container.hasParameter('swiftmailer.sender_address') ? parameter('swiftmailer.sender_address') : null"
 
   yosimitso_workingforum.listener.post:
@@ -128,19 +137,12 @@ services:
       - "@yosimitso_workingforum.service.bundle_parameters"
       - "@form.factory"
       - "@router"
-      - "@templating"
+      - "@twig"
 
   yosimitso_workingforum.service.bundle_parameters:
     class: Yosimitso\WorkingForumBundle\Service\BundleParametersService
     arguments:
       - "@service_container"
-
-  twig.extension.date:
-    class: Twig_Extensions_Extension_Date
-    arguments:
-      - "@translator"
-    tags:
-      - { name: twig.extension }
 
   yosimitso_workingforum.param_converters.forum:
     class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter

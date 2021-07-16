@@ -4,61 +4,61 @@ controller_routing:
 
 workingforum_admin:
     path: /admin
-    defaults: { _controller: yosimitso_workingforum.controller.admin:indexAction }
+    defaults: { _controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController:indexAction }
 
 workingforum_admin_forum_edit:
     path: /admin/forum/edit/{id}
-    defaults: {_controller: yosimitso_workingforum.controller.admin_forum:editAction }
+    defaults: {_controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController_forum:editAction }
     requirements:
         id: '\d+'
 
 workingforum_admin_forum_add:
     path: /admin/forum/add
-    defaults: {_controller: yosimitso_workingforum.controller.admin_forum:addAction }
+    defaults: {_controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController_forum:addAction }
 
 workingforum_admin_delete_forum:
     path: /admin/forum/delete/{forum_id}
-    defaults: {_controller: yosimitso_workingforum.controller.admin_forum:deleteForumAction }
+    defaults: {_controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController_forum:deleteForumAction }
     requirements:
         forum_id: '\d+'
 
 workingforum_admin_forum_rules:
     path: /admin/rules
-    defaults: {_controller: yosimitso_workingforum.controller.admin_rules:rulesAction }
+    defaults: {_controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController_rules:rulesAction }
 
 workingforum_admin_edit_forum_rules:
     path: /admin/rules/edit/{lang}
-    defaults: {_controller: yosimitso_workingforum.controller.admin_rules:rulesEditAction }
+    defaults: {_controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController_rules:rulesEditAction }
 
 workingforum_admin_new_forum_rules:
     path: /admin/rules/new/{lang}
     defaults:
-          _controller: yosimitso_workingforum.controller.admin_rules:rulesNewAction
+          _controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController_rules:rulesNewAction
           newLang: true
 
 workingforum_admin_install_settings:
     path: /admin/install-settings
-    defaults: {_controller: yosimitso_workingforum.controller.admin:installSettingsAction }
+    defaults: {_controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController:installSettingsAction }
 
 workingforum_admin_report:
     path: /admin/report
-    defaults: {_controller: yosimitso_workingforum.controller.admin_report:reportAction }
+    defaults: {_controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController_report:reportAction }
 
 workingforum_admin_report_history:
     path: /admin/report/history
-    defaults: {_controller: yosimitso_workingforum.controller.admin_report:reportHistoryAction }
+    defaults: {_controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController_report:reportHistoryAction }
 
 workingforum_admin_report_action_moderate:
     path: /admin/reportaction/moderate
-    defaults: {_controller: yosimitso_workingforum.controller.admin_report:reportActionModerateAction }
+    defaults: {_controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController_report:reportActionModerateAction }
 
 workingforum_admin_report_action_good:
     path: /admin/reportaction/good
-    defaults: {_controller: yosimitso_workingforum.controller.admin_report:reportActionGoodAction }
+    defaults: {_controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController_report:reportActionGoodAction }
 
 workingforum_admin_user:
     path: /admin/users
-    defaults: {_controller: yosimitso_workingforum.controller.admin_users:userListAction }
+    defaults: {_controller: Yosimitso\WorkingForumBundle\Controller\Admin\AdminController_users:userListAction }
 
 workingforum_search:
     path: /search

@@ -72,11 +72,12 @@ class AdminController extends BaseController
                 $html = [];
 
                 if (isset($setting['key'])) {
-                    $setting['value'] = $this->bundleParameters->$setting['label'][$setting['key']];
+                    $setting['value'] = $this->bundleParameters->{$setting['label']}[$setting['key']];
                     $html['text'] = $this->translator
                         ->trans('setting.'.$setting['label'].'.'.$setting['key'], [], 'YosimitsoWorkingForumBundle');
                 } else {
-                    $setting['value'] = $this->bundleParameters->$setting['label'];
+                    $setting['value'] = $this->bundleParameters->{$setting['label']};
+
 
                     $html['text'] = $this->translator
                         ->trans('setting.'.$setting['label'], [], 'YosimitsoWorkingForumBundle');

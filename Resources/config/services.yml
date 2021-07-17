@@ -10,7 +10,7 @@ services:
 
   Yosimitso\WorkingForumBundle\Controller\BaseController:
     calls:
-      - ["setParameters",["@doctrine.orm.entity_manager","@yosimitso_workingforum.security.authorization","@=service('security.token_storage').getToken().getUser()","@session", "@translator", "@knp_paginator", '@yosimitso_workingforum.service.bundle_parameters']]
+      - ['setParameters',['@doctrine.orm.entity_manager','@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard','@=service("security.token_storage").getToken().getUser()','@session', '@translator', '@knp_paginator', '@Yosimitso\WorkingForumBundle\Service\BundleParametersService']]
       - { method: setContainer, arguments: [ '@service_container' ] }
 
 
@@ -28,9 +28,9 @@ services:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
     arguments:
-      - "@yosimitso_workingforum.service.fileuploader"
-      - "@yosimitso_workingforum.extension.smiley"
-      - "@yosimitso_workingforum.service.thread"
+      - '@Yosimitso\WorkingForumBundle\Service\FileUploaderService'
+      - '@Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension'
+      - '@Yosimitso\WorkingForumBundle\Service\ThreadService'
 
   Yosimitso\WorkingForumBundle\Controller\Admin\AdminController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
@@ -48,107 +48,95 @@ services:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
     arguments:
-      - "@yosimitso_workingforum.extension.smiley"
+      - '@Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension'
 
-  yosimitso_workingforum.controller.admin_users:
-    class: Yosimitso\WorkingForumBundle\Controller\Admin\AdminUsersController
+  Yosimitso\WorkingForumBundle\Controller\Admin\AdminUsersController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
 
-  yosimitso_workingforum.controller.search:
-    class: Yosimitso\WorkingForumBundle\Controller\SearchController
+  Yosimitso\WorkingForumBundle\Controller\SearchController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
     arguments:
-      - "@form.factory"
+      - '@form.factory'
 
-  yosimitso_workingforum.controller.post:
-    class: Yosimitso\WorkingForumBundle\Controller\PostController
+  Yosimitso\WorkingForumBundle\Controller\PostController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
     arguments:
-      - "@yosimitso_workingforum.service.thread"
+      - '@Yosimitso\WorkingForumBundle\Service\ThreadService'
 
-  yosimitso_workingforum.extension.smiley:
-    class: Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension
+  Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension:
     tags:
       - { name: twig.extension }
-    arguments: ["@request_stack", "@assets.packages"]
+    arguments: ['@request_stack', '@assets.packages']
 
-  yosimitso_workingforum.extension.quote:
-    class: Yosimitso\WorkingForumBundle\Twig\Extension\QuoteTwigExtension
+  Yosimitso\WorkingForumBundle\Twig\Extension\QuoteTwigExtension:
     tags:
       - { name: twig.extension }
-    arguments: ["@doctrine.orm.entity_manager", '@translator']
+    arguments: ['@doctrine.orm.entity_manager', '@translator']
 
-  yosimitso_workingforum.extension.config:
-    class: Yosimitso\WorkingForumBundle\Twig\Extension\ConfigurationTwigExtension
+  Yosimitso\WorkingForumBundle\Twig\Extension\ConfigurationTwigExtension:
     tags:
       - { name: twig.extension }
-    arguments: ["%yosimitso_working_forum.theme_color%"]
+    arguments: ['%yosimitso_working_forum.theme_color%']
 
-  yosimitso_workingforum.security.authorization:
-    class: Yosimitso\WorkingForumBundle\Security\AuthorizationGuard
+  Yosimitso\WorkingForumBundle\Security\AuthorizationGuard:
     arguments:
-      - "@security.authorization_checker"
-      - "@security.token_storage"
-      - "%yosimitso_working_forum.allow_anonymous_read%"
+      - '@security.authorization_checker'
+      - '@security.token_storage'
+      - '%yosimitso_working_forum.allow_anonymous_read%'
 
-  yosimitso_workingforum.service.fileuploader:
-    class: Yosimitso\WorkingForumBundle\Service\FileUploaderService
+  Yosimitso\WorkingForumBundle\Service\FileUploaderService:
     arguments:
-      - "@doctrine.orm.entity_manager"
-      - "%yosimitso_working_forum.file_upload%"
-      - "@translator"
+      - '@doctrine.orm.entity_manager'
+      - '%yosimitso_working_forum.file_upload%'
+      - '@translator'
 
-  yosimitso_workingforum.service.subscription:
-    class: Yosimitso\WorkingForumBundle\Service\SubscriptionService
+  Yosimitso\WorkingForumBundle\Service\SubscriptionService:
     arguments:
-      - "@doctrine.orm.entity_manager"
-      - "@mailer"
-      - "@translator"
-      - "%yosimitso_working_forum.site_title%"
-      - "@twig"
-      -  "@=container.hasParameter('swiftmailer.sender_address') ? parameter('swiftmailer.sender_address') : null"
+      - '@doctrine.orm.entity_manager'
+      - '@mailer'
+      - '@translator'
+      - '%yosimitso_working_forum.site_title%'
+      - '@twig'
+      -  '@=container.hasParameter("swiftmailer.sender_address") ? parameter("swiftmailer.sender_address") : null'
 
-  yosimitso_workingforum.listener.post:
-    class: Yosimitso\WorkingForumBundle\Event\PostEvent
+  Yosimitso\WorkingForumBundle\Event\PostEvent:
     arguments:
-      - "%yosimitso_working_forum.post_flood_sec%"
-      - "@translator"
-      - "@yosimitso_workingforum.service.subscription"
-      - "%yosimitso_working_forum.thread_subscription%"
+      - '%yosimitso_working_forum.post_flood_sec%'
+      - '@translator'
+      - '@Yosimitso\WorkingForumBundle\Service\SubscriptionService'
+      - '%yosimitso_working_forum.thread_subscription%'
     tags:
       - { name: doctrine.event_listener, event: prePersist}
       - { name: doctrine.event_listener, event: postPersist}
 
 
-  yosimitso_workingforum.service.thread:
-    class: Yosimitso\WorkingForumBundle\Service\ThreadService
+  Yosimitso\WorkingForumBundle\Service\ThreadService:
     arguments:
-      - "%yosimitso_working_forum.lock_thread_older_than%"
-      - "@knp_paginator"
-      - "%yosimitso_working_forum.post_per_page%"
-      - "@request_stack"
-      - "@doctrine.orm.entity_manager"
-      - "@security.token_storage"
-      - "@yosimitso_workingforum.service.fileuploader"
-      - "@yosimitso_workingforum.security.authorization"
-      - "@yosimitso_workingforum.service.bundle_parameters"
-      - "@form.factory"
-      - "@router"
-      - "@twig"
+      - '%yosimitso_working_forum.lock_thread_older_than%'
+      - '@knp_paginator'
+      - '%yosimitso_working_forum.post_per_page%'
+      - '@request_stack'
+      - '@doctrine.orm.entity_manager'
+      - '@security.token_storage'
+      - '@Yosimitso\WorkingForumBundle\Service\FileUploaderService'
+      - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
+      - '@Yosimitso\WorkingForumBundle\Service\BundleParametersService'
+      - '@form.factory'
+      - '@router'
+      - '@twig'
 
-  yosimitso_workingforum.service.bundle_parameters:
-    class: Yosimitso\WorkingForumBundle\Service\BundleParametersService
+  Yosimitso\WorkingForumBundle\Service\BundleParametersService:
     arguments:
-      - "@service_container"
+      - '@service_container'
 
   yosimitso_workingforum.param_converters.forum:
     class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
     arguments:
       - '@doctrine.orm.entity_manager'
-      - '@yosimitso_workingforum.security.authorization'
+      - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
       - 'Yosimitso\WorkingForumBundle\Entity\Forum'
     tags:
       - { name: request.param_converter, priority: 20 }
@@ -157,7 +145,7 @@ services:
     class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
     arguments:
       - '@doctrine.orm.entity_manager'
-      - '@yosimitso_workingforum.security.authorization'
+      - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
       - 'Yosimitso\WorkingForumBundle\Entity\Subforum'
     tags:
       - { name: request.param_converter, priority: 20 }
@@ -166,7 +154,7 @@ services:
     class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
     arguments:
       - '@doctrine.orm.entity_manager'
-      - '@yosimitso_workingforum.security.authorization'
+      - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
       - 'Yosimitso\WorkingForumBundle\Entity\Thread'
     tags:
       - { name: request.param_converter, priority: 20 }
@@ -175,7 +163,7 @@ services:
     class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
     arguments:
       - '@doctrine.orm.entity_manager'
-      - '@yosimitso_workingforum.security.authorization'
+      - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
       - 'Yosimitso\WorkingForumBundle\Entity\Post'
     tags:
       - { name: request.param_converter, priority: 20 }

@@ -17,20 +17,11 @@ use Yosimitso\WorkingForumBundle\Service\ThreadService;
 
 class GenericParamConverter implements  ParamConverterInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $em;
-    /**
-     * @var string
-     */
-    protected $classname;
-    /**
-     * @var AuthorizationGuardInterface
-     */
-    protected $authorizationGuard;
+    protected EntityManagerInterface $em;
+    protected string $classname;
+    protected AuthorizationGuardInterface $authorizationGuard;
 
-    public function __construct(EntityManagerInterface $em, AuthorizationGuardInterface $authorizationGuard, $classname)
+    public function __construct(EntityManagerInterface $em, AuthorizationGuardInterface $authorizationGuard, string $classname)
     {
         $this->em = $em;
         $this->authorizationGuard = $authorizationGuard;

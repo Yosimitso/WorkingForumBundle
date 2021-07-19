@@ -2,12 +2,14 @@
 
 namespace Yosimitso\WorkingForumBundle\Twig\Extension;
 
+use Twig\TwigFunction;
+use Twig\Extension\AbstractExtension;
 /**
  * Class ConfigurationTwigExtension
  *
  * @package Yosimitso\WorkingForumBundle\Twig\Extension
  */
-class ConfigurationTwigExtension extends \Twig_Extension
+class ConfigurationTwigExtension extends AbstractExtension
 {
     /**
      * @var array
@@ -17,9 +19,9 @@ class ConfigurationTwigExtension extends \Twig_Extension
     /**
      * @param string $themeColor
      */
-    public function __construct($theme_color)
+    public function __construct($themeColor)
     {
-        $this->paramList = ['theme_color' => $theme_color];
+        $this->paramList = ['theme_color' => $themeColor];
     }
 
     /**
@@ -28,7 +30,7 @@ class ConfigurationTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'getWFParam',
                 [$this, 'getWFParam']
             ),
@@ -36,7 +38,7 @@ class ConfigurationTwigExtension extends \Twig_Extension
     }
 
     /**
-     * @param $param
+     * @param string $param
      *
      * @return mixed
      * @throws \Exception

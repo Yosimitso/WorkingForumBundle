@@ -7,6 +7,7 @@ use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Doctrine\ORM\Query;
+use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 
 /**
@@ -22,7 +23,7 @@ class ThreadRepository extends EntityRepository
      *
      * @return array
      */
-    public function getThread($start = 0, $limit = 10)
+    public function getThread(int $start = 0, int $limit = 10)
     {
         $queryBuilder = $this->_em->createQueryBuilder();
         $query = $queryBuilder
@@ -46,7 +47,7 @@ class ThreadRepository extends EntityRepository
      *
      * @return Thread[]
      */
-    public function search($keywords, $start = 0, $limit = 100, array $whereSubforum)
+    public function search(array $keywords, int $start = 0, int $limit = 100, array $whereSubforum = []) : ?array
     {
         if (empty($whereSubforum)) {
             return null;
@@ -87,10 +88,11 @@ class ThreadRepository extends EntityRepository
         ;
         $query = $queryBuilder;
         $result = $query->getQuery()->getScalarResult();
+
         return $result;
     }
     
-    public function getAllBySubforum($subforum, $withPosts = false)
+    public function getAllBySubforum($subforum, $withPosts = false) : array
     {
         $query = $this->_em->createQueryBuilder()
                 ->select('thread')

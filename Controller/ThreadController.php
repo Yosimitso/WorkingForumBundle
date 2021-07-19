@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Yosimitso\WorkingForumBundle\Service\BundleParametersService;
 use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
@@ -26,7 +27,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * @Route("/", service="yosimitso_workingforum.controller.thread")
+ * @Route("/")
  * @package Yosimitso\WorkingForumBundle\Controller
  */
 class ThreadController extends BaseController
@@ -43,7 +44,7 @@ class ThreadController extends BaseController
      * @var ThreadService
      */
     protected $threadService;
-
+    
     public function __construct(FileUploaderService $fileUploaderService, SmileyTwigExtension $smileyTwigExtension, ThreadService $threadService)
     {
         $this->fileUploaderService = $fileUploaderService;
@@ -65,7 +66,7 @@ class ThreadController extends BaseController
 
         $post = new Post($this->user, $thread);
 
-        if (!$this->getParameter('yosimitso_working_forum.thread_subscription')['enable']) { // SUBSCRIPTION SYSTEM DISABLED
+        if (!$this->bundleParameters->thread_subscription['enable']) { // SUBSCRIPTION SYSTEM DISABLED
             $canSubscribeThread = false;
         } else {
             $canSubscribeThread = (empty($this->em->getRepository(Subscription::class)->findBy(['thread' => $thread, 'user' => $this->user]))); // HAS ALREADY SUBSCRIBED ?
@@ -136,11 +137,11 @@ class ThreadController extends BaseController
         $hasAlreadyVoted = $this->em->getRepository(PostVote::class)->getThreadVoteByUser($thread, $this->user);
 
         $parameters = [ // PARAMETERS USED BY TEMPLATE
-            'dateFormat' => $this->getParameter('yosimitso_working_forum.date_format'),
-            'timeFormat' => $this->getParameter('yosimitso_working_forum.time_format'),
-            'thresholdUsefulPost' => $this->getParameter('yosimitso_working_forum.vote')['threshold_useful_post'],
-            'fileUpload' => $this->getParameter('yosimitso_working_forum.file_upload'),
-            'allowModeratorDeleteThread' => $this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')
+            'dateFormat' => $this->bundleParameters->date_format,
+            'timeFormat' => $this->bundleParameters->time_format,
+            'thresholdUsefulPost' => $this->bundleParameters->vote['threshold_useful_post'],
+            'fileUpload' => $this->bundleParameters->file_upload,
+            'allowModeratorDeleteThread' => $this->bundleParameters->allow_moderator_delete_thread
         ];
         $parameters['fileUpload']['maxSize'] = $this->fileUploaderService->getMaxSize();
 
@@ -148,7 +149,7 @@ class ThreadController extends BaseController
         $actionsAvailables = $this->threadService->getAvailableActions($this->user, $thread, $autolock, $canSubscribeThread);
         $subscripted = $this->em->getRepository(Subscription::class)->findOneBy(['thread' => $thread, 'user' => $this->user]);
 
-        return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/thread.html.twig',
+        return $this->render('@YosimitsoWorkingForum/Thread/thread.html.twig',
             [
                 'forum' => $forum,
                 'subforum' => $subforum,
@@ -210,11 +211,11 @@ class ThreadController extends BaseController
         }
 
         $parameters = [ // PARAMETERS USED BY TEMPLATE
-            'fileUpload' => $this->getParameter('yosimitso_working_forum.file_upload')
+            'fileUpload' => $this->bundleParameters->file_upload
         ];
         $parameters['fileUpload']['maxSize'] = $this->fileUploaderService->getMaxSize();
 
-        return $this->templating->renderResponse('@YosimitsoWorkingForum/Thread/new.html.twig',
+        return $this->render('@YosimitsoWorkingForum/Thread/new.html.twig',
             [
                 'forum' => $forum,
                 'subforum' => $subforum,
@@ -251,7 +252,7 @@ class ThreadController extends BaseController
 
     /**
      * A moderator pin a thread
-     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
      * @Route("{forum}/{subforum}/{thread}/pin", name="workingforum_pin_thread")
      * @return RedirectResponse
      * @throws \Exception
@@ -274,7 +275,7 @@ class ThreadController extends BaseController
 
     /**
      * A moderator unpin a thread
-     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
      * @Route("{forum}/{subforum}/{thread}/unpin", name="workingforum_unpin_thread")
      * @return RedirectResponse
      * @throws \Exception
@@ -328,13 +329,13 @@ class ThreadController extends BaseController
 
     /**
      * The thread is deleted by modo or admin
-     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
      * @Route("{forum}/{subforum}/deletethread/{thread}", name="workingforum_delete_thread")
      * @return RedirectResponse
      */
     public function deleteThreadAction(Forum $forum, Subforum $subforum, Thread $thread)
     {
-        if (!$this->getParameter('yosimitso_working_forum.allow_moderator_delete_thread')) {
+        if (!$this->bundleParameters->allow_moderator_delete_thread) {
             throw new Exception('Thread deletion is not allowed');
         }
 
@@ -349,7 +350,7 @@ class ThreadController extends BaseController
 
     /**
      * The thread is locked by a moderator or admin
-     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
      * @Route("{forum}/{subforum}/{thread}/lock", name="workingforum_lock_thread")
      * @return RedirectResponse
      */
@@ -365,7 +366,7 @@ class ThreadController extends BaseController
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
      * @Route("movethread", name="workingforum_move_thread", methods="POST")
      * @param Request $request
      * @return Response

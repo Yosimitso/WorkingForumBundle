@@ -15,7 +15,7 @@ use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
  *
  * @package Yosimitso\WorkingForumBundle\Controller\Admin
  *
- * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+ * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
  */
 class AdminRulesController extends BaseController
 {
@@ -37,7 +37,7 @@ class AdminRulesController extends BaseController
     {
         $form = $this->createForm(RulesType::class, null);
 
-        return $this->templating->renderResponse(
+        return $this->render(
             '@YosimitsoWorkingForum/Admin/Rules/rules.html.twig',
             [
                 'form' => $form->createView(),
@@ -46,7 +46,7 @@ class AdminRulesController extends BaseController
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function rulesEditAction(Request $request, $lang)
     {
@@ -74,7 +74,7 @@ class AdminRulesController extends BaseController
             'fileUpload' => ['enable' => false],
         ];
 
-        return $this->templating->renderResponse(
+        return $this->render(
             '@YosimitsoWorkingForum/Admin/Rules/rules-edit.html.twig',
             [
                 'form' => $form->createView(),
@@ -87,7 +87,7 @@ class AdminRulesController extends BaseController
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      */
     public function rulesNewAction(Request $request, $lang)
     {
@@ -107,7 +107,7 @@ class AdminRulesController extends BaseController
             'fileUpload' => ['enable' => false],
         ];
 
-        return $this->templating->renderResponse(
+        return $this->render(
             '@YosimitsoWorkingForum/Admin/Rules/rules-edit.html.twig',
             [
                 'form' => $form->createView(),

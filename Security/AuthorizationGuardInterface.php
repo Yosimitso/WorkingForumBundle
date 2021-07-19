@@ -10,18 +10,19 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 interface AuthorizationGuardInterface
 {
-    public function __construct(AuthorizationCheckerInterface $authorizatonChecker, TokenStorageInterface $tokenStorage, $allowAnonymousRead);
+    public function __construct(AuthorizationCheckerInterface $authorizatonChecker, TokenStorageInterface $tokenStorage, bool $allowAnonymousRead);
     
-    public function hasModeratorAuthorization();
+    public function hasModeratorAuthorization() : bool;
     
-    public function hasAdminAuthorization();
+    public function hasAdminAuthorization() : bool;
     
-    public function hasSubforumAccessList(array $subforumList);
+    public function hasSubforumAccessList(array $subforumList) : array;
     
-    public function hasSubforumAccess(Subforum $subforum);
+    public function hasSubforumAccess(Subforum $subforum) : bool;
     
-    public function hasUserAuthorization();
+    public function hasUserAuthorization() : bool;
     
-    public function getErrorMessage();
+    public function getErrorMessage() : ?string;
 
+    public function filterForumAccess(array $forums) : void;
 }

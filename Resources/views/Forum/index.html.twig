@@ -37,7 +37,7 @@
                    {% endif %}
                    <p><strong>{{ 'forum.last_reply_date' | trans }}</strong></p>
                    <p>{{ subforum.lastReplyUser.username }}</p>
-                   <p><em>{{ subforum.lastReplyDate | time_diff }}</em></p>
+                   <p><em>{{ subforum.lastReplyDate | ago }}</em></p>
                {% endif %}
                </td>
        </tr>

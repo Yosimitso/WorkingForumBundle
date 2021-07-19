@@ -2,12 +2,14 @@
 
 namespace Yosimitso\WorkingForumBundle\Tests\Service;
 
+use Knp\Component\Pager\PaginatorInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Router;
+use Twig\Environment;
 use Twig\Template;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
@@ -21,11 +23,9 @@ use Yosimitso\WorkingForumBundle\Security\AuthorizationGuard;
 use Yosimitso\WorkingForumBundle\Service\BundleParametersService;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
 use Yosimitso\MockDoctrineManager\EntityManagerMock;
-use Knp\Component\Pager\Paginator;
 use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Bundle\TwigBundle\TwigEngine;
 
 class ThreadServiceTest extends TestCase
 {
@@ -73,11 +73,11 @@ class ThreadServiceTest extends TestCase
             }
         });
 
-        $templating = $this->createMock(Template::class);
+        $templating = $this->createMock(Environment::class);
         $bundleParameters->allow_moderator_delete_thread = false;
         $testedClass = new ThreadService(
             0,
-            $this->createMock(Paginator::class),
+            $this->createMock(PaginatorInterface::class),
             10,
             $this->createMock(RequestStack::class),
             $em,

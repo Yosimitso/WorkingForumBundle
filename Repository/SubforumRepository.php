@@ -3,6 +3,7 @@
 namespace Yosimitso\WorkingForumBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 
 /**
@@ -13,13 +14,9 @@ use Yosimitso\WorkingForumBundle\Entity\Thread;
 class SubforumRepository extends EntityRepository
 {
     /**
-     * @param int $subforumId
-     * @param int $start
-     * @param int $limit
-     *
      * @return Subforum[]
      */
-    public function getListThread($subforumId, $start = 0, $limit = 1)
+    public function getListThread(int $subforumId, int $start = 0, int $limit = 1)
     {
         $queryBuilder = $this->_em->createQueryBuilder();
         $query = $queryBuilder

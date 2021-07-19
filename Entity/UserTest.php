@@ -27,6 +27,13 @@ class UserTest extends \Yosimitso\WorkingForumBundle\Entity\User implements User
     protected $username;
 
     /**
+     * @var string
+     * @ORM\Column(name="email_address", type="string",nullable=true)
+     */
+
+    protected $emailAddress;
+
+    /**
      * @ORM\Column(name="password", type="string", length=255)
      */
     protected $password;
@@ -53,6 +60,13 @@ class UserTest extends \Yosimitso\WorkingForumBundle\Entity\User implements User
      */
     protected $nbPost;
 
+    /**
+     * @return string
+     */
+    public function getEmailAddress()
+    {
+        return $this->emailAddress;
+    }
 
 
 
@@ -156,7 +170,7 @@ class UserTest extends \Yosimitso\WorkingForumBundle\Entity\User implements User
         return serialize(array(
             $this->id,
             $this->password,
-            $this->email,
+            $this->emailAddress,
             $this->username,
         ));
     }
@@ -166,7 +180,7 @@ class UserTest extends \Yosimitso\WorkingForumBundle\Entity\User implements User
         list (
             $this->id,
             $this->password,
-            $this->email,
+            $this->emailAddress,
             $this->username,
             ) = unserialize($serialized, array('allowed_classes' => false));
     }

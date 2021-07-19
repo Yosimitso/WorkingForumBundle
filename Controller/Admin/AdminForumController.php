@@ -15,12 +15,12 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @package Yosimitso\WorkingForumBundle\Controller\Admin
  *
- * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+ * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
  */
 class AdminForumController extends BaseController
 {
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      * @param Request $request
      * @param int $id
      *
@@ -59,7 +59,7 @@ class AdminForumController extends BaseController
 
         }
 
-        return $this->templating->renderResponse(
+        return $this->render(
             '@YosimitsoWorkingForum/Admin/Forum/form.html.twig',
             [
                 'forum' => $forum,
@@ -70,7 +70,7 @@ class AdminForumController extends BaseController
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
@@ -101,7 +101,7 @@ class AdminForumController extends BaseController
             return $this->redirect($this->generateUrl('workingforum_admin'));
         }
 
-        return $this->templating->renderResponse(
+        return $this->render(
             '@YosimitsoWorkingForum/Admin/Forum/form.html.twig',
             [
                 'forum' => $forum,
@@ -111,7 +111,7 @@ class AdminForumController extends BaseController
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("is_granted('ROLE_ADMIN')")
      * @param int $forum_id
      *
      * @return Response

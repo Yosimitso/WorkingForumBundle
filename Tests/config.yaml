@@ -43,9 +43,9 @@ doctrine:
         alias: YosimitsoWorkingForumBundle
 
 framework:
-  templating: { engines: ['twig'] }
   test: ~
   validation: { enable_annotations: true }
+  secret: '%env(APP_SECRET)%'
   session:
     storage_id: session.storage.mock_file
 

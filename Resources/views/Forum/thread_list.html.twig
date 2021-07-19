@@ -89,7 +89,7 @@
                                     {% endif %}
                                     <strong>{{ 'forum.last_reply_date' | trans }}</strong><br/>
                                     {{ item.lastReplyUser_username }}
-                                    <br/><em>{{ item.thread_lastReplyDate | time_diff }}</em>
+                                    <br/><em>{{ item.thread_lastReplyDate | ago }}</em>
                                 {% endif %}
                             </td>
                             {% endfor %}

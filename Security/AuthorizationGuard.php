@@ -9,45 +9,26 @@ use Yosimitso\WorkingForumBundle\Entity\Subforum;
 
 class AuthorizationGuard implements AuthorizationGuardInterface
 {
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    private $authorizationChecker;
-    /**
-     * @var string
-     */
-    private $errorMessage;
-    /**
-     * @var UserInterface|null
-     */
-    private $user;
-    /**
-     * @var boolean
-     */
-    private $allowAnonymousRead;
 
-    /**
-     * Authorization constructor.
-     * @param AuthorizationCheckerInterface $securityChecker
-     * @param $tokenStorage
-     * @param $allowAnonymousRead
-     */
+    private AuthorizationCheckerInterface $authorizationChecker;
+
+    private ?string $errorMessage;
+    private ?UserInterface $user;
+    private bool $allowAnonymousRead;
+
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $tokenStorage,
-        $allowAnonymousRead
+        bool $allowAnonymousRead
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $token = $tokenStorage->getToken();
-        $this->user = (is_object($token)) ? $token->getUser() : null;
+
+        $this->user = (is_object($token) && is_object($token->getUser())) ? $token->getUser() : null;
         $this->allowAnonymousRead = $allowAnonymousRead;
     }
 
-    /**
-     *
-     * @return bool
-     */
-    public function hasModeratorAuthorization() {
+    public function hasModeratorAuthorization() : bool {
         if ($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN') || $this->authorizationChecker->isGranted('ROLE_ADMIN') || $this->authorizationChecker->isGranted('ROLE_MODERATOR')) {
             return true;
         }
@@ -57,18 +38,7 @@ class AuthorizationGuard implements AuthorizationGuardInterface
         }
     }
 
-    /**
-     * @param $message
-     */
-    private function setErrorMessage($message)
-    {
-        $this->errorMessage = 'message.error.'.$message;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasAdminAuthorization()
+    public function hasAdminAuthorization() : bool
     {
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN') || $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')) {
             return true;
@@ -81,9 +51,8 @@ class AuthorizationGuard implements AuthorizationGuardInterface
 
     /**
      * @param array<Subforum> $subforumList
-     * @return array
      */
-    public function hasSubforumAccessList(array $subforumList)
+    public function hasSubforumAccessList(array $subforumList) : array
     {
         $subforumAllowed = array();
         foreach ($subforumList as $subforum)
@@ -101,11 +70,9 @@ class AuthorizationGuard implements AuthorizationGuardInterface
 
     /**
      * Check if user has permissions to view/write into a subforum
-     * @param Subforum $subforum
-     * @return bool
      * @throws \Exception
      */
-    public function hasSubforumAccess(Subforum $subforum)
+    public function hasSubforumAccess(Subforum $subforum) : bool
     {
         if (!$this->hasUserAuthorization() || is_null($subforum))
         {
@@ -128,7 +95,7 @@ class AuthorizationGuard implements AuthorizationGuardInterface
 
         foreach ($userRoles as $userRole)
         {
-            if (in_array($userRole,$subforumRoles))
+            if (in_array($userRole, $subforumRoles ? $subforumRoles : []))
             {
                 return true; // THE USER HAS A ROLE ALLOWED
             }
@@ -141,9 +108,8 @@ class AuthorizationGuard implements AuthorizationGuardInterface
 
     /**
      * has user authorization ?
-     * @return bool
      */
-    public function hasUserAuthorization()
+    public function hasUserAuthorization() : bool
     {
         if (is_object($this->user) && $this->user->isBanned()) {
             $this->setErrorMessage('banned');
@@ -160,7 +126,7 @@ class AuthorizationGuard implements AuthorizationGuardInterface
 
     }
 
-    public function filterForumAccess(array $forums)
+    public function filterForumAccess(array $forums) : void
     {
         foreach ($forums as $forum)
         {
@@ -176,12 +142,15 @@ class AuthorizationGuard implements AuthorizationGuardInterface
 
         }
     }
-    /**
-     * @return string
-     */
-    public function getErrorMessage()
+
+    public function getErrorMessage() : ?string
     {
         return $this->errorMessage;
+    }
+
+    private function setErrorMessage(string $message) : void
+    {
+        $this->errorMessage = 'message.error.'.$message;
     }
 
 }

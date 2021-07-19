@@ -12,19 +12,19 @@ use Yosimitso\WorkingForumBundle\Entity\UserInterface;
  *
  * @package Yosimitso\WorkingForumBundle\Controller\Admin
  *
- * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+ * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
  */
 class AdminUsersController extends BaseController
 {
     /**
-     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
      * @return Response
      */
     public function userListAction()
     {
         $usersList = $this->em->getRepository(UserInterface::class)->findAll();
 
-        return $this->templating->renderResponse(
+        return $this->render(
             '@YosimitsoWorkingForum/Admin/Users/userslist.html.twig',
             [
                 'usersList' => $usersList,

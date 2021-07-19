@@ -4,7 +4,7 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
@@ -13,13 +13,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 use Yosimitso\WorkingForumBundle\Security\AuthorizationGuardInterface;
 use Symfony\Component\Translation\DataCollectorTranslator;
+use Yosimitso\WorkingForumBundle\Service\BundleParametersService;
 
 /**
  * Class BaseController
  *
  * @package Yosimitso\WorkingForumBundle\Controller
  */
-class BaseController extends Controller
+class BaseController extends AbstractController
 {
     /**
      * @var EntityManagerInterface
@@ -46,7 +47,10 @@ class BaseController extends Controller
      */
     protected $paginator;
 
-    protected $templating;
+    /**
+     * @var BundleParametersService
+     */
+    protected $bundleParameters;
     
     public function setParameters(
         EntityManagerInterface $em,
@@ -55,7 +59,7 @@ class BaseController extends Controller
         SessionInterface $session,
         $translator,
         PaginatorInterface $paginator,
-        $templating
+        BundleParametersService $bundleParameters
     ) {
         $this->em = $em;
         $this->authorizationGuard = $authorizationGuard;
@@ -63,6 +67,6 @@ class BaseController extends Controller
         $this->flashbag = $session->getFlashBag();
         $this->translator = $translator;
         $this->paginator = $paginator;
-        $this->templating = $templating;
+        $this->bundleParameters = $bundleParameters;
     }
 }

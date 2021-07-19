@@ -11,11 +11,10 @@ namespace Yosimitso\WorkingForumBundle\Util;
 abstract class Slugify
 {
     /**
-     * @param string $string
      * @return mixed|string
      * Generate a slug
      */
-    public static function convert($string)
+    public static function convert(string $string)
     {
         /** Mise en minuscules (chaîne utf-8 !) */
         $string = mb_strtolower($string, 'utf-8');

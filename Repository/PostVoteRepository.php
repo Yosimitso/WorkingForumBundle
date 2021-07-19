@@ -3,6 +3,8 @@
 namespace Yosimitso\WorkingForumBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Yosimitso\WorkingForumBundle\Entity\Thread;
+use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 
 /**
  * Class PostVoteRepository
@@ -11,8 +13,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class PostVoteRepository extends EntityRepository
 {
-
-    public function getThreadVoteByUser($thread, $user)
+    public function getThreadVoteByUser(Thread $thread, UserInterface $user) : array
     {
         $queryBuilder = $this->_em->createQueryBuilder();
         $query = $queryBuilder

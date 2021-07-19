@@ -3,6 +3,7 @@
 namespace Yosimitso\WorkingForumBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Forms;
@@ -28,60 +29,23 @@ use Symfony\Component\Form\FormFactory;
 
 class ThreadService
 {
-    /**
-     * @var int
-     */
-    protected $lockThreadOlderThan;
-    /**
-     * @var Paginator
-     */
-    protected $paginator;
-    /**
-     * @var int
-     */
-    protected $postPerPage;
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $em;
-    /**
-     * @var UserInterface
-     */
-    protected $user;
-    /**
-     * @var FileUploaderService
-     */
-    protected $fileUploaderService;
-    /**
-     * @var AuthorizationGuardInterface
-     */
-    protected $authorizationGuard;
-    /**
-     * @var BundleParametersService
-     */
-    protected $bundleParameters;
-    /**
-     * @var FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * @var RouterInterface
-     */
-    protected $router;
-    /**
-     * @var Environment
-     */
-    protected $templating;
+    protected int $lockThreadOlderThan;
+    protected PaginatorInterface $paginator;
+    protected int $postPerPage;
+    protected RequestStack $requestStack;
+    protected EntityManagerInterface $em;
+    protected ?UserInterface $user;
+    protected FileUploaderService $fileUploaderService;
+    protected AuthorizationGuardInterface $authorizationGuard;
+    protected BundleParametersService $bundleParameters;
+    protected FormFactory $formFactory;
+    protected RouterInterface $router;
+    protected Environment $templating;
 
     public function __construct(
-        $lockThreadOlderThan,
+        int $lockThreadOlderThan,
         PaginatorInterface $paginator,
-        $postPerPage,
+        int $postPerPage,
         RequestStack $requestStack,
         EntityManagerInterface $em,
         TokenStorageInterface $tokenStorage,
@@ -98,7 +62,9 @@ class ThreadService
         $this->postPerPage = $postPerPage;
         $this->requestStack = $requestStack;
         $this->em = $em;
-        $this->user = $tokenStorage->getToken()->getUser();
+        $user = $tokenStorage->getToken()->getUser();
+        assert($user instanceof UserInterface || is_null($user));
+        $this->user = $user;
         $this->fileUploaderService = $fileUploaderService;
         $this->authorizationGuard = $authorizationGuard;
         $this->bundleParameters = $bundleParameters;
@@ -114,7 +80,7 @@ class ThreadService
      *
      * Is the thread autolocked ?
      */
-    public function isAutolock(Thread $thread)
+    public function isAutolock(Thread $thread) : bool
     {
         if ($this->lockThreadOlderThan) {
             $diff = $thread->getLastReplyDate()->diff(new \DateTime());
@@ -129,13 +95,7 @@ class ThreadService
         }
     }
 
-    /**
-     * @param $postQuery
-     * @return mixed
-     *
-     * Return the post list according to pagination parameters and query
-     */
-    public function paginate($postQuery)
+    public function paginate(Post $postQuery) : PaginationInterface
     {
         return $this->paginator->paginate(
             $postQuery,
@@ -145,23 +105,17 @@ class ThreadService
     }
 
     /**
-     * @param Thread $thread
-     * @return string
-     *
      * Generates a slug for a thread
      */
-    public function slugify(Thread $thread)
+    public function slugify(Thread $thread) : string
     {
         return $thread->getId() . '-' . Slugify::convert($thread->getLabel());
     }
 
     /**
-     * @param Thread $thread
-     * @return bool
-     *
      * Pin a thread
      */
-    public function pin(Thread $thread)
+    public function pin(Thread $thread) : bool
     {
         $thread->setPin(true);
 
@@ -172,12 +126,9 @@ class ThreadService
     }
 
     /**
-     * @param Thread $thread
-     * @return bool
-     *
      * Resolve thread
      */
-    public function resolve(Thread $thread)
+    public function resolve(Thread $thread) : bool
     {
         $thread->setResolved(true);
         $this->em->persist($thread);
@@ -187,12 +138,9 @@ class ThreadService
     }
 
     /**
-     * @param Thread $thread
-     * @return bool
-     *
      * Lock thread
      */
-    public function lock(Thread $thread)
+    public function lock(Thread $thread) : bool
     {
         $thread->setLocked(true);
         $this->em->persist($thread);
@@ -202,12 +150,9 @@ class ThreadService
     }
 
     /**
-     * @param Post $post
-     * @return bool
-     *
      * Report a thread
      */
-    public function report(Post $post)
+    public function report(Post $post) : bool
     {
         if (!is_null($post) && empty($post->getModerateReason()) && !is_null($this->user)) // THE POST EXISTS AND IS "VISIBLE"
         {
@@ -225,14 +170,9 @@ class ThreadService
     }
 
     /**
-     * @param Thread $thread
-     * @param Subforum $currentSubforum
-     * @param Subforum $targetSubforum
-     * @return bool
-     *
      * Move thread to an another subforum
      */
-    public function move(Thread $thread, Subforum $currentSubforum, Subforum $targetSubforum)
+    public function move(Thread $thread, Subforum $currentSubforum, Subforum $targetSubforum) : bool
     {
         $currentSubforum->setNbThread($currentSubforum->getNbThread() - 1);
         $currentSubforum->setNbPost($currentSubforum->getNbPost() - $thread->getNbReplies());
@@ -251,13 +191,9 @@ class ThreadService
     }
 
     /**
-     * @param Thread $thread
-     * @param Subforum $subforum
-     * @return bool
-     *
      * Delete a thread
      */
-    public function delete(Thread $thread, Subforum $subforum)
+    public function delete(Thread $thread, Subforum $subforum) : bool
     {
         $subforum->addNbThread(-1);
         $subforum->addNbPost(-$thread->getnbReplies());
@@ -279,7 +215,7 @@ class ThreadService
      *
      * Create a thread
      */
-    public function create($form, Post $post, Thread $thread, Subforum $subforum)
+    public function create($form, Post $post, Thread $thread, Subforum $subforum) : bool
     {
 
         $this->em->beginTransaction();
@@ -316,17 +252,11 @@ class ThreadService
     }
 
     /**
-     * @param Subforum $subforum
-     * @param Thread $thread
-     * @param Post $post
-     * @param UserInterface $user
      * @param PostType $form
-     * @return bool
-     * @throws \Exception
      *
      * Create a post
      */
-    public function post(Subforum $subforum, Thread $thread, Post $post, UserInterface $user, $form)
+    public function post(Subforum $subforum, Thread $thread, Post $post, UserInterface $user, $form) : bool
     {
         $subforum->newPost($user); // UPDATE SUBFORUM STATISTIC
         $thread->addReply($user); // UPDATE THREAD STATISTIC
@@ -350,12 +280,6 @@ class ThreadService
     }
 
     /**
-     * @param UserInterface $user
-     * @param Thread $thread
-     * @param bool $autolock
-     * @param bool $canSubscribeThread
-     * @return array
-     *
      * Get available actions for a given user
      */
     public function getAvailableActions(?UserInterface $user, Thread $thread, $autolock, $canSubscribeThread)
@@ -375,14 +299,8 @@ class ThreadService
         ];
     }
 
-    /**
-     * @param Forum $forum
-     * @param Subforum $subforum
-     * @param Thread $thread
-     * @param int $page
-     * @return RedirectResponse
-     */
-    public function redirectToThread(Forum $forum, Subforum $subforum, Thread $thread, $page = 1)
+
+    public function redirectToThread(Forum $forum, Subforum $subforum, Thread $thread, $page = 1) : RedirectResponse
     {
         return new RedirectResponse($this->router->generate('workingforum_thread',
             [

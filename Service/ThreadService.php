@@ -63,8 +63,7 @@ class ThreadService
         $this->requestStack = $requestStack;
         $this->em = $em;
         $user = $tokenStorage->getToken()->getUser();
-        assert($user instanceof UserInterface || is_null($user));
-        $this->user = $user;
+        $this->user = is_object($user) ? $user : null;
         $this->fileUploaderService = $fileUploaderService;
         $this->authorizationGuard = $authorizationGuard;
         $this->bundleParameters = $bundleParameters;
@@ -95,7 +94,10 @@ class ThreadService
         }
     }
 
-    public function paginate(Post $postQuery) : PaginationInterface
+    /**
+     * @param array<mixed> $postQuery
+     */
+    public function paginate(array $postQuery) : PaginationInterface
     {
         return $this->paginator->paginate(
             $postQuery,

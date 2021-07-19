@@ -23,7 +23,8 @@ class AuthorizationGuard implements AuthorizationGuardInterface
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $token = $tokenStorage->getToken();
-        $this->user = (is_object($token)) ? $token->getUser() : null;
+
+        $this->user = (is_object($token) && is_object($token->getUser())) ? $token->getUser() : null;
         $this->allowAnonymousRead = $allowAnonymousRead;
     }
 
@@ -94,7 +95,7 @@ class AuthorizationGuard implements AuthorizationGuardInterface
 
         foreach ($userRoles as $userRole)
         {
-            if (in_array($userRole, $subforumRoles->toArray()))
+            if (in_array($userRole, $subforumRoles ? $subforumRoles : []))
             {
                 return true; // THE USER HAS A ROLE ALLOWED
             }

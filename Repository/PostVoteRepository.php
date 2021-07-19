@@ -13,8 +13,11 @@ use Yosimitso\WorkingForumBundle\Entity\UserInterface;
  */
 class PostVoteRepository extends EntityRepository
 {
-    public function getThreadVoteByUser(Thread $thread, UserInterface $user) : array
+    public function getThreadVoteByUser(Thread $thread, ?UserInterface $user) : array
     {
+        if (is_null($user)) {
+            return [];
+        }
         $queryBuilder = $this->_em->createQueryBuilder();
         $query = $queryBuilder
             ->select('(a.post)')

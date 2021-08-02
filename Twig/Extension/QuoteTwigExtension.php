@@ -3,7 +3,9 @@
 namespace Yosimitso\WorkingForumBundle\Twig\Extension;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 
 /**
@@ -11,7 +13,7 @@ use Yosimitso\WorkingForumBundle\Entity\Post;
  *
  * @package Yosimitso\WorkingForumBundle\Twig\Extension
  */
-class QuoteTwigExtension extends \Twig_Extension
+class QuoteTwigExtension extends AbstractExtension
 {
     /**
      * @var EntityManagerInterface
@@ -42,7 +44,7 @@ class QuoteTwigExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'quote',
                 [$this, 'quote']
             ),

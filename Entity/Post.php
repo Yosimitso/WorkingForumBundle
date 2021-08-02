@@ -27,7 +27,7 @@ class Post
     private $id;
 
     /**
-     * @var ArrayCollection
+     * @var Thread
      * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Thread", inversedBy="post")
      * @ORM\JoinColumn(name="thread_id", referencedColumnName="id", nullable=true)
      */
@@ -168,7 +168,7 @@ class Post
     }
 
     /**
-     * @return ArrayCollection
+     * @return Thread
      */
     public function getThread()
     {

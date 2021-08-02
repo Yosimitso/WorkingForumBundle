@@ -5,13 +5,15 @@ namespace Yosimitso\WorkingForumBundle\Twig\Extension;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
 /**
  * Class SmileyTwigExtension
  *
  * @package Yosimitso\WorkingForumBundle\Twig\Extension
  */
-class SmileyTwigExtension extends \Twig_Extension
+class SmileyTwigExtension extends AbstractExtension
 {
     /**
      * @var Packages
@@ -94,7 +96,7 @@ class SmileyTwigExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('smiley', [$this, 'smiley']),
+            new TwigFilter('smiley', [$this, 'smiley']),
         ];
     }
 

@@ -15,22 +15,10 @@ use Yosimitso\WorkingForumBundle\Entity\Post;
  */
 class FileUploaderService
 {
-    /**
-     * @var string 
-     */
-    private $path;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-    /**
-     * @var array 
-     */
-    private $configFileUpload;
-    /**
-     * @var TranslatorInterface 
-     */
-    private $translator;
+    private string $path;
+    private EntityManagerInterface $em;
+    private array $configFileUpload;
+    private TranslatorInterface $translator;
 
     public function __construct(EntityManagerInterface $em, array $configFileUpload, TranslatorInterface $translator)
     {
@@ -41,14 +29,11 @@ class FileUploaderService
     }
 
     /**
-     * @param array $filesSubmitted
-     * @param Post $post
-     * @return array|bool
      * @throws \Exception
      *
      * Upload submitted files on server
      */
-    public function upload(array $filesSubmitted, Post $post)
+    public function upload(array $filesSubmitted, Post $post) : array
     {
         $fileList = [];
         $totalSize = 0;
@@ -121,11 +106,9 @@ class FileUploaderService
 
 
     /**
-     * @return float
-     *
      * Determine the max size allowed, the "max size file upload" parameter in application config can't be superior to PHP config
      */
-    public function getMaxSize()
+    public function getMaxSize() : float
     {
         $uploadMaxFilesize = $this->extractSize(ini_get('upload_max_filesize'));
         $uploadPostMaxsize = $this->extractSize(ini_get('post_max_size'));
@@ -137,12 +120,9 @@ class FileUploaderService
     }
 
     /**
-     * @param string $value
-     * @return int
-     *
      * Parse size from a string
      */
-    private function extractSize($value)
+    private function extractSize($value) : int
     {
         preg_match('/([0-9]+)([A-Z]?)/', $value, $sizeRegex);
         if (isset($sizeRegex[2])) {
@@ -164,7 +144,7 @@ class FileUploaderService
         } else {
             $size =  ini_get('upload_max_filesize');
         }
-        return $size;
+        return intval($size);
     }
 
 }

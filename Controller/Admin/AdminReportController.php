@@ -15,21 +15,21 @@ use Yosimitso\WorkingForumBundle\Entity\UserInterface;
  *
  * @package Yosimitso\WorkingForumBundle\Controller\Admin
  *
- * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+ * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
  */
 class AdminReportController extends BaseController
 {
     /**
-     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
      * @return Response
      */
     public function reportAction()
     {
         $postReportList = $this->em->getRepository(PostReport::class)
             ->findBy(['processed' => null], ['processed' => 'ASC', 'id' => 'ASC']);
-        $date_format = $this->getParameter('yosimitso_working_forum.date_format');
+        $date_format = $this->bundleParameters->date_format;
 
-        return $this->templating->renderResponse(
+        return $this->render(
             '@YosimitsoWorkingForum/Admin/Report/report.html.twig',
             [
                 'postReportList' => $postReportList,
@@ -38,15 +38,15 @@ class AdminReportController extends BaseController
         );
     }
 
-    /**  @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+    /**  @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
      */
     public function reportHistoryAction()
     {
         $postReportList = $this->em->getRepository(PostReport::class)
             ->findBy(['processed' => 1], ['processed' => 'ASC', 'id' => 'DESC']);
-        $date_format = $this->getParameter('yosimitso_working_forum.date_format');
+        $date_format = $this->bundleParameters->date_format;
 
-        return $this->templating->renderResponse(
+        return $this->render(
             '@YosimitsoWorkingForum/Admin/Report/report_history.html.twig',
             [
                 'postReportList' => $postReportList,
@@ -56,7 +56,7 @@ class AdminReportController extends BaseController
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
      * @param Request $request
      *
      * @return Response
@@ -82,7 +82,7 @@ class AdminReportController extends BaseController
 
 
     /**
-     * @Security("has_role('ROLE_ADMIN') or has_role('ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
      * @param Request $request
      *
      * @return Response

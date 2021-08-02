@@ -17,11 +17,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * Class ForumController
  *
- * @Route("/", service="yosimitso_workingforum.controller.forum")
+ * @Route("/")
  * @package Yosimitso\WorkingForumBundle\Controller
  */
 class ForumController extends BaseController
 {
+    private $dateFormat;
+    private $postPerPage;
+    private $threadPerPage;
+
+    public function __construct(string $dateFormat, int $postPerPage, int $threadPerPage)
+    {
+        $this->dateFormat = $dateFormat;
+        $this->postPerPage = $postPerPage;
+        $this->threadPerPage = $threadPerPage;
+    }
+
     /**
      * Display homepage of forum with subforums
      * @Route("", name="workingforum_forum")
@@ -38,10 +49,10 @@ class ForumController extends BaseController
         $this->authorizationGuard->filterForumAccess($list_forum);
 
         $parameters  = [ // PARAMETERS USED BY TEMPLATE
-            'dateFormat' => $this->getParameter('yosimitso_working_forum.date_format')
+            'dateFormat' => $this->dateFormat
             ];
 
-        return $this->templating->renderResponse(
+        return $this->render(
             '@YosimitsoWorkingForum/Forum/index.html.twig',
             [
                 'list_forum' => $list_forum,
@@ -67,19 +78,19 @@ class ForumController extends BaseController
                 $subforum
             );
 
-        $date_format = $this->getParameter('yosimitso_working_forum.date_format');
+        $date_format = $this->dateFormat;
 
         $list_subforum = $this->paginator->paginate(
             $list_subforum_query,
             $request->query->get('page', 1)/*page number*/,
-            $this->getParameter('yosimitso_working_forum.thread_per_page') /*limit per page*/
+            $this->threadPerPage /*limit per page*/
         );
 
         $parameters  = [ // PARAMETERS USED BY TEMPLATE
-            'dateFormat' => $this->getParameter('yosimitso_working_forum.date_format')
+            'dateFormat' => $this->dateFormat
         ];
 
-        return $this->templating->renderResponse(
+        return $this->render(
             '@YosimitsoWorkingForum/Forum/thread_list.html.twig',
             [
                 'forum' => $forum,
@@ -87,7 +98,7 @@ class ForumController extends BaseController
                 'thread_list' => $list_subforum,
                 'date_format' => $date_format,
                 'forbidden' => false,
-                'post_per_page' => $this->getParameter('yosimitso_working_forum.post_per_page'),
+                'post_per_page' => $this->postPerPage,
                 'page_prefix' => 'page',
                 'parameters' => $parameters
             ]
@@ -116,7 +127,7 @@ class ForumController extends BaseController
 
         $form = $this->createForm(RulesType::class, null);
         
-        return $this->templating->renderResponse(
+        return $this->render(
             '@YosimitsoWorkingForum/Forum/rules.html.twig',
             [
                 'rules' => $rules,

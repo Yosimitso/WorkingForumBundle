@@ -19,7 +19,7 @@
             {% for listUser in ListUsers %}
                 <tr>
                     <td>{{ listUser.id }}</td>
-                    <td>{{ listUser.nbPost }}</th>
+                    <td>{{ listUser.nbPost }}</td>
                     <td><input type="checkbox" autocomplete="off" {% if listUser.banned %} checked {% endif %}/> </td>   
                 {% endfor %}
         </tbody>

@@ -34,64 +34,66 @@
 
                     <table class="wf_thread_list">
                         {% if thread_list.items is not empty %}
-                        {% for item in thread_list.items if item.thread_slug is not empty %}
-                        <tr {% if item.thread_pin %} class="wf_pin" {% elseif item.thread_resolved %} class="wf_resolved"{% endif %}>
-                            <td class="wf_sub_name">
-                                <p>
-                                    {% if item.thread_locked %}
-                                        <img src="{{ asset('bundles/yosimitsoworkingforum/images/lock.png') }}"
-                                             width="24" style="vertical-align:bottom"/>
+                            {% for item in thread_list.items %}
+                             {% if item.thread_slug is not empty %}
+                            <tr {% if item.thread_pin %} class="wf_pin" {% elseif item.thread_resolved %} class="wf_resolved"{% endif %}>
+                                <td class="wf_sub_name">
+                                    <p>
+                                        {% if item.thread_locked %}
+                                            <img src="{{ asset('bundles/yosimitsoworkingforum/images/lock.png') }}"
+                                                 width="24" style="vertical-align:bottom"/>
 
-                                    {% endif %}
-                                    {% if item.thread_pin %}
-                                        <span class="wf_pinText"><img
-                                                    src="{{ asset('bundles/yosimitsoworkingforum/images/pin.png') }}"
-                                                    width="16"/>{#{{ 'forum.pin' | trans }} : #}</span>
-                                    {% elseif item.thread_resolved %}
-                                        <span class="wf_pinText"><img
-                                                    src="{{ asset('bundles/yosimitsoworkingforum/images/tick.png') }}"
-                                                    width="16"/>{#{{ 'forum.resolved' | trans }} : #}</span>
-                                    {% endif %}
+                                        {% endif %}
+                                        {% if item.thread_pin %}
+                                            <span class="wf_pinText"><img
+                                                        src="{{ asset('bundles/yosimitsoworkingforum/images/pin.png') }}"
+                                                        width="16"/>{#{{ 'forum.pin' | trans }} : #}</span>
+                                        {% elseif item.thread_resolved %}
+                                            <span class="wf_pinText"><img
+                                                        src="{{ asset('bundles/yosimitsoworkingforum/images/tick.png') }}"
+                                                        width="16"/>{#{{ 'forum.resolved' | trans }} : #}</span>
+                                        {% endif %}
 
-                                    <a class="wf_label"
-                                       href="{{ path( 'workingforum_thread', {'forum': item.forum_slug, 'subforum' : item.subforum_slug, 'thread' : item.thread_slug}) }}">{{ item.thread_label }}</a>
-                                </p>
-
-
-                                <p class="wf_sublabel">{{ item.thread_subLabel }}</p>
-                                {% set nbPage = (item.thread_nbReplies/post_per_page) %}
-                                {% if nbPage > 1 %}
-                                    <p class="wf_latest_page">
-                                        <a href="{{ path( 'workingforum_thread', {'forum': item.forum_slug, 'subforum' : item.subforum_slug, 'thread' : item.thread_slug, (page_prefix) : (nbPage |round(0,'ceil')) }) }}">&rarr; {{ 'pagination.latestPage' | trans }}</a>
+                                        <a class="wf_label"
+                                           href="{{ path( 'workingforum_thread', {'forum': item.forum_slug, 'subforum' : item.subforum_slug, 'thread' : item.thread_slug}) }}">{{ item.thread_label }}</a>
                                     </p>
-                                {% endif %}
-                            </td>
-                            <td class="wf_sub_author">
-                                <img class="wf_cadre-img-small wf_cadre-left hide-for-small" src="
-                                {% if item.author_avatarUrl is not empty %}
-                                    {{ asset(item.author_avatarUrl) }}
-                                {% else %}
-                                    {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}
-                                {% endif %}
-                                "/>
-                                <p>{{ item.author_username |slice(0,30) }}</p>
-                                <p><em>{{ item.thread_cdate | date(parameters.dateFormat) }}</em></p>
-                            </td>
-                            <td class="wf_sub_stat">{{ item.thread_nbReplies }} {{ 'forum.nbPost' | trans }}</td>
-                            <td class="wf_sub_lastreply">
-                                {% if item.thread_lastReplyDate is not null and item.lastReplyUser_username is not null %}
-                                    {% if item.lastReplyUser_avatarUrl is not empty %}
-                                        <img class="wf_cadre-img-small wf_cadre-left hide-for-small"
-                                             src="{{ asset(item.lastReplyUser_avatarUrl) }}">
-                                    {% else %}
-                                        <img class="wf_cadre-img-small wf_cadre-left hide-for-small"
-                                             src="{{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}">
+
+
+                                    <p class="wf_sublabel">{{ item.thread_subLabel }}</p>
+                                    {% set nbPage = (item.thread_nbReplies/post_per_page) %}
+                                    {% if nbPage > 1 %}
+                                        <p class="wf_latest_page">
+                                            <a href="{{ path( 'workingforum_thread', {'forum': item.forum_slug, 'subforum' : item.subforum_slug, 'thread' : item.thread_slug, (page_prefix) : (nbPage |round(0,'ceil')) }) }}">&rarr; {{ 'pagination.latestPage' | trans }}</a>
+                                        </p>
                                     {% endif %}
-                                    <strong>{{ 'forum.last_reply_date' | trans }}</strong><br/>
-                                    {{ item.lastReplyUser_username }}
-                                    <br/><em>{{ item.thread_lastReplyDate | ago }}</em>
-                                {% endif %}
-                            </td>
+                                </td>
+                                <td class="wf_sub_author">
+                                    <img class="wf_cadre-img-small wf_cadre-left hide-for-small" src="
+                                    {% if item.author_avatarUrl is not empty %}
+                                        {{ asset(item.author_avatarUrl) }}
+                                    {% else %}
+                                        {{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}
+                                    {% endif %}
+                                    "/>
+                                    <p>{{ item.author_username |slice(0,30) }}</p>
+                                    <p><em>{{ item.thread_cdate | date(parameters.dateFormat) }}</em></p>
+                                </td>
+                                <td class="wf_sub_stat">{{ item.thread_nbReplies }} {{ 'forum.nbPost' | trans }}</td>
+                                <td class="wf_sub_lastreply">
+                                    {% if item.thread_lastReplyDate is not null and item.lastReplyUser_username is not null %}
+                                        {% if item.lastReplyUser_avatarUrl is not empty %}
+                                            <img class="wf_cadre-img-small wf_cadre-left hide-for-small"
+                                                 src="{{ asset(item.lastReplyUser_avatarUrl) }}">
+                                        {% else %}
+                                            <img class="wf_cadre-img-small wf_cadre-left hide-for-small"
+                                                 src="{{ asset('bundles/yosimitsoworkingforum/images/avatar/default.png') }}">
+                                        {% endif %}
+                                        <strong>{{ 'forum.last_reply_date' | trans }}</strong><br/>
+                                        {{ item.lastReplyUser_username }}
+                                        <br/><em>{{ item.thread_lastReplyDate | ago }}</em>
+                                    {% endif %}
+                                </td>
+                            {% endif %}
                             {% endfor %}
                     </table>
                 {% else %}

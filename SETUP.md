@@ -3,13 +3,12 @@ WorkingForumBundle
 
 Setup for Symfony 4 / 5 
 ------------------
-WARNING : TWIG 3.* CAN'T BE USED WITH THIS BUNDLE, DUE TO AN INCOMPATBILITY BETWEEN TWIG EXTENSIONS AND TWIG
 
 This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rendering and the extra package for Symfony
 
-/!\ IMPORTANT /*\ **Prerequisite** :
+ **Prerequisite** :
 - You must handle user 
-- You have to define Twig as your tempating engine in config/packages/framework.yaml
+- SF4 ONLY : You have to define Twig as your tempating engine in config/packages/framework.yaml
 ````yml
 framework:
     templating:
@@ -60,7 +59,6 @@ please also check if your PHP configuration allow file upload through forms and 
 ````bash
 composer require "yosimitso/workingforumbundle":"^3.0"
 ````
-
 
 4/ Create the config file for KNP Paginator "config/packages/knp_paginator.yaml" with :
 ````yml

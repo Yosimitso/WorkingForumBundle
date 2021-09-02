@@ -4,17 +4,11 @@ WorkingForumBundle
 Setup for Symfony 4 / 5 
 ------------------
 
-This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rendering and the extra package for Symfony
+This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rendering
 
- **Prerequisite** :
+ **Prerequisite**
 - You must handle user 
-- SF4 ONLY : You have to define Twig as your tempating engine in config/packages/framework.yaml
-````yml
-framework:
-    templating:
-        engines: ['twig']
-````
-- You must have a database configured
+- You must have a database
 - You must configure your translator, example in config/framework.yaml :
 ````yml
 framework:
@@ -24,12 +18,17 @@ framework:
         fallbacks:
             - 'en'
 ````
-
 - If you want to enable threads subscription, you must have switfmailer configured
+- SF4 ONLY : you have to define Twig as your templating engine in config/packages/framework.yaml
+````yml
+framework:
+    templating:
+    engines: ['twig']
+````
 
+**Steps**
 
 1/ Create the config file "config/packages/yosimitso_working_forum.yaml" with :
-
 ````yml
 yosimitso_working_forum:
     thread_per_page: 50
@@ -48,11 +47,11 @@ yosimitso_working_forum:
         max_size_ko: 10000
         accepted_format: [image/jpg, image/jpeg, image/png, image/gif, image/tiff, application/pdf]
         preview_file: true                  # FOR IMAGES ONLY, DISPLAY A THUMBNAIL
-    thread_subscription:                    # ALLOW OR NOT THREAD SUBSCRIPTION
-        enable: true  
+    thread_subscription:                    
+        enable: true                        # ALLOW OR NOT THREAD SUBSCRIPTION
 ````
 
-2/ OPTIONNAL : if you decide to enable the file upload system, create a directory called "wf_uploads" into your public directory with writing rights,
+2/ OPTIONAL : if you decide to enable the file upload system, create a directory called "wf_uploads" into your public directory with writing rights,
 please also check if your PHP configuration allow file upload through forms and adjust the directives "upload_max_filesize" and "post_max_size" to your application's config
 
 3/ Run :
@@ -82,7 +81,7 @@ doctrine:
             Yosimitso\WorkingForumBundle\Entity\User: You\YourUserBundle\Entity\YourUser
 ````
 
-6/ Your User Entity needs to extends : \Yosimitso\WorkingForumBundle\Entity\User
+6/ Your User Entity needs to extends : Yosimitso\WorkingForumBundle\Entity\User
 
 The id property must be protected
 
@@ -127,14 +126,16 @@ Then if the SQL queries looks OK, run :
 php bin/console doctrine:schema:update --force
 ````
 
-11/ (Optionnal but necessary in many cases)
+11/ (Optional but necessary in many cases)
+
 Override templates "Common/base.html.twig" and "Common/header.html.twig" to adapt the bundle templates to your application
+
 Example : create the file "templates/bundles/YosimitsoWorkingForumBundle/Common/base.html.twig" with at least :
 ````twig
 {% block forum %}
 {% endblock %}
 ````
 
-You can also override the translations files
+12/ (Optional) You can also override the translations files
 
 

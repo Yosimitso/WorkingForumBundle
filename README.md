@@ -68,7 +68,7 @@ vendor/phpunit/phpunit/phpunit --testsuite=unit
 
 **Functionnal tests**
 
-- create an empty database (all data will be erased hen you run tests)
+- create an empty database (all data will be erased when you run tests)
 - set its credentials into phpunit.xml
 - import the database structure (Tests/Scenario/empty_db.sql)
 - run 

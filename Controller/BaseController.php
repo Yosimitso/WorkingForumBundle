@@ -55,7 +55,7 @@ class BaseController extends AbstractController
     public function setParameters(
         EntityManagerInterface $em,
         AuthorizationGuardInterface $authorizationGuard,
-        $user,
+        $token,
         SessionInterface $session,
         $translator,
         PaginatorInterface $paginator,
@@ -63,7 +63,7 @@ class BaseController extends AbstractController
     ) {
         $this->em = $em;
         $this->authorizationGuard = $authorizationGuard;
-        $this->user = (is_object($user)) ? $user : null;
+        $this->user = (is_object($token)) ? $token->getUser() : null;
         $this->flashbag = $session->getFlashBag();
         $this->translator = $translator;
         $this->paginator = $paginator;

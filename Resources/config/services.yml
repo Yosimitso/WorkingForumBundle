@@ -10,7 +10,7 @@ services:
 
   Yosimitso\WorkingForumBundle\Controller\BaseController:
     calls:
-      - ['setParameters',['@doctrine.orm.entity_manager','@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard','@=service("security.token_storage").getToken().getUser()','@session', '@translator', '@knp_paginator', '@Yosimitso\WorkingForumBundle\Service\BundleParametersService']]
+      - ['setParameters',['@doctrine.orm.entity_manager','@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard','@=service("security.token_storage").getToken()','@session', '@translator', '@knp_paginator', '@Yosimitso\WorkingForumBundle\Service\BundleParametersService']]
       - { method: setContainer, arguments: [ '@service_container' ] }
 
 

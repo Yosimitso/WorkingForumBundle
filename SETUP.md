@@ -78,7 +78,7 @@ knp_paginator:
 doctrine:
     orm:
         resolve_target_entities:
-            Yosimitso\WorkingForumBundle\Entity\User: You\YourUserBundle\Entity\YourUser
+            Yosimitso\WorkingForumBundle\Entity\UserInterface: You\YourUserBundle\Entity\YourUser
 ````
 
 6/ Your User Entity needs to extends : Yosimitso\WorkingForumBundle\Entity\User
@@ -87,6 +87,12 @@ The id property must be protected
 
 Example :
 ````php
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Table(name="user")
+ */
    class User extends \Yosimitso\WorkingForumBundle\Entity\User
 {
     /**

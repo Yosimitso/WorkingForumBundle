@@ -16,7 +16,7 @@ Try it here - https://demoworkingforum.charlymartins.fr
 
 Chat and support
 ---------------
-[Join the Discord](https://discord.gg/AB8XEhkx)
+[Join the Discord](https://discord.gg/EG7C54PgWR)
 
 Features
 ------------------

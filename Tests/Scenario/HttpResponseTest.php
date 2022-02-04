@@ -22,7 +22,7 @@ class HttpResponseTest extends WebTestCase
 
     public function setUp() : void
     {
-        self::bootKernel();
+//        self::bootKernel();
 //        $this->client = static::createClient(
 //            [],
 //            [
@@ -66,7 +66,9 @@ class HttpResponseTest extends WebTestCase
         foreach ($urls as $url) {
                 $crawler = $this->client->request('GET', '/'.$url);
                 if ($this->client->getResponse()->getStatusCode() === 500) {
-//                    print_r($crawler->html());
+                    $file = fopen(__DIR__.'/error.html', 'w');
+                    fwrite($file, $crawler->html());
+
                 }
                 $this->assertEquals(200, $this->client->getResponse()->getStatusCode(),$url.' returns '.$this->client->getResponse()->getStatusCode());
         }

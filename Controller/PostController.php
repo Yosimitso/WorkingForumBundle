@@ -10,11 +10,6 @@ use Yosimitso\WorkingForumBundle\Entity\PostVote;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
 
-/**
- * Class PostController
- *
- * @package Yosimitso\WorkingForumBundle\Controller
- */
 class PostController extends BaseController
 {
     /**
@@ -37,7 +32,7 @@ class PostController extends BaseController
     {
         $postId = $request->get('postId');
 
-        if (is_null($this->user)) {
+        if ($this->isUserAnonymous()) {
             return new JsonResponse(['res' => 'false', 'errMsg' => 'You must be a registered user'], 403);
         }
 

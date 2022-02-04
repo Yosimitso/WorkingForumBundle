@@ -100,7 +100,7 @@ services:
       - '@translator'
       - '%yosimitso_working_forum.site_title%'
       - '@twig'
-      -  '@=container.hasParameter("swiftmailer.sender_address") ? parameter("swiftmailer.sender_address") : null'
+      -  '@=container.hasParameter("yosimitso_working_forum.mailer_sender_address") ? parameter("yosimitso_working_forum.mailer_sender_address") : null'
 
   Yosimitso\WorkingForumBundle\Event\PostEvent:
     arguments:

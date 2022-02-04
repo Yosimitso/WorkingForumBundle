@@ -5,7 +5,6 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
@@ -18,8 +17,6 @@ use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Yosimitso\WorkingForumBundle\Service\BundleParametersService;
 use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
@@ -59,12 +56,8 @@ class ThreadController extends BaseController
      */
     public function indexAction(Forum $forum, Subforum $subforum, Thread $thread, Request $request)
     {
-        $anonymousUser = (is_null($this->user)) ? true : false;
-
         $autolock = $this->threadService->isAutolock($thread); // CHECK IF THREAD IS AUTOMATICALLY LOCKED (TOO OLD?)
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
-
-        $post = new Post($this->user, $thread);
 
         if (!$this->bundleParameters->thread_subscription['enable']) { // SUBSCRIPTION SYSTEM DISABLED
             $canSubscribeThread = false;
@@ -72,13 +65,14 @@ class ThreadController extends BaseController
             $canSubscribeThread = (empty($this->em->getRepository(Subscription::class)->findBy(['thread' => $thread, 'user' => $this->user]))); // HAS ALREADY SUBSCRIBED ?
         }
 
-        if (!$anonymousUser) {
+        if (!$this->isUserAnonymous()) {
+            $post = new Post($this->user, $thread);
             $form = $this->createForm(PostType::class, $post, ['canSubscribeThread' => $canSubscribeThread]); // create form for posting
             $form->handleRequest($request);
 
             if ($form->isSubmitted()) { // USER SUBMIT HIS POST
 
-                if (!$anonymousUser && $this->user->isBanned()) // USER IS BANNED CAN'T POST
+                if ($this->user->isBanned()) // USER IS BANNED CAN'T POST
                 {
                     $this->flashbag->add(
                         'error',
@@ -98,7 +92,7 @@ class ThreadController extends BaseController
                     return $this->threadService->redirectToThread($forum, $subforum, $thread);
                 }
 
-                if ($form->isValid() && !$anonymousUser) {
+                if ($form->isValid()) {
 
                     try {
                         $this->threadService->post($subforum, $thread, $post, $this->user, $form);
@@ -179,7 +173,7 @@ class ThreadController extends BaseController
      */
     public function newAction(Forum $forum, Subforum $subforum, Request $request)
     {
-        if (is_null($this->user)) { //ANONYMOUS CAN'T POST
+        if ($this->isUserAnonymous()) { //ANONYMOUS CAN'T POST
             throw new AccessDeniedHttpException("access denied");
         }
 

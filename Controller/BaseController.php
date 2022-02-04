@@ -5,21 +5,13 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 use Yosimitso\WorkingForumBundle\Security\AuthorizationGuardInterface;
 use Symfony\Component\Translation\DataCollectorTranslator;
 use Yosimitso\WorkingForumBundle\Service\BundleParametersService;
 
-/**
- * Class BaseController
- *
- * @package Yosimitso\WorkingForumBundle\Controller
- */
 class BaseController extends AbstractController
 {
     /**
@@ -63,10 +55,15 @@ class BaseController extends AbstractController
     ) {
         $this->em = $em;
         $this->authorizationGuard = $authorizationGuard;
-        $this->user = (is_object($token)) ? $token->getUser() : null;
+        $this->user = (is_object($token) && $token->getUser() instanceof UserInterface) ? $token->getUser() : null;
         $this->flashbag = $session->getFlashBag();
         $this->translator = $translator;
         $this->paginator = $paginator;
         $this->bundleParameters = $bundleParameters;
+    }
+
+    protected function isUserAnonymous(): bool
+    {
+        return $this->user instanceof UserInterface;
     }
 }

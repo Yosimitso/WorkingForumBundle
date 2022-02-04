@@ -4,10 +4,9 @@
 namespace Yosimitso\WorkingForumBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Swift_Mailer;
-use Symfony\Bundle\FrameworkBundle\Templating;
-use Symfony\Component\Templating\EngineInterface;
 use Twig\Environment;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
@@ -15,15 +14,11 @@ use Yosimitso\WorkingForumBundle\Entity\Subscription;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 
-/**
- * Class Subscription
- *
- * @package Yosimitso\WorkingForumBundle\Service
- */
+
 class SubscriptionService
 {
     private EntityManager $em;
-    private Swift_Mailer $mailer;
+    private MailerInterface $mailer;
     private TranslatorInterface $translator;
     private string $siteTitle;
     private ?string $senderAddress;
@@ -31,12 +26,12 @@ class SubscriptionService
 
     public function __construct(
         EntityManager $em,
-        Swift_Mailer $mailer,
+        MailerInterface $mailer,
         TranslatorInterface $translator,
         string $siteTitle,
         Environment $templating,
-        ?string $senderAddress)
-    {
+        ?string $senderAddress
+    ) {
         $this->em = $em;
         $this->mailer = $mailer;
         $this->translator = $translator;
@@ -45,7 +40,7 @@ class SubscriptionService
         $this->templating = $templating;
 
         if (empty($this->senderAddress)) {
-            trigger_error('The parameter "swiftmailer.sender_address" is empty, email delivering might failed');
+            trigger_error('The parameter "yosimitso_working_forum.mailer_sender_address" is empty, email delivering might failed');
         }
 
     }
@@ -69,16 +64,15 @@ class SubscriptionService
             foreach ($notifs as $notif) {
                 try {
                     if (!empty($notif->getUser()->getEmailAddress())) {
-                        $email = (new \Swift_Message())
-                            ->setSubject($this->translator->trans('subscription.emailNotification.subject', $emailTranslation, 'YosimitsoWorkingForumBundle'))
-                            ->setFrom($this->senderAddress)
-                            ->setTo($notif->getUser()->getEmailAddress())
-                            ->setBody(
+                        $email = (new Email())
+                            ->subject($this->translator->trans('subscription.emailNotification.subject', $emailTranslation, 'YosimitsoWorkingForumBundle'))
+                            ->from($this->senderAddress)
+                            ->to($notif->getUser()->getEmailAddress())
+                            ->html(
                                 $this->templating->render(
                                     '@YosimitsoWorkingForum/Email/notification_new_message_en.html.twig',
                                     $emailTranslation
-                                ),
-                                'text/html');
+                                ));
 
                         $this->mailer->send($email);
                     }

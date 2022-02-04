@@ -22,4 +22,4 @@ yosimitso_working_forum_bundle:
 |            | accepted_format               | No       | Array                     | [image/jpg, image/jpeg, image/png, image/gif, image/tiff, application/pdf] | Accepted file format |
 |            | preview_file                  | No       | Boolean                   | true        | For images only, display or not the thumbnail |
 |thread_subscription:|
-|            | enable                        | **Yes**  | Boolean                   | false       | Allow or not thread's subscription, remember to check your swiftmailer configuration
+|            | enable                        | **Yes**  | Boolean                   | false       | Allow or not thread's subscription, remember to check your mailer configuration

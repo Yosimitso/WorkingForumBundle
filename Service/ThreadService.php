@@ -286,7 +286,7 @@ class ThreadService
      */
     public function getAvailableActions(?UserInterface $user, Thread $thread, $autolock, $canSubscribeThread)
     {
-        $anonymousUser = (is_null($user)) ? true : false;
+        $anonymousUser = (!$user instanceof UserInterface);
 
         return [
             'setResolved' => $this->authorizationGuard->hasModeratorAuthorization() || (!$anonymousUser && $user->getId() == $thread->getAuthor()->getId()),

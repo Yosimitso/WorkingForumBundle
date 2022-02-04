@@ -64,6 +64,6 @@ class BaseController extends AbstractController
 
     protected function isUserAnonymous(): bool
     {
-        return $this->user instanceof UserInterface;
+        return !$this->user instanceof UserInterface;
     }
 }

@@ -6,7 +6,7 @@ const CopyPlugin = require('copy-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 let config = {
-    watch: (process.env.NODE_ENV !== 'production') ? true : false,
+    watch: (process.env.NODE_ENV !== 'production'),
     entry: {
         app: './Resources/asset/js/webpack-app.js',
         forum: './Resources/asset/js/webpack-forum.js',

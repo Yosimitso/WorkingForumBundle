@@ -10,7 +10,7 @@
                     &larr; {{ 'admin.back_to_forum' |trans }}
                 </a></p>
 
-            {% if (is_granted("ROLE_SUPER_ADMIN") or is_granted("ROLE_ADMIN")) %}
+            {% if hasAdminAuthorization() %}
             <div class="wf_forum_block_admin">
                 <div class="wf_forum_block_title">{{ 'admin.manage_forum' | trans }}</div>
                 <div class="wf_forum_content">

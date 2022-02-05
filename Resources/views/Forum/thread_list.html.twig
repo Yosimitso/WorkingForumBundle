@@ -16,7 +16,7 @@
             </div>
         {% else %}
 
-            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and subforum is defined %}
+            {% if not isAnonymous() and subforum is defined %}
                 <p>
                     <a class="wf_button wf_add"
                        href="{{ path('workingforum_new_thread', {'forum': forum.slug, 'subforum' : subforum.slug}) }}"><span

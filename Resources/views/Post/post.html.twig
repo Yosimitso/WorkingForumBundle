@@ -56,7 +56,7 @@
             {% endif %}
         </div>
         {# POST VOTE #}
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") and loop.index != 1 and post.user.id != app.user.id and post.moderateReason is empty and not thread.locked and not autolock  %}
+        {% if not isAnonymous() and loop.index != 1 and post.user.id != app.user.id and post.moderateReason is empty and not thread.locked and not autolock  %}
             <div class="wf_block_vote">
                 {% if post.id in hasAlreadyVoted %}
                     <img class="wf_quote-img"

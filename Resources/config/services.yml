@@ -81,6 +81,11 @@ services:
       - { name: twig.extension }
     arguments: ['%yosimitso_working_forum.theme_color%']
 
+  Yosimitso\WorkingForumBundle\Twig\Extension\AuthorizationTwigExtension:
+    tags:
+      - { name: twig.extension }
+    arguments: ['@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard']
+
   Yosimitso\WorkingForumBundle\Security\AuthorizationGuard:
     arguments:
       - '@security.authorization_checker'

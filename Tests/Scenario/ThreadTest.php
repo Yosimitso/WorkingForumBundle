@@ -14,16 +14,6 @@ class ThreadTest extends WebTestCase
     use ReloadDatabaseTrait;
     private $client;
 
-//    public function setUp() : void
-//    {
-//        static::bootKernel();
-//    }
-
-//    public function tearDown(): void
-//    {
-//        static::ensureKernelShutdown();
-//    }
-
     private function getModeratorUserClient()
     {
         $client = static::createClient();

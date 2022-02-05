@@ -22,15 +22,6 @@ class HttpResponseTest extends WebTestCase
 
     public function setUp() : void
     {
-//        self::bootKernel();
-//        $this->client = static::createClient(
-//            [],
-//            [
-//                'PHP_AUTH_USER' => $_ENV['TEST_ADMIN_USERNAME'],
-//                'PHP_AUTH_PW' => $_ENV['TEST_ADMIN_PASSWORD'],
-//            ]
-//        );
-//
         $client = static::createClient();
         $container = static::$kernel->getContainer();
         $session = $container->get('session');

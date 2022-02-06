@@ -234,6 +234,7 @@ class ThreadService
             $thread->setSlug($this->slugify($thread)); // SLUG NEEDS THE ID
             $post->setThread($thread); // ATTACH TO THREAD
             $this->em->persist($thread);
+            $this->em->flush();
 
             if (!empty($form->getData()->getPost()[0]->getFilesUploaded())) {
                 $file = $this->fileUploaderService->upload($form->getData()->getPost()[0]->getFilesUploaded(), $post);

@@ -23,14 +23,14 @@ class Subscription
      * @ORM\Column(name="id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private int $id;
 
     /**
      * @var ArrayCollection
      * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Thread", inversedBy="post")
      * @ORM\JoinColumn(name="thread_id", referencedColumnName="id", nullable=true)
      */
-    private $thread;
+    private Thread $thread;
 
     /**
      * @var UserInterface
@@ -38,7 +38,7 @@ class Subscription
      * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      */
-    private $user;
+    private UserInterface $user;
 
     public function __construct(Thread $thread, UserInterface $user)
     {
@@ -46,48 +46,32 @@ class Subscription
         $this->setUser($user);
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param Thread $thread
-     *
-     * @return Post
-     */
-    public function setThread(Thread $thread)
+    public function setThread(Thread $thread): self
     {
         $this->thread = $thread;
 
         return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getThread()
+
+    public function getThread(): Thread
     {
         return $this->thread;
     }
 
-    /**
-     * @return UserInterface
-     */
-    public function getUser()
+    public function getUser(): UserInterface
     {
         return $this->user;
     }
 
-    /**
-     * @param UserInterface $user
-     *
-     * @return Post
-     */
-    public function setUser(UserInterface $user)
+
+    public function setUser(UserInterface $user): self
     {
         $this->user = $user;
 

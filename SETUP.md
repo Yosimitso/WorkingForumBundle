@@ -142,6 +142,10 @@ Example : create the file "templates/bundles/YosimitsoWorkingForumBundle/Common/
 {% endblock %}
 ````
 
-12/ (Optional) You can also override the translations files
+12/ Set your mailer DNS in your .env file, example :
+````
+MAILER_DSN=smtp://user:pass@smtp.example.com
+````
+13/ (Optional) You can also override the translations files
 
 

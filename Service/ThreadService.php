@@ -227,12 +227,13 @@ class ThreadService
             $this->user->addNbPost(1);
             $this->em->persist($this->user);
 
+            $post->setThread($thread); // ATTACH TO THREAD
             $this->em->persist($thread);
             $this->em->persist($subforum);
             $this->em->flush(); // GET THREAD ID
 
             $thread->setSlug($this->slugify($thread)); // SLUG NEEDS THE ID
-            $post->setThread($thread); // ATTACH TO THREAD
+
             $this->em->persist($thread);
             $this->em->flush();
 

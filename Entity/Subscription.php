@@ -59,7 +59,6 @@ class Subscription
         return $this;
     }
 
-
     public function getThread(): Thread
     {
         return $this->thread;

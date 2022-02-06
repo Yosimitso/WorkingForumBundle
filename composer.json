@@ -22,9 +22,9 @@
         "doctrine/annotations": "^1.12",
         "symfony/mime": ">=4.4.0|>=5.0",
         "knplabs/knp-time-bundle": "^1.16",
-        "symfony/doctrine-messenger": "^5.2",
-        "symfony/mailer": ">= 4.4|>= 5.4",
-        "symfony/security-core": ">= 4.4|>= 5.4",
+        "symfony/doctrine-messenger": ">= 4.4|>=5.2",
+        "symfony/mailer": ">= 4.4|>=5.4",
+        "symfony/security-core": ">=4.4|>=5.4",
         "egulias/email-validator": "^3.1"
     },
     "license": "MIT",

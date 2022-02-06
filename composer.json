@@ -24,7 +24,8 @@
         "knplabs/knp-time-bundle": "^1.16",
         "symfony/doctrine-messenger": "^5.2",
         "symfony/mailer": ">= 5.4",
-        "symfony/security-core": ">= 5.4"
+        "symfony/security-core": ">= 5.4",
+        "egulias/email-validator": "^3.1"
     },
     "license": "MIT",
     "authors": [

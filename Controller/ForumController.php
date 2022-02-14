@@ -4,8 +4,6 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Rules;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
@@ -15,16 +13,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * Class ForumController
- *
  * @Route("/")
- * @package Yosimitso\WorkingForumBundle\Controller
  */
 class ForumController extends BaseController
 {
-    private $dateFormat;
-    private $postPerPage;
-    private $threadPerPage;
+    private string $dateFormat;
+    private int $postPerPage;
+    private int $threadPerPage;
 
     public function __construct(string $dateFormat, int $postPerPage, int $threadPerPage)
     {

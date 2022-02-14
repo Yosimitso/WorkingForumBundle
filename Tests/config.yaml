@@ -18,6 +18,7 @@ yosimitso_working_forum:
   post_flood_sec: 0
   thread_subscription:
     enable: true
+  mailer_sender_address: noemail@test.com
 
 doctrine:
   dbal:
@@ -91,12 +92,6 @@ security:
 #      logout:
 #        path:   logout
 #        target: /
-
-
-swiftmailer:
-  url: '%env(MAILER_URL)%'
-  spool: { type: 'memory' }
-  sender_address: 'yoman@yoman.fr'
 
 sensio_framework_extra:
   router:      { annotations: true }

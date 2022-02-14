@@ -227,13 +227,15 @@ class ThreadService
             $this->user->addNbPost(1);
             $this->em->persist($this->user);
 
+            $post->setThread($thread); // ATTACH TO THREAD
             $this->em->persist($thread);
             $this->em->persist($subforum);
             $this->em->flush(); // GET THREAD ID
 
             $thread->setSlug($this->slugify($thread)); // SLUG NEEDS THE ID
-            $post->setThread($thread); // ATTACH TO THREAD
+
             $this->em->persist($thread);
+            $this->em->flush();
 
             if (!empty($form->getData()->getPost()[0]->getFilesUploaded())) {
                 $file = $this->fileUploaderService->upload($form->getData()->getPost()[0]->getFilesUploaded(), $post);
@@ -286,7 +288,7 @@ class ThreadService
      */
     public function getAvailableActions(?UserInterface $user, Thread $thread, $autolock, $canSubscribeThread)
     {
-        $anonymousUser = (is_null($user)) ? true : false;
+        $anonymousUser = (!$user instanceof UserInterface);
 
         return [
             'setResolved' => $this->authorizationGuard->hasModeratorAuthorization() || (!$anonymousUser && $user->getId() == $thread->getAuthor()->getId()),

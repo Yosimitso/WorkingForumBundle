@@ -6,3 +6,4 @@ npm-debug.log
 php_errors.log
 composer.lock
 var
+Tests/Scenario/error.html

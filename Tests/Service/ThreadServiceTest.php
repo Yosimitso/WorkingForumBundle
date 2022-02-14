@@ -248,7 +248,8 @@ class ThreadServiceTest extends TestCase
         };
 
         $form->method('getData')->willReturn($class);
-        $thread = new Thread;
+        $thread = (new Thread)
+                ->setLabel('thread-test');
 
         $subforum = new Subforum;
         $subforum->setNbThread(20);
@@ -302,7 +303,8 @@ class ThreadServiceTest extends TestCase
         };
 
         $form->method('getData')->willReturn($class);
-        $thread = new Thread;
+        $thread = (new Thread)
+            ->setLabel('thread-test');
 
         $subforum = new Subforum;
         $subforum->setNbThread(20);

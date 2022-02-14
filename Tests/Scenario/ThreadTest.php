@@ -14,17 +14,13 @@ class ThreadTest extends WebTestCase
     use ReloadDatabaseTrait;
     private $client;
 
-    public function setUp() : void
-    {
-        self::bootKernel();
-    }
-
     private function getModeratorUserClient()
     {
         $client = static::createClient();
-        $container = static::$kernel->getContainer();
+
+        $container = static::getContainer();
         $session = $container->get('session');
-        $person = self::$kernel->getContainer()->get('doctrine')->getRepository(UserTest::class)->findAll()[1];
+        $person =  $container->get('doctrine')->getRepository(UserTest::class)->findAll()[1];
 
         $token = new UsernamePasswordToken($person, null, 'main', $person->getRoles());
         $session->set('_security_main', serialize($token));
@@ -40,7 +36,7 @@ class ThreadTest extends WebTestCase
         $client = static::createClient();
         $container = static::$kernel->getContainer();
         $session = $container->get('session');
-        $person = self::$kernel->getContainer()->get('doctrine')->getRepository(UserTest::class)->findAll()[2];
+        $person = $container->get('doctrine')->getRepository(UserTest::class)->findAll()[2];
 
         $token = new UsernamePasswordToken($person, null, 'main', $person->getRoles());
         $session->set('_security_main', serialize($token));
@@ -56,7 +52,7 @@ class ThreadTest extends WebTestCase
         $client = static::createClient();
         $container = static::$kernel->getContainer();
         $session = $container->get('session');
-        $person = self::$kernel->getContainer()->get('doctrine')->getRepository(UserTest::class)->findAll()[0];
+        $person =  $container->get('doctrine')->getRepository(UserTest::class)->findAll()[0];
 
         $token = new UsernamePasswordToken($person, null, 'main', $person->getRoles());
         $session->set('_security_main', serialize($token));

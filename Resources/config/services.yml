@@ -1,14 +1,11 @@
-parameters:
 services:
   _defaults:
     autowire: false
     autoconfigure: true
 
-  Yosimitso\WorkingForumBundle\Controller\:
-    resource: '../../Controller'
-    tags: ['controller.service_arguments']
-
   Yosimitso\WorkingForumBundle\Controller\BaseController:
+    autowire: false
+    autoconfigure: false
     calls:
       - ['setParameters',['@doctrine.orm.entity_manager','@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard','@=service("security.token_storage").getToken()','@session', '@translator', '@knp_paginator', '@Yosimitso\WorkingForumBundle\Service\BundleParametersService']]
       - { method: setContainer, arguments: [ '@service_container' ] }
@@ -17,6 +14,8 @@ services:
   Yosimitso\WorkingForumBundle\Controller\ForumController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
+    autowire: false
+    autoconfigure: false
     arguments:
       - '%yosimitso_working_forum.date_format%'
       - '%yosimitso_working_forum.post_per_page%'
@@ -27,6 +26,8 @@ services:
   Yosimitso\WorkingForumBundle\Controller\ThreadController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
+    autowire: false
+    autoconfigure: false
     arguments:
       - '@Yosimitso\WorkingForumBundle\Service\FileUploaderService'
       - '@Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension'
@@ -35,34 +36,48 @@ services:
   Yosimitso\WorkingForumBundle\Controller\Admin\AdminController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
+    autowire: false
+    autoconfigure: false
 
   Yosimitso\WorkingForumBundle\Controller\Admin\AdminForumController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
+    autowire: false
+    autoconfigure: false
 
   Yosimitso\WorkingForumBundle\Controller\Admin\AdminReportController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
+    autowire: false
+    autoconfigure: false
 
   Yosimitso\WorkingForumBundle\Controller\Admin\AdminRulesController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
+    autowire: false
+    autoconfigure: false
     arguments:
       - '@Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension'
 
   Yosimitso\WorkingForumBundle\Controller\Admin\AdminUsersController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
+    autowire: false
+    autoconfigure: false
 
   Yosimitso\WorkingForumBundle\Controller\SearchController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
+    autowire: false
+    autoconfigure: false
     arguments:
       - '@form.factory'
 
   Yosimitso\WorkingForumBundle\Controller\PostController:
     parent: Yosimitso\WorkingForumBundle\Controller\BaseController
     public: true
+    autowire: false
+    autoconfigure: false
     arguments:
       - '@Yosimitso\WorkingForumBundle\Service\ThreadService'
 
@@ -80,6 +95,11 @@ services:
     tags:
       - { name: twig.extension }
     arguments: ['%yosimitso_working_forum.theme_color%']
+
+  Yosimitso\WorkingForumBundle\Twig\Extension\AuthorizationTwigExtension:
+    tags:
+      - { name: twig.extension }
+    arguments: ['@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard']
 
   Yosimitso\WorkingForumBundle\Security\AuthorizationGuard:
     arguments:
@@ -100,7 +120,7 @@ services:
       - '@translator'
       - '%yosimitso_working_forum.site_title%'
       - '@twig'
-      -  '@=container.hasParameter("swiftmailer.sender_address") ? parameter("swiftmailer.sender_address") : null'
+      -  '@=container.hasParameter("yosimitso_working_forum.mailer_sender_address") ? parameter("yosimitso_working_forum.mailer_sender_address") : null'
 
   Yosimitso\WorkingForumBundle\Event\PostEvent:
     arguments:

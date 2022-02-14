@@ -4,11 +4,7 @@ namespace Yosimitso\WorkingForumBundle\Twig\Extension;
 
 use Twig\TwigFunction;
 use Twig\Extension\AbstractExtension;
-/**
- * Class ConfigurationTwigExtension
- *
- * @package Yosimitso\WorkingForumBundle\Twig\Extension
- */
+
 class ConfigurationTwigExtension extends AbstractExtension
 {
     /**

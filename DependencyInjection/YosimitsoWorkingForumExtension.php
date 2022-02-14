@@ -110,5 +110,6 @@ class YosimitsoWorkingForumExtension extends Extension
         $container->setParameter('yosimitso_working_forum.post_flood_sec', $config['post_flood_sec']);
         $container->setParameter('yosimitso_working_forum.site_title', $config['site_title']);
         $container->setParameter('yosimitso_working_forum.thread_subscription', $config['thread_subscription']);
+        $container->setParameter('yosimitso_working_forum.mailer_sender_address', $config['mailer_sender_address']);
     }
 }

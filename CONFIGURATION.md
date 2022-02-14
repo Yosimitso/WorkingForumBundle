@@ -14,6 +14,7 @@ yosimitso_working_forum_bundle:
 |            | theme_color                   | No       | String not empty          | green       | Theme color |
 |            | lock_thread_older_than        | No       | Integer (0 = disabled)    | 365         |  Days between the last thread's post and the autolocking of the thread, 0 means disabled |
 |            | post_flood_sec                | No       | Integer (0 = disabled)    | 30          | seconds minimum between each post for an user |
+|            | mailer_sender_address         | No       | String                    | (empty)     | "From" email address used by the bundle
 |vote:|
 |            |threshold_useful_post          | No       | Integer > 0               | 5           | Number of votes needed for a post to be considered as useful |
 |file_upload:|
@@ -22,4 +23,4 @@ yosimitso_working_forum_bundle:
 |            | accepted_format               | No       | Array                     | [image/jpg, image/jpeg, image/png, image/gif, image/tiff, application/pdf] | Accepted file format |
 |            | preview_file                  | No       | Boolean                   | true        | For images only, display or not the thumbnail |
 |thread_subscription:|
-|            | enable                        | **Yes**  | Boolean                   | false       | Allow or not thread's subscription, remember to check your swiftmailer configuration
+|            | enable                        | **Yes**  | Boolean                   | false       | Allow or not thread's subscription, remember to check your mailer configuration

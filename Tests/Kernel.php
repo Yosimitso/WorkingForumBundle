@@ -16,18 +16,18 @@ use Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle;
 use Hautelook\AliceBundle\HautelookAliceBundle;
 use Knp\Bundle\MarkdownBundle\KnpMarkdownBundle;
 use Knp\Bundle\PaginatorBundle\KnpPaginatorBundle;
+use Knp\Bundle\TimeBundle\KnpTimeBundle;
 use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
-use Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
-use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 use Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle;
+use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
 use Yosimitso\WorkingForumBundle\YosimitsoWorkingForumBundle;
 
 
@@ -58,10 +58,11 @@ class Kernel extends BaseKernel
             KnpMarkdownBundle::class => ['all' => true],
             TwigBundle::class => ['all' => true],
             SecurityBundle::class => ['all' => true],
-            SwiftmailerBundle::class => ['all' => true],
             HautelookAliceBundle::class => ['all' => true],
             FidryAliceDataFixturesBundle::class => ['all' => true],
             NelmioAliceBundle::class => ['all' => true],
+            TwigExtraBundle::class => ['all' => true],
+            KnpTimeBundle::class => ['all' => true]
         ];
         foreach ($contents as $class => $envs) {
             if (isset($envs['all']) || isset($envs[$this->environment])) {
@@ -79,6 +80,6 @@ class Kernel extends BaseKernel
 
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
-        $a = $routes->import(__DIR__.'/config/routes/routes.yaml', '/');
+        $routes->import(__DIR__.'/config/routes/routes.yaml', '/');
     }
 }

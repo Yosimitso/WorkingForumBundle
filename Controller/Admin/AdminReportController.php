@@ -2,6 +2,7 @@
 
 namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 
+use Symfony\Component\Routing\Attribute\Route;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -10,20 +11,11 @@ use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 
-/**
- * Class AdminReportController
- *
- * @package Yosimitso\WorkingForumBundle\Controller\Admin
- *
- * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
- */
+#[Security('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")')]
 class AdminReportController extends BaseController
 {
-    /**
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @return Response
-     */
-    public function reportAction()
+    #[Route('/admin/report', name: 'workingforum_admin_report')]
+    public function reportAction(): Response
     {
         $postReportList = $this->em->getRepository(PostReport::class)
             ->findBy(['processed' => null], ['processed' => 'ASC', 'id' => 'ASC']);
@@ -38,9 +30,8 @@ class AdminReportController extends BaseController
         );
     }
 
-    /**  @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     */
-    public function reportHistoryAction()
+    #[Route('/admin/report/history', name: 'workingforum_admin_report_history')]
+    public function reportHistoryAction(): Response
     {
         $postReportList = $this->em->getRepository(PostReport::class)
             ->findBy(['processed' => 1], ['processed' => 'ASC', 'id' => 'DESC']);
@@ -55,13 +46,8 @@ class AdminReportController extends BaseController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function reportActionGoodAction(Request $request)
+    #[Route('/admin/reportaction/good', name: 'workingforum_admin_report_action_good')]
+    public function reportActionGoodAction(Request $request): Response
     {
         $id = (int)htmlentities($request->request->get('id'));
 
@@ -77,17 +63,10 @@ class AdminReportController extends BaseController
         $this->em->flush();
 
         return new Response(json_encode('ok'), 200);
-
     }
 
-
-    /**
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function reportActionModerateAction(Request $request)
+    #[Route('/admin/reportaction/moderate', name: 'workingforum_admin_report_action_moderate')]
+    public function reportActionModerateAction(Request $request): Response
     {
         $reason = htmlentities($request->request->get('reason'));
         $id = (int)htmlentities($request->request->get('id'));
@@ -127,7 +106,5 @@ class AdminReportController extends BaseController
         $this->em->flush();
 
         return new Response(json_encode('ok'), 200);
-
     }
-
 }

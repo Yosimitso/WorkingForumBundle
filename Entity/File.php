@@ -3,257 +3,133 @@
 namespace Yosimitso\WorkingForumBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use DateTimeInterface;
 
-/**
- * File
- *
- * @ORM\Table(name="workingforum_file")
- * @ORM\Entity()
- */
+#[ORM\Table(name: "workingforum_file")]
+#[ORM\Entity]
 class File
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="filename", type="string", length=100)
-     */
-    private $filename;
+    #[ORM\Column(name: "filename", type: "string", length: 100)]
+    private string $filename;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="original_name", type="string", length=100)
-     */
-    private $originalName;
+    #[ORM\Column(name: "original_name", type: "string", length: 100)]
+    private string $originalName;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="path", type="string", length=255, unique=true)
-     */
-    private $path;
+    #[ORM\Column(name: "path", type: "string", length: 255, unique: true)]
+    private string $path;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="extension", type="string", length=10)
-     */
-    private $extension;
+    #[ORM\Column(name: "extension", type: "string", length: 10)]
+    private string $extension;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="size", type="bigint")
-     */
-    private $size;
+    #[ORM\Column(name: "size", type: "bigint")]
+    private string $size;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="cdate", type="datetime")
-     */
-    private $cdate;
+    #[ORM\Column(name: "cdate", type: "datetime")]
+    private DateTimeInterface $cdate;
 
-    /**
-     * @var ArrayCollection
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Post", inversedBy="files")
-     * @ORM\JoinColumn(name="post_id", referencedColumnName="id", nullable=true)
-     */
-    private $post;
-    
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Post", inversedBy: "files")]
+    #[ORM\JoinColumn(name: "post_id", referencedColumnName: "id", nullable: true)]
+    private Post $post;
     
     public function __construct() {
-        $this->cdate = new \DateTime;
+        $this->cdate = new DateTime;
     }
-    
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set filename
-     *
-     * @param string $filename
-     *
-     * @return File
-     */
-    public function setFilename($filename)
+    public function setFilename(string $filename): self
     {
         $this->filename = $filename;
 
         return $this;
     }
 
-    /**
-     * Get filename
-     *
-     * @return string
-     */
-    public function getFilename()
+    public function getFilename(): string
     {
         return $this->filename;
     }
 
-    /**
-     * Set originalName
-     *
-     * @param string $originalName
-     *
-     * @return File
-     */
-    public function setOriginalName($originalName)
+    public function setOriginalName(string $originalName): self
     {
         $this->originalName = $originalName;
 
         return $this;
     }
 
-    /**
-     * Get originalName
-     *
-     * @return string
-     */
-    public function getOriginalName()
+    public function getOriginalName(): string
     {
         return $this->originalName;
     }
-    
-    /**
-     * Set path
-     *
-     * @param string $path
-     *
-     * @return File
-     */
-    public function setPath($path)
+
+    public function setPath(string $path): self
     {
         $this->path = $path;
 
         return $this;
     }
 
-    /**
-     * Get path
-     *
-     * @return string
-     */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * Set extension
-     *
-     * @param string $extension
-     *
-     * @return File
-     */
-    public function setExtension($extension)
+    public function setExtension(string $extension): self
     {
         $this->extension = $extension;
 
         return $this;
     }
 
-    /**
-     * Get extension
-     *
-     * @return string
-     */
-    public function getExtension()
+    public function getExtension(): string
     {
         return $this->extension;
     }
 
-    /**
-     * Set size
-     *
-     * @param integer $size
-     *
-     * @return File
-     */
-    public function setSize($size)
+    public function setSize(string $size): self
     {
         $this->size = $size;
 
         return $this;
     }
 
-    /**
-     * Get size
-     *
-     * @return int
-     */
-    public function getSize()
+    public function getSize(): string
     {
         return $this->size;
     }
 
-    /**
-     * Set cdate
-     *
-     * @param \DateTime $cdate
-     *
-     * @return File
-     */
-    public function setCdate($cdate)
+    public function setCdate(DateTimeInterface $cdate): self
     {
         $this->cdate = $cdate;
 
         return $this;
     }
 
-    /**
-     * Get cdate
-     *
-     * @return \Datetime
-     */
-    public function getCdate()
+    public function getCdate(): DateTimeInterface
     {
         return $this->cdate;
     }
 
-    /**
-     * Set post
-     *
-     * @param integer $post
-     *
-     * @return File
-     */
-    public function setPost($post)
+    public function setPost(Post $post): self
     {
         $this->post = $post;
 
         return $this;
     }
 
-    /**
-     * Get post
-     *
-     * @return int
-     */
-    public function getPost()
+    public function getPost(): Post
     {
         return $this->post;
     }
-
-
 }
 

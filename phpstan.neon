@@ -12,5 +12,5 @@ parameters:
     - Tests
     - Twig
     - Util
-  autoload_files:
+  bootstrapFiles:
     - vendor/autoload.php

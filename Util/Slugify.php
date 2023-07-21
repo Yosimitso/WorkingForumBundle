@@ -14,7 +14,7 @@ abstract class Slugify
      * @return mixed|string
      * Generate a slug
      */
-    public static function convert(string $string)
+    public static function convert(string $string): string
     {
         /** Mise en minuscules (chaîne utf-8 !) */
         $string = mb_strtolower($string, 'utf-8');

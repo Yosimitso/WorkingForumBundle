@@ -3,138 +3,70 @@
 namespace Yosimitso\WorkingForumBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use DateTime;
+use DateTimeInterface;
 
-/**
- * Class Post
- *
- * @package Yosimitso\WorkingForumBundle\Entity
- *
- * @ORM\Table(name="workingforum_post")
- * @ORM\Entity()
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Table(name: "workingforum_post")]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
 class Post
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private int $id;
 
-    /**
-     * @var Thread
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Thread", inversedBy="post")
-     * @ORM\JoinColumn(name="thread_id", referencedColumnName="id", nullable=true)
-     */
-    private $thread;
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Thread", inversedBy: "post")]
+    #[ORM\JoinColumn(name: "thread_id", referencedColumnName: "id", nullable: true)]
+    private ?Thread $thread;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="content", type="text")
-     * @Assert\NotBlank(message="post.not_blank")
-     */
-    private $content;
+    #[ORM\Column(name: "content", type: "text")]
+    #[Assert\NotBlank(message: "post.not_blank")]
+    private string $content;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="published", type="boolean")
-     */
-    private $published;
+    #[ORM\Column(name: "published", type: "boolean")]
+    private ?bool $published;
 
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: true)]
+    private UserInterface $user;
 
-    /**
-     * @var UserInterface
-     *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
-     */
-    private $user;
+    #[ORM\Column(name: "cdate", type: "datetime")]
+    #[Assert\NotBlank]
+    private DateTimeInterface $cdate;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="cdate", type="datetime")
-     * @Assert\NotBlank()
-     */
-    private $cdate;
+    #[ORM\Column(name: "ip", type: "string")]
+    private string $ip; // FOR LEGAL AND SECURITY REASON
 
-    /** var string
-     *
-     * @ORM\Column(name="ip", type="string")
-     */
-    private $ip; // FOR LEGAL AND SECURITY REASON
+    #[ORM\Column(name: "moderateReason", type: "text", nullable: true)]
+    private ?string $moderateReason;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="moderateReason", type="text",nullable=true)
-     */
-    private $moderateReason;
+    #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\PostReport", mappedBy: "post", cascade: ["remove"])]
+    private Collection $postReport;
 
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Yosimitso\WorkingForumBundle\Entity\PostReport",
-     *     mappedBy="post",
-     *     cascade={"remove"}
-     * )
-     */
+    #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\PostVote", mappedBy: "post", cascade: ["remove"])]
+    private Collection $postVote;
 
-    private $postReport;
+    #[ORM\Column(name: "voteUp", type: "integer", nullable: true)]
+    private ?int $voteUp;
 
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Yosimitso\WorkingForumBundle\Entity\PostVote",
-     *     mappedBy="post",
-     *     cascade={"remove"}
-     * )
-     */
-    private $postVote;
+    #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\File", mappedBy: "post", cascade: ["persist", "remove"])]
+    private Collection $files;
 
-    /**
-     * @var integer
-     * @ORM\Column(name="voteUp", type="integer", nullable=true)
-     */
+    private array $filesUploaded;
 
-    private $voteUp;
+    private bool $addSubscription;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Yosimitso\WorkingForumBundle\Entity\File", mappedBy="post", cascade={"persist","remove"})
-     *
-     * @var ArrayCollection
-     */
-    private $files;
-
-    /**
-     *
-     */
-    private $filesUploaded;
-
-    /**
-     * @var boolean
-     */
-    private $addSubscription;
-
-
-
-    /**
-     * Post constructor.
-     * @param UserInterface|null $user
-     * @param Thread|null $thread
-     */
     public function __construct(UserInterface $user = null, Thread $thread = null)
     {
-        $this->setCdate(new \DateTime)
+        $this->files = new ArrayCollection();
+        $this->postReport = new ArrayCollection();
+        $this->postVote = new ArrayCollection();
+        $this->addSubscription = false;
+        $this->setCdate(new DateTime)
             ->setPublished(1)
             ->setIp(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 0);
 
@@ -145,239 +77,161 @@ class Post
         if (!is_null($thread)) {
             $this->setThread($thread);
         }
+
+        $this->moderateReason = null;
     }
 
-    /**
-     * @return integer
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param Thread $thread
-     *
-     * @return Post
-     */
-    public function setThread(Thread $thread)
+    public function setThread(?Thread $thread): self
     {
         $this->thread = $thread;
 
         return $this;
     }
 
-    /**
-     * @return Thread
-     */
-    public function getThread()
+    public function getThread(): ?Thread
     {
         return $this->thread;
     }
 
-    /**
-     * @param string $content
-     *
-     * @return Post
-     */
-    public function setContent($content)
+    public function setContent(string $content): self
     {
         $this->content = htmlentities(strip_tags($content));
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getContent()
+    public function getContent(): string
     {
         return html_entity_decode($this->content);
     }
 
-    /**
-     * @return bool
-     */
-    public function isPublished()
+    public function isPublished(): bool
     {
-        return $this->published;
+        return (bool) $this->published;
     }
 
-    /**
-     * @param bool $published
-     *
-     * @return Post
-     */
-    public function setPublished($published)
+    public function setPublished(?bool $published): self
     {
         $this->published = $published;
 
         return $this;
     }
 
-
-    /**
-     * @return UserInterface
-     */
-    public function getUser()
+    public function getUser(): UserInterface
     {
         return $this->user;
     }
 
-    /**
-     * @param UserInterface $user
-     *
-     * @return Post
-     */
-    public function setUser(UserInterface $user)
+    public function setUser(UserInterface $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCdate()
+    public function getCdate(): DateTimeInterface
     {
         return $this->cdate;
     }
 
-    /**
-     * @param \DateTime $cdate
-     *
-     * @return Post
-     */
-    public function setCdate(\DateTime $cdate)
+    public function setCdate(DateTime $cdate): self
     {
         $this->cdate = $cdate;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getIp()
+    public function getIp(): string
     {
         return $this->ip;
     }
 
-    /**
-     * @param mixed $ip
-     *
-     * @return Post
-     */
-    public function setIp($ip)
+    public function setIp(string $ip): self
     {
         $this->ip = htmlentities($ip);
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getModerateReason()
+    public function getModerateReason(): ?string
     {
         return $this->moderateReason;
     }
 
-    /**
-     * @param string $moderateReason
-     *
-     * @return Post
-     */
-    public function setModerateReason($moderateReason)
+    public function setModerateReason(?string $moderateReason): self
     {
         $this->moderateReason = $moderateReason;
 
         return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getPostReport()
+    public function getPostReport(): Collection
     {
         return $this->postReport;
     }
     
-    public function addPostReport(PostReport $postReport)
+    public function addPostReport(PostReport $postReport): self
     {
         $this->postReport[] = $postReport;
         
         return $this;
     }
     
-    public function removePostReport($index)
+    public function removePostReport(int $index): self
     {
         unset($this->postReport[$index]);
         
         return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getPostVote()
+    public function getPostVote(): Collection
     {
         return $this->postVote;
     }
 
-    public function addPostVote(PostVote $postVote)
+    public function addPostVote(PostVote $postVote): self
     {
         $this->postVote[] = $postVote;
 
         return $this;
     }
 
-    public function removePostVote($index)
+    public function removePostVote(int $index): self
     {
         unset($this->postVote[$index]);
 
         return $this;
     }
 
-
-    /**
-     * @return int
-     */
-
-    public function getVoteUp()
+    public function getVoteUp(): int
     {
-        return $this->voteUp;
+        return (int) $this->voteUp;
     }
 
-    public function setVoteUp($voteUp)
+    public function setVoteUp(?int $voteUp): self
     {
         $this->voteUp = $voteUp;
         
         return $this;
     }
-    /**
-     * @return Post
-     */
 
-    public function addVoteUp()
+    public function addVoteUp(): self
     {
         $this->voteUp += 1;
         return $this;
     }
 
-    /**
- * @return ArrayCollection
- */
-    public function getFiles()
+    public function getFiles(): Collection
     {
         return $this->files;
     }
 
-    /**
-     * @return Post
-     */
-    public function addFile($files)
+    public function addFile(array|File $files): self
     {
         if (is_array($files)) {
             foreach ($files as $file) {
@@ -390,57 +244,40 @@ class Post
         return $this;
     }
     
-    public function removeFile($index)
+    public function removeFile(int $index): self
     {
         unset($this->files[$index]);
+
+        return $this;
     }
 
-    /**
-     * @param filesUploaded
-     *
-     * @return Post
-     */
-    public function setFilesUploaded($filesUploaded)
+    public function setFilesUploaded(array $filesUploaded): self
     {
         $this->filesUploaded = $filesUploaded;
 
         return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getFilesUploaded()
+    public function getFilesUploaded(): array
     {
         return $this->filesUploaded;
     }
 
-    /**
-     * @param $file
-     * @return $this
-     */
-    public function addFilesUploaded($file)
+    public function addFilesUploaded(File $file): self
     {
         $this->filesUploaded[] = $file;
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getAddSubscription()
+    public function getAddSubscription(): bool
     {
         return $this->addSubscription;
     }
 
-    /**
-     * @param boolean $addSubscription
-     */
-    public function setAddSubscription($addSubscription)
+    public function setAddSubscription(bool $addSubscription): self
     {
         $this->addSubscription = $addSubscription;
+
+        return $this;
     }
-
-
-
 }

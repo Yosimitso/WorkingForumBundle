@@ -3,156 +3,94 @@
 namespace Yosimitso\WorkingForumBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class Forum
- *
- * @package Yosimitso\WorkingForumBundle\Entity
- *
- * @ORM\Table(name="workingforum_forum")
- * @ORM\Entity()
- */
+#[ORM\Table(name: "workingforum_forum")]
+#[ORM\Entity]
 class Forum
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private int $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     * @Assert\NotBlank(message="forum.not_blank")
-     */
-    private $name;
+    #[ORM\Column(name: "name", type: "string", length: 255)]
+    #[Assert\NotBlank(message: "forum.not_blank")]
+    private string $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="slug", type="string", length=255)
-     */
-    private $slug;
+    #[ORM\Column(name: "slug", type: "string", length: 255)]
+    private string $slug;
 
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Yosimitso\WorkingForumBundle\Entity\Subforum",
-     *     mappedBy="forum",
-     *     cascade={"persist","remove"},
-     *     orphanRemoval=true
-     * )
-     */
-    private $subForum;
+    #[ORM\OneToMany(mappedBy: "forum", targetEntity: "Yosimitso\WorkingForumBundle\Entity\Subforum", cascade: ["persist", "remove"], orphanRemoval: true)]
+    private Collection $subForum;
 
-    /**
-     * @return integer
-     */
-    public function getId()
+    public function __construct()
+    {
+        $this->subForum = new ArrayCollection();
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return Forum
-     */
-    public function setName($name)
+    public function setName(string $name): Forum
     {
         $this->name = $name;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getSubforum()
+    public function getSubforum(): Collection
     {
         return $this->subForum;
     }
 
-    /**
-     * @param Subforum $subforum
-     *
-     * @return Forum
-     */
-    public function addSubForum(Subforum $subforum)
+    public function addSubForum(Subforum $subforum): self
     {
         $this->subForum[] = $subforum;
 
         return $this;
     }
 
-    /**
-     * @param int $index
-     *
-     * @return Forum
-     */
-    public function removeSubForum($index)
+    public function removeSubForum(int $index): self
     {
         $this->subForum->remove($index);
 
         return $this;
     }
 
-    public function setSubForum(array $subforums)
+    public function setSubForum(array $subforums): self
     {
         $this->subForum = $subforums;
 
         return $this;
     }
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     *
-     * @return Forum
-     */
-    public function setSlug($slug)
+
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    /**
-     * Get slug
-     *
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return mixed|string
-     */
-    public function generateSlug($name)
+    public function generateSlug(string $name): string
     {
         $this->slug = Slugify::convert($name);
 
         return $this->slug;
     }
-
 }

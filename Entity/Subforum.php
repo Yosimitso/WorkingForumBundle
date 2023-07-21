@@ -3,169 +3,97 @@
 namespace Yosimitso\WorkingForumBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
 use Symfony\Component\Validator\Constraints as Assert;
+use DateTime;
+use DateTimeInterface;
 
-/**
- * Class Subforum
- *
- * @package Yosimitso\WorkingForumBundle\Entity
- *
- * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Repository\SubforumRepository")
- * @ORM\Table(name="workingforum_subforum")
- */
+#[ORM\Entity(repositoryClass: "Yosimitso\WorkingForumBundle\Repository\SubforumRepository")]
+#[ORM\Table(name: "workingforum_subforum")]
 class Subforum
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private int $id;
 
-    /**
-     * @var string
-     * @ORM\Column(name="description", type="string", length=255, nullable=true)
-     */
-    private $description;
+    #[ORM\Column(name: "description", type: "string", length: 255, nullable: true)]
+    private ?string $description;
 
-    /**
-     * @var Forum
-     *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Forum", inversedBy="subForum")
-     * @ORM\JoinColumn(name="forum_id", referencedColumnName="id")
-     */
-    private $forum;
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Forum", inversedBy: "subForum")]
+    #[ORM\JoinColumn(name: "forum_id", referencedColumnName: "id")]
+    private Forum $forum;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string")
-     * @Assert\NotBlank()
-     */
-    private $name;
+    #[ORM\Column(name: "name", type: "string")]
+    #[Assert\NotBlank]
+    private string $name;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="nb_thread", type="integer", nullable=true)
-     */
-    private $nbThread;
+    #[ORM\Column(name: "nb_thread", type: "integer", nullable: true)]
+    private ?int $nbThread;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="slug", type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $slug;
+    #[ORM\Column(name: "slug", type: "string", length: 255)]
+    #[Assert\NotBlank]
+    private string $slug;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="nb_post", type="integer", nullable=true)
-     */
-    private $nbPost;
+    #[ORM\Column(name: "nb_post", type: "integer", nullable: true)]
+    private ?int $nbPost;
 
-    /**
-     * @var \Datetime
-     * @ORM\Column(name="last_reply_date", type="datetime", nullable=true)
-     *
-     */
-    private $lastReplyDate;
+    #[ORM\Column(name: "last_reply_date", type: "datetime", nullable: true)]
+    private ?DateTimeInterface $lastReplyDate;
 
-    /**
-     * @var UserInterface|null
-     *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
-     * @ORM\JoinColumn(name="lastReplyUser", referencedColumnName="id", nullable=true)
-     */
-    private $lastReplyUser;
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Yosimitso\WorkingForumBundle\Entity\Thread",
-     *     mappedBy="subforum",
-     *     cascade={"remove"}
-     * )
-     */
-    private $thread;
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface")]
+    #[ORM\JoinColumn(name: "lastReplyUser", referencedColumnName: "id", nullable: true)]
+    private ?UserInterface $lastReplyUser;
 
-    /** @var ArrayCollection
-     * @ORM\Column(name="allowed_roles",type="array", nullable=true)
-     */
+    #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Thread", mappedBy: "subforum", cascade: ["remove"])]
+    private Collection $thread;
 
-    private $allowedRoles;
+    #[ORM\Column(name: "allowed_roles", type: "array", nullable: true)]
+    private ?array $allowedRoles;
 
-    /**
-     * @return integer
-     */
-    public function getId()
+    public function __construct()
+    {
+        $this->allowedRoles = [];
+        $this->lastReplyUser = null;
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function __construct()
-    {
-        $this->allowedRoles = new ArrayCollection;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     *
-     * @return Subforum
-     */
-    public function setDescription($description)
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    /**
-     * @return Forum
-     */
-    public function getForum()
+    public function getForum(): Forum
     {
         return $this->forum;
     }
 
-    /**
-     * @param Forum $forum
-     *
-     * @return Subforum
-     */
-    public function setForum(Forum $forum)
+    public function setForum(Forum $forum): self
     {
         $this->forum = $forum;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -176,205 +104,133 @@ class Subforum
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getNbThread()
+    public function getNbThread(): ?int
     {
         return $this->nbThread;
     }
 
-    /**
-     * @param mixed $nbThread
-     *
-     * @return Subforum
-     */
-    public function setNbThread($nbThread)
+    public function setNbThread(?int $nbThread): self
     {
         $this->nbThread = $nbThread;
 
         return $this;
     }
 
-    public function addNbThread($nb)
+    public function addNbThread(int $nb): self
     {
         $this->nbThread += $nb;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): string
     {
         return $this->slug;
     }
 
-    /**
-     * @param string $slug
-     *
-     * @return Subforum
-     */
-    public function setSlug($slug)
+    public function setSlug(string $slug): self
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getNbPost()
+    public function getNbPost(): ?int
     {
         return $this->nbPost;
     }
 
-    /**
-     * @param mixed $nbPost
-     *
-     * @return Subforum
-     */
-    public function setNbPost($nbPost)
+    public function setNbPost(?int $nbPost): self
     {
         $this->nbPost = $nbPost;
 
         return $this;
     }
 
-    public function addNbPost($nb)
+    public function addNbPost(int $nb): self
     {
         $this->nbPost += $nb;
 
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getLastReplyDate()
+    public function getLastReplyDate(): ?DateTimeInterface
     {
         return $this->lastReplyDate;
     }
 
-    /**
-     * @param mixed $lastReplyDate
-     *
-     * @return Subforum
-     */
-    public function setLastReplyDate($lastReplyDate)
+    public function setLastReplyDate(?DateTimeInterface $lastReplyDate)
     {
         $this->lastReplyDate = $lastReplyDate;
 
         return $this;
     }
 
-    /**
-     * @return UserInterface
-     */
-    public function getLastReplyUser()
+    public function getLastReplyUser(): ?UserInterface
     {
         return $this->lastReplyUser;
     }
 
-    /**
-     * @param UserInterface|null $lastReplyUser
-     *
-     * @return Subforum
-     */
-    public function setLastReplyUser(?UserInterface $lastReplyUser)
+
+    public function setLastReplyUser(?UserInterface $lastReplyUser): self
     {
         $this->lastReplyUser = $lastReplyUser;
 
         return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getThread()
+    public function getThread(): Collection
     {
         return $this->thread;
     }
 
-    /**
-     * @param ArrayCollection $thread
-     *
-     * @return Subforum
-     */
-    public function setThread(ArrayCollection $thread)
+    public function setThread(Collection $thread): self
     {
         $this->thread = $thread;
 
         return $this;
     }
 
-    /**
-     * @param Thread $thread
-     *
-     * @return $this
-     */
-    public function addThread(Thread $thread)
+    public function addThread(Thread $thread): self
     {
         $this->thread[] = $thread;
 
         return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getAllowedRoles()
+    public function getAllowedRoles(): ?array
     {
         return $this->allowedRoles;
     }
 
-    /**
-     * @param array $allowedRoles
-     *
-     * @return Subforum
-     */
-    public function setAllowedRoles(array $allowedRoles)
+    public function setAllowedRoles(?array $allowedRoles): self
     {
         $this->allowedRoles = $allowedRoles;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasAllowedRoles()
+    public function hasAllowedRoles(): bool
     {
         // Check if there is one or more allowed role and is not an empty one
-        if (!is_null($this->allowedRoles) && count($this->allowedRoles) >= 1 && !empty($this->allowedRoles[0])) {
+        if (!is_null($this->allowedRoles) && !empty($this->allowedRoles[0]) && count($this->allowedRoles) >= 1) {
             return true;
         }
 
         return false;
     }
 
-    /**
-     * @param UserInterface $user
-     * @return bool
-     * Update statistic on new post
-     */
-    public function newPost(UserInterface $user)
+    public function newPost(UserInterface $user): bool
     {
         $this->setNbPost($this->getNbPost() + 1)
-            ->setLastReplyDate(new \DateTime)
+            ->setLastReplyDate(new DateTime)
             ->setLastReplyUser($user);
 
         return true;
     }
 
-    /**
-     * @param UserInterface $user
-     * @return bool
-     * Update statistic on new post
-     */
-    public function newThread(UserInterface $user)
+    /** Update statistic on new post */
+    public function newThread(UserInterface $user): bool
     {
         $this->setNbPost($this->getNbPost() + 1)
             ->setNbThread($this->getNbThread() + 1)

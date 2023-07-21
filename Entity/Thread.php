@@ -3,141 +3,76 @@
 namespace Yosimitso\WorkingForumBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use DateTime;
+use DateTimeInterface;
 
-/**
- * Thread
- *
- * @ORM\Table(name="workingforum_thread")
- * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Repository\ThreadRepository")
- */
+#[ORM\Entity(repositoryClass: "Yosimitso\WorkingForumBundle\Repository\ThreadRepository")]
+#[ORM\Table(name: "workingforum_thread")]
 class Thread
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private int $id;
 
-    /**
-     * @var Subforum
-     *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Subforum", inversedBy="thread")
-     * @ORM\JoinColumn(name="subforum_id", referencedColumnName="id", nullable=false)
-     */
-    private $subforum;
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Subforum", inversedBy: "thread")]
+    #[ORM\JoinColumn(name: "subforum_id", referencedColumnName: "id", nullable: false)]
+    private Subforum $subforum;
 
-    /**
-     * @var UserInterface
-     *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
-     */
-    private $author;
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface")]
+    #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id", nullable: true)]
+    private ?UserInterface $author;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="cdate", type="datetime")
-     * @Assert\NotBlank()
-     */
-    private $cdate;
+    #[ORM\Column(name: "cdate", type: "datetime")]
+    #[Assert\NotBlank]
+    private DateTimeInterface $cdate;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="nbReplies", type="integer")
-     */
-    private $nbReplies;
+    #[ORM\Column(name: "nbReplies", type: "integer")]
+    private int $nbReplies;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="lastReplyDate", type="datetime")
-     */
-    private $lastReplyDate;
+    #[ORM\Column(name: "lastReplyDate", type: "datetime")]
+    private DateTimeInterface $lastReplyDate;
 
-    /**
-     * @var UserInterface
-     *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface", cascade={"persist"})
-     * @ORM\JoinColumn(name="lastReplyUser", referencedColumnName="id", nullable=true)
-     */
-    private $lastReplyUser;
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface", cascade: ["persist"])]
+    #[ORM\JoinColumn(name: "lastReplyUser", referencedColumnName: "id", nullable: true)]
+    private ?UserInterface $lastReplyUser;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="resolved", type="boolean", nullable=true)
-     */
-    private $resolved;
+    #[ORM\Column(name: "resolved", type: "boolean", nullable: true)]
+    private ?bool $resolved;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="locked", type="boolean", nullable=true)
-     */
-    private $locked;
+    #[ORM\Column(name: "locked", type: "boolean", nullable: true)]
+    private ?bool $locked;
 
-    /**
-     * @var string
-     * @ORM\Column(name="label", type="string")
-     * @Assert\NotBlank(message="thread.label.not_blank")
-     * @Assert\Length(
-     *     min=5,
-     *     minMessage="thread.label.min_length",
-     *     max=50,
-     *     maxMessage="thread.label.max_length"
-     * )
-     */
-    private $label;
+    #[ORM\Column(name: "label", type: "string")]
+    #[Assert\NotBlank(message: "thread.label.not_blank")]
+    #[Assert\Length(min: 5, minMessage: "thread.label.min_length", max: 50, maxMessage: "thread.label.max_length")]
+    private string $label;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="sublabel", type="string")
-     */
-    private $subLabel;
+    #[ORM\Column(name: "sublabel", type: "string")]
+    private string $subLabel;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="slug", type="string", nullable=true)
-     */
-    private $slug;
+    #[ORM\Column(name: "slug", type: "string", nullable: true)]
+    private ?string $slug;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Yosimitso\WorkingForumBundle\Entity\Post", mappedBy="thread", cascade={"persist","remove"})
-     *
-     * @var ArrayCollection
-     */
-    private $post;
+    #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Post", mappedBy: "thread", cascade: ["persist", "remove"])]
+    private Collection $post;
 
-    /**
-     * @var boolean
-     * @ORM\Column(name="pin", type="boolean", nullable=true)
-     */
-    private $pin;
+    #[ORM\Column(name: "pin", type: "boolean", nullable: true)]
+    private ?bool $pin;
 
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
+    #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Subscription", mappedBy: "thread", cascade: ["remove"])]
+    private Collection $subscriptions;
+
+    public function __construct(UserInterface $user = null, Subforum $subforum = null)
     {
-        return $this->id;
-    }
-
-    public function __construct(UserInterface $user = null, Subforum $subforum = null, Post $post = null)
-    {
+        $this->locked = false;
         $this->post = new ArrayCollection;
-        $this->setLastReplyDate(new \DateTime)
-            ->setCdate(new \DateTime)
+        $this->subscriptions = new ArrayCollection;
+        $this->setLastReplyDate(new DateTime)
+            ->setCdate(new DateTime)
             ->setNbReplies(1) // A THREAD MUST HAVE AT LEAST 1 POST
             ;
 
@@ -152,131 +87,90 @@ class Thread
             ;
         }
 
-        if (!is_null($post)) {
-            $this->addPost($post);
-        }
-
         $this->pin = false;
     }
 
-    /**
-     * @param Subforum $subforum
-     *
-     * @return Thread
-     */
-    public function setSubforum(Subforum $subforum)
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function setSubforum(Subforum $subforum): self
     {
         $this->subforum = $subforum;
 
         return $this;
     }
 
-    /**
-     * @return Subforum
-     */
-    public function getSubforum()
+    public function getSubforum(): Subforum
     {
         return $this->subforum;
     }
 
-    /**
-     * @param \DateTime $cdate
-     *
-     * @return Thread
-     */
-    public function setCdate($cdate)
+    public function setCdate(DateTimeInterface $cdate): self
     {
         $this->cdate = $cdate;
 
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCdate()
+    public function getCdate(): DateTimeInterface
     {
         return $this->cdate;
     }
 
-    /**
-     * @param integer $nbReplies
-     *
-     * @return Thread
-     */
-    public function setNbReplies($nbReplies)
+    public function setNbReplies(int $nbReplies): self
     {
         $this->nbReplies = $nbReplies;
 
         return $this;
     }
 
-    /**
-     * @return integer
-     */
-    public function getNbReplies()
+    public function getNbReplies(): int
     {
         return $this->nbReplies;
     }
 
-    /**
-     * @param int $nb
-     *
-     * @return $this
-     */
-    public function addNbReplies($nb)
+    public function addNbReplies(int $nb): self
     {
         $this->nbReplies += $nb;
 
         return $this;
     }
 
-    /**
-     * @param \DateTime $lastReplyDate
-     *
-     * @return Thread
-     */
-    public function setLastReplyDate($lastReplyDate)
+    public function setLastReplyDate(DateTimeInterface $lastReplyDate): self
     {
         $this->lastReplyDate = $lastReplyDate;
 
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getLastReplyDate()
+    public function getLastReplyDate(): DateTimeInterface
     {
         return $this->lastReplyDate;
     }
 
-    /**
-     * @return UserInterface
-     */
-    public function getLastReplyUser()
+
+    public function getLastReplyUser(): ?UserInterface
     {
         return $this->lastReplyUser;
     }
 
-    /**
-     * @param UserInterface $lastReplyUser
-     *
-     * @return Thread
-     */
-    public function setLastReplyUser(UserInterface $lastReplyUser)
+    public function setLastReplyUser(?UserInterface $lastReplyUser): self
     {
         $this->lastReplyUser = $lastReplyUser;
 
         return $this;
     }
 
-    /**
-     * @param boolean $resolved
-     *
-     * @return Thread
-     */
-    public function setResolved($resolved)
+    public function setResolved(bool $resolved): Thread
     {
         $this->resolved = $resolved;
 
@@ -291,164 +185,107 @@ class Thread
         return $this->resolved;
     }
 
-    /**
-     * @param boolean $locked
-     *
-     * @return Thread
-     */
-    public function setLocked($locked)
+    public function setLocked(?bool $locked): self
     {
         $this->locked = $locked;
 
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getLocked()
+    public function getLocked(): bool
     {
-        return $this->locked;
+        return (bool) $this->locked;
     }
 
-    /**
-     * @param string $label
-     *
-     * @return Thread
-     */
-    public function setLabel($label)
+    public function setLabel(string $label): self
     {
         $this->label = $label;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
 
-    /**
-     * @param string $subLabel
-     *
-     * @return Thread
-     */
-    public function setSublabel($subLabel)
+    public function setSublabel(string $subLabel): self
     {
         $this->subLabel = $subLabel;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSubLabel()
+    public function getSubLabel(): string
     {
         return $this->subLabel;
     }
 
-    /**
-     * @return UserInterface
-     */
-    public function getAuthor()
+    public function getAuthor(): ?UserInterface
     {
         return $this->author;
     }
 
-    /**
-     * @param UserInterface $author
-     *
-     * @return Thread
-     */
-    public function setAuthor(UserInterface $author)
+    public function setAuthor(?UserInterface $author): self
     {
         $this->author = $author;
 
         return $this;
     }
 
-    /**
-     * @param string $slug
-     *
-     * @return Thread
-     */
-    public function setSlug($slug)
+    public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSlug()
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
 
-    /**
-     * @param int $post
-     *
-     * @return Thread
-     */
-    public function setPost($post)
-    {
-        $this->post = $post;
+//    public function setPost(Collection $post): self
+//    {
+//        $this->post = $post;
+//
+//        return $this;
+//    }
 
-        return $this;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getPost()
+    public function getPost(): Collection
     {
         return $this->post;
     }
 
-    /**
-     * @param Post $post
-     *
-     * @return $this
-     */
-    public function addPost(Post $post)
+    public function addPost(Post $post): self
     {
         $this->post->add($post);
 
         return $this;
     }
 
-    /**
-     * @param boolean $pin
-     *
-     * @return Thread
-     */
-    public function setPin($pin)
+    public function removePost(Post $post): self
+    {
+        $this->post->removeElement($post);
+
+        return $this;
+    }
+
+    public function setPin(?bool $pin): self
     {
         $this->pin = $pin;
 
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getPin()
+    public function getPin(): bool
     {
-        return $this->pin;
+        return (bool) $this->pin;
     }
 
-    /**
-     * @param \Yosimitso\WorkingForumBundle\Entity\UserInterface $user
-     * @return bool
-     * Update statistic on new post
-     */
-    public function addReply(UserInterface $user) {
+    /** Update statistic on new post */
+    public function addReply(UserInterface $user): bool
+    {
         $this->addNbReplies(1)
             ->setLastReplyDate(new \DateTime)
             ->setLastReplyUser($user);
@@ -456,4 +293,15 @@ class Thread
         return true;
     }
 
+    public function getSubscriptions(): Collection
+    {
+        return $this->subscriptions;
+    }
+
+    public function addSubscription(Subscription $subscription): self
+    {
+        $this->subscriptions->add($subscription);
+
+        return $this;
+    }
 }

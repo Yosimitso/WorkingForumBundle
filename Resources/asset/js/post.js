@@ -64,7 +64,7 @@ jQuery(document).ready(() => {
      */
     getSavedPostEditor = () => {
         const postEditor = document.getElementsByClassName('wf_textarea_post')[0],
-            threadId = document.getElementsByClassName('wf_thread')[0].getAttribute('data-id'),
+            threadId = document.getElementsByClassName('wf_thread').length ? document.getElementsByClassName('wf_thread')[0].getAttribute('data-id') : 'forum_rules',
             postSaved = getCookie(`post_editor_${threadId}`);
 
         if (postSaved) {

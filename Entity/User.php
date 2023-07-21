@@ -5,64 +5,50 @@ namespace Yosimitso\WorkingForumBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Class User
- *
- * @package Yosimitso\WorkingForumBundle\Entity
- *
- * @ORM\MappedSuperclass
- *
- */
+#[ORM\MappedSuperclass]
  abstract class User implements UserInterface
 {
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Assert\NotBlank]
     protected $id;
 
     /**
-     * @ORM\Column(name="username", type="string", length=255, unique=true)
      * @var string
      */
+    #[ORM\Column(name: "username", type: "string", length: 255, unique: true)]
     protected $username;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="avatar_url", type="string", nullable=true)
      */
+    #[ORM\Column(name: "avatar_url", type: "string", nullable: true)]
     protected $avatarUrl;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="nb_post", type="integer", nullable=true)
      */
+    #[ORM\Column(name: "nb_post", type: "integer", nullable: true)]
     protected $nbPost;
 
     /**
      *
      * @var boolean
-     *
-     * @ORM\Column(name="banned", type="boolean", nullable=true)
      */
+    #[ORM\Column(name: "banned", type: "boolean", nullable: true)]
     protected $banned;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="lastReplyDate", type="datetime", nullable=true)
      */
+    #[ORM\Column(name: "lastReplyDate", type: "datetime", nullable: true)]
     private $lastReplyDate;
 
     /**
      * @var string
-     * @ORM\Column(name="email_address", type="string",nullable=true)
      */
-
+    #[ORM\Column(name: "email_address", type: "string", nullable: true)]
     protected $emailAddress;
 
     /**
@@ -93,7 +79,7 @@ use Symfony\Component\Validator\Constraints as Assert;
      *
      * @return User
      */
-    public function setUsername($username)
+    public function setUsername(string $username)
     {
         $this->username = $username;
 

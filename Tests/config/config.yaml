@@ -22,25 +22,28 @@ yosimitso_working_forum:
 
 doctrine:
   dbal:
-    # configure these for your database server
     driver: 'pdo_mysql'
     server_version: '5.7'
     charset: utf8mb4
-
-    # With Symfony 3.3, remove the `resolve:` prefix
     url: '%env(resolve:DATABASE_URL)%'
   orm:
     auto_generate_proxy_classes: '%kernel.debug%'
     naming_strategy: doctrine.orm.naming_strategy.underscore
-#    auto_mapping: true
+    auto_mapping: true
     resolve_target_entities:
-      Yosimitso\WorkingForumBundle\Entity\UserInterface: Yosimitso\WorkingForumBundle\Entity\UserTest
+      Yosimitso\WorkingForumBundle\Entity\UserInterface: Yosimitso\WorkingForumBundle\Tests\Entity\UserTest
     mappings:
       Yosimitso\WorkingForumBundle:
         is_bundle: false
-        type: annotation
+        type: attribute
         dir: '%kernel.project_dir%/Entity'
         prefix: 'Yosimitso\WorkingForumBundle\Entity'
+        alias: YosimitsoWorkingForumBundle
+      Yosimitso\WorkingForumBundle\Tests:
+        is_bundle: false
+        type: attribute
+        dir: '%kernel.project_dir%/Tests/Entity'
+        prefix: 'Yosimitso\WorkingForumBundle\Tests\Entity'
         alias: YosimitsoWorkingForumBundle
 
 framework:
@@ -48,7 +51,8 @@ framework:
   validation: { enable_annotations: true }
   secret: '%env(APP_SECRET)%'
   session:
-    storage_id: session.storage.mock_file
+    handler_id: ~
+    storage_factory_id: session.storage.factory.mock_file
 
 knp_paginator:
   page_range: 1                      # default page range used in pagination control
@@ -62,26 +66,23 @@ knp_paginator:
     sortable: "@KnpPaginator/Pagination/sortable_link.html.twig" # sort link template
 
 security:
-  encoders:
+  password_hashers:
     Symfony\Component\Security\Core\User\User: plaintext
-    Yosimitso\WorkingForumBundle\Entity\UserTest: plaintext
+    Yosimitso\WorkingForumBundle\Tests\Entity\UserTest: plaintext
 
   role_hierarchy:
     ROLE_ADMIN:       ROLE_USER
     ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
   providers:
-    # … vous pouvez supprimer le fournisseur « in_memory »
-    # Et voici notre nouveau fournisseur :
     main:
       entity:
-        class:    Yosimitso\WorkingForumBundle\Entity\UserTest
+        class:    Yosimitso\WorkingForumBundle\Tests\Entity\UserTest
         property: username
 
   firewalls:
     main:
       pattern: ^/
-      anonymous: true
       provider: main
       http_basic: ~
 #      form_login:
@@ -93,7 +94,11 @@ security:
 #        path:   logout
 #        target: /
 
-sensio_framework_extra:
-  router:      { annotations: true }
-  security:    { annotations: true }
+#sensio_framework_extra:
+#  router:      { annotations: true }
+#  security:    { annotations: true }
 
+
+#  Yosimitso\WorkingForumBundle\:
+#    resource: '../{Controller,Entity,Event,Form,ParamConverter,Repository,Security,Service,Twig,Util}'
+#    exclude: '../Entity/UserTest.php'

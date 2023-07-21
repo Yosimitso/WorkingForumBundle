@@ -6,11 +6,6 @@ use Doctrine\ORM\EntityRepository;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 
-/**
- * Class PostVoteRepository
- *
- * @package Yosimitso\WorkingForumBundle\Repository
- */
 class PostVoteRepository extends EntityRepository
 {
     public function getThreadVoteByUser(Thread $thread, ?UserInterface $user) : array

@@ -1,7 +1,7 @@
 WorkingForumBundle
 ==================
 
-Setup for Symfony 4 / 5 
+Setup for Symfony 5 / 6
 ------------------
 
 This bundle use KnpPaginatorBundle for pagination, KnpMarkdown for markdown rendering
@@ -18,13 +18,7 @@ framework:
         fallbacks:
             - 'en'
 ````
-- If you want to enable threads subscription, you must have switfmailer configured
-- SF4 ONLY : you have to define Twig as your templating engine in config/packages/framework.yaml
-````yml
-framework:
-    templating:
-    engines: ['twig']
-````
+- If you want to enable threads subscription, you must have "mailer" configured
 
 **Steps**
 
@@ -56,7 +50,7 @@ please also check if your PHP configuration allow file upload through forms and 
 
 3/ Run :
 ````bash
-composer require "yosimitso/workingforumbundle":"^3.0"
+composer require "yosimitso/workingforumbundle":"^5.0"
 ````
 
 4/ Create the config file for KNP Paginator "config/packages/knp_paginator.yaml" with :
@@ -81,7 +75,7 @@ doctrine:
             Yosimitso\WorkingForumBundle\Entity\UserInterface: You\YourUserBundle\Entity\YourUser
 ````
 
-6/ Your User Entity needs to extends : Yosimitso\WorkingForumBundle\Entity\User
+6/ Your User Entity needs to extend : Yosimitso\WorkingForumBundle\Entity\User
 
 The id property must be protected
 
@@ -89,16 +83,11 @@ Example :
 ````php
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table(name="user")
- */
+ #[ORM\Entity(repositoryClass: "App\Repository\UserRepository")]
+ #[ORM\Table(name: "user")]
    class User extends \Yosimitso\WorkingForumBundle\Entity\User
 {
-    /**
-     * @var integer
-     */
-    protected $id;
+    protected int $id;
 
     // REST OF YOUR ENTITY
 }

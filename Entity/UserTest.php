@@ -1,76 +1,48 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\Entity;
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use \Symfony\Component\Security\Core\User\UserInterface;
+#[ORM\Table(name: "users")]
 
-/**
- * Used by functionnal tests
- * @ORM\Entity()
- * @ORM\Table(name="users")
- */
-class UserTest extends \Yosimitso\WorkingForumBundle\Entity\User implements UserInterface, EquatableInterface
+class UserTest extends \Yosimitso\WorkingForumBundle\Entity\User implements UserInterface, EquatableInterface, PasswordAuthenticatedUserInterface
 {
 
-    /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\Column(name="username", type="string", length=255, unique=true)
-     */
+
+    #[ORM\Column(name: "username", type: "string", length: 255, unique: true)]
     protected $username;
 
-    /**
-     * @var string
-     * @ORM\Column(name="email_address", type="string",nullable=true)
-     */
-
-    protected $emailAddress;
-
-    /**
-     * @ORM\Column(name="password", type="string", length=255)
-     */
+    #[ORM\Column(name: "password", type: "string", length: 255)]
     protected $password;
 
-    /**
-     * @ORM\Column(name="salt", type="string", length=255)
-     */
+
+    #[ORM\Column(name: "salt", type: "string", length: 255)]
     protected $salt;
 
-    /**
-     * @ORM\Column(name="roles", type="array")
-     */
-    public $roles = array();
+    #[ORM\Column(name: "roles", type: "array")]
+    protected $roles = array();
 
-    /**
-     * @var string
-     * @ORM\Column(name="avatar_url", type="string",nullable=true)
-     */
+    #[ORM\Column(name: "avatar_url", type: "string", nullable: true)]
     protected $avatarUrl;
 
     /**
      * @var integer
-     * @ORM\Column(name="nb_post", type="integer",nullable=true)
      */
+    #[ORM\Column(name: "nb_post", type: "integer", nullable: true)]
     protected $nbPost;
 
-    /**
-     * @return string
-     */
-    public function getEmailAddress()
-    {
-        return $this->emailAddress;
-    }
 
 
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
@@ -79,33 +51,14 @@ class UserTest extends \Yosimitso\WorkingForumBundle\Entity\User implements User
         return $this->salt;
     }
 
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-        return $this;
-    }
-
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword($password)
-    {
-        $this->password = $password;
-        return $this;
-    }
-
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->roles;
-    }
-
-    public function addRole($role)
-    {
-        $this->roles[] = $role;
-
-        return $this;
     }
 
     public function getUsername()
@@ -148,7 +101,7 @@ class UserTest extends \Yosimitso\WorkingForumBundle\Entity\User implements User
         return $this;
     }
 
-    public function isEqualTo(UserInterface $user)
+    public function isEqualTo(UserInterface $user): bool
     {
         if ($this->password !== $user->getPassword()) {
             return false;
@@ -165,23 +118,8 @@ class UserTest extends \Yosimitso\WorkingForumBundle\Entity\User implements User
         return true;
     }
 
-    public function serialize()
+    public function getUserIdentifier(): string
     {
-        return serialize(array(
-            $this->id,
-            $this->password,
-            $this->emailAddress,
-            $this->username,
-        ));
-    }
-
-    public function unserialize($serialized)
-    {
-        list (
-            $this->id,
-            $this->password,
-            $this->emailAddress,
-            $this->username,
-            ) = unserialize($serialized, array('allowed_classes' => false));
+        return $this->getUsername();
     }
 }

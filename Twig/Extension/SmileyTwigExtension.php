@@ -8,27 +8,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-/**
- * Class SmileyTwigExtension
- *
- * @package Yosimitso\WorkingForumBundle\Twig\Extension
- */
 class SmileyTwigExtension extends AbstractExtension
 {
-    /**
-     * @var Packages
-     */
-    private $asset;
+    private string $basePath = '';
 
-    /**
-     * @var string
-     */
-    private $basePath = '';
-
-    /**
-     * @var array
-     */
-    private $listSmiley = [
+    private array $listSmiley = [
         ':smile:'      => 'smile.png',
         ':wink:'       => 'wink.png',
         ':angry:'      => 'angry.png',
@@ -61,20 +45,13 @@ class SmileyTwigExtension extends AbstractExtension
         ':thumbdown:'  => 'thumbdown.png',
     ];
 
-    /**
-     * SmileyTwigExtension constructor.
-     *
-     * @param RequestStack $request_stack
-     * @param Packages $asset
-     */
     public function __construct(
-        RequestStack $request_stack,
-        Packages $asset
+        protected readonly RequestStack $request_stack,
+        protected readonly Packages $asset
     )
     {
         $request = $request_stack->getCurrentRequest();
-        $this->asset = $asset;
-        
+
         if ($request instanceof Request) {
             $this->basePath = $request->getSchemeAndHttpHost();
         } else {
@@ -82,30 +59,19 @@ class SmileyTwigExtension extends AbstractExtension
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getListSmiley()
+    public function getListSmiley(): array
     {
         return $this->listSmiley;
     }
 
-    /**
-     * @return array
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('smiley', [$this, 'smiley']),
         ];
     }
 
-    /**
-     * @param string $text
-     *
-     * @return mixed
-     */
-    public function smiley($text)
+    public function smiley(string $text)
     {
         $list = [];
 
@@ -119,13 +85,7 @@ class SmileyTwigExtension extends AbstractExtension
         return $this->strReplaceAssoc($list, $text);
     }
 
-    /**
-     * @param array $replace
-     * @param string $subject
-     *
-     * @return mixed
-     */
-    function strReplaceAssoc(array $replace, $subject)
+    function strReplaceAssoc(array $replace, string $subject)
     {
         return str_replace(
             array_keys($replace),

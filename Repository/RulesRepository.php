@@ -5,11 +5,6 @@ namespace Yosimitso\WorkingForumBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 
-/**
- * Class RulesRepository
- *
- * @package Yosimitso\WorkingForumBundle\Repository
- */
 class RulesRepository extends EntityRepository
 {
     /**

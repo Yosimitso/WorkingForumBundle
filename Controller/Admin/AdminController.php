@@ -3,26 +3,18 @@
 namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
+use Symfony\Component\Routing\Attribute\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 
-/**
- * Class AdminController
- *
- * @package Yosimitso\WorkingForumBundle\Controller\Admin
- *
- * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
- */
+#[Route('/admin')]
+#[Security('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")')]
 class AdminController extends BaseController
 {
-
-    /** @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @return Response
-     * @throws \Exception
-     */
-    public function indexAction()
+    #[Route('', name: 'workingforum_admin')]
+    public function indexAction(): Response
     {
         $list_forum = $this->em->getRepository(Forum::class)->findAll();
 
@@ -58,7 +50,7 @@ class AdminController extends BaseController
         );
     }
 
-    private function renderSettings($settingsList)
+    private function renderSettings($settingsList): array
     {
         $settingsHtml = [];
 
@@ -119,7 +111,5 @@ class AdminController extends BaseController
         }
 
         return $settingsHtml;
-
     }
-
 }

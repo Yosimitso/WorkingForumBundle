@@ -1,4 +1,4 @@
-Yosimitso\WorkingForumBundle\Entity\UserTest:
+Yosimitso\WorkingForumBundle\Tests\Entity\UserTest:
   user_classic:
     avatar_url: null
     nb_post: 5

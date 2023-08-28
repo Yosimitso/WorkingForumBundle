@@ -10,7 +10,7 @@ use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Form\RulesType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/")
@@ -33,7 +33,6 @@ class ForumController extends BaseController
      * @Route("", name="workingforum_forum")
      * @return Response
      */
-
     public function indexAction()
     {
         $list_forum = $this

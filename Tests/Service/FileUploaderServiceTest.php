@@ -24,12 +24,12 @@ class FileUploaderServiceTest extends WebTestCase
     public function setUp() : void
     {
         $file = $this->getMockBuilder(UploadedFile::class)
-            ->setConstructorArgs(['C:\Users\MyUser\AppData\Local\Temp\php6BA8.tmp', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg', true])
+            ->setConstructorArgs([__DIR__.'/../Mock/file_test.jpg', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg'])
             ->getMock();
 
         $em = $this->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['persist', 'flush'])
+            ->onlyMethods(['persist', 'flush'])
             ->getMock();
 
         $em->method('persist')->willReturn(true);
@@ -38,7 +38,7 @@ class FileUploaderServiceTest extends WebTestCase
 
         $this->translator = $this->getMockBuilder(Translator::class)
                                 ->disableOriginalConstructor()
-                                ->setMethods(['trans'])
+                                ->onlyMethods(['trans'])
                                 ->getMock();
         $this->translator->method('trans')->willReturn('an error occured');
 
@@ -57,7 +57,7 @@ class FileUploaderServiceTest extends WebTestCase
             'accepted_format' => ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/tiff', 'application/pdf'],
             'preview_file' => true
         ];
-        $file = $this->getFileMock('C:\Users\MyUser\AppData\Local\Temp\php6BA8.tmp', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg');
+        $file = $this->getFileMock(__DIR__.'/../Mock/file_test.jpg', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg');
         $fileUploaderService = new FileUploaderService($this->em, $config, $this->translator);
 
         $test = $fileUploaderService->upload([$file], $this->post);
@@ -72,7 +72,7 @@ class FileUploaderServiceTest extends WebTestCase
             'accepted_format' => ['image/gif', 'image/tiff', 'application/pdf'],
             'preview_file' => true
         ];
-        $file = $this->getFileMock('C:\Users\MyUser\AppData\Local\Temp\php6BA8.tmp', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg');
+        $file = $this->getFileMock(__DIR__.'/../Mock/file_test.jpg', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg');
         $fileUploaderService = new FileUploaderService($this->em, $config, $this->translator);
 
         $this->expectException(\Exception::class); // FILE EXTENSION SHOULD NOT BE ACCEPTED
@@ -89,7 +89,7 @@ class FileUploaderServiceTest extends WebTestCase
             'preview_file' => true
         ];
 
-        $file = $this->getFileMock('C:\Users\MyUser\AppData\Local\Temp\php6BA8.tmp', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg', 6294899);
+        $file = $this->getFileMock(__DIR__.'/../Mock/file_test.jpg', 'picture_10201115386585046_1320686413_n.jpg', 'image/jpeg', 6294899);
         $fileUploaderService = new FileUploaderService($this->em, $config, $this->translator);
 
         $this->expectException(\Exception::class);
@@ -105,7 +105,7 @@ class FileUploaderServiceTest extends WebTestCase
             'accepted_format' => ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/tiff', 'application/pdf'],
             'preview_file' => true
         ];
-        $file = $this->getFileMock('C:\Users\MyUser\AppData\Local\Temp\php6BA8.tmp', 'picture/10201115386585046_1320686413_n.jpg', 'image/jpeg'); //INVALID ORIGINAL NAME
+        $file = $this->getFileMock(__DIR__.'/../Mock/file_test.jpg', 'picture/10201115386585046_1320686413_n.jpg', 'image/jpeg'); //INVALID ORIGINAL NAME
         $fileUploaderService = new FileUploaderService($this->em, $config, $this->translator);
 
         $this->expectException(\Exception::class);
@@ -117,12 +117,12 @@ class FileUploaderServiceTest extends WebTestCase
     {
         $file = $this->getMockBuilder(UploadedFile::class)
             ->setConstructorArgs([$path, $originalName , $mimeType, true])
-            ->setMethods(['getMimeType', 'getClientOriginalName', 'getError', 'getSize', 'move'])
+            ->onlyMethods(['getMimeType', 'getClientOriginalName', 'getError', 'getSize', 'move'])
             ->getMock();
 
         $movedFile = $this->getMockBuilder(UploadedFile::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getPath', 'getFilename'])
+            ->onlyMethods(['getPath', 'getFilename'])
             ->getMock();
 
         $movedFile->method('getPath')->willReturn('wf_upload');
@@ -130,7 +130,7 @@ class FileUploaderServiceTest extends WebTestCase
 
         $file->method('getMimeType')->willReturn($mimeType);
         $file->method('getClientOriginalName')->willReturn($originalName);
-        $file->method('getError')->willReturn(false);
+        $file->method('getError')->willReturn(0);
         $file->method('getSize')->willReturn($size);
         $file->method('move')->willReturn($movedFile);
 

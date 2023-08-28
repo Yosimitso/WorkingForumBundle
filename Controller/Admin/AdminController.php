@@ -7,22 +7,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class AdminController
- *
- * @package Yosimitso\WorkingForumBundle\Controller\Admin
- *
+ * @Route("/admin")
  * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
  */
 class AdminController extends BaseController
 {
 
-    /** @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @return Response
-     * @throws \Exception
+    /**
+     * @Route("",  name="workingforum_admin")
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $list_forum = $this->em->getRepository(Forum::class)->findAll();
 

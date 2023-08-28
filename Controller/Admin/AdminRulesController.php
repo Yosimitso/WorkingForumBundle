@@ -9,12 +9,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Yosimitso\WorkingForumBundle\Form\RulesType;
 use Yosimitso\WorkingForumBundle\Form\RulesEditType;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class AdminRulesController
- *
- * @package Yosimitso\WorkingForumBundle\Controller\Admin
- *
  * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
  */
 class AdminRulesController extends BaseController
@@ -22,7 +19,7 @@ class AdminRulesController extends BaseController
     /**
      * @var SmileyTwigExtension
      */
-    private $smileyTwigExtension;
+    private SmileyTwigExtension $smileyTwigExtension;
 
     public function __construct(SmileyTwigExtension $smileyTwigExtension)
     {
@@ -30,8 +27,7 @@ class AdminRulesController extends BaseController
     }
 
     /**
-     *
-     * @return mixed
+     * @Route("/admin/rules",  name="workingforum_admin_forum_rules")
      */
     public function rulesAction()
     {
@@ -47,6 +43,7 @@ class AdminRulesController extends BaseController
 
     /**
      * @Security("is_granted('ROLE_ADMIN')")
+     * @Route("/admin/rules/edit/{lang}",  name="workingforum_admin_edit_forum_rules")
      */
     public function rulesEditAction(Request $request, $lang)
     {
@@ -87,6 +84,7 @@ class AdminRulesController extends BaseController
     }
 
     /**
+     * @Route("/admin/rules/new/{lang}",  name="workingforum_admin_new_forum_rules")
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function rulesNewAction(Request $request, $lang)

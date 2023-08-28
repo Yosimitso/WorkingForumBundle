@@ -93,7 +93,7 @@ use Symfony\Component\Validator\Constraints as Assert;
      *
      * @return User
      */
-    public function setUsername($username)
+    public function setUsername(string $username)
     {
         $this->username = $username;
 

@@ -4,6 +4,7 @@
 namespace Yosimitso\WorkingForumBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -17,7 +18,7 @@ use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 
 class SubscriptionService
 {
-    private EntityManager $em;
+    private EntityManagerInterface $em;
     private MailerInterface $mailer;
     private TranslatorInterface $translator;
     private string $siteTitle;
@@ -25,7 +26,7 @@ class SubscriptionService
     private Environment $templating;
 
     public function __construct(
-        EntityManager $em,
+        EntityManagerInterface $em,
         MailerInterface $mailer,
         TranslatorInterface $translator,
         string $siteTitle,

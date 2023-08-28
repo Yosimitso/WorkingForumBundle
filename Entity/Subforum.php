@@ -348,7 +348,7 @@ class Subforum
     public function hasAllowedRoles()
     {
         // Check if there is one or more allowed role and is not an empty one
-        if (!is_null($this->allowedRoles) && count($this->allowedRoles) >= 1 && !empty($this->allowedRoles[0])) {
+        if (!is_null($this->allowedRoles) && !empty($this->allowedRoles[0]) && count($this->allowedRoles) >= 1) {
             return true;
         }
 

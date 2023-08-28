@@ -9,19 +9,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\UserInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class AdminReportController
- *
- * @package Yosimitso\WorkingForumBundle\Controller\Admin
- *
  * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
  */
 class AdminReportController extends BaseController
 {
     /**
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @return Response
+     * @Route("/admin/report",  name="workingforum_admin_report")
      */
     public function reportAction()
     {
@@ -38,7 +34,8 @@ class AdminReportController extends BaseController
         );
     }
 
-    /**  @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
+    /**
+     * @Route("/admin/report/history",  name="workingforum_admin_report_history")
      */
     public function reportHistoryAction()
     {
@@ -56,10 +53,7 @@ class AdminReportController extends BaseController
     }
 
     /**
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @param Request $request
-     *
-     * @return Response
+     * @Route("/admin/reportaction/good",  name="workingforum_admin_report_action_good")
      */
     public function reportActionGoodAction(Request $request)
     {
@@ -82,10 +76,7 @@ class AdminReportController extends BaseController
 
 
     /**
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @param Request $request
-     *
-     * @return Response
+     * @Route("/admin/reportaction/moderate",  name="workingforum_admin_report_action_moderate")
      */
     public function reportActionModerateAction(Request $request)
     {

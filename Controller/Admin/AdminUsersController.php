@@ -6,17 +6,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Yosimitso\WorkingForumBundle\Entity\UserInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class AdminUsersController
- *
- * @package Yosimitso\WorkingForumBundle\Controller\Admin
- *
  * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
  */
 class AdminUsersController extends BaseController
 {
     /**
+     * @Route("/admin/users",  name="workingforum_admin_user")
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
      * @return Response
      */

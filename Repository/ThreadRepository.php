@@ -40,11 +40,6 @@ class ThreadRepository extends EntityRepository
     }
 
     /**
-     * @param string  $keywords
-     * @param integer $start
-     * @param integer $limit
-     * @param string  $delimiter
-     *
      * @return Thread[]
      */
     public function search(array $keywords, int $start = 0, int $limit = 100, array $whereSubforum = []) : ?array
@@ -52,7 +47,7 @@ class ThreadRepository extends EntityRepository
         if (empty($whereSubforum)) {
             return null;
         }
-        $keywords = explode(' ', $keywords);
+
         $where = '';
 
         foreach ($keywords as $word)
@@ -111,12 +106,13 @@ class ThreadRepository extends EntityRepository
                 ->addOrderBy('thread.lastReplyDate', 'DESC')
                 ->setParameter('slug_not_empty', '')
             ;
-        
+
         if ($withPosts) {
             $query->addSelect('post')
                 ->join(Post::class,'post','WITH','post.thread = thread.id');
         }
         $result = $query->getQuery()->getScalarResult();
+
         return $result;
     }
 }

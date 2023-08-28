@@ -9,30 +9,14 @@ use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Form\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * Class SearchController
- *
- * @package Yosimitso\WorkingForumBundle\Controller
- */
 class SearchController extends BaseController
 {
     /**
-     * @var FormFactory 
+     * @Route("search", name="workingforum_search")
      */
-    protected $formFactory;
-    
-    public function __construct(FormFactory $formFactory)
-    {
-        $this->formFactory = $formFactory;
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $listForum = $this->em->getRepository(Forum::class)->findAll();
         $form = $this->formFactory
@@ -49,7 +33,7 @@ class SearchController extends BaseController
                 $whereSubforum = (array) $this->authorizationGuard->hasSubforumAccessList($form['forum']->getData()->toArray());
 
                 $thread_list_query = $this->em->getRepository(Thread::class)
-                                        ->search($form['keywords']->getData(), 0, 100, $whereSubforum)
+                                        ->search((array) $form['keywords']->getData(), 0, 100, $whereSubforum)
                 ;
                 $date_format = $this->bundleParameters->date_format;
 

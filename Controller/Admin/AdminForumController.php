@@ -9,23 +9,17 @@ use Yosimitso\WorkingForumBundle\Form\AdminForumType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class AdminForumController
- *
- * @package Yosimitso\WorkingForumBundle\Controller\Admin
- *
+ * @Route("/admin/forum")
  * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
  */
 class AdminForumController extends BaseController
 {
     /**
      * @Security("is_granted('ROLE_ADMIN')")
-     * @param Request $request
-     * @param int $id
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @throws \Exception
+     * @Route("/edit/{id}",  name="workingforum_admin_forum_edit", requirements={"id"="\d+"})
      */
     public function editAction(Request $request, $id)
     {
@@ -71,10 +65,7 @@ class AdminForumController extends BaseController
 
     /**
      * @Security("is_granted('ROLE_ADMIN')")
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @throws \Exception
+     * @Route("/add",  name="workingforum_admin_forum_add")
      */
     public function addAction(Request $request)
     {
@@ -112,13 +103,11 @@ class AdminForumController extends BaseController
 
     /**
      * @Security("is_granted('ROLE_ADMIN')")
-     * @param int $forum_id
-     *
-     * @return Response
+     * @Route("/delete/{forumId}",  name="workingforum_admin_delete_forum", requirements={"id"="\d+"})
      */
-    public function deleteForumAction($forum_id)
+    public function deleteForumAction($forumId)
     {
-        $forum = $this->em->getRepository(Forum::class)->findOneById($forum_id);
+        $forum = $this->em->getRepository(Forum::class)->findOneById($forumId);
 
         if (!is_null($forum)) {
             $this->em->remove($forum);

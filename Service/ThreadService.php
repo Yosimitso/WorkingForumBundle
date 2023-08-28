@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -52,7 +53,7 @@ class ThreadService
         FileUploaderService $fileUploaderService,
         AuthorizationGuardInterface $authorizationGuard,
         BundleParametersService $bundleParameters,
-        FormFactory $formFactory,
+        FormFactoryInterface $formFactory,
         RouterInterface $router,
         Environment $templating
     )
@@ -62,7 +63,7 @@ class ThreadService
         $this->postPerPage = $postPerPage;
         $this->requestStack = $requestStack;
         $this->em = $em;
-        $user = $tokenStorage->getToken()->getUser();
+        $user = $tokenStorage->getToken() ? $tokenStorage->getToken()->getUser() : null;
         $this->user = is_object($user) ? $user : null;
         $this->fileUploaderService = $fileUploaderService;
         $this->authorizationGuard = $authorizationGuard;

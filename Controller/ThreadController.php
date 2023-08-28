@@ -20,8 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
@@ -30,18 +29,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  */
 class ThreadController extends BaseController
 {
-    /**
-     * @var FileUploaderService
-     */
-    protected $fileUploaderService;
-    /**
-     * @var SmileyTwigExtension
-     */
-    protected $smileyTwigExtension;
-    /**
-     * @var ThreadService
-     */
-    protected $threadService;
+    protected FileUploaderService $fileUploaderService;
+    protected SmileyTwigExtension $smileyTwigExtension;
+    protected ThreadService $threadService;
     
     public function __construct(FileUploaderService $fileUploaderService, SmileyTwigExtension $smileyTwigExtension, ThreadService $threadService)
     {

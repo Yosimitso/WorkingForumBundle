@@ -9,13 +9,11 @@ use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostVote;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
+use Symfony\Component\Routing\Annotation\Route;
 
 class PostController extends BaseController
 {
-    /**
-     * @var ThreadService 
-     */
-    protected $threadService;
+    protected ThreadService $threadService;
 
     public function __construct(ThreadService $threadService)
     {
@@ -23,9 +21,7 @@ class PostController extends BaseController
     }
 
     /**
-     * @param Request $request
-     * @return Response
-     * @throws \Exception
+     * @Route("voteup", name="workingforum_vote_up")
      * vote for a post
      */
     public function voteUpAction(Request $request)

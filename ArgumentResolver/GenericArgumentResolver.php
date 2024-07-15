@@ -1,11 +1,9 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\ParamConverter;
+namespace Yosimitso\WorkingForumBundle\ArgumentResolver;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
@@ -14,8 +12,11 @@ use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Security\AuthorizationGuardInterface;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
+use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use Traversable;
 
-class GenericParamConverter implements  ParamConverterInterface
+class GenericArgumentResolver implements ValueResolverInterface
 {
     public function __construct(
         protected readonly EntityManagerInterface $em,
@@ -23,14 +24,17 @@ class GenericParamConverter implements  ParamConverterInterface
         protected readonly string $classname
     ) {}
 
-    public function apply(Request $request, ParamConverter $configuration)
+    public function resolve(Request $request, ArgumentMetadata $argument): Traversable|array
     {
-        $value =  $request->attributes->get($configuration->getName());
+        if (!$this->supports($request, $argument)) {
+            return [];
+        }
+        $value =  $request->attributes->get($argument->getName());
         $param = (is_numeric($value)) ? 'id' : 'slug';
         $entity = $this->em->getRepository($this->classname)->findOneBy([$param => $value]);
 
         if (is_null($entity)) {
-            throw new NotFoundHttpException($configuration->getName().' "'.$value.'" not found');
+            throw new NotFoundHttpException($argument->getName().' "'.$value.'" not found');
         }
 
         $subforumAuthorization = null;
@@ -46,13 +50,13 @@ class GenericParamConverter implements  ParamConverterInterface
             throw new UnauthorizedHttpException('Forbidden');
         }
 
-        $request->attributes->set($configuration->getName(), $entity);
+        $request->attributes->set($argument->getName(), $entity);
 
-        return true;
+        return [$entity];
     }
 
-    function supports(ParamConverter $configuration)
+    function supports(Request $request, ArgumentMetadata $argument)
     {
-        return ($this->classname === $configuration->getClass());
+        return ($this->classname === $argument->getType());
     }
 }

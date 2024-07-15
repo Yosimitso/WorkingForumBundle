@@ -5,7 +5,7 @@
     <testsuites>
         <testsuite name="unit">
             <directory suffix="Test.php">./Tests/Service</directory>
-            <directory suffix="Test.php">./Tests/ParamConverter</directory>
+            <directory suffix="Test.php">./Tests/ArgumentResolver</directory>
         </testsuite>
         <testsuite name="scenario">
             <directory suffix="Test.php">./Tests/Scenario</directory>

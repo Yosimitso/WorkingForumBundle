@@ -1,21 +1,20 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\Tests\ParamConverter;
+namespace Yosimitso\WorkingForumBundle\Tests\ArgumentResolver;
 
 
 
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Yosimitso\WorkingForumBundle\Entity\File;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
-use Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter;
+use Yosimitso\WorkingForumBundle\ArgumentResolver\GenericArgumentResolver;
 use Yosimitso\WorkingForumBundle\Security\AuthorizationGuard;
 
-class GenericParamConverterTest extends TestCase
+class GenericArgumentResolverTest extends TestCase
 {
     public function getTestedClass($classname, $em = null, $authorization = null)
     {
@@ -29,7 +28,7 @@ class GenericParamConverterTest extends TestCase
         }
 
 
-        return new GenericParamConverter(
+        return new GenericArgumentResolver(
             $em,
             $authorization,
             $classname
@@ -39,7 +38,7 @@ class GenericParamConverterTest extends TestCase
     public function testSupportForum()
     {
         $testedClass = $this->getTestedClass(Forum::class);
-        $configuration = new ParamConverter([]);
+        $configuration = new ArgumentResolver([]);
         $configuration->setClass(Forum::class);
 
         $this->assertTrue($testedClass->supports($configuration));
@@ -48,7 +47,7 @@ class GenericParamConverterTest extends TestCase
     public function testSupportSubForum()
     {
         $testedClass = $this->getTestedClass(Subforum::class);
-        $configuration = new ParamConverter([]);
+        $configuration = new ArgumentResolver([]);
         $configuration->setClass(Subforum::class);
 
         $this->assertTrue($testedClass->supports($configuration));
@@ -57,7 +56,7 @@ class GenericParamConverterTest extends TestCase
     public function testSupportThread()
     {
         $testedClass = $this->getTestedClass(Thread::class);
-        $configuration = new ParamConverter([]);
+        $configuration = new ArgumentResolver([]);
         $configuration->setClass(Thread::class);
 
         $this->assertTrue($testedClass->supports($configuration));
@@ -66,7 +65,7 @@ class GenericParamConverterTest extends TestCase
     public function testSupportPost()
     {
         $testedClass = $this->getTestedClass(Post::class);
-        $configuration = new ParamConverter([]);
+        $configuration = new ArgumentResolver([]);
         $configuration->setClass(Post::class);
 
         $this->assertTrue($testedClass->supports($configuration));
@@ -75,7 +74,7 @@ class GenericParamConverterTest extends TestCase
     public function testNotSupportFile()
     {
         $testedClass = $this->getTestedClass(Forum::class);
-        $configuration = new ParamConverter([]);
+        $configuration = new ArgumentResolver([]);
         $configuration->setClass(File::class);
 
         $this->assertFalse($testedClass->supports($configuration));

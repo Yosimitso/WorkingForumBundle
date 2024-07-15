@@ -23,7 +23,7 @@
         "symfony/validator": ">=5.0|>=6.2|>=7.0",
         "doctrine/annotations": "^1.12",
         "symfony/mime": ">=5.0|>=6.2|>=7.0",
-        "knplabs/knp-time-bundle": "^1.20",
+        "knplabs/knp-time-bundle": "^2.4",
         "symfony/messenger": ">=5.2",
         "symfony/mailer": ">=5.4|>=6.2|>=7.0",
         "symfony/security-core": ">=5.4|>=6.2|>=7.0",

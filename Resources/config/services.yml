@@ -17,9 +17,6 @@ services:
 
   Yosimitso\WorkingForumBundle\:
     resource: '../../{Event,Form,ParamConverter,Repository,Security,Service,Twig,Util}'
-    #exclude: '../../Entity/UserTest.php'
-#     exclude: '../../{DependencyInjection,Entity,Migrations,Tests,Kernel.php,vendor}'
-
 
   Yosimitso\WorkingForumBundle\Controller\:
     resource: '../../Controller/**'

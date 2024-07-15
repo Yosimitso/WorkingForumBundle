@@ -28,8 +28,7 @@
         "symfony/mailer": ">=5.4|>=6.2|>=7.0",
         "symfony/security-core": ">=5.4|>=6.2|>=7.0",
         "egulias/email-validator": "^3.1",
-        "symfony/expression-language": "^6.3|>=7.0",
-        "sensio/framework-extra-bundle": "^6.2"
+        "symfony/expression-language": "^6.3|>=7.0"
     },
     "license": "MIT",
     "authors": [

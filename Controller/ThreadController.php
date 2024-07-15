@@ -5,6 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\Routing\Attribute\Route;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
@@ -20,42 +21,22 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
-/**
- * @Route("/")
- * @package Yosimitso\WorkingForumBundle\Controller
- */
+#[Route('/')]
 class ThreadController extends BaseController
 {
-    /**
-     * @var FileUploaderService
-     */
-    protected $fileUploaderService;
-    /**
-     * @var SmileyTwigExtension
-     */
-    protected $smileyTwigExtension;
-    /**
-     * @var ThreadService
-     */
-    protected $threadService;
-    
-    public function __construct(FileUploaderService $fileUploaderService, SmileyTwigExtension $smileyTwigExtension, ThreadService $threadService)
-    {
-        $this->fileUploaderService = $fileUploaderService;
-        $this->smileyTwigExtension = $smileyTwigExtension;
-        $this->threadService = $threadService;
-    }
+    public function __construct(
+        protected readonly FileUploaderService $fileUploaderService,
+        protected readonly SmileyTwigExtension $smileyTwigExtension,
+        protected readonly ThreadService $threadService
+    ) {}
 
     /**
      * Display a thread, save a post
-     * @Route("{forum}/{subforum}/{thread}/view", name="workingforum_thread")
-     * @return Response
      */
-    public function indexAction(Forum $forum, Subforum $subforum, Thread $thread, Request $request)
+    #[Route('{forum}/{subforum}/{thread}/view', name: 'workingforum_thread')]
+    public function indexAction(Forum $forum, Subforum $subforum, Thread $thread, Request $request): Response
     {
         $autolock = $this->threadService->isAutolock($thread); // CHECK IF THREAD IS AUTOMATICALLY LOCKED (TOO OLD?)
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
@@ -167,12 +148,10 @@ class ThreadController extends BaseController
 
     /**
      * New thread
-     *
-     * @Route("{forum}/{subforum}/new", name="workingforum_new_thread")
-     * @return RedirectResponse|Response
      * @throws \Exception
      */
-    public function newAction(Forum $forum, Subforum $subforum, Request $request)
+    #[Route('{forum}/{subforum}/new', name: 'workingforum_new_thread')]
+    public function newAction(Forum $forum, Subforum $subforum, Request $request): RedirectResponse|Response
     {
         if ($this->isUserAnonymous()) { //ANONYMOUS CAN'T POST
             throw new AccessDeniedHttpException("access denied");
@@ -224,11 +203,10 @@ class ThreadController extends BaseController
 
     /**
      * The thread is resolved
-     * @Route("{forum}/{subforum}/{thread}/resolved", name="workingforum_resolve_thread")
-     * @return RedirectResponse
      * @throws \Exception
      */
-    public function resolveAction(Forum $forum, Subforum $subforum, Thread $thread)
+    #[Route('{forum}/{subforum}/{thread}/resolved', name: 'workingforum_resolve_thread')]
+    public function resolveAction(Forum $forum, Subforum $subforum, Thread $thread): RedirectResponse
     {
         if (!$this->authorizationGuard->hasModeratorAuthorization() && $this->user->getId() != $thread->getAuthor()->getId()) // ONLY ADMIN MODERATOR OR THE THREAD'S AUTHOR CAN SET A THREAD AS RESOLVED
         {
@@ -247,12 +225,11 @@ class ThreadController extends BaseController
 
     /**
      * A moderator pin a thread
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @Route("{forum}/{subforum}/{thread}/pin", name="workingforum_pin_thread")
-     * @return RedirectResponse
      * @throws \Exception
      */
-    public function pinAction(Forum $forum, Subforum $subforum, Thread $thread)
+    #[Security('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")')]
+    #[Route('{forum}/{subforum}/{thread}/pin', name: 'workingforum_pin_thread')]
+    public function pinAction(Forum $forum, Subforum $subforum, Thread $thread): RedirectResponse
     {
         if ($thread->getPin()) {
             throw new \Exception("Thread already pinned", 500);
@@ -270,12 +247,11 @@ class ThreadController extends BaseController
 
     /**
      * A moderator unpin a thread
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @Route("{forum}/{subforum}/{thread}/unpin", name="workingforum_unpin_thread")
-     * @return RedirectResponse
      * @throws \Exception
      */
-    public function unpinAction(Forum $forum, Subforum $subforum, Thread $thread)
+    #[Security('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")')]
+    #[Route('{forum}/{subforum}/{thread}/unpin', name: 'workingforum_unpin_thread')]
+    public function unpinAction(Forum $forum, Subforum $subforum, Thread $thread): RedirectResponse
     {
         if (!$thread->getPin()) {
             throw new \Exception("Thread not pinned", 500);
@@ -296,11 +272,10 @@ class ThreadController extends BaseController
 
     /**
      * A user report a post
-     * @Route("{forum}/{subforum}/report/{post}", name="workingforum_report_post", requirements={"post_id":"\d+"})
-     * @return Response
      * @throws \Exception
      */
-    public function reportAction(Post $post)
+    #[Route('{forum}/{subforum}/report/{post}', name: 'workingforum_report_post', requirements: ['post_id' => '\d+'])]
+    public function reportAction(Post $post): Response
     {
         if (is_null($this->user)) {
             throw new AccessDeniedHttpException("access denied");
@@ -324,11 +299,10 @@ class ThreadController extends BaseController
 
     /**
      * The thread is deleted by modo or admin
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @Route("{forum}/{subforum}/deletethread/{thread}", name="workingforum_delete_thread")
-     * @return RedirectResponse
      */
-    public function deleteThreadAction(Forum $forum, Subforum $subforum, Thread $thread)
+    #[Security('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")')]
+    #[Route('{forum}/{subforum}/deletethread/{thread}', name: 'workingforum_delete_thread')]
+    public function deleteThreadAction(Forum $forum, Subforum $subforum, Thread $thread): RedirectResponse
     {
         if (!$this->bundleParameters->allow_moderator_delete_thread) {
             throw new Exception('Thread deletion is not allowed');
@@ -345,10 +319,9 @@ class ThreadController extends BaseController
 
     /**
      * The thread is locked by a moderator or admin
-     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @Route("{forum}/{subforum}/{thread}/lock", name="workingforum_lock_thread")
-     * @return RedirectResponse
      */
+    #[Security('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")')]
+    #[Route('{forum}/{subforum}/{thread}/lock', name: 'workingforum_lock_thread')]
     public function lockAction(Forum $forum, Subforum $subforum, Thread $thread)
     {
         $this->threadService->lock($thread);
@@ -362,11 +335,10 @@ class ThreadController extends BaseController
 
     /**
      * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
-     * @Route("movethread", name="workingforum_move_thread", methods="POST")
-     * @param Request $request
-     * @return Response
      */
-    public function moveThreadAction(Request $request)
+    #[Security('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")')]
+    #[Route('movethread', name: 'workingforum_move_thread', methods: "POST")]
+    public function moveThreadAction(Request $request): Response
     {
         $threadId = $request->get('threadId');
         $targetId = $request->get('target');
@@ -385,10 +357,10 @@ class ThreadController extends BaseController
     }
 
     /**
-     * @Route("{forum}/{subforum}/cancelsubscription/{thread}", name="workingforum_cancel_subscription")
-     * @return Response
+     * An user wants to cancel a subscription to a thread
      */
-    public function cancelSubscriptionAction(Thread $thread)
+    #[Route('{forum}/{subforum}/cancelsubscription/{thread}', name: 'workingforum_cancel_subscription')]
+    public function cancelSubscriptionAction(Thread $thread): Response
     {
         if (is_null($this->user)) {
             return new Response(null, 500);
@@ -408,10 +380,9 @@ class ThreadController extends BaseController
 
     /**
      * An user wants to subscribe to a thread
-     * @Route("{forum}/{subforum}/addsubscription/{thread}", name="workingforum_add_subscription")
-     * @return Response
      */
-    public function addSubscriptionAction(Thread $thread)
+    #[Route('{forum}/{subforum}/addsubscription/{thread}', name: 'workingforum_add_subscription')]
+    public function addSubscriptionAction(Thread $thread): Response
     {
         if (is_null($this->user)) {
             return new Response(null, 500);
@@ -429,7 +400,6 @@ class ThreadController extends BaseController
 
             return new Response(null, 500);
         }
-
     }
 }
 

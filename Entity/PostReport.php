@@ -3,147 +3,84 @@
 namespace Yosimitso\WorkingForumBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
+use DateTimeInterface;
 
-/**
- * Class PostReport
- *
- * @package Yosimitso\WorkingForumBundle\Entity
- *
- * @ORM\Table(name="workingforum_post_report")
- * @ORM\Entity()
- */
+#[ORM\Table(name: "workingforum_post_report")]
+#[ORM\Entity]
 class PostReport
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private int $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Post", inversedBy="postReport")
-     * @ORM\JoinColumn(name="post_id", referencedColumnName="id", nullable=false)
-     */
-    private $post;
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Post", inversedBy: "postReport")]
+    #[ORM\JoinColumn(name: "post_id", referencedColumnName: "id", nullable: false)]
+    private Post $post;
 
-    /**
-     * @var integer
-     *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
-     */
-    private $user;
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false)]
+    private UserInterface $user;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="cdate", type="datetime")
-     */
-    private $cdate;
-    
-    /**
-     * @var boolean
-     *  @ORM\Column(name="processed", type="boolean", nullable=true)
-     */  
-    private $processed;
+    #[ORM\Column(name: "cdate", type: "datetime")]
+    private DateTimeInterface $cdate;
 
-    /**
-     * PostReport constructor.
-     */
+    #[ORM\Column(name: "processed", type: "boolean", nullable: true)]
+    private ?bool $processed;
+
     public function __construct()
     {
-        $this->cdate = new \DateTime;
+        $this->cdate = new DateTime;
     }
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return int
-     */
-    public function getPost()
+    public function getPost(): Post
     {
         return $this->post;
     }
 
-    /**
-     * @param Post $post
-     *
-     * @return PostReport
-     */
-    public function setPost(Post $post)
+    public function setPost(Post $post): self
     {
         $this->post = $post;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getUser()
+    public function getUser(): UserInterface
     {
         return $this->user;
     }
 
-    /**
-     * @param int $user
-     *
-     * @return PostReport
-     */
-    public function setUser($user)
+    public function setUser(UserInterface $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCdate()
+    public function getCdate(): DateTimeInterface
     {
         return $this->cdate;
     }
 
-    /**
-     * @param \DateTime $cdate
-     *
-     * @return PostReport
-     */
-    public function setCdate(\DateTime $cdate)
+    public function setCdate(DateTimeInterface $cdate): self
     {
         $this->cdate = $cdate;
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isProcessed()
+    public function isProcessed(): bool
     {
         return (bool) $this->processed;
     }
 
-    /**
-     * @param bool $processed
-     *
-     * @return PostReport
-     */
-    public function setProcessed($processed)
+    public function setProcessed(?bool $processed): self
     {
         $this->processed = $processed;
 

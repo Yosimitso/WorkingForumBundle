@@ -12,6 +12,7 @@ let config = {
         forum: './Resources/asset/js/webpack-forum.js',
         thread: "./Resources/asset/js/webpack-thread.js",
         post: './Resources/asset/js/webpack-post.js',
+        admin_rules: './Resources/asset/js/webpack-admin-rules.js',
         theme_green: './Resources/asset/scss/theme_green.scss',
         theme_dark_blue: './Resources/asset/scss/theme_dark_blue.scss'
     },
@@ -35,39 +36,10 @@ let config = {
                 test: /\.(scss|css)$/,
                 use: [
                     {
-                        loader: MiniCssExtractPlugin.loader,
-                        options: {
-                            name: 'css/[name].[ext]'
-                        }
+                        loader: MiniCssExtractPlugin.loader
                     },
                     'css-loader',
                     'sass-loader'
-                ]
-            },
-            {
-                test: /\.(ttf|woff|eot)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: '[name].[ext]',
-                            outputPath: 'font/',
-                            publicPath: '../font'
-                        },
-                    }
-                ]
-            },
-            {
-                test: /\.(svg|png)$/,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: 'images/[name].[ext]',
-                            outputPath: 'images/',
-                            publicPath: '../images'
-                        },
-                    }
                 ]
             }
         ]
@@ -76,9 +48,12 @@ let config = {
         new MiniCssExtractPlugin({
           filename: 'css/[name].min.css'
         }),
-        new CopyPlugin([
-            { from: './Resources/asset/images', to: './images/' }
-        ])
+        new CopyPlugin({
+            patterns: [
+                { from: './Resources/asset/images', to: './images/' },
+                { from: './Resources/asset/fonts', to: './fonts/' }
+            ]
+        })
     ]
 }
 

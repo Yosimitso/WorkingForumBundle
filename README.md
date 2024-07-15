@@ -1,22 +1,18 @@
 WorkingForumBundle
 ==================
 
-[![Build Status](https://travis-ci.org/Yosimitso/WorkingForumBundle.svg?branch=master)](https://travis-ci.org/Yosimitso/WorkingForumBundle) [![Latest Stable Version](https://poser.pugx.org/yosimitso/workingforumbundle/v/stable)](https://packagist.org/packages/yosimitso/workingforumbundle) [![Total Downloads](https://poser.pugx.org/yosimitso/workingforumbundle/downloads)](https://packagist.org/packages/yosimitso/workingforumbundle) [![License](https://poser.pugx.org/yosimitso/workingforumbundle/license)](https://packagist.org/packages/yosimitso/workingforumbundle)
+[![Latest Stable Version](https://poser.pugx.org/yosimitso/workingforumbundle/v/stable)](https://packagist.org/packages/yosimitso/workingforumbundle) [![Total Downloads](https://poser.pugx.org/yosimitso/workingforumbundle/downloads)](https://packagist.org/packages/yosimitso/workingforumbundle) [![License](https://poser.pugx.org/yosimitso/workingforumbundle/license)](https://packagist.org/packages/yosimitso/workingforumbundle)
 
 
 ENGLISH
 =================  
-A forum bundle for Symfony 4/5, easy to use with a lot of features  
+A forum bundle for Symfony 5/6, easy to use with a lot of features  
 This bundle work with your user bundle with no extra configuration (which can extend FOSUserBundle)  
 The bundle was made to be customizable and overridable to fit your application  
 
 Demo
 -------------
 Try it here - https://demoworkingforum.charlymartins.fr
-
-Chat and support
----------------
-[Join the Discord](https://discord.gg/EG7C54PgWR)
 
 Features
 ------------------
@@ -36,6 +32,7 @@ Features
 - Backend administration
 - Antiflood system
 - Email notification on new posts
+- Post saved as draft 
 
 
 Setup

@@ -1,0 +1,111 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    bind:
+      $dateFormat: '%yosimitso_working_forum.date_format%'
+      $lockThreadOlderThan: '%yosimitso_working_forum.lock_thread_older_than%'
+      $threadPerPage: '%yosimitso_working_forum.thread_per_page%'
+      $postPerPage: '%yosimitso_working_forum.post_per_page%'
+      $allowAnonymousRead: '%yosimitso_working_forum.allow_anonymous_read%'
+      $configFileUpload: '%yosimitso_working_forum.file_upload%'
+      $siteTitle: '%yosimitso_working_forum.site_title%'
+      $senderAddress: '@=container.hasParameter("yosimitso_working_forum.mailer_sender_address") ? parameter("yosimitso_working_forum.mailer_sender_address") : null'
+      $floodLimit: '%yosimitso_working_forum.post_flood_sec%'
+      $paramSubscription: '%yosimitso_working_forum.thread_subscription%'
+      $themeColor: '%yosimitso_working_forum.theme_color%'
+
+  Yosimitso\WorkingForumBundle\:
+    resource: '../../{Event,Form,ParamConverter,Repository,Security,Service,Twig,Util}'
+
+#  App\:
+#    resource: '../{Entity}'
+
+  Yosimitso\WorkingForumBundle\Tests\:
+    resource: '../../Tests/{ParamConverter}'
+    #exclude: '../../Entity/UserTest'
+
+  Yosimitso\WorkingForumBundle\Controller\:
+    resource: '../../Controller/**'
+    parent: Yosimitso\WorkingForumBundle\Controller\BaseController
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  Yosimitso\WorkingForumBundle\Security\AuthorizationGuardInterface: '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
+
+  Yosimitso\WorkingForumBundle\Controller\BaseController:
+    autowire: false
+    autoconfigure: false
+    abstract: true
+    calls:
+      - ['setParameters',['@doctrine.orm.entity_manager','@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard','@=service("security.token_storage").getToken()','@request_stack', '@translator', '@knp_paginator', '@Yosimitso\WorkingForumBundle\Service\BundleParametersService', '@twig', '@form.factory']]
+      - { method: setContainer, arguments: [ '@service_container' ] }
+
+  Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension:
+    tags:
+      - { name: twig.extension }
+
+  Yosimitso\WorkingForumBundle\Twig\Extension\QuoteTwigExtension:
+    tags:
+      - { name: twig.extension }
+
+  Yosimitso\WorkingForumBundle\Twig\Extension\ConfigurationTwigExtension:
+    tags:
+      - { name: twig.extension }
+
+  Yosimitso\WorkingForumBundle\Twig\Extension\AuthorizationTwigExtension:
+    tags:
+      - { name: twig.extension }
+
+  Yosimitso\WorkingForumBundle\Event\PostEvent:
+    tags:
+      - { name: doctrine.event_listener, event: prePersist}
+      - { name: doctrine.event_listener, event: postPersist}
+
+
+  Yosimitso\WorkingForumBundle\Service\BundleParametersService:
+    arguments:
+      - '@service_container'
+
+  Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter:
+    autowire: false
+    autoconfigure: false
+
+  yosimitso_workingforum.param_converters.forum:
+    class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
+      - 'Yosimitso\WorkingForumBundle\Entity\Forum'
+    tags:
+      - { name: request.param_converter, priority: 20 }
+
+
+  yosimitso_workingforum.param_converters.subforum:
+    class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
+      - 'Yosimitso\WorkingForumBundle\Entity\Subforum'
+    tags:
+      - { name: request.param_converter, priority: 20 }
+
+  yosimitso_workingforum.param_converters.thread:
+    class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
+      - 'Yosimitso\WorkingForumBundle\Entity\Thread'
+    tags:
+      - { name: request.param_converter, priority: 20 }
+
+  yosimitso_workingforum.param_converters.post:
+    class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
+    arguments:
+      - '@doctrine.orm.entity_manager'
+      - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
+      - 'Yosimitso\WorkingForumBundle\Entity\Post'
+    tags:
+      - { name: request.param_converter, priority: 20 }
+

@@ -6,11 +6,6 @@ use Doctrine\ORM\EntityRepository;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 
-/**
- * Class SubforumRepository
- *
- * @package Yosimitso\WorkingForumBundle\Repository
- */
 class SubforumRepository extends EntityRepository
 {
     /**

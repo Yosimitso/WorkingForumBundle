@@ -6,16 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class BundleParametersService
 {
-    /**
-     * @var ContainerInterface 
-     */
-    private $container;
-    
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-
-    }
+    public function __construct(protected readonly ContainerInterface $container) {}
 
     public function __get($name)
     {

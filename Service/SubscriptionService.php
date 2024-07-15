@@ -4,6 +4,7 @@
 namespace Yosimitso\WorkingForumBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -17,28 +18,14 @@ use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 
 class SubscriptionService
 {
-    private EntityManager $em;
-    private MailerInterface $mailer;
-    private TranslatorInterface $translator;
-    private string $siteTitle;
-    private ?string $senderAddress;
-    private Environment $templating;
-
     public function __construct(
-        EntityManager $em,
-        MailerInterface $mailer,
-        TranslatorInterface $translator,
-        string $siteTitle,
-        Environment $templating,
-        ?string $senderAddress
+        protected readonly EntityManagerInterface $em,
+        protected readonly MailerInterface $mailer,
+        protected readonly TranslatorInterface $translator,
+        protected readonly string $siteTitle,
+        protected readonly Environment $templating,
+        protected readonly ?string $senderAddress
     ) {
-        $this->em = $em;
-        $this->mailer = $mailer;
-        $this->translator = $translator;
-        $this->siteTitle = $siteTitle;
-        $this->senderAddress = $senderAddress;
-        $this->templating = $templating;
-
         if (empty($this->senderAddress)) {
             trigger_error('The parameter "yosimitso_working_forum.mailer_sender_address" is empty, email delivering might failed');
         }

@@ -7,14 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Config\Definition\Exception\Exception as Exception;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\BrowserKit\Cookie;
-use Yosimitso\WorkingForumBundle\Entity\UserTest;
+use Yosimitso\WorkingForumBundle\Tests\Entity\UserTest;
 
-/**
- *
- * Class HttpControllerTest
- *
- * @package Yosimitso\WorkingForumBundle\Tests\Controller
- */
+
 class HttpResponseTest extends WebTestCase
 {
     use ReloadDatabaseTrait;
@@ -24,14 +19,14 @@ class HttpResponseTest extends WebTestCase
     {
         $client = static::createClient();
         $container = static::$kernel->getContainer();
-        $session = $container->get('session');
+//        $session = $container->get('request_stack')->getSession();
         $person = self::$kernel->getContainer()->get('doctrine')->getRepository(UserTest::class)->findAll()[2];
-
-        $token = new UsernamePasswordToken($person, null, 'main', $person->getRoles());
-        $session->set('_security_main', serialize($token));
-        $session->save();
-
-        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $client->loginUser($person);
+//        $token = new UsernamePasswordToken($person, null, 'main', $person->getRoles());
+//        $session->set('_security_main', serialize($token));
+//        $session->save();
+//
+//        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
 
         $this->client = $client;
     }
@@ -64,23 +59,5 @@ class HttpResponseTest extends WebTestCase
                 $this->assertEquals(200, $this->client->getResponse()->getStatusCode(),$url.' returns '.$this->client->getResponse()->getStatusCode());
         }
     }
-
-    private function logIn()
-    {
-        $session = $this->client->getContainer()->get('session');
-
-        // the firewall context defaults to the firewall name
-        $firewallContext = 'main';
-
-        $token = new UsernamePasswordToken('admin', null, $firewallContext, array('ROLE_ADMIN'));
-        $session->set('_security_'.$firewallContext, serialize($token));
-        $session->save();
-
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
-
-    }
-
-
 }
 ?>

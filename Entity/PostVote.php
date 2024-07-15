@@ -2,158 +2,86 @@
 
 namespace Yosimitso\WorkingForumBundle\Entity;
 
+use phpDocumentor\Reflection\DocBlock\Type\Collection;
 use Yosimitso\WorkingForumBundle\Entity\Post as Post;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * PostVote
- *
- * @ORM\Table(name="workingforum_post_vote")
- * @ORM\Entity(repositoryClass="Yosimitso\WorkingForumBundle\Repository\PostVoteRepository")
- */
+#[ORM\Table(name: "workingforum_post_vote")]
+#[ORM\Entity(repositoryClass: "Yosimitso\WorkingForumBundle\Repository\PostVoteRepository")]
 class PostVote
 {
     const VOTE_UP = 1;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    private int $id;
 
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Post", inversedBy="postVote")
-     * @ORM\JoinColumn(name="post_id", referencedColumnName="id", nullable=false)
-     */
-    private $post;
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Post", inversedBy: "postVote")]
+    #[ORM\JoinColumn(name: "post_id", referencedColumnName: "id", nullable: false)]
+    private Post $post;
 
-    /**
-     * @var ArrayCollection
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\Thread")
-     * @ORM\JoinColumn(name="thread_id", referencedColumnName="id", nullable=true)
-     */
-    private $thread;
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Thread")]
+    #[ORM\JoinColumn(name: "thread_id", referencedColumnName: "id", nullable: true)]
+    private ?Thread $thread;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="voteType", type="integer")
-     */
-    private $voteType;
+    #[ORM\Column(name: "voteType", type: "integer")]
+    private int $voteType;
 
-    /**
-     * @var ArrayCollection
-     *
-     * @ORM\ManyToOne(targetEntity="Yosimitso\WorkingForumBundle\Entity\UserInterface")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
-     */
-    private $user;
+    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface")]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: false)]
+    private UserInterface $user;
 
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * Set post
-     *
-     * @param Post $post
-     *
-     * @return PostVote
-     */
-    public function setPost(Post $post)
+    public function setPost(Post $post): self
     {
         $this->post = $post;
 
         return $this;
     }
 
-    /**
-     * Get post
-     *
-     * @return Post
-     */
-    public function getPost()
+    public function getPost(): Post
     {
         return $this->post;
     }
 
-    /**
-     * @param Thread $thread
-     *
-     * @return Post
-     */
-    public function setThread(Thread $thread)
+    public function setThread(?Thread $thread): self
     {
         $this->thread = $thread;
 
         return $this;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getThread()
+    public function getThread(): Thread
     {
         return $this->thread;
     }
 
-    /**
-     * Set voteType
-     *
-     * @param integer $voteType
-     *
-     * @return PostVote
-     */
-    public function setVoteType($voteType)
+    public function setVoteType(int $voteType): self
     {
         $this->voteType = $voteType;
 
         return $this;
     }
 
-    /**
-     * Get voteType
-     *
-     * @return int
-     */
-    public function getVoteType()
+    public function getVoteType(): int
     {
         return $this->voteType;
     }
 
-    /**
-     * Set user
-     *
-     * @param UserInterface $user
-     *
-     * @return PostVote
-     */
-    public function setUser(UserInterface $user)
+    public function setUser(UserInterface $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
-    /**
-     * Get user
-     *
-     * @return User
-     */
-    public function getUser()
+    public function getUser(): UserInterface
     {
         return $this->user;
     }

@@ -5,7 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Tests\Scenario;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Panther\PantherTestCase;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
-use Yosimitso\WorkingForumBundle\Entity\UserTest;
+use Yosimitso\WorkingForumBundle\Tests\Entity\UserTest;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\BrowserKit\Cookie;
 
@@ -14,19 +14,13 @@ class ThreadTest extends WebTestCase
     use ReloadDatabaseTrait;
     private $client;
 
+
     private function getModeratorUserClient()
     {
         $client = static::createClient();
-
         $container = static::getContainer();
-        $session = $container->get('session');
         $person =  $container->get('doctrine')->getRepository(UserTest::class)->findAll()[1];
-
-        $token = new UsernamePasswordToken($person, null, 'main', $person->getRoles());
-        $session->set('_security_main', serialize($token));
-        $session->save();
-
-        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $client->loginUser($person);
 
         return $client;
     }
@@ -35,14 +29,8 @@ class ThreadTest extends WebTestCase
     {
         $client = static::createClient();
         $container = static::$kernel->getContainer();
-        $session = $container->get('session');
         $person = $container->get('doctrine')->getRepository(UserTest::class)->findAll()[2];
-
-        $token = new UsernamePasswordToken($person, null, 'main', $person->getRoles());
-        $session->set('_security_main', serialize($token));
-        $session->save();
-
-        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $client->loginUser($person);
 
         return $client;
     }
@@ -51,14 +39,8 @@ class ThreadTest extends WebTestCase
     {
         $client = static::createClient();
         $container = static::$kernel->getContainer();
-        $session = $container->get('session');
         $person =  $container->get('doctrine')->getRepository(UserTest::class)->findAll()[0];
-
-        $token = new UsernamePasswordToken($person, null, 'main', $person->getRoles());
-        $session->set('_security_main', serialize($token));
-        $session->save();
-
-        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
+        $client->loginUser($person);
 
         return $client;
     }
@@ -101,9 +83,9 @@ class ThreadTest extends WebTestCase
             ."> A quote from me"
         ]);
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 //        exit(print_r($crawler->html()));
-        
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
         $post = $crawler->filter('.wf_post_content')->first()->html();
 
         $this->assertEquals(trim(

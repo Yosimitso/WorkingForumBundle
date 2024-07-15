@@ -5,19 +5,20 @@ namespace Yosimitso\WorkingForumBundle\Tests\Service;
 use Knp\Component\Pager\PaginatorInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Twig\Environment;
-use Twig\Template;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Entity\User;
-use Yosimitso\WorkingForumBundle\Form\PostType;
+use Yosimitso\WorkingForumBundle\Entity\UserInterface;
 use Yosimitso\WorkingForumBundle\Form\ThreadType;
 use Yosimitso\WorkingForumBundle\Security\AuthorizationGuard;
 use Yosimitso\WorkingForumBundle\Service\BundleParametersService;
@@ -33,26 +34,14 @@ class ThreadServiceTest extends TestCase
     public function getTestedClass($em = null, $user = null, $authorization = null)
     {
         if (is_null($user)) {
-            $user = $this->createMock(User::class);
-            $user->setUsername = 'toto';
+            $user = $this->createMock(UserInterface::class);
+            $user->setUsername('toto');
         }
-            $tokenStorage = $this->createMock(TokenStorageInterface::class);
-        
-            $class = new class($user)
-            {
-                private $user;
-                public function __construct($user)
-                {
-                    $this->user = $user;
-                }
 
-                function getUser()
-                {
-                    return $this->user;
-                }
-            };
-
-        $tokenStorage->method('getToken')->willReturn($class);
+        $tokenStorage = $this->createMock(TokenStorageInterface::class);
+        $tokenInterface = $this->createMock(TokenInterface::class);
+        $tokenInterface->method('getUser')->willReturn($user);
+        $tokenStorage->method('getToken')->willReturn($tokenInterface);
 
         if (is_null($authorization)) {
             $authorization = $this->createMock(AuthorizationGuard::class);
@@ -60,7 +49,7 @@ class ThreadServiceTest extends TestCase
         
         if (is_null($em)) {
             $em = $this->getMockBuilder(EntityManagerMock::class)
-                ->setMethods(['getRepository'])
+                ->onlyMethods(['getRepository'])
                 ->setMockClassName('EntityManagerInterface')
                 ->getMock();
         }
@@ -97,21 +86,9 @@ class ThreadServiceTest extends TestCase
     {
         $formFactory = $this->createMock(FormFactory::class);
         $formView = $this->createMock(FormView::class);
-        $classFormFactory = new class($formView)
-        {
-            private $formView;
-            
-            public function __construct($formView)
-            {
-                $this->formView = $formView;
-            }
 
-            function createView()
-            {
-
-                return $this->formView;
-            }
-        };
+        $classFormFactory = static::createMock(FormInterface::class);
+        $classFormFactory->method('createView')->willReturn($formView);
         $formFactory->method('create')->willReturn($classFormFactory);
 
         return $formFactory;
@@ -220,14 +197,14 @@ class ThreadServiceTest extends TestCase
     {
         $em = new EntityManagerMock;
 
-        $user = $this->createMock(User::class);
-        $user->setUsername = 'toto';
+        $user = $this->createMock(UserInterface::class);
+        $user->setUsername('toto');
 
         $testedClass = $this->getTestedClass($em, $user);
 
         $form = $this->getMockBuilder(ThreadType::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getData'])
+            ->addMethods(['getData'])
             ->getMock();
 
         $class = new class
@@ -249,6 +226,7 @@ class ThreadServiceTest extends TestCase
 
         $form->method('getData')->willReturn($class);
         $thread = (new Thread)
+                ->setId(1)
                 ->setLabel('thread-test');
 
         $subforum = new Subforum;
@@ -274,14 +252,14 @@ class ThreadServiceTest extends TestCase
     {
         $em = new EntityManagerMock;
 
-        $user = $this->createMock(User::class);
-        $user->setUsername = 'toto';
+        $user = $this->createMock(UserInterface::class);
+        $user->setUsername('toto');
 
         $testedClass = $this->getTestedClass($em, $user);
 
         $form = $this->getMockBuilder(ThreadType::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getData'])
+            ->addMethods(['getData'])
             ->getMock();
 
         $class = new class
@@ -304,6 +282,7 @@ class ThreadServiceTest extends TestCase
 
         $form->method('getData')->willReturn($class);
         $thread = (new Thread)
+            ->setId(1)
             ->setLabel('thread-test');
 
         $subforum = new Subforum;
@@ -329,8 +308,8 @@ class ThreadServiceTest extends TestCase
     {
         $em = new EntityManagerMock;
 
-        $user = $this->createMock(User::class);
-        $user->setUsername = 'toto';
+        $user = $this->createMock(UserInterface::class);
+        $user->setUsername('toto');
 
         $testedClass = $this->getTestedClass($em, $user);
 
@@ -346,7 +325,7 @@ class ThreadServiceTest extends TestCase
 
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getData'])
+            ->onlyMethods(['getData'])
             ->getMock();
 
         $class = new class
@@ -378,10 +357,10 @@ class ThreadServiceTest extends TestCase
         $testedClass = $this->getTestedClass();
 
         // CLASSIC USER, NOT THREAD'S AUTHOR
-        $user = $this->createMock(User::class);
+        $user = $this->createMock(UserInterface::class);
         $user->method('getId')->willReturn(1);
 
-        $author = $this->createMock(User::class);
+        $author = $this->createMock(UserInterface::class);
         $author->method('getId')->willReturn(2);
         $thread = new Thread;
         $thread->setAuthor($author);
@@ -432,7 +411,7 @@ class ThreadServiceTest extends TestCase
 
 
         // MODERATOR
-        $user = $this->createMock(User::class);
+        $user = $this->createMock(UserInterface::class);
         $thread = new Thread;
 
         $result = $testedClass->getAvailableActions($user, $thread, false, true);

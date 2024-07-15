@@ -9,12 +9,9 @@ use Yosimitso\WorkingForumBundle\Security\AuthorizationGuard;
 
 class AuthorizationTwigExtension extends AbstractExtension
 {
-    private AuthorizationGuard $authorizationGuard;
-
-    public function __construct(AuthorizationGuard $authorizationGuard)
-    {
-        $this->authorizationGuard = $authorizationGuard;
-    }
+    public function __construct(
+        protected readonly AuthorizationGuard $authorizationGuard
+    ) {}
 
     public function getFunctions(): array
     {

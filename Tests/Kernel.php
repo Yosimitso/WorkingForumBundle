@@ -25,6 +25,7 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 use Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle;
 use Twig\Extra\TwigExtraBundle\TwigExtraBundle;
@@ -37,17 +38,17 @@ class Kernel extends BaseKernel
 
     const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
-    public function getCacheDir()
+    public function getCacheDir(): string
     {
         return $this->getProjectDir().'/var/cache/'.$this->environment;
     }
 
-    public function getLogDir()
+    public function getLogDir(): string
     {
         return $this->getProjectDir().'/var/log';
     }
 
-    public function registerBundles()
+    public function registerBundles(): \Traversable|array
     {
         $contents = [
             FrameworkBundle::class => ['all' => true],
@@ -74,12 +75,18 @@ class Kernel extends BaseKernel
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
         $container->setParameter('container.dumper.inline_class_loader', true);
-        $loader->load(__DIR__.'/config.yaml');
-        $loader->load(__DIR__.'/../Resources/config/services.yml');
+        $loader->load(__DIR__.'/config/config.yaml');
+        $loader->load(__DIR__.'/config/services.yaml');
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes)
+    private function getConfigDir(): string
     {
-        $routes->import(__DIR__.'/config/routes/routes.yaml', '/');
+        return __DIR__.'/config';
+    }
+
+
+    protected function configureRoutes(RoutingConfigurator $routes)
+    {
+        $routes->import(__DIR__.'/config/routes/routes.yaml');
     }
 }

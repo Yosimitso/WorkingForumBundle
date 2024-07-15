@@ -9,23 +9,19 @@ use Yosimitso\WorkingForumBundle\Entity\File;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 
 /**
- * Class FileUploaderService
- * @package Yosimitso\WorkingForumBundle\Service
  * Handle file upload system
  */
 class FileUploaderService
 {
     private string $path;
-    private EntityManagerInterface $em;
-    private array $configFileUpload;
-    private TranslatorInterface $translator;
 
-    public function __construct(EntityManagerInterface $em, array $configFileUpload, TranslatorInterface $translator)
+    public function __construct(
+        protected readonly EntityManagerInterface $em,
+        protected readonly array $configFileUpload,
+        protected readonly TranslatorInterface $translator
+    )
     {
         $this->path = 'wf_uploads/'.date('Y/m/');
-        $this->em = $em;
-        $this->configFileUpload = $configFileUpload;
-        $this->translator = $translator;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Yosimitso\WorkingForumBundle\Tests\Controller;
+namespace Yosimitso\WorkingForumBundle\Tests\Scenario;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

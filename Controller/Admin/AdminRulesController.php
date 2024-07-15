@@ -2,6 +2,7 @@
 
 namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 
+use Symfony\Component\Routing\Attribute\Route;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Yosimitso\WorkingForumBundle\Entity\Rules;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,29 +11,17 @@ use Yosimitso\WorkingForumBundle\Form\RulesType;
 use Yosimitso\WorkingForumBundle\Form\RulesEditType;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 
-/**
- * Class AdminRulesController
- *
- * @package Yosimitso\WorkingForumBundle\Controller\Admin
- *
- * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
- */
+#[Security('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")')]
 class AdminRulesController extends BaseController
 {
-    /**
-     * @var SmileyTwigExtension
-     */
-    private $smileyTwigExtension;
+    private SmileyTwigExtension $smileyTwigExtension;
 
     public function __construct(SmileyTwigExtension $smileyTwigExtension)
     {
         $this->smileyTwigExtension = $smileyTwigExtension;
     }
 
-    /**
-     *
-     * @return mixed
-     */
+    #[Route('/admin/rules', name: 'workingforum_admin_forum_rules')]
     public function rulesAction()
     {
         $form = $this->createForm(RulesType::class, null);
@@ -45,9 +34,8 @@ class AdminRulesController extends BaseController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
+    #[Route('/admin/rules/edit/{lang}', name: 'workingforum_admin_edit_forum_rules')]
+    #[Security('is_granted("ROLE_ADMIN")')]
     public function rulesEditAction(Request $request, $lang)
     {
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
@@ -86,9 +74,8 @@ class AdminRulesController extends BaseController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
+    #[Route('/admin/rules/new/{lang}', name: 'workingforum_admin_new_forum_rules')]
+    #[Security('is_granted("ROLE_ADMIN")')]
     public function rulesNewAction(Request $request, $lang)
     {
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
@@ -118,5 +105,4 @@ class AdminRulesController extends BaseController
             ]
         );
     }
-
 }

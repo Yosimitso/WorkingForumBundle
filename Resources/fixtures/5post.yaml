@@ -1,0 +1,10 @@
+Yosimitso\WorkingForumBundle\Entity\Post:
+  post_classic:
+    thread: '@thread_classic'
+#    thread: ~
+    content: '*Content* test'
+    published: true
+    user: '@user_classic'
+    cdate: <datetime('now')>
+    ip: '192.168.0.1'
+    voteUp: 0

@@ -5,6 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Yosimitso\WorkingForumBundle\Entity\Post;
 use Yosimitso\WorkingForumBundle\Entity\PostVote;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
@@ -12,22 +13,14 @@ use Yosimitso\WorkingForumBundle\Service\ThreadService;
 
 class PostController extends BaseController
 {
-    /**
-     * @var ThreadService 
-     */
-    protected $threadService;
-
-    public function __construct(ThreadService $threadService)
-    {
-         $this->threadService = $threadService;
-    }
+    public function __construct(
+        protected readonly ThreadService $threadService
+    ) {}
 
     /**
-     * @param Request $request
-     * @return Response
-     * @throws \Exception
      * vote for a post
      */
+    #[Route('voteup', name: 'workingforum_vote_up')]
     public function voteUpAction(Request $request)
     {
         $postId = $request->get('postId');
@@ -84,5 +77,4 @@ class PostController extends BaseController
             return new JsonResponse(['res' => 'false', 'errMsg' => 'Already voted'], 403);
         }
     }
-
 }

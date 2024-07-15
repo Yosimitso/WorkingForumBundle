@@ -7,23 +7,14 @@ use Twig\Extension\AbstractExtension;
 
 class ConfigurationTwigExtension extends AbstractExtension
 {
-    /**
-     * @var array
-     */
-    private $paramList;
+    private array $paramList;
 
-    /**
-     * @param string $themeColor
-     */
-    public function __construct($themeColor)
+    public function __construct(string $themeColor)
     {
         $this->paramList = ['theme_color' => $themeColor];
     }
 
-    /**
-     * @return array
-     */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction(
@@ -33,13 +24,7 @@ class ConfigurationTwigExtension extends AbstractExtension
         ];
     }
 
-    /**
-     * @param string $param
-     *
-     * @return mixed
-     * @throws \Exception
-     */
-    public function getWFParam($param)
+    public function getWFParam(string $param)
     {
         if (!isset($this->paramList[$param])) {
             throw new \Exception(

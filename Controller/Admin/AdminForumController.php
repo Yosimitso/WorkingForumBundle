@@ -2,6 +2,8 @@
 
 namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Attribute\Route;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
@@ -10,24 +12,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Class AdminForumController
- *
- * @package Yosimitso\WorkingForumBundle\Controller\Admin
- *
- * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_MODERATOR')")
- */
+#[Route('/admin/forum')]
+#[Security('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")')]
 class AdminForumController extends BaseController
 {
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     * @param Request $request
-     * @param int $id
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @throws \Exception
-     */
-    public function editAction(Request $request, $id)
+    #[Route('/edit/{id}', name: 'workingforum_admin_forum_edit', requirements: ['id' => '\d+'])]
+    #[Security('is_granted("ROLE_ADMIN")')]
+    public function editAction(Request $request, $id): Response|RedirectResponse
     {
         $forum = $this->em->getRepository(Forum::class)->find($id);
 
@@ -69,14 +60,9 @@ class AdminForumController extends BaseController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @throws \Exception
-     */
-    public function addAction(Request $request)
+    #[Route('/add', name: 'workingforum_admin_forum_add')]
+    #[Security('is_granted("ROLE_ADMIN")')]
+    public function addAction(Request $request): Response|RedirectResponse
     {
         $forum = new Forum;
         $forum->addSubForum(new Subforum);
@@ -110,15 +96,11 @@ class AdminForumController extends BaseController
         );
     }
 
-    /**
-     * @Security("is_granted('ROLE_ADMIN')")
-     * @param int $forum_id
-     *
-     * @return Response
-     */
-    public function deleteForumAction($forum_id)
+    #[Route('/delete/{forumId}', name: 'workingforum_admin_delete_forum', requirements: ['id' => '\d+'])]
+    #[Security('is_granted("ROLE_ADMIN")')]
+    public function deleteForumAction($forumId): Response
     {
-        $forum = $this->em->getRepository(Forum::class)->findOneById($forum_id);
+        $forum = $this->em->getRepository(Forum::class)->findOneById($forumId);
 
         if (!is_null($forum)) {
             $this->em->remove($forum);

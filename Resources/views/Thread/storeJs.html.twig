@@ -25,10 +25,10 @@
         'routes': {
             'workingforum_move_thread': '{{ path('workingforum_move_thread') }}',
             'workingforum_admin_report_action_moderate': '{{ path('workingforum_admin_report_action_moderate') }}',
-            'workingforum_vote_up': '{{ path('workingforum_vote_up') }}',
-            'workingforum_add_subscription': '{{ path('workingforum_add_subscription', {'forum': forum.slug, 'subforum' : subforum.slug, 'thread': thread.id }) }}',
-            'workingforum_cancel_subscription': '{{ path('workingforum_cancel_subscription', {'forum': forum.slug, 'subforum' : subforum.slug, 'thread': thread.id}) }}'
+            'workingforum_vote_up': '{{ path('workingforum_vote_up') }}'
         }
+
+
     {% if thread is defined %}
         , 'threadId': '{{ thread.id }}'
         , 'postEditorId': '{{ thread.id }}'
@@ -40,5 +40,9 @@
         , 'forum_slug': '{{ forum.slug }}'
     {% endif %}
     }
+    {% if forum is defined and subforum is defined and thread is defined %}
+        storeJs.routes['workingforum_add_subscription'] =  '{{ path('workingforum_add_subscription', {'forum': forum.slug, 'subforum' : subforum.slug, 'thread': thread.id }) }}';
+        storeJs.routes['workingforum_cancel_subscription'] =  '{{ path('workingforum_cancel_subscription', {'forum': forum.slug, 'subforum' : subforum.slug, 'thread': thread.id}) }}';
+    {% endif %}
 
 </script>

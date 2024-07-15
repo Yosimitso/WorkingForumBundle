@@ -5,7 +5,7 @@
     "require": {
         "php": ">=8.2.0",
         "ext-mbstring": "*",
-        "knplabs/knp-paginator-bundle": "^5.0",
+        "knplabs/knp-paginator-bundle": "^6.0",
         "knplabs/knp-markdown-bundle": "^1.9.0",
         "symfony/framework-bundle": ">=5.0|>=6.2|>=7.0",
         "symfony/translation": ">=5.0|>=6.2|>=7.0",

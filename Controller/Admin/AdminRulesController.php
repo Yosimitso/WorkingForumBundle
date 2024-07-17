@@ -2,16 +2,17 @@
 
 namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Routing\Attribute\Route;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
 use Yosimitso\WorkingForumBundle\Entity\Rules;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Yosimitso\WorkingForumBundle\Form\RulesType;
 use Yosimitso\WorkingForumBundle\Form\RulesEditType;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 
-#[Security('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")')]
+#[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
 class AdminRulesController extends BaseController
 {
     private SmileyTwigExtension $smileyTwigExtension;
@@ -35,7 +36,6 @@ class AdminRulesController extends BaseController
     }
 
     #[Route('/admin/rules/edit/{lang}', name: 'workingforum_admin_edit_forum_rules')]
-    #[Security('is_granted("ROLE_ADMIN")')]
     public function rulesEditAction(Request $request, $lang)
     {
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
@@ -75,7 +75,6 @@ class AdminRulesController extends BaseController
     }
 
     #[Route('/admin/rules/new/{lang}', name: 'workingforum_admin_new_forum_rules')]
-    #[Security('is_granted("ROLE_ADMIN")')]
     public function rulesNewAction(Request $request, $lang)
     {
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown

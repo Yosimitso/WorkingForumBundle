@@ -2,7 +2,6 @@
 
 namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 
-use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
@@ -10,11 +9,11 @@ use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Form\AdminForumType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 
 #[Route('/admin/forum')]
-#[IsGranted(new Expression('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")'))]
+#[Security('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")')]
 class AdminForumController extends BaseController
 {
     #[Route('/edit/{id}', name: 'workingforum_admin_forum_edit', requirements: ['id' => '\d+'])]
@@ -62,7 +61,7 @@ class AdminForumController extends BaseController
     }
 
     #[Route('/add', name: 'workingforum_admin_forum_add')]
-    #[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+    #[Security('is_granted("ROLE_ADMIN")')]
     public function addAction(Request $request): Response|RedirectResponse
     {
         $forum = new Forum;
@@ -98,7 +97,7 @@ class AdminForumController extends BaseController
     }
 
     #[Route('/delete/{forumId}', name: 'workingforum_admin_delete_forum', requirements: ['id' => '\d+'])]
-    #[IsGranted(new Expression('is_granted("ROLE_ADMIN")'))]
+    #[Security('is_granted("ROLE_ADMIN")')]
     public function deleteForumAction($forumId): Response
     {
         $forum = $this->em->getRepository(Forum::class)->findOneById($forumId);

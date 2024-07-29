@@ -22,6 +22,7 @@ use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Yosimitso\WorkingForumBundle\Util\ApiHelper;
 
 #[Route('/')]
 class ThreadController extends BaseController
@@ -35,8 +36,8 @@ class ThreadController extends BaseController
     /**
      * Display a thread, save a post
      */
-    #[Route('{forum}/{subforum}/{thread}/view', name: 'workingforum_thread')]
-    public function indexAction(Forum $forum, Subforum $subforum, Thread $thread, Request $request): Response
+    #[Route('{isApi}{forum}/{subforum}/{thread}/view', name: 'workingforum_thread', requirements: ['isApi' => '(api\/)?'])]
+    public function indexAction(Forum $forum, Subforum $subforum, Thread $thread, Request $request, bool $isApi = false): Response
     {
         $autolock = $this->threadService->isAutolock($thread); // CHECK IF THREAD IS AUTOMATICALLY LOCKED (TOO OLD?)
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
@@ -125,23 +126,26 @@ class ThreadController extends BaseController
         $actionsAvailables = $this->threadService->getAvailableActions($this->user, $thread, $autolock, $canSubscribeThread);
         $subscripted = $this->em->getRepository(Subscription::class)->findOneBy(['thread' => $thread, 'user' => $this->user]);
 
-        return $this->render('@YosimitsoWorkingForum/Thread/thread.html.twig',
-            [
-                'forum' => $forum,
-                'subforum' => $subforum,
-                'thread' => $thread,
-                'post_list' => $post_list,
-                'parameters' => $parameters,
-                'form' => (isset($form)) ? $form->createView() : null,
-                'listSmiley' => $listSmiley,
-                'forbidden' => false,
-                'request' => $request,
-                'autolock' => $autolock,
-                'hasAlreadyVoted' => $hasAlreadyVoted,
-                'actionsAvailables' => $actionsAvailables,
-                'hasSubscribed' => (is_null($subscripted)) ? false : true
-            ]
-        );
+        $templateParameters =
+        [
+            'forum' => $forum,
+            'subforum' => $subforum,
+            'thread' => $thread,
+            'post_list' => $post_list,
+            'parameters' => $parameters,
+            'form' => (isset($form)) ? $form->createView() : null,
+            'listSmiley' => $listSmiley,
+            'forbidden' => false,
+            'request' => $request,
+            'autolock' => $autolock,
+            'hasAlreadyVoted' => $hasAlreadyVoted,
+            'actionsAvailables' => $actionsAvailables,
+            'hasSubscribed' => (is_null($subscripted)) ? false : true
+        ];
+
+        return $isApi
+            ? new JsonResponse(ApiHelper::getSerializer()->serialize($templateParameters, 'json'), 200, ['groups' => 'threadList'], true)
+            : $this->render('@YosimitsoWorkingForum/Thread/thread.html.twig', $templateParameters);
 
     }
 

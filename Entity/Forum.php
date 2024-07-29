@@ -5,8 +5,11 @@ namespace Yosimitso\WorkingForumBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Ignore;
+
 
 #[ORM\Table(name: "workingforum_forum")]
 #[ORM\Entity]
@@ -19,9 +22,11 @@ class Forum
 
     #[ORM\Column(name: "name", type: "string", length: 255)]
     #[Assert\NotBlank(message: "forum.not_blank")]
+    #[Groups(['threadList'])]
     private string $name;
 
     #[ORM\Column(name: "slug", type: "string", length: 255)]
+    #[Groups(['threadList'])]
     private string $slug;
 
     #[ORM\OneToMany(mappedBy: "forum", targetEntity: "Yosimitso\WorkingForumBundle\Entity\Subforum", cascade: ["persist", "remove"], orphanRemoval: true)]

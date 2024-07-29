@@ -5,6 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTime;
 use DateTimeInterface;
@@ -24,43 +25,54 @@ class Thread
 
     #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface")]
     #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id", nullable: true)]
+    #[Groups(['threadList'])]
     private ?UserInterface $author;
 
     #[ORM\Column(name: "cdate", type: "datetime")]
     #[Assert\NotBlank]
+    #[Groups(['threadList'])]
     private DateTimeInterface $cdate;
 
     #[ORM\Column(name: "nbReplies", type: "integer")]
+    #[Groups(['threadList'])]
     private int $nbReplies;
 
     #[ORM\Column(name: "lastReplyDate", type: "datetime")]
+    #[Groups(['threadList'])]
     private DateTimeInterface $lastReplyDate;
 
     #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface", cascade: ["persist"])]
     #[ORM\JoinColumn(name: "lastReplyUser", referencedColumnName: "id", nullable: true)]
+    #[Groups(['threadList'])]
     private ?UserInterface $lastReplyUser;
 
     #[ORM\Column(name: "resolved", type: "boolean", nullable: true)]
+    #[Groups(['threadList'])]
     private ?bool $resolved;
 
     #[ORM\Column(name: "locked", type: "boolean", nullable: true)]
+    #[Groups(['threadList'])]
     private ?bool $locked;
 
     #[ORM\Column(name: "label", type: "string")]
     #[Assert\NotBlank(message: "thread.label.not_blank")]
     #[Assert\Length(min: 5, minMessage: "thread.label.min_length", max: 50, maxMessage: "thread.label.max_length")]
+    #[Groups(['threadList'])]
     private string $label;
 
     #[ORM\Column(name: "sublabel", type: "string")]
+    #[Groups(['threadList'])]
     private string $subLabel;
 
     #[ORM\Column(name: "slug", type: "string", nullable: true)]
+    #[Groups(['threadList'])]
     private ?string $slug;
 
     #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Post", mappedBy: "thread", cascade: ["persist", "remove"])]
     private Collection $post;
 
     #[ORM\Column(name: "pin", type: "boolean", nullable: true)]
+    #[Groups(['threadList'])]
     private ?bool $pin;
 
     #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Subscription", mappedBy: "thread", cascade: ["remove"])]

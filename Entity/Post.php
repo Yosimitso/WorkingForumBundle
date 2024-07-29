@@ -5,6 +5,7 @@ namespace Yosimitso\WorkingForumBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTime;
 use DateTimeInterface;
@@ -17,31 +18,38 @@ class Post
     #[ORM\Column(name: "id", type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Groups(['threadList'])]
     private int $id;
 
     #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Thread", inversedBy: "post")]
     #[ORM\JoinColumn(name: "thread_id", referencedColumnName: "id", nullable: true)]
+    #[Groups(['threadList'])]
     private ?Thread $thread;
 
     #[ORM\Column(name: "content", type: "text")]
     #[Assert\NotBlank(message: "post.not_blank")]
+    #[Groups(['threadList'])]
     private string $content;
 
     #[ORM\Column(name: "published", type: "boolean")]
+    #[Groups(['threadList'])]
     private ?bool $published;
 
     #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface")]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: true)]
+    #[Groups(['threadList'])]
     private UserInterface $user;
 
     #[ORM\Column(name: "cdate", type: "datetime")]
     #[Assert\NotBlank]
+    #[Groups(['threadList'])]
     private DateTimeInterface $cdate;
 
     #[ORM\Column(name: "ip", type: "string")]
     private string $ip; // FOR LEGAL AND SECURITY REASON
 
     #[ORM\Column(name: "moderateReason", type: "text", nullable: true)]
+    #[Groups(['threadList'])]
     private ?string $moderateReason;
 
     #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\PostReport", mappedBy: "post", cascade: ["remove"])]

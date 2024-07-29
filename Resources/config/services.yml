@@ -16,10 +16,7 @@ services:
       $themeColor: '%yosimitso_working_forum.theme_color%'
 
   Yosimitso\WorkingForumBundle\:
-    resource: '../../{Event,Form,ParamConverter,Repository,Security,Service,Twig,Util}'
-    #exclude: '../../Entity/UserTest.php'
-#     exclude: '../../{DependencyInjection,Entity,Migrations,Tests,Kernel.php,vendor}'
-
+    resource: '../../{Event,Form,ArgumentResolver,Repository,Security,Service,Twig,Util}'
 
   Yosimitso\WorkingForumBundle\Controller\:
     resource: '../../Controller/**'
@@ -64,43 +61,44 @@ services:
     arguments:
       - '@service_container'
 
-  Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter:
+  Yosimitso\WorkingForumBundle\ArgumentResolver\GenericArgumentResolver:
     autowire: false
     autoconfigure: false
 
-  yosimitso_workingforum.param_converters.forum:
-    class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
+  yosimitso_workingforum.argument_resolver.forum:
+    class: Yosimitso\WorkingForumBundle\ArgumentResolver\GenericArgumentResolver
     arguments:
       - '@doctrine.orm.entity_manager'
       - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
       - 'Yosimitso\WorkingForumBundle\Entity\Forum'
     tags:
-      - { name: request.param_converter, priority: 20 }
+      - { name: controller.argument_value_resolver, priority: 150 }
 
-    
-  yosimitso_workingforum.param_converters.subforum:
-    class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
+
+  yosimitso_workingforum.argument_resolver.subforum:
+    class: Yosimitso\WorkingForumBundle\ArgumentResolver\GenericArgumentResolver
     arguments:
       - '@doctrine.orm.entity_manager'
       - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
       - 'Yosimitso\WorkingForumBundle\Entity\Subforum'
     tags:
-      - { name: request.param_converter, priority: 20 }
+      - { name: controller.argument_value_resolver, priority: 150 }
 
-  yosimitso_workingforum.param_converters.thread:
-    class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
+  yosimitso_workingforum.argument_resolver.thread:
+    class: Yosimitso\WorkingForumBundle\ArgumentResolver\GenericArgumentResolver
     arguments:
       - '@doctrine.orm.entity_manager'
       - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
       - 'Yosimitso\WorkingForumBundle\Entity\Thread'
     tags:
-      - { name: request.param_converter, priority: 20 }
+      - { name: controller.argument_value_resolver, priority: 150 }
 
-  yosimitso_workingforum.param_converters.post:
-    class: Yosimitso\WorkingForumBundle\ParamConverter\GenericParamConverter
+  yosimitso_workingforum.argument_resolver.post:
+    class: Yosimitso\WorkingForumBundle\ArgumentResolver\GenericArgumentResolver
     arguments:
       - '@doctrine.orm.entity_manager'
       - '@Yosimitso\WorkingForumBundle\Security\AuthorizationGuard'
       - 'Yosimitso\WorkingForumBundle\Entity\Post'
     tags:
-      - { name: request.param_converter, priority: 20 }
+      - { name: controller.argument_value_resolver, priority: 150 }
+

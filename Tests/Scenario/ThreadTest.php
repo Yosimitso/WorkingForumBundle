@@ -14,7 +14,6 @@ class ThreadTest extends WebTestCase
     use ReloadDatabaseTrait;
     private $client;
 
-
     private function getModeratorUserClient()
     {
         $client = static::createClient();

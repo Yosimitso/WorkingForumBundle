@@ -22,7 +22,7 @@
                 {% if rules is not null %}
                     <p>{{ 'admin.rules.lang' | trans | capitalize }} : {{ rules.lang }}</p>
                     <p>{{ 'forum.switch_lang' | trans }} : {{ form_widget(form.langs) }}</p>
-                    <p>{{ rules.content | markdown | smiley |  raw }}</p>
+                    <p>{{ rules.content | markdown_to_html | smiley |  raw }}</p>
                 {% else %}
                     <p><em>{{ 'forum.no_rules_available' | trans }}</em></p>
                 {% endif %}

@@ -23,13 +23,17 @@
     "ttf-loader": "^1.0.2",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^4.1.1",
-    "webpack": "^5.91.0"
+    "vue-loader": "^17.4.2",
+    "vue-template-compiler": "^2.7.16",
+    "webpack": "^5.91.0",
+    "webpack-dev-server": "^5.0.4"
   },
   "scripts": {
-    "dev": "webpack-cli --mode=development",
+    "dev": "webpack-dev-server --mode=development --history-api-fallback",
     "prod": "cross-env NODE_ENV=production webpack-cli --progress --mode=production"
   },
   "dependencies": {
+    "core-js": "^3.37.1",
     "fs": "^0.0.1-security",
     "glob-parent": "^6.0.2",
     "node-sass": "^9.0.0",
@@ -37,6 +41,13 @@
     "serialize-javascript": "^6.0.2",
     "tar": "^7.2.0",
     "trim-newlines": "^5.0.0",
+    "vue": "^3.4.34",
+    "vue-router": "^4.4.0",
     "webpack-cli": "^5.1.4"
-  }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }

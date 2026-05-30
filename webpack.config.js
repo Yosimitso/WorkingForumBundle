@@ -4,6 +4,7 @@ const glob = require('glob');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const { VueLoaderPlugin } = require("vue-loader");
 
 let config = {
     watch: (process.env.NODE_ENV !== 'production'),
@@ -14,11 +15,13 @@ let config = {
         post: './Resources/asset/js/webpack-post.js',
         admin_rules: './Resources/asset/js/webpack-admin-rules.js',
         theme_green: './Resources/asset/scss/theme_green.scss',
-        theme_dark_blue: './Resources/asset/scss/theme_dark_blue.scss'
+        theme_dark_blue: './Resources/asset/scss/theme_dark_blue.scss',
+        main: "./Resources/views/Vue/main.js"
     },
     output: {
         path: path.resolve(__dirname, "./Resources/public"),
-        filename: "[name].min.js"
+        filename: "[name].min.js",
+        publicPath: '/',
     },
     module: {
         rules: [
@@ -41,7 +44,11 @@ let config = {
                     'css-loader',
                     'sass-loader'
                 ]
-            }
+            },
+            {
+                test: /\.vue$/,
+                loader: "vue-loader",
+            },
         ]
     },
     plugins: [
@@ -53,8 +60,18 @@ let config = {
                 { from: './Resources/asset/images', to: './images/' },
                 { from: './Resources/asset/fonts', to: './fonts/' }
             ]
-        })
-    ]
+        }),
+        new VueLoaderPlugin()
+    ],
+    resolve: {
+        alias: {
+            'vue': '@vue/runtime-dom'
+        },
+        extensions: ["*", ".js", ".vue", ".json"],
+    },
+    devServer: {
+        historyApiFallback: true
+    }
 }
 
 module.exports = config;

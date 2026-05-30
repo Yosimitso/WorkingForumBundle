@@ -68,14 +68,14 @@ class Thread
     #[Groups(['threadList'])]
     private ?string $slug;
 
-    #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Post", mappedBy: "thread", cascade: ["persist", "remove"])]
+    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: "thread", cascade: ["persist", "remove"])]
     private Collection $post;
 
     #[ORM\Column(name: "pin", type: "boolean", nullable: true)]
     #[Groups(['threadList'])]
     private ?bool $pin;
 
-    #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Subscription", mappedBy: "thread", cascade: ["remove"])]
+    #[ORM\OneToMany(targetEntity: Subscription::class, mappedBy: "thread", cascade: ["remove"])]
     private Collection $subscriptions;
 
     public function __construct(UserInterface $user = null, Subforum $subforum = null)

@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
+use Symfony\Component\Translation\Translator;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\Rules;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
@@ -27,7 +29,7 @@ class ForumController extends BaseController
     public function __construct(
         protected readonly string $dateFormat,
         protected readonly int $postPerPage,
-        protected readonly int $threadPerPage
+        protected readonly int $threadPerPage,
     ) {}
 
     /**
@@ -126,6 +128,13 @@ class ForumController extends BaseController
                 'form' => $form->createView()
             ]
         );
+    }
+
+    #[Route('api/translations', name: 'workingforum_translations')]
+    public function translationsAction(Request $request)
+    {
+        $translations = $this->translator->getCatalogue($request->getLocale())->all('YosimitsoWorkingForumBundle');
+        return new JsonResponse(ApiHelper::getSerializer()->serialize($translations, 'json'), 200, ['groups' => 'threadList'], true);
     }
 
     #[Route('test', name: 'workingforum_test')]

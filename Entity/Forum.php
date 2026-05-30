@@ -29,7 +29,7 @@ class Forum
     #[Groups(['threadList'])]
     private string $slug;
 
-    #[ORM\OneToMany(mappedBy: "forum", targetEntity: "Yosimitso\WorkingForumBundle\Entity\Subforum", cascade: ["persist", "remove"], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: "forum", targetEntity: Subforum::class, cascade: ["persist", "remove"], orphanRemoval: true)]
     private Collection $subForum;
 
     public function __construct()

@@ -133,15 +133,20 @@ class ThreadController extends BaseController
             'thread' => $thread,
             'post_list' => $post_list,
             'parameters' => $parameters,
-            'form' => (isset($form)) ? $form->createView() : null,
+//            'form' => (isset($form)) ? $form->createView() : null,
             'listSmiley' => $listSmiley,
             'forbidden' => false,
-            'request' => $request,
+            //'request' => $request,
             'autolock' => $autolock,
             'hasAlreadyVoted' => $hasAlreadyVoted,
             'actionsAvailables' => $actionsAvailables,
             'hasSubscribed' => (is_null($subscripted)) ? false : true
         ];
+
+        if (!$isApi) {
+            $templateParameters['form'] = (isset($form)) ? $form->createView() : null;
+            $templateParameters['request'] = $request;
+        }
 
         return $isApi
             ? new JsonResponse(ApiHelper::getSerializer()->serialize($templateParameters, 'json'), 200, ['groups' => 'threadList'], true)

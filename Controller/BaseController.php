@@ -23,7 +23,7 @@ class BaseController extends AbstractController
     protected EntityManagerInterface $em;
     protected AuthorizationGuardInterface $authorizationGuard;
     protected ?UserInterface $user;
-    protected FlashBagInterface $flashbag;
+    protected ?FlashBagInterface $flashbag;
     protected TranslatorInterface $translator;
     protected PaginatorInterface $paginator;
     protected BundleParametersService $bundleParameters;
@@ -44,7 +44,12 @@ class BaseController extends AbstractController
         $this->em = $em;
         $this->authorizationGuard = $authorizationGuard;
         $this->user = (is_object($token) && $token->getUser() instanceof UserInterface) ? $token->getUser() : null;
-        $this->flashbag = $requestStack->getSession()->getFlashBag();
+        if (!$requestStack->getCurrentRequest()->attributes->get('_stateless', false)) {
+            $this->flashbag = $requestStack->getSession()->getFlashBag();
+        } else {
+            $this->flashbag = null;
+        }
+
         $this->translator = $translator;
         $this->paginator = $paginator;
         $this->bundleParameters = $bundleParameters;

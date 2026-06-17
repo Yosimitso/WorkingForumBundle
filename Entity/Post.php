@@ -21,7 +21,7 @@ class Post
     #[Groups(['threadList'])]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Thread", inversedBy: "post")]
+    #[ORM\ManyToOne(targetEntity: Thread::class, inversedBy: "post")]
     #[ORM\JoinColumn(name: "thread_id", referencedColumnName: "id", nullable: true)]
     #[Groups(['threadList'])]
     private ?Thread $thread;
@@ -35,7 +35,7 @@ class Post
     #[Groups(['threadList'])]
     private ?bool $published;
 
-    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface")]
+    #[ORM\ManyToOne(targetEntity: UserInterface::class)]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: true)]
     #[Groups(['threadList'])]
     private UserInterface $user;
@@ -52,16 +52,16 @@ class Post
     #[Groups(['threadList'])]
     private ?string $moderateReason;
 
-    #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\PostReport", mappedBy: "post", cascade: ["remove"])]
+    #[ORM\OneToMany(targetEntity: PostReport::class, mappedBy: "post", cascade: ["remove"])]
     private Collection $postReport;
 
-    #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\PostVote", mappedBy: "post", cascade: ["remove"])]
+    #[ORM\OneToMany(targetEntity: PostVote::class, mappedBy: "post", cascade: ["remove"])]
     private Collection $postVote;
 
     #[ORM\Column(name: "voteUp", type: "integer", nullable: true)]
     private ?int $voteUp;
 
-    #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\File", mappedBy: "post", cascade: ["persist", "remove"])]
+    #[ORM\OneToMany(targetEntity: File::class, mappedBy: "post", cascade: ["persist", "remove"])]
     private Collection $files;
 
     private array $filesUploaded;

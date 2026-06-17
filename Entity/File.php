@@ -35,7 +35,7 @@ class File
     #[ORM\Column(name: "cdate", type: "datetime")]
     private DateTimeInterface $cdate;
 
-    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Post", inversedBy: "files")]
+    #[ORM\ManyToOne(targetEntity: Post::class, inversedBy: "files")]
     #[ORM\JoinColumn(name: "post_id", referencedColumnName: "id", nullable: true)]
     private Post $post;
     

@@ -16,11 +16,11 @@ class Subscription
     #[ORM\GeneratedValue(strategy: "AUTO")]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Thread", inversedBy: "subscriptions")]
+    #[ORM\ManyToOne(targetEntity: Thread::class, inversedBy: "subscriptions")]
     #[ORM\JoinColumn(name: "thread_id", referencedColumnName: "id", nullable: true)]
     private ?Thread $thread;
 
-    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface")]
+    #[ORM\ManyToOne(targetEntity: UserInterface::class)]
     #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", nullable: true)]
     private ?UserInterface $user;
 

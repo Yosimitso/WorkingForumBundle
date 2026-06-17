@@ -3,11 +3,17 @@
 namespace Yosimitso\WorkingForumBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
-class SubforumRepository extends EntityRepository
+class SubforumRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Subforum::class);
+    }
     /**
      * @return Subforum[]
      */

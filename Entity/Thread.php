@@ -9,8 +9,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTime;
 use DateTimeInterface;
+use Yosimitso\WorkingForumBundle\Repository\ThreadRepository;
 
-#[ORM\Entity(repositoryClass: "Yosimitso\WorkingForumBundle\Repository\ThreadRepository")]
+#[ORM\Entity(repositoryClass: ThreadRepository::class)]
 #[ORM\Table(name: "workingforum_thread")]
 class Thread
 {
@@ -19,11 +20,11 @@ class Thread
     #[ORM\GeneratedValue(strategy: "AUTO")]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Subforum", inversedBy: "thread")]
+    #[ORM\ManyToOne(targetEntity: Subforum::class, inversedBy: "thread")]
     #[ORM\JoinColumn(name: "subforum_id", referencedColumnName: "id", nullable: false)]
     private Subforum $subforum;
 
-    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface")]
+    #[ORM\ManyToOne(targetEntity: UserInterface::class)]
     #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id", nullable: true)]
     #[Groups(['threadList'])]
     private ?UserInterface $author;
@@ -41,7 +42,7 @@ class Thread
     #[Groups(['threadList'])]
     private DateTimeInterface $lastReplyDate;
 
-    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface", cascade: ["persist"])]
+    #[ORM\ManyToOne(targetEntity: UserInterface::class, cascade: ["persist"])]
     #[ORM\JoinColumn(name: "lastReplyUser", referencedColumnName: "id", nullable: true)]
     #[Groups(['threadList'])]
     private ?UserInterface $lastReplyUser;

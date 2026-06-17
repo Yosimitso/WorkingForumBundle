@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 abstract class ApiHelper
 {
     public static function getSerializer(): Serializer
@@ -20,7 +20,7 @@ abstract class ApiHelper
             },
         ];
         $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader());
-        $normalizers = [new ObjectNormalizer(classMetadataFactory: $classMetadataFactory, defaultContext: $defaultContext)];
+        $normalizers = [new ObjectNormalizer(classMetadataFactory: $classMetadataFactory, defaultContext: $defaultContext), new ArrayDenormalizer()];
 
         return new Serializer($normalizers, $encoders);
     } 

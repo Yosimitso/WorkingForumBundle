@@ -2,6 +2,7 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
+    public: true
     bind:
       $dateFormat: '%yosimitso_working_forum.date_format%'
       $lockThreadOlderThan: '%yosimitso_working_forum.lock_thread_older_than%'
@@ -16,7 +17,7 @@ services:
       $themeColor: '%yosimitso_working_forum.theme_color%'
 
   Yosimitso\WorkingForumBundle\:
-    resource: '../../{Event,Form,ArgumentResolver,Repository,Security,Service,Twig,Util}'
+    resource: '../../{Event,Form,ArgumentResolver,DependencyInjection,Repository,Security,Service,Twig,Util}'
 
   Yosimitso\WorkingForumBundle\Controller\:
     resource: '../../Controller/**'
@@ -58,8 +59,9 @@ services:
 
 
   Yosimitso\WorkingForumBundle\Service\BundleParametersService:
-    arguments:
-      - '@service_container'
+    public: true
+
+  Symfony\Component\DependencyInjection\ContainerInterface: '@service_container'
 
   Yosimitso\WorkingForumBundle\ArgumentResolver\GenericArgumentResolver:
     autowire: false
@@ -102,3 +104,6 @@ services:
     tags:
       - { name: controller.argument_value_resolver, priority: 150 }
 
+#  Yosimitso\WorkingForumBundle\Repository\ThreadRepository:
+#    autowire: true
+    

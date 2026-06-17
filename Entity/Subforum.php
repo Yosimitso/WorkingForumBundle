@@ -6,12 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Yosimitso\WorkingForumBundle\Repository\SubforumRepository;
 use Yosimitso\WorkingForumBundle\Util\Slugify;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTime;
 use DateTimeInterface;
 
-#[ORM\Entity(repositoryClass: "Yosimitso\WorkingForumBundle\Repository\SubforumRepository")]
+#[ORM\Entity(repositoryClass: SubforumRepository::class)]
 #[ORM\Table(name: "workingforum_subforum")]
 class Subforum
 {
@@ -23,7 +24,7 @@ class Subforum
     #[ORM\Column(name: "description", type: "string", length: 255, nullable: true)]
     private ?string $description;
 
-    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Forum", inversedBy: "subForum")]
+    #[ORM\ManyToOne(targetEntity: Forum::class, inversedBy: "subForum")]
     #[ORM\JoinColumn(name: "forum_id", referencedColumnName: "id")]
     private Forum $forum;
 
@@ -49,12 +50,12 @@ class Subforum
     #[Groups(['threadList'])]
     private ?DateTimeInterface $lastReplyDate;
 
-    #[ORM\ManyToOne(targetEntity: "Yosimitso\WorkingForumBundle\Entity\UserInterface")]
+    #[ORM\ManyToOne(targetEntity: UserInterface::class)]
     #[ORM\JoinColumn(name: "lastReplyUser", referencedColumnName: "id", nullable: true)]
     #[Groups(['threadList'])]
     private ?UserInterface $lastReplyUser;
 
-    #[ORM\OneToMany(targetEntity: "Yosimitso\WorkingForumBundle\Entity\Thread", mappedBy: "subforum", cascade: ["remove"])]
+    #[ORM\OneToMany(targetEntity: Thread::class, mappedBy: "subforum", cascade: ["remove"])]
     private Collection $thread;
 
     #[ORM\Column(name: "allowed_roles", type: "array", nullable: true)]

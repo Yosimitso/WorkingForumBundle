@@ -63,13 +63,13 @@ class ForumController extends BaseController
     /**
      * Display the thread list of a subforum
      */
-    #[Route('{isApi}{forum}/{subforum}/view', name: 'workingforum_subforum', requirements: ['isApi' => '(api\/)?'])]
-    public function subforumAction(Forum $forum, Subforum $subforum, Request $request, bool $isApi = false): Response
+    #[Route('{forum}/{subforum}/view', name: 'workingforum_subforum')]
+    public function subforumAction(Forum $forum, Subforum $subforum, Request $request): Response
     {
         $list_subforum_query = $this
             ->em
             ->getRepository(Thread::class)
-            ->getAllBySubforum(
+            ->getAllBySubforumAsScalar(
                 $subforum
             );
 
@@ -90,6 +90,7 @@ class ForumController extends BaseController
             'forum' => $forum,
             'subforum' => $subforum,
             'thread_list' => $list_subforum,
+            'nb_items' => 3,
             'date_format' => $date_format,
             'forbidden' => false,
             'post_per_page' => $this->postPerPage,
@@ -97,9 +98,37 @@ class ForumController extends BaseController
             'parameters' => $parameters
         ];
 
-        return $isApi
-                ? new JsonResponse(ApiHelper::getSerializer()->serialize($templateParameters, 'json'), 200, ['groups' => 'threadList'], true)
-                :$this->render('@YosimitsoWorkingForum/Forum/thread_list.html.twig', $templateParameters)
+        return $this->render('@YosimitsoWorkingForum/Forum/thread_list.html.twig', $templateParameters);
+    }
+
+    #[Route('api/{forum}/{subforum}/view/{page}', name: 'workingforum_subforum_api', requirements: ['page' => '\d+'])]
+    public function subforumApiAction(Forum $forum, Subforum $subforum, int $page): Response
+    {
+        $list_subforum = $this
+            ->em
+            ->getRepository(Thread::class)
+            ->getAllBySubforum(
+                $subforum,
+                $page
+                
+            );
+        
+        $nbThreads = 
+        $date_format = $this->dateFormat;
+        
+
+        $templateParameters =
+            [
+                'forum' => $forum,
+                'subforum' => $subforum,
+                'thread_list' => $list_subforum,
+                'nb_items' => $this->em->getRepository(Thread::class)->countAllBySubforum($subforum),
+                'date_format' => $date_format,
+                'forbidden' => false,
+                'page_prefix' => 'page',
+            ];
+
+        return new JsonResponse(ApiHelper::getSerializer()->serialize($templateParameters, 'json'), 200, ['groups' => 'threadList'], true)
             ;
     }
 

@@ -2,15 +2,16 @@
 
 namespace Yosimitso\WorkingForumBundle\Controller\Admin;
 
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Yosimitso\WorkingForumBundle\Controller\BaseController;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Routing\Attribute\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Yosimitso\WorkingForumBundle\Entity\Forum;
 use Yosimitso\WorkingForumBundle\Entity\PostReport;
 
 #[Route('/admin')]
-#[Security('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")')]
+#[IsGranted(new Expression('is_granted("ROLE_ADMIN") or is_granted("ROLE_MODERATOR")'))]
 class AdminController extends BaseController
 {
     #[Route('', name: 'workingforum_admin')]

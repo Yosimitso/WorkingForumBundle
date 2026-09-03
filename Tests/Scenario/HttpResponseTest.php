@@ -19,15 +19,8 @@ class HttpResponseTest extends WebTestCase
     {
         $client = static::createClient();
         $container = static::$kernel->getContainer();
-//        $session = $container->get('request_stack')->getSession();
         $person = self::$kernel->getContainer()->get('doctrine')->getRepository(UserTest::class)->findAll()[2];
         $client->loginUser($person);
-//        $token = new UsernamePasswordToken($person, null, 'main', $person->getRoles());
-//        $session->set('_security_main', serialize($token));
-//        $session->save();
-//
-//        $client->getCookieJar()->set(new Cookie($session->getName(), $session->getId()));
-
         $this->client = $client;
     }
     /**

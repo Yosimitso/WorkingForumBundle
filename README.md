@@ -6,7 +6,7 @@ WorkingForumBundle
 
 ENGLISH
 =================  
-A forum bundle for Symfony 5/6, easy to use with a lot of features  
+A forum bundle for Symfony 5/6/7, easy to use with a lot of features  
 This bundle work with your user bundle with no extra configuration (which can extend FOSUserBundle)  
 The bundle was made to be customizable and overridable to fit your application  
 

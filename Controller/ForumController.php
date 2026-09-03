@@ -10,7 +10,6 @@ use Yosimitso\WorkingForumBundle\Entity\Rules;
 use Yosimitso\WorkingForumBundle\Entity\Subforum;
 use Yosimitso\WorkingForumBundle\Entity\Thread;
 use Yosimitso\WorkingForumBundle\Form\RulesType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 #[Route('/')]
 class ForumController extends BaseController

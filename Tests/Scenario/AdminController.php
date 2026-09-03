@@ -4,11 +4,6 @@ namespace Yosimitso\WorkingForumBundle\Tests\Scenario;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-/**
- * Class ThreadControllerTest
- *
- * @package Yosimitso\WorkingForumBundle\Tests\Controller
- */
 class AdminController extends WebTestCase
 {
     private $client;

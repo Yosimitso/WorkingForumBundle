@@ -85,20 +85,4 @@ security:
       pattern: ^/
       provider: main
       http_basic: ~
-#      form_login:
-#        login_path: login
-#        check_path: login_check
-#        csrf_token_generator: security.csrf.token_manager
-#        default_target_path: /
-#      logout:
-#        path:   logout
-#        target: /
 
-#sensio_framework_extra:
-#  router:      { annotations: true }
-#  security:    { annotations: true }
-
-
-#  Yosimitso\WorkingForumBundle\:
-#    resource: '../{Controller,Entity,Event,Form,ParamConverter,Repository,Security,Service,Twig,Util}'
-#    exclude: '../Entity/UserTest.php'

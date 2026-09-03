@@ -16,7 +16,7 @@
             <td>{{ post.id }}</td>
             <td>{{ post.cdate | date(date_format) }}</td>
             <td>{{ post.post.user.username }}</td>
-            <td>{{ post.post.content | quote | markdown | replace({'\n':'<br />'}) | smiley | raw }}</td>
+            <td>{{ post.post.content | quote | markdown_to_html | replace({'\n':'<br />'}) | smiley | raw }}</td>
             <td>{{ post.user.username }}</td>
             <td>
                 {% if not post.processed %}

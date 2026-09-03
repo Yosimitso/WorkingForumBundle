@@ -8,7 +8,7 @@
 </p>
 <hr />
 <p>
-    {{ post.content | quote | markdown | replace({'\n':'<br />'})| smiley | raw }}
+    {{ post.content | quote | markdown_to_html | replace({'\n':'<br />'})| smiley | raw }}
 </p>
 <p>
     <a class="url" href="{{ path( 'workingforum_thread', {'forum': thread.subforum.forum.slug, 'subforum' : thread.subforum.slug, 'thread' : thread.slug}) }}">

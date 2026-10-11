@@ -3,6 +3,7 @@
 namespace Yosimitso\WorkingForumBundle\Controller;
 
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -22,7 +23,6 @@ use Yosimitso\WorkingForumBundle\Service\FileUploaderService;
 use Yosimitso\WorkingForumBundle\Twig\Extension\SmileyTwigExtension;
 use Yosimitso\WorkingForumBundle\Service\ThreadService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Yosimitso\WorkingForumBundle\Util\ApiHelper;
 
 #[Route('/')]
 class ThreadController extends BaseController
@@ -30,14 +30,14 @@ class ThreadController extends BaseController
     public function __construct(
         protected readonly FileUploaderService $fileUploaderService,
         protected readonly SmileyTwigExtension $smileyTwigExtension,
-        protected readonly ThreadService $threadService
+        protected readonly ThreadService $threadService,
     ) {}
 
     /**
      * Display a thread, save a post
      */
-    #[Route('{isApi}{forum}/{subforum}/{thread}/view', name: 'workingforum_thread', requirements: ['isApi' => '(api\/)?'])]
-    public function indexAction(Forum $forum, Subforum $subforum, Thread $thread, Request $request, bool $isApi = false): Response
+    #[Route('{forum}/{subforum}/{thread}/view', name: 'workingforum_thread')]
+    public function indexAction(Forum $forum, Subforum $subforum, Thread $thread, Request $request): Response
     {
         $autolock = $this->threadService->isAutolock($thread); // CHECK IF THREAD IS AUTOMATICALLY LOCKED (TOO OLD?)
         $listSmiley = $this->smileyTwigExtension->getListSmiley(); // Smileys available for markdown
@@ -133,26 +133,22 @@ class ThreadController extends BaseController
             'thread' => $thread,
             'post_list' => $post_list,
             'parameters' => $parameters,
-//            'form' => (isset($form)) ? $form->createView() : null,
+            'form' => (isset($form)) ? $form->createView() : null,
             'listSmiley' => $listSmiley,
             'forbidden' => false,
-            //'request' => $request,
+            'request' => $request,
             'autolock' => $autolock,
             'hasAlreadyVoted' => $hasAlreadyVoted,
             'actionsAvailables' => $actionsAvailables,
-            'hasSubscribed' => (is_null($subscripted)) ? false : true
+            'hasSubscribed' => (is_null($subscripted)) ? false : true,
+
         ];
 
-        if (!$isApi) {
-            $templateParameters['form'] = (isset($form)) ? $form->createView() : null;
-            $templateParameters['request'] = $request;
-        }
 
-        return $isApi
-            ? new JsonResponse(ApiHelper::getSerializer()->serialize($templateParameters, 'json'), 200, ['groups' => 'threadList'], true)
-            : $this->render('@YosimitsoWorkingForum/Thread/thread.html.twig', $templateParameters);
+        return $this->render('@YosimitsoWorkingForum/Thread/thread.html.twig', $templateParameters);
 
     }
+    
 
 
     /**
@@ -386,7 +382,7 @@ class ThreadController extends BaseController
         }
 
     }
-
+    
     /**
      * An user wants to subscribe to a thread
      */

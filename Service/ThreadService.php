@@ -273,6 +273,22 @@ class ThreadService
             'allowModeratorDeleteThread' => $this->bundleParameters->allow_moderator_delete_thread
         ];
     }
+    public function getAvailableActionApi(?UserInterface $user, Thread $thread, $autolock, $canSubscribeThread)
+    {
+        $anonymousUser = (!$user instanceof UserInterface);
+
+        return [
+            'setResolved' => $this->authorizationGuard->hasModeratorAuthorization() || (!$anonymousUser && $user->getId() == $thread->getAuthor()->getId()),
+            'quote' => (!$anonymousUser && !$thread->getLocked()),
+            'report' => (!$anonymousUser),
+            'post' => ((!$anonymousUser && !$autolock) || $this->authorizationGuard->hasModeratorAuthorization()),
+            'subscribe' => (!$anonymousUser && $canSubscribeThread),
+            'moveThread' => ($this->authorizationGuard->hasModeratorAuthorization()) ? $this->formFactory->create(MoveThreadType::class)->createView() : false,
+            'asModerator' => $this->authorizationGuard->hasModeratorAuthorization(),
+            'asAdmin' => $this->authorizationGuard->hasAdminAuthorization(),
+            'allowModeratorDeleteThread' => $this->bundleParameters->allow_moderator_delete_thread
+        ];
+    }
 
 
     public function redirectToThread(Forum $forum, Subforum $subforum, Thread $thread, $page = 1) : RedirectResponse

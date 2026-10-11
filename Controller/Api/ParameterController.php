@@ -33,7 +33,7 @@ class ParameterController extends BaseController
     {
         
     }
-    #[Route('/api/parameters', methods: ['GET'], name: 'workingforum_parameters')]
+    #[Route('/api/parameters', methods: ['GET'], name: 'workingforum_api_parameters')]
     public function getBundleParametersAction(): Response
     {
         $parameters = [
@@ -64,26 +64,3 @@ class ParameterController extends BaseController
         return new JsonResponse(ApiHelper::getSerializer()->serialize($parameters, 'json'), 200, [], true);
     }
 }
-
-/*
- *     thread_per_page: 10
-    post_per_page: 5
-    date_format: 'd/m/Y'
-    time_format: ' H:i:s'
-    allow_anonymous_read: true
-    allow_moderator_delete_thread: true
-    theme_color: green
-    lock_thread_older_than: 600
-    site_title: ok
-    vote:
-        threshold_useful_post: 5
-    file_upload:
-        enable: true
-        max_size_ko: 10000
-        accepted_format: [image/jpg, image/jpeg, image/png, image/gif, image/tiff, application/pdf]
-        preview_file: true
-    post_flood_sec: 30
-    thread_subscription:
-        enable: true
-    mailer_sender_address: test@charlymartins.fr
- */

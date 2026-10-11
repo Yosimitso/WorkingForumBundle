@@ -35,8 +35,8 @@ class ForumController extends BaseController
     /**
      * Display homepage of forum with subforums
      */
-    #[Route('{isApi}', name: 'workingforum_forum', requirements: ['isApi' => '(api\/)?'])]
-    public function indexAction(bool $isApi = false): Response
+    #[Route('', name: 'workingforum_forum')]
+    public function indexAction(): Response
     {
         $list_forum = $this
             ->em
@@ -55,9 +55,7 @@ class ForumController extends BaseController
             'parameters' => $parameters
         ];
 
-        return $isApi
-            ? new JsonResponse(ApiHelper::getSerializer()->serialize($templateParameters, 'json'), 200, ['groups' => 'threadList'], true)
-            : $this->render('@YosimitsoWorkingForum/Forum/index.html.twig', $templateParameters);
+        return $this->render('@YosimitsoWorkingForum/Forum/index.html.twig', $templateParameters);
     }
 
     /**
@@ -99,37 +97,6 @@ class ForumController extends BaseController
         ];
 
         return $this->render('@YosimitsoWorkingForum/Forum/thread_list.html.twig', $templateParameters);
-    }
-
-    #[Route('api/{forum}/{subforum}/view/{page}', name: 'workingforum_subforum_api', requirements: ['page' => '\d+'])]
-    public function subforumApiAction(Forum $forum, Subforum $subforum, int $page): Response
-    {
-        $list_subforum = $this
-            ->em
-            ->getRepository(Thread::class)
-            ->getAllBySubforum(
-                $subforum,
-                $page
-                
-            );
-        
-        $nbThreads = 
-        $date_format = $this->dateFormat;
-        
-
-        $templateParameters =
-            [
-                'forum' => $forum,
-                'subforum' => $subforum,
-                'thread_list' => $list_subforum,
-                'nb_items' => $this->em->getRepository(Thread::class)->countAllBySubforum($subforum),
-                'date_format' => $date_format,
-                'forbidden' => false,
-                'page_prefix' => 'page',
-            ];
-
-        return new JsonResponse(ApiHelper::getSerializer()->serialize($templateParameters, 'json'), 200, ['groups' => 'threadList'], true)
-            ;
     }
 
     #[Route('rules', name: 'workingforum_rules')]

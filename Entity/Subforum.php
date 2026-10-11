@@ -22,6 +22,7 @@ class Subforum
     private int $id;
 
     #[ORM\Column(name: "description", type: "string", length: 255, nullable: true)]
+    #[Groups(['subforum'])]
     private ?string $description;
 
     #[ORM\ManyToOne(targetEntity: Forum::class, inversedBy: "subForum")]
@@ -30,29 +31,29 @@ class Subforum
 
     #[ORM\Column(name: "name", type: "string")]
     #[Assert\NotBlank]
-    #[Groups(['threadList'])]
+    #[Groups(['threadList', 'subforum'])]
     private string $name;
 
     #[ORM\Column(name: "nb_thread", type: "integer", nullable: true)]
-    #[Groups(['threadList'])]
+    #[Groups(['threadList', 'subforum'])]
     private ?int $nbThread;
 
     #[ORM\Column(name: "slug", type: "string", length: 255)]
-    #[Groups(['threadList'])]
+    #[Groups(['threadList', 'subforum'])]
     #[Assert\NotBlank]
     private string $slug;
 
     #[ORM\Column(name: "nb_post", type: "integer", nullable: true)]
-    #[Groups(['threadList'])]
+    #[Groups(['threadList', 'subforum'])]
     private ?int $nbPost;
 
     #[ORM\Column(name: "last_reply_date", type: "datetime", nullable: true)]
-    #[Groups(['threadList'])]
+    #[Groups(['threadList', 'subforum'])]
     private ?DateTimeInterface $lastReplyDate;
 
     #[ORM\ManyToOne(targetEntity: UserInterface::class)]
     #[ORM\JoinColumn(name: "lastReplyUser", referencedColumnName: "id", nullable: true)]
-    #[Groups(['threadList'])]
+    #[Groups(['threadList', 'subforum'])]
     private ?UserInterface $lastReplyUser;
 
     #[ORM\OneToMany(targetEntity: Thread::class, mappedBy: "subforum", cascade: ["remove"])]

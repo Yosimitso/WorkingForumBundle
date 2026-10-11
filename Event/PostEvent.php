@@ -71,7 +71,7 @@ class PostEvent
         if ($this->paramSubscription['enable']) {
             $this->subscriptionService->notifySubscriptions($entity);
 
-            if ($entity->getAddSubscription()) {
+            if ((int) $entity->getAddSubscription()) {
                 $this->addSubscription($entity);
             }
         }

@@ -117,13 +117,14 @@ class ThreadRepository extends ServiceEntityRepository
 
     public function getAllBySubforum(SubForum $subforum, int $page) : array
     {
+        $threadPerPage = $this->bundleParametersService->get('thread_per_page');
         $query = $this->_em->createQueryBuilder()
             ->select('thread')
             ->from($this->_entityName, 'thread')
             ->where('thread.subforum = :subForumId')
             ->andWhere('thread.slug != :slug_not_empty')
-            ->setFirstResult(($page * $this->bundleParametersService->get('thread_per_page')) - 1)
-            ->setMaxResults($this->bundleParametersService->get('thread_per_page'))
+            ->setFirstResult(($page-1) * $threadPerPage)
+            ->setMaxResults($threadPerPage)
             ->orderBy('thread.pin', 'DESC')
             ->addOrderBy('thread.lastReplyDate', 'DESC')
             ->setParameter('subForumId', $subforum->getId())

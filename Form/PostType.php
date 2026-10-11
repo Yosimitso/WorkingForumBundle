@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-
+use Yosimitso\WorkingForumBundle\Entity\Post;
 /**
  * Class PostType
  *
@@ -68,7 +68,7 @@ class PostType extends AbstractType
         ]);
 
         $resolver->setDefaults([
-            'data_class' => 'Yosimitso\WorkingForumBundle\Entity\Post',
+            'data_class' => Post::class,
         ]);
     }
 }

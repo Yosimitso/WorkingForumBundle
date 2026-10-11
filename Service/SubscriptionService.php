@@ -64,7 +64,7 @@ class SubscriptionService
                         $this->mailer->send($email);
                     }
                 } catch (\Exception $e) {
-                    throw new \Exception($e->getMessage());
+                    //throw new \Exception($e->getMessage());
                 }
             }
 
